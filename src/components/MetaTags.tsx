@@ -1,0 +1,107 @@
+import { useEffect } from 'react';
+
+interface MetaTagsProps {
+  title: string;
+  description: string;
+  keywords?: string;
+  ogType?: string;
+  ogImage?: string;
+  article?: {
+    publishedTime?: string;
+    modifiedTime?: string;
+    author?: string;
+    section?: string;
+    tags?: string[];
+  };
+}
+
+export default function MetaTags({
+  title,
+  description,
+  keywords,
+  ogType = 'website',
+  ogImage = '/lgr_banner.png',
+  article
+}: MetaTagsProps) {
+  const fullTitle = `${title} | LGR Series`;
+  const canonicalUrl = typeof window !== 'undefined' ? window.location.href : '';
+
+  useEffect(() => {
+    document.title = fullTitle;
+
+    const metaTags: Array<{ name?: string; property?: string; content: string }> = [
+      { name: 'description', content: description },
+      { property: 'og:title', content: fullTitle },
+      { property: 'og:description', content: description },
+      { property: 'og:type', content: ogType },
+      { property: 'og:url', content: canonicalUrl },
+      { property: 'og:image', content: ogImage },
+      { property: 'og:site_name', content: 'LGR Series' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: fullTitle },
+      { name: 'twitter:description', content: description },
+      { name: 'twitter:image', content: ogImage },
+    ];
+
+    if (keywords) {
+      metaTags.push({ name: 'keywords', content: keywords });
+    }
+
+    if (article) {
+      if (article.publishedTime) {
+        metaTags.push({ property: 'article:published_time', content: article.publishedTime });
+      }
+      if (article.modifiedTime) {
+        metaTags.push({ property: 'article:modified_time', content: article.modifiedTime });
+      }
+      if (article.author) {
+        metaTags.push({ property: 'article:author', content: article.author });
+      }
+      if (article.section) {
+        metaTags.push({ property: 'article:section', content: article.section });
+      }
+      if (article.tags) {
+        article.tags.forEach(tag => {
+          metaTags.push({ property: 'article:tag', content: tag });
+        });
+      }
+    }
+
+    metaTags.forEach(({ name, property, content }) => {
+      const selector = name ? `meta[name="${name}"]` : `meta[property="${property}"]`;
+      let element = document.querySelector(selector);
+
+      if (!element) {
+        element = document.createElement('meta');
+        if (name) {
+          element.setAttribute('name', name);
+        } else if (property) {
+          element.setAttribute('property', property);
+        }
+        document.head.appendChild(element);
+      }
+
+      element.setAttribute('content', content);
+    });
+
+    let canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (!canonicalLink) {
+      canonicalLink = document.createElement('link');
+      canonicalLink.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonicalLink);
+    }
+    canonicalLink.setAttribute('href', canonicalUrl);
+
+    return () => {
+      metaTags.forEach(({ name, property }) => {
+        const selector = name ? `meta[name="${name}"]` : `meta[property="${property}"]`;
+        const element = document.querySelector(selector);
+        if (element) {
+          element.remove();
+        }
+      });
+    };
+  }, [fullTitle, description, keywords, ogType, ogImage, canonicalUrl, article]);
+
+  return null;
+}

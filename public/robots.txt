@@ -1,0 +1,31 @@
+User-agent: *
+Allow: /
+Disallow: /admin-login
+Disallow: /admin-dashboard
+
+User-agent: GPTBot
+Allow: /
+Disallow: /admin-login
+Disallow: /admin-dashboard
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin-login
+Disallow: /admin-dashboard
+
+User-agent: Claude-Web
+Allow: /
+Disallow: /admin-login
+Disallow: /admin-dashboard
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin-login
+Disallow: /admin-dashboard
+
+User-agent: Anthropic-AI
+Allow: /
+Disallow: /admin-login
+Disallow: /admin-dashboard
+
+Sitemap: https://lgrreform.com/sitemap.xml
