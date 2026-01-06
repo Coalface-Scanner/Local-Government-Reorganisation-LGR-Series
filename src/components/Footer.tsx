@@ -4,7 +4,7 @@ interface FooterProps {
   onNavigate: (page: string) => void;
 }
 
-export default function Footer({ onNavigate }: FooterProps) {
+export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
   return (
     <footer className="bg-neutral-900 text-neutral-300 mt-20 border-t-4 border-neutral-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -49,7 +49,6 @@ export default function ArticleEditor({ value, onChange, placeholder }: ArticleE
           quill.setSelection(range.index + 1, 0);
         }
       } catch (error) {
-        console.error('Error uploading image:', error);
         alert('Failed to upload image. Please try again.');
       }
     };

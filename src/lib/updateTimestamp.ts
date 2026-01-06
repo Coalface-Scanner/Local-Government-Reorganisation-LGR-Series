@@ -10,6 +10,6 @@ export async function updateSiteTimestamp() {
     .eq('id', 1);
 
   if (error) {
-    console.error('Error updating site timestamp:', error);
+    // Silently fail - timestamp update is not critical
   }
 }

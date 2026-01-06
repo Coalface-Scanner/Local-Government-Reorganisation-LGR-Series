@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase';
 import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
-import { Newspaper, Calendar, ExternalLink } from 'lucide-react';
+import { Newspaper, Calendar } from 'lucide-react';
 
 interface NewsItem {
   id: string;
@@ -35,7 +35,7 @@ export default function News() {
         .order('published_date', { ascending: false });
 
       if (error) {
-        console.error('Error fetching news:', error);
+        // Silently fail - news is not critical for page functionality
         return;
       }
 

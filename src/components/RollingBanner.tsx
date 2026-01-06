@@ -31,7 +31,7 @@ export default function RollingBanner({ onNavigate }: RollingBannerProps) {
       .limit(10);
 
     if (error) {
-      console.error('Error fetching materials:', error);
+      // Silently fail - banner will not display if no materials
       return;
     }
 

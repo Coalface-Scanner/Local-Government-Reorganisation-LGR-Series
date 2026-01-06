@@ -123,7 +123,6 @@ export default function CouncilMap() {
 
         setLoading(false);
       } catch (err) {
-        console.error('Error loading council data:', err);
         setError('Failed to load council boundary data. Please try again later.');
         setLoading(false);
       }

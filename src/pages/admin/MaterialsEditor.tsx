@@ -54,7 +54,6 @@ export default function MaterialsEditor() {
       .order('published_date', { ascending: false });
 
     if (error) {
-      console.error('Error fetching materials:', error);
       alert('Error loading materials: ' + error.message);
     } else if (data) {
       const parsedData = data.map(material => ({

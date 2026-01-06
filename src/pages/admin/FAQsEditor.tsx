@@ -282,9 +282,9 @@ export default function FAQsEditor() {
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                           Answer
                         </label>
-                        <RichTextEditor
+                        <WYSIWYGEditor
                           value={editForm.answer}
-                          onChange={(value) => setEditForm({ ...editForm, answer: value })}
+                          onChange={(value: string) => setEditForm({ ...editForm, answer: value })}
                           placeholder="Enter answer with HTML formatting..."
                         />
                       </div>

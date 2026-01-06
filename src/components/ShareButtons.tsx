@@ -24,7 +24,7 @@ export default function ShareButtons({ title, description, url }: ShareButtonsPr
       await navigator.clipboard.writeText(url);
       alert('Link copied to clipboard!');
     } catch (err) {
-      console.error('Failed to copy:', err);
+      alert('Failed to copy link. Please try again.');
     }
   };
 

@@ -23,6 +23,7 @@ export default function Search({ onNavigate }: SearchProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [filters, setFilters] = useState({
     type: 'all',
     region: 'all',
@@ -82,138 +83,150 @@ export default function Search({ onNavigate }: SearchProps) {
 
   const performSearch = async () => {
     setLoading(true);
+    setError('');
     const allResults: SearchResult[] = [];
 
     const shouldSearchType = (type: string) => filters.type === 'all' || filters.type === type;
 
     const sanitizedQuery = searchQuery.trim().replace(/[%_]/g, '\\$&');
 
-    if (shouldSearchType('article')) {
-      let query = supabase.from('articles').select('*').eq('status', 'published');
+    try {
+      if (shouldSearchType('article')) {
+        let query = supabase.from('articles').select('*').eq('status', 'published');
 
-      if (sanitizedQuery) {
-        query = query.or(`title.ilike.%${sanitizedQuery}%,body.ilike.%${sanitizedQuery}%,excerpt.ilike.%${sanitizedQuery}%`);
+        if (sanitizedQuery) {
+          query = query.or(`title.ilike.%${sanitizedQuery}%,body.ilike.%${sanitizedQuery}%,excerpt.ilike.%${sanitizedQuery}%`);
+        }
+        if (filters.region !== 'all') query = query.eq('region', filters.region);
+        if (filters.category !== 'all') query = query.eq('category', filters.category);
+        if (filters.author !== 'all') query = query.eq('author', filters.author);
+
+        const { data, error } = await query;
+        if (error) throw error;
+        if (data) {
+          allResults.push(...data.map(item => ({
+            id: item.id,
+            title: item.title,
+            excerpt: item.excerpt || '',
+            type: 'article' as const,
+            author: item.author,
+            region: item.region,
+            category: item.category,
+            date: item.published_date,
+            slug: item.slug,
+            featured: item.featured,
+          })));
+        }
       }
-      if (filters.region !== 'all') query = query.eq('region', filters.region);
-      if (filters.category !== 'all') query = query.eq('category', filters.category);
-      if (filters.author !== 'all') query = query.eq('author', filters.author);
 
-      const { data } = await query;
-      if (data) {
-        allResults.push(...data.map(item => ({
-          id: item.id,
-          title: item.title,
-          excerpt: item.excerpt || '',
-          type: 'article' as const,
-          author: item.author,
-          region: item.region,
-          category: item.category,
-          date: item.published_date,
-          slug: item.slug,
-          featured: item.featured,
+      if (shouldSearchType('fact')) {
+        let query = supabase.from('facts').select('*').eq('published', true);
+
+        if (sanitizedQuery) {
+          query = query.or(`title.ilike.%${sanitizedQuery}%,content.ilike.%${sanitizedQuery}%`);
+        }
+        if (filters.region !== 'all') query = query.eq('region', filters.region);
+        if (filters.category !== 'all') query = query.eq('category', filters.category);
+
+        const { data, error } = await query;
+        if (error) throw error;
+        if (data) {
+          allResults.push(...data.map(item => ({
+            id: item.id,
+            title: item.title,
+            excerpt: item.content?.substring(0, 150) + '...' || '',
+            type: 'fact' as const,
+            region: item.region,
+            category: item.category,
+            date: item.created_at,
+          })));
+        }
+      }
+
+      if (shouldSearchType('lesson')) {
+        let query = supabase.from('lessons').select('*').eq('published', true);
+
+        if (sanitizedQuery) {
+          query = query.or(`title.ilike.%${sanitizedQuery}%,content.ilike.%${sanitizedQuery}%`);
+        }
+        if (filters.region !== 'all') query = query.eq('region', filters.region);
+        if (filters.category !== 'all') query = query.eq('category', filters.category);
+
+        const { data, error } = await query;
+        if (error) throw error;
+        if (data) {
+          allResults.push(...data.map(item => ({
+            id: item.id,
+            title: item.title,
+            excerpt: item.content?.substring(0, 150) + '...' || '',
+            type: 'lesson' as const,
+            region: item.region,
+            category: item.category,
+            date: item.created_at,
+          })));
+        }
+      }
+
+      if (shouldSearchType('interview')) {
+        let query = supabase.from('interviews').select('*').eq('published', true);
+
+        if (sanitizedQuery) {
+          query = query.or(`title.ilike.%${sanitizedQuery}%,interviewee.ilike.%${sanitizedQuery}%,description.ilike.%${sanitizedQuery}%`);
+        }
+
+        const { data, error } = await query;
+        if (error) throw error;
+        if (data) {
+          allResults.push(...data.map(item => ({
+            id: item.id,
+            title: item.title,
+            excerpt: item.description || '',
+            type: 'interview' as const,
+            author: item.interviewee,
+            date: item.interview_date,
         })));
       }
     }
 
-    if (shouldSearchType('fact')) {
-      let query = supabase.from('facts').select('*').eq('published', true);
+      if (shouldSearchType('material')) {
+        let query = supabase.from('materials').select('*').eq('published', true);
 
-      if (sanitizedQuery) {
-        query = query.or(`title.ilike.%${sanitizedQuery}%,content.ilike.%${sanitizedQuery}%`);
-      }
-      if (filters.region !== 'all') query = query.eq('region', filters.region);
-      if (filters.category !== 'all') query = query.eq('category', filters.category);
+        if (sanitizedQuery) {
+          query = query.or(`title.ilike.%${sanitizedQuery}%,description.ilike.%${sanitizedQuery}%`);
+        }
+        if (filters.region !== 'all') query = query.eq('region', filters.region);
+        if (filters.category !== 'all') query = query.eq('category', filters.category);
+        if (filters.author !== 'all') query = query.eq('author', filters.author);
 
-      const { data } = await query;
-      if (data) {
-        allResults.push(...data.map(item => ({
-          id: item.id,
-          title: item.title,
-          excerpt: item.content?.substring(0, 150) + '...' || '',
-          type: 'fact' as const,
-          region: item.region,
-          category: item.category,
-          date: item.created_at,
-        })));
+        const { data, error } = await query;
+        if (error) throw error;
+        if (data) {
+          allResults.push(...data.map(item => ({
+            id: item.id,
+            title: item.title,
+            excerpt: item.description || '',
+            type: 'material' as const,
+            author: item.author,
+            region: item.region,
+            category: item.category,
+            date: item.publication_date,
+          })));
+        }
       }
+
+      allResults.sort((a, b) => {
+        const dateA = new Date(a.date || '').getTime();
+        const dateB = new Date(b.date || '').getTime();
+        return dateB - dateA;
+      });
+
+      setResults(allResults);
+    } catch (err: any) {
+      setError('Failed to perform search. Please try again.');
+      setResults([]);
+    } finally {
+      setLoading(false);
     }
-
-    if (shouldSearchType('lesson')) {
-      let query = supabase.from('lessons').select('*').eq('published', true);
-
-      if (sanitizedQuery) {
-        query = query.or(`title.ilike.%${sanitizedQuery}%,content.ilike.%${sanitizedQuery}%`);
-      }
-      if (filters.region !== 'all') query = query.eq('region', filters.region);
-      if (filters.category !== 'all') query = query.eq('category', filters.category);
-
-      const { data } = await query;
-      if (data) {
-        allResults.push(...data.map(item => ({
-          id: item.id,
-          title: item.title,
-          excerpt: item.content?.substring(0, 150) + '...' || '',
-          type: 'lesson' as const,
-          region: item.region,
-          category: item.category,
-          date: item.created_at,
-        })));
-      }
-    }
-
-    if (shouldSearchType('interview')) {
-      let query = supabase.from('interviews').select('*').eq('published', true);
-
-      if (sanitizedQuery) {
-        query = query.or(`title.ilike.%${sanitizedQuery}%,interviewee.ilike.%${sanitizedQuery}%,description.ilike.%${sanitizedQuery}%`);
-      }
-
-      const { data } = await query;
-      if (data) {
-        allResults.push(...data.map(item => ({
-          id: item.id,
-          title: item.title,
-          excerpt: item.description || '',
-          type: 'interview' as const,
-          author: item.interviewee,
-          date: item.interview_date,
-        })));
-      }
-    }
-
-    if (shouldSearchType('material')) {
-      let query = supabase.from('materials').select('*').eq('published', true);
-
-      if (sanitizedQuery) {
-        query = query.or(`title.ilike.%${sanitizedQuery}%,description.ilike.%${sanitizedQuery}%`);
-      }
-      if (filters.region !== 'all') query = query.eq('region', filters.region);
-      if (filters.category !== 'all') query = query.eq('category', filters.category);
-      if (filters.author !== 'all') query = query.eq('author', filters.author);
-
-      const { data } = await query;
-      if (data) {
-        allResults.push(...data.map(item => ({
-          id: item.id,
-          title: item.title,
-          excerpt: item.description || '',
-          type: 'material' as const,
-          author: item.author,
-          region: item.region,
-          category: item.category,
-          date: item.publication_date,
-        })));
-      }
-    }
-
-    allResults.sort((a, b) => {
-      const dateA = new Date(a.date || '').getTime();
-      const dateB = new Date(b.date || '').getTime();
-      return dateB - dateA;
-    });
-
-    setResults(allResults);
-    setLoading(false);
   };
 
   const getTypeLabel = (type: string) => {
@@ -373,7 +386,12 @@ export default function Search({ onNavigate }: SearchProps) {
           </div>
         ) : (
           <div className="space-y-4" aria-live="polite" aria-atomic="false">
-            {results.length === 0 ? (
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+                {error}
+              </div>
+            )}
+            {results.length === 0 && !error ? (
               <div className="text-center py-12 bg-white rounded-2xl shadow-lg">
                 <SearchIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                 <p className="text-xl text-gray-600">

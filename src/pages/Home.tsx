@@ -25,11 +25,16 @@ export default function Home({ onNavigate }: HomeProps) {
 
   useEffect(() => {
     const fetchRecentUpdates = async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('site_updates')
         .select('*')
         .order('created_at', { ascending: false })
         .limit(5);
+
+      if (error) {
+        // Silently fail - site updates are not critical for page functionality
+        return;
+      }
 
       if (data) {
         setRecentUpdates(data);

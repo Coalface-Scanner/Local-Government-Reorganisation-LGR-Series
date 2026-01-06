@@ -46,7 +46,6 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
       .maybeSingle();
 
     if (error) {
-      console.error('Error fetching article:', error);
       setNotFound(true);
       setLoading(false);
       return;
@@ -244,7 +243,10 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
         </article>
 
         <div className="mt-12 pt-8 border-t border-slate-200">
-          <ShareButtons />
+          <ShareButtons 
+            title={article.title}
+            url={window.location.href}
+          />
         </div>
       </div>
 

@@ -41,7 +41,7 @@ export default function Insights({ onNavigate }: InsightsProps) {
       .order('published_date', { ascending: false });
 
     if (error) {
-      console.error('Error fetching articles:', error);
+      // Silently fail - articles will show empty state
     } else if (data) {
       setArticles(data);
     }

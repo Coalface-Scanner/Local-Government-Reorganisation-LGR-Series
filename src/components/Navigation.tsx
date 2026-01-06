@@ -7,7 +7,7 @@ interface NavigationProps {
   currentPage: string;
 }
 
-export default function Navigation({ onNavigate, currentPage }: NavigationProps) {
+export default function Navigation({ onNavigate: _onNavigate, currentPage }: NavigationProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentDate, setCurrentDate] = useState('');
 

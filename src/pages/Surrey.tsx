@@ -6,7 +6,7 @@ import PageNavigation from '../components/PageNavigation';
 import { Target, Users, BarChart, Shield, Clock, BookOpen, Calendar, TrendingUp } from 'lucide-react';
 
 interface SurreyProps {
-  onNavigate: (page: string) => void;
+  onNavigate: (page: string, data?: unknown) => void;
 }
 
 export default function Surrey({ onNavigate }: SurreyProps) {

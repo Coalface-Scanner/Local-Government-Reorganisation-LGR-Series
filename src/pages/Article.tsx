@@ -56,7 +56,6 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
       .maybeSingle();
 
     if (error) {
-      console.error('Error fetching material:', error);
       setNotFound(true);
       setLoading(false);
       return;
@@ -78,10 +77,16 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
     setMaterial(parsedData);
     setLoading(false);
 
-    await supabase
+    // Update read count (non-blocking, errors are ignored)
+    supabase
       .from('materials')
       .update({ read_count: (data.read_count || 0) + 1 })
-      .eq('id', data.id);
+      .eq('id', data.id)
+      .then(({ error }) => {
+        if (error) {
+          // Silently fail - read count update is not critical
+        }
+      });
   };
 
   if (loading) {

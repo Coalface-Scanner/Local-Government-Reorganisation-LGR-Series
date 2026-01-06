@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Edit2, Trash2, Eye, Save, X, LogOut, FileText, Calendar } from 'lucide-react';
+import { Plus, Edit2, Trash2, Eye, Save, X, LogOut, FileText } from 'lucide-react';
 import { useAdminAuth } from '../../contexts/AdminAuthContext';
 import { supabase } from '../../lib/supabase';
 import ArticleEditor from '../../components/ArticleEditor';
@@ -51,8 +51,7 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
       if (error) throw error;
       setArticles(data || []);
     } catch (err) {
-      console.error('Error fetching articles:', err);
-      setError('Failed to load articles');
+      setError('Failed to load articles. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -95,8 +94,7 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
       if (error) throw error;
       await fetchArticles();
     } catch (err) {
-      console.error('Error deleting article:', err);
-      alert('Failed to delete article');
+      alert('Failed to delete article. Please try again.');
     }
   };
 
@@ -143,7 +141,6 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
       setEditingArticle(null);
       setPreviewMode(false);
     } catch (err: any) {
-      console.error('Error saving article:', err);
       if (err.message?.includes('duplicate key')) {
         setError('An article with this slug already exists. Please use a different slug.');
       } else {

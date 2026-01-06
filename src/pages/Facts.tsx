@@ -21,7 +21,7 @@ interface Fact {
   order_index: number;
 }
 
-export default function Facts({ onNavigate }: FactsProps) {
+export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
   const [facts, setFacts] = useState<Fact[]>([]);
   const [loading, setLoading] = useState(true);
   const [methodologyOpen, setMethodologyOpen] = useState(false);

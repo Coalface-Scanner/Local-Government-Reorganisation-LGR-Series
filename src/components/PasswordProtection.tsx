@@ -12,6 +12,15 @@ export default function PasswordProtection({ children }: PasswordProtectionProps
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const correctPassword = import.meta.env.VITE_SITE_PASSWORD;
+    
+    // If password protection is not configured, allow access
+    if (!correctPassword) {
+      setIsAuthenticated(true);
+      setIsLoading(false);
+      return;
+    }
+
     const authStatus = sessionStorage.getItem('site_authenticated');
     if (authStatus === 'true') {
       setIsAuthenticated(true);
@@ -24,6 +33,11 @@ export default function PasswordProtection({ children }: PasswordProtectionProps
     setError('');
 
     const correctPassword = import.meta.env.VITE_SITE_PASSWORD;
+
+    if (!correctPassword) {
+      setError('Site password protection is not configured. Please contact the administrator.');
+      return;
+    }
 
     if (password === correctPassword) {
       sessionStorage.setItem('site_authenticated', 'true');

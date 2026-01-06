@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
@@ -6,6 +7,8 @@ import MetaTags from '../components/MetaTags';
 import { Mail, CheckCircle, XCircle } from 'lucide-react';
 
 export default function Unsubscribe() {
+  const navigate = useNavigate();
+  const handleNavigate = (page: string) => navigate(`/${page}`);
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{ type: 'success' | 'error' | 'not-found'; message: string } | null>(null);
@@ -73,7 +76,7 @@ export default function Unsubscribe() {
         title="Unsubscribe - Local Government Reorganisation Research Hub"
         description="Unsubscribe from our mailing list"
       />
-      <Navigation />
+      <Navigation onNavigate={handleNavigate} currentPage="unsubscribe" />
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <div className="text-center mb-12">
@@ -144,7 +147,7 @@ export default function Unsubscribe() {
         </div>
       </main>
 
-      <Footer />
+      <Footer onNavigate={handleNavigate} />
     </div>
   );
 }

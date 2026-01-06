@@ -139,7 +139,7 @@ export default function Materials({ onNavigate }: MaterialsProps) {
       .order('published_date', { ascending: false });
 
     if (error) {
-      console.error('Error fetching materials:', error);
+      // Silently fail - materials will show empty state
       return;
     }
 
