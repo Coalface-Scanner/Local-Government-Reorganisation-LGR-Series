@@ -35,13 +35,17 @@ export default function News() {
         .order('published_date', { ascending: false });
 
       if (error) {
-        // Silently fail - news is not critical for page functionality
+        console.error('Error fetching news:', error);
+        // Still set loading to false even on error
+        setLoading(false);
         return;
       }
 
       if (data) {
         setNewsItems(data);
       }
+    } catch (err) {
+      console.error('Unexpected error fetching news:', err);
     } finally {
       setLoading(false);
     }
@@ -66,7 +70,7 @@ export default function News() {
       />
 
       <div className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-16">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="border-l-4 border-teal-700 pl-6 mb-6">
             <div className="text-xs font-bold tracking-widest text-teal-700 mb-3">
               LATEST UPDATES
@@ -97,25 +101,25 @@ export default function News() {
             <p className="text-slate-600">Check back soon for updates</p>
           </div>
         ) : (
-          <div className="space-y-12">
+          <div className="space-y-16">
             {newsItems.map((item, index) => (
               <article
                 key={item.id}
-                className="bg-white rounded-xl shadow-lg border-2 border-slate-200 overflow-hidden hover:border-teal-400 hover:shadow-xl transition-all duration-300"
+                className="bg-white border-2 border-neutral-900 overflow-hidden"
               >
-                <div className="p-8 md:p-12">
-                  <div className="flex items-center gap-2 text-sm text-teal-700 font-bold tracking-wider uppercase mb-6">
-                    <Calendar size={18} />
+                <div className="p-8 md:p-10">
+                  <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-teal-700 uppercase mb-6">
+                    <Calendar size={16} />
                     {formatDate(item.published_date)}
                   </div>
 
-                  <h2 className="text-4xl md:text-5xl font-black text-neutral-900 mb-6 leading-tight">
+                  <h2 className="text-3xl md:text-4xl font-black text-neutral-900 mb-6 leading-tight">
                     {item.title}
                   </h2>
 
                   {item.excerpt && (
                     <div className="border-l-4 border-teal-700 pl-6 mb-8">
-                      <p className="text-xl text-slate-700 leading-relaxed font-medium">
+                      <p className="text-lg text-neutral-700 leading-relaxed">
                         {item.excerpt}
                       </p>
                     </div>
@@ -123,26 +127,30 @@ export default function News() {
 
                   <div
                     className="prose prose-lg max-w-none mb-8
-                    prose-headings:font-bold prose-headings:text-neutral-900 prose-headings:tracking-tight
-                    prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
-                    prose-h4:text-xl prose-h4:mt-6 prose-h4:mb-3
-                    prose-p:text-slate-700 prose-p:leading-relaxed prose-p:mb-4
+                    prose-headings:font-black prose-headings:text-neutral-900 prose-headings:tracking-tight
+                    prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-6 prose-h2:font-black
+                    prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-h3:font-bold
+                    prose-h4:text-lg prose-h4:mt-6 prose-h4:mb-3 prose-h4:font-bold
+                    prose-p:text-neutral-700 prose-p:leading-relaxed prose-p:mb-5 prose-p:text-base
                     prose-strong:text-neutral-900 prose-strong:font-bold
                     prose-a:text-teal-700 prose-a:font-semibold prose-a:no-underline hover:prose-a:underline
-                    prose-blockquote:border-l-4 prose-blockquote:border-teal-700 prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-slate-700 prose-blockquote:text-lg
-                    prose-hr:border-slate-300 prose-hr:my-8
-                    prose-ul:list-disc prose-ul:ml-6 prose-ul:space-y-2
-                    prose-ol:list-decimal prose-ol:ml-6 prose-ol:space-y-2"
+                    prose-blockquote:border-l-4 prose-blockquote:border-teal-700 prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-neutral-700 prose-blockquote:text-lg prose-blockquote:my-6
+                    prose-hr:border-neutral-300 prose-hr:my-10
+                    prose-ul:list-disc prose-ul:ml-6 prose-ul:space-y-2 prose-ul:mb-5
+                    prose-ol:list-decimal prose-ol:ml-6 prose-ol:space-y-2 prose-ol:mb-5
+                    prose-li:text-neutral-700 prose-li:leading-relaxed
+                    prose-code:text-neutral-900 prose-code:bg-neutral-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded
+                    prose-pre:bg-neutral-900 prose-pre:text-neutral-100 prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto"
                     dangerouslySetInnerHTML={{ __html: item.content }}
                   />
 
                   {item.embed_code && (
-                    <div className="my-10 p-6 bg-slate-50 rounded-lg border border-slate-200" dangerouslySetInnerHTML={{ __html: item.embed_code }} />
+                    <div className="my-10 p-6 bg-neutral-50 rounded-lg border-2 border-neutral-200" dangerouslySetInnerHTML={{ __html: item.embed_code }} />
                   )}
                 </div>
 
                 {index < newsItems.length - 1 && (
-                  <div className="border-t-2 border-slate-100"></div>
+                  <div className="border-t-4 border-neutral-900"></div>
                 )}
               </article>
             ))}

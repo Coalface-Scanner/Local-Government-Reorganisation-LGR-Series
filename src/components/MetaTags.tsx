@@ -29,18 +29,29 @@ export default function MetaTags({
   useEffect(() => {
     document.title = fullTitle;
 
+    const baseUrl = typeof window !== 'undefined' 
+      ? window.location.origin 
+      : 'https://localgovernmentreorganisation.co.uk';
+    
+    const fullOgImage = ogImage.startsWith('http') ? ogImage : `${baseUrl}${ogImage}`;
+
     const metaTags: Array<{ name?: string; property?: string; content: string }> = [
       { name: 'description', content: description },
       { property: 'og:title', content: fullTitle },
       { property: 'og:description', content: description },
       { property: 'og:type', content: ogType },
       { property: 'og:url', content: canonicalUrl },
-      { property: 'og:image', content: ogImage },
+      { property: 'og:image', content: fullOgImage },
       { property: 'og:site_name', content: 'LGR Series' },
+      { property: 'og:locale', content: 'en_GB' },
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:title', content: fullTitle },
       { name: 'twitter:description', content: description },
-      { name: 'twitter:image', content: ogImage },
+      { name: 'twitter:image', content: fullOgImage },
+      { name: 'geo.region', content: 'GB' },
+      { name: 'geo.placename', content: 'United Kingdom' },
+      { name: 'geo.position', content: '51.5074;-0.1278' },
+      { name: 'ICBM', content: '51.5074, -0.1278' },
     ];
 
     if (keywords) {

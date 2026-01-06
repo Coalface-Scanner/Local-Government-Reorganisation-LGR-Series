@@ -25,16 +25,7 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      <div className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-16 overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.05]"
-          style={{
-            backgroundImage: `url('/rowan-cole-coalface-engagement-director-headshot-folded-arms.jpg')`,
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
-        />
+      <div className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-16">
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="border-l-4 border-teal-700 pl-6 mb-6">
             <div className="text-xs font-bold tracking-widest text-teal-700 mb-3">

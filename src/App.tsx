@@ -27,6 +27,13 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminArticleLogin from './pages/admin/AdminArticleLogin';
 import AdminArticles from './pages/admin/AdminArticles';
 import ArticleView from './pages/ArticleView';
+import FactDetail from './pages/FactDetail';
+import Timescales from './pages/facts/Timescales';
+import CouncilsInvolved from './pages/facts/CouncilsInvolved';
+import KeyFacts from './pages/facts/KeyFacts';
+import Methodology from './pages/facts/Methodology';
+import Sources from './pages/facts/Sources';
+import FurtherReading from './pages/facts/FurtherReading';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -95,6 +102,13 @@ function AppContent() {
           <Route path="/library" element={<PageWrapper>{(nav) => <Search onNavigate={nav} />}</PageWrapper>} />
           <Route path="/materials" element={<PageWrapper>{(nav) => <Materials onNavigate={nav} />}</PageWrapper>} />
           <Route path="/facts" element={<PageWrapper>{(nav) => <Facts onNavigate={nav} />}</PageWrapper>} />
+          <Route path="/facts/timescales" element={<Timescales />} />
+          <Route path="/facts/councils-involved" element={<CouncilsInvolved />} />
+          <Route path="/facts/key-facts" element={<KeyFacts />} />
+          <Route path="/facts/methodology" element={<Methodology />} />
+          <Route path="/facts/sources" element={<Sources />} />
+          <Route path="/facts/further-reading" element={<FurtherReading />} />
+          <Route path="/facts/:slug" element={<FactDetail />} />
           <Route path="/lessons" element={<PageWrapper>{(nav) => <Lessons onNavigate={nav} />}</PageWrapper>} />
           <Route path="/reasons" element={<PageWrapper>{(nav) => <Reasons onNavigate={nav} />}</PageWrapper>} />
           <Route path="/about" element={<PageWrapper>{(nav) => <Reasons onNavigate={nav} />}</PageWrapper>} />

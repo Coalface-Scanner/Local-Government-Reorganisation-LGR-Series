@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import SubscriptionForm from '../components/SubscriptionForm';
 import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
+import OrganizationStructuredData from '../components/OrganizationStructuredData';
 import WelcomeModal from '../components/WelcomeModal';
 import { ArrowRight, BarChart3, MapPin, Quote, Download, FileText, BookOpen, Clock, Target } from 'lucide-react';
 import { supabase } from '../lib/supabase';
@@ -20,8 +21,21 @@ interface SiteUpdate {
   link_slug: string | null;
 }
 
+interface Article {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  featured_image: string | null;
+  published_date: string | null;
+  featured: boolean;
+}
+
 export default function Home({ onNavigate }: HomeProps) {
   const [recentUpdates, setRecentUpdates] = useState<SiteUpdate[]>([]);
+  const [featuredArticle, setFeaturedArticle] = useState<Article | null>(null);
+  const [recentArticles, setRecentArticles] = useState<Article[]>([]);
+  const [loadingArticles, setLoadingArticles] = useState(true);
 
   useEffect(() => {
     const fetchRecentUpdates = async () => {
@@ -41,7 +55,48 @@ export default function Home({ onNavigate }: HomeProps) {
       }
     };
 
+    const fetchArticles = async () => {
+      setLoadingArticles(true);
+      
+      try {
+        // Fetch featured article
+        const { data: featuredData } = await supabase
+          .from('articles')
+          .select('id, title, slug, excerpt, featured_image, published_date, featured')
+          .eq('status', 'published')
+          .eq('featured', true)
+          .order('published_date', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        if (featuredData) {
+          setFeaturedArticle(featuredData);
+        }
+
+        // Fetch recent articles (excluding featured one)
+        const { data: recentData } = await supabase
+          .from('articles')
+          .select('id, title, slug, excerpt, featured_image, published_date, featured')
+          .eq('status', 'published')
+          .order('published_date', { ascending: false })
+          .limit(4);
+
+        if (recentData) {
+          // Filter out featured article if it exists
+          const filtered = featuredData 
+            ? recentData.filter(a => a.id !== featuredData.id)
+            : recentData;
+          setRecentArticles(filtered.slice(0, 4));
+        }
+      } catch (error) {
+        // Silently fail - articles are not critical for page functionality
+      } finally {
+        setLoadingArticles(false);
+      }
+    };
+
     fetchRecentUpdates();
+    fetchArticles();
   }, []);
 
   const formatTimeAgo = (dateString: string) => {
@@ -56,14 +111,25 @@ export default function Home({ onNavigate }: HomeProps) {
     return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
   };
 
+  const formatArticleDate = (dateString: string | null) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB', { 
+      day: 'numeric', 
+      month: 'long', 
+      year: 'numeric' 
+    }).toUpperCase();
+  };
+
   return (
     <div className="bg-neutral-50">
       <WelcomeModal onNavigate={onNavigate} />
       <MetaTags
         title="Home"
-        description="In-depth analysis and research on local government reorganisation in England. Examining lessons learned, governance risks, and practical guidance for councils undergoing structural reform."
-        keywords="local government reorganisation, LGR, council reform, unitary authorities, devolution, Surrey reorganisation, local democracy"
+        description="In-depth analysis and research on local government reorganisation across the United Kingdom. Examining lessons learned, governance risks, and practical guidance for councils undergoing structural reform."
+        keywords="local government reorganisation, LGR, council reform, unitary authorities, devolution, UK local government, local democracy"
       />
+      <OrganizationStructuredData />
       <section className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-12 overflow-hidden">
         <div
           className="absolute inset-0 opacity-[0.23]"
@@ -125,34 +191,49 @@ export default function Home({ onNavigate }: HomeProps) {
                 <div className="h-px flex-grow bg-neutral-300"></div>
               </div>
 
-              <button
-                onClick={() => onNavigate('article', 'tim-oliver-interview-lgr-surrey')}
-                className="group block w-full"
-              >
-                <div className="grid md:grid-cols-5 gap-6 bg-white border-2 border-neutral-900 hover:border-teal-700 overflow-hidden transition-all">
-                  <div className="relative h-64 md:h-auto md:col-span-3">
-                    <img
-                      src="/to-rc-interview.png"
-                      alt="Tim Oliver Interview with Rowan Cole"
-                      className="absolute inset-0 w-full h-full object-cover object-left"
-                    />
-                  </div>
-                  <div className="p-6 md:p-8 flex flex-col justify-center md:col-span-2">
-                    <div className="text-xs font-bold tracking-wider text-teal-700 mb-3">
-                      EXCLUSIVE INTERVIEW
-                    </div>
-                    <h3 className="text-2xl md:text-3xl font-black text-neutral-900 mb-4 group-hover:text-teal-700 transition-colors leading-tight">
-                      Unlocking Surrey's Potential: Tim Oliver on Devolution
-                    </h3>
-                    <p className="text-neutral-700 leading-relaxed mb-4">
-                      Surrey County Council Leader Tim Oliver discusses why mayoral devolution, not reorganisation alone, is the key to unlocking strategic powers for growth and economic development.
-                    </p>
-                    <div className="text-sm font-bold text-teal-700">
-                      READ THE FULL INTERVIEW →
-                    </div>
-                  </div>
+              {loadingArticles ? (
+                <div className="bg-white border-2 border-neutral-900 p-12 text-center">
+                  <p className="text-neutral-600">Loading featured article...</p>
                 </div>
-              </button>
+              ) : featuredArticle ? (
+                <button
+                  onClick={() => onNavigate('insights', featuredArticle.slug)}
+                  className="group block w-full"
+                >
+                  <div className="grid md:grid-cols-5 gap-6 bg-white border-2 border-neutral-900 hover:border-teal-700 overflow-hidden transition-all">
+                    {featuredArticle.featured_image && (
+                      <div className="relative h-64 md:h-auto md:col-span-3">
+                        <img
+                          src={featuredArticle.featured_image}
+                          alt={featuredArticle.title}
+                          className="absolute inset-0 w-full h-full object-cover object-center"
+                        />
+                      </div>
+                    )}
+                    <div className={`p-6 md:p-8 flex flex-col justify-center ${featuredArticle.featured_image ? 'md:col-span-2' : 'md:col-span-5'}`}>
+                      <div className="text-xs font-bold tracking-wider text-teal-700 mb-3">
+                        {featuredArticle.published_date && formatArticleDate(featuredArticle.published_date)}
+                        {featuredArticle.featured && ' • EXCLUSIVE'}
+                      </div>
+                      <h3 className="text-2xl md:text-3xl font-black text-neutral-900 mb-4 group-hover:text-teal-700 transition-colors leading-tight">
+                        {featuredArticle.title}
+                      </h3>
+                      {featuredArticle.excerpt && (
+                        <p className="text-neutral-700 leading-relaxed mb-4">
+                          {featuredArticle.excerpt}
+                        </p>
+                      )}
+                      <div className="text-sm font-bold text-teal-700">
+                        READ THE FULL ARTICLE →
+                      </div>
+                    </div>
+                  </div>
+                </button>
+              ) : (
+                <div className="bg-white border-2 border-neutral-200 p-12 text-center">
+                  <p className="text-neutral-600">No featured article available</p>
+                </div>
+              )}
             </section>
 
             <section className="border-t-2 border-neutral-900 pt-8">
@@ -163,79 +244,55 @@ export default function Home({ onNavigate }: HomeProps) {
                 <div className="h-px flex-grow bg-neutral-300"></div>
               </div>
 
-              <div className="space-y-8">
-                <article className="border-b border-neutral-200 pb-8">
-                  <div className="text-xs font-bold tracking-wider text-teal-700 mb-2">
-                    19 DECEMBER 2025 • EXCLUSIVE INTERVIEW
-                  </div>
+              {loadingArticles ? (
+                <div className="space-y-8">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="border-b border-neutral-200 pb-8">
+                      <div className="h-4 bg-neutral-200 rounded w-32 mb-3 animate-pulse"></div>
+                      <div className="h-8 bg-neutral-200 rounded w-3/4 mb-3 animate-pulse"></div>
+                      <div className="h-4 bg-neutral-200 rounded w-full mb-2 animate-pulse"></div>
+                      <div className="h-4 bg-neutral-200 rounded w-2/3 animate-pulse"></div>
+                    </div>
+                  ))}
+                </div>
+              ) : recentArticles.length > 0 ? (
+                <div className="space-y-8">
+                  {recentArticles.map((article, index) => (
+                    <article key={article.id} className="border-b border-neutral-200 pb-8">
+                      <div className="text-xs font-bold tracking-wider text-neutral-700 mb-2">
+                        {article.published_date && formatArticleDate(article.published_date)}
+                        {article.featured && ' • EXCLUSIVE'}
+                      </div>
+                      <button
+                        onClick={() => onNavigate('insights', article.slug)}
+                        className="group text-left w-full"
+                      >
+                        <h3 className={`font-black text-neutral-900 mb-3 group-hover:text-teal-700 transition-colors leading-tight ${
+                          index === 0 ? 'text-3xl md:text-4xl' : 'text-2xl'
+                        }`}>
+                          {article.title}
+                        </h3>
+                        {article.excerpt && (
+                          <p className="text-neutral-700 leading-relaxed mb-3">
+                            {article.excerpt}
+                          </p>
+                        )}
+                        <div className="text-sm font-bold text-teal-700">READ MORE →</div>
+                      </button>
+                    </article>
+                  ))}
+                </div>
+              ) : (
+                <div className="bg-white border-2 border-neutral-200 p-12 text-center">
+                  <p className="text-neutral-600">No recent articles available</p>
                   <button
-                    onClick={() => onNavigate('article', 'tim-oliver-interview-lgr-surrey')}
-                    className="group text-left w-full"
+                    onClick={() => onNavigate('insights')}
+                    className="mt-4 text-teal-700 font-bold hover:text-teal-900 transition-colors"
                   >
-                    <h3 className="text-3xl md:text-4xl font-black text-neutral-900 mb-3 group-hover:text-teal-700 transition-colors leading-tight">
-                      Unlocking Surrey's Potential: Interview with Surrey Leader, Tim Oliver
-                    </h3>
-                    <p className="text-neutral-700 leading-relaxed mb-3">
-                      An in-depth interview with Tim Oliver OBE, Leader of Surrey County Council and National Chair of the County Councils Network, discussing how mayoral devolution—rather than reorganisation alone—unlocks strategic economic and planning powers necessary for sustainable growth.
-                    </p>
-                    <div className="text-sm font-bold text-teal-700">READ MORE →</div>
+                    View All Articles →
                   </button>
-                </article>
-
-                <article className="border-b border-neutral-200 pb-8">
-                  <div className="text-xs font-bold tracking-wider text-neutral-700 mb-2">
-                    12 DECEMBER 2025
-                  </div>
-                  <button
-                    onClick={() => onNavigate('article', 'mayoral-election-delay')}
-                    className="group text-left w-full"
-                  >
-                    <h3 className="text-2xl font-black text-neutral-900 mb-2 group-hover:text-teal-700 transition-colors">
-                      The Mayoral Election Delay. A Pause for Order, or a Quiet Change of Direction?
-                    </h3>
-                    <p className="text-neutral-700 leading-relaxed mb-3">
-                      Analysis examining government's decision to postpone mayoral elections in reorganisation areas, questioning whether administrative reasoning masks deeper concerns about political uncertainty and delayed devolution opportunities.
-                    </p>
-                    <div className="text-sm font-bold text-teal-700">READ MORE →</div>
-                  </button>
-                </article>
-
-                <article className="border-b border-neutral-200 pb-8">
-                  <div className="text-xs font-bold tracking-wider text-neutral-700 mb-2">
-                    9 DECEMBER 2025
-                  </div>
-                  <button
-                    onClick={() => onNavigate('article', 'governance-not-restructure')}
-                    className="group text-left w-full"
-                  >
-                    <h3 className="text-2xl font-black text-neutral-900 mb-2 group-hover:text-teal-700 transition-colors">
-                      Why Governance, Not Reorganisation, Will Shape the Next Decade of Local Government
-                    </h3>
-                    <p className="text-neutral-700 leading-relaxed mb-3">
-                      Explores how governance structures and devolved powers—not simply structural reorganisation—determine outcomes in local authority reform, with analysis of London's concentrated mayoral model and comparative examples from combined authorities.
-                    </p>
-                    <div className="text-sm font-bold text-teal-700">READ MORE →</div>
-                  </button>
-                </article>
-
-                <article className="border-b border-neutral-200 pb-8">
-                  <div className="text-xs font-bold tracking-wider text-neutral-700 mb-2">
-                    4 DECEMBER 2025
-                  </div>
-                  <button
-                    onClick={() => onNavigate('article', 'open-letter-councillors')}
-                    className="group text-left w-full"
-                  >
-                    <h3 className="text-2xl font-black text-neutral-900 mb-2 group-hover:text-teal-700 transition-colors">
-                      An Open Letter to the Councillors of East and West Surrey
-                    </h3>
-                    <p className="text-neutral-700 leading-relaxed mb-3">
-                      A forward-looking letter addressed to newly elected Surrey councillors (as of May 2026), offering five critical lessons for success before Vesting Day 2027, drawing on experience from predecessor authorities and the broader LGR programme.
-                    </p>
-                    <div className="text-sm font-bold text-teal-700">READ MORE →</div>
-                  </button>
-                </article>
-              </div>
+                </div>
+              )}
             </section>
 
             <section className="bg-neutral-100 border-2 border-neutral-900 p-8">

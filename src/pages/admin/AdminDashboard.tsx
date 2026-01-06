@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { LogOut, Home, FileText, List, BookOpen, MessageSquare, Video, Layout, Bell, HelpCircle, Newspaper } from 'lucide-react';
+import { LogOut, Home, FileText, List, BookOpen, MessageSquare, Video, Layout, Bell, HelpCircle, Newspaper, Edit3 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import MaterialsEditor from './MaterialsEditor';
 import HomeContentEditor from './HomeContentEditor';
@@ -10,6 +10,7 @@ import InterviewsEditor from './InterviewsEditor';
 import SiteUpdatesEditor from './SiteUpdatesEditor';
 import FAQsEditor from './FAQsEditor';
 import NewsEditor from './NewsEditor';
+import AdminArticles from './AdminArticles';
 
 interface AdminDashboardProps {
   onNavigate: (page: string) => void;
@@ -44,6 +45,7 @@ export default function AdminDashboard({ onNavigate }: AdminDashboardProps) {
 
   const menuItems = [
     { id: 'overview', label: 'Overview', icon: Layout },
+    { id: 'articles', label: 'Articles', icon: Edit3 },
     { id: 'home', label: 'Home Page', icon: Home },
     { id: 'news', label: 'News', icon: Newspaper },
     { id: 'updates', label: 'Site Updates', icon: Bell },
@@ -83,6 +85,8 @@ export default function AdminDashboard({ onNavigate }: AdminDashboardProps) {
             </div>
           </div>
         );
+      case 'articles':
+        return <AdminArticles onNavigate={onNavigate} />;
       case 'home':
         return <HomeContentEditor />;
       case 'news':

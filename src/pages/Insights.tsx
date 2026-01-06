@@ -56,7 +56,7 @@ export default function Insights({ onNavigate }: InsightsProps) {
   const totalPages = Math.ceil(articles.length / ITEMS_PER_PAGE);
 
   const handleArticleClick = (slug: string) => {
-    onNavigate('insights-article', { slug });
+    onNavigate('insights', { slug });
   };
 
   if (loading) {
@@ -78,10 +78,20 @@ export default function Insights({ onNavigate }: InsightsProps) {
         keywords="local government, reorganisation, insights, articles, analysis, LGR"
       />
 
-      <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Insights</h1>
-          <p className="text-xl text-slate-300 max-w-3xl">
+      <div className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-16">
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="border-l-4 border-teal-700 pl-6 mb-6">
+            <div className="text-xs font-bold tracking-widest text-teal-700 mb-3">
+              EXPERT ANALYSIS
+            </div>
+          </div>
+          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-6">
+            Insights{' '}
+            <span className="text-teal-700 font-serif italic">
+              & Analysis
+            </span>
+          </h1>
+          <p className="text-xl text-neutral-600 leading-relaxed max-w-3xl">
             Expert perspectives on local government reorganisation, planning policy, and democratic governance
           </p>
         </div>

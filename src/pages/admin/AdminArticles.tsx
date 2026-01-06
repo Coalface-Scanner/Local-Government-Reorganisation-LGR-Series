@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Plus, Edit2, Trash2, Eye, Save, X, LogOut, FileText } from 'lucide-react';
+import { Plus, Edit2, Trash2, Eye, Save, X, LogOut, FileText, MessageSquare } from 'lucide-react';
 import { useAdminAuth } from '../../contexts/AdminAuthContext';
 import { supabase } from '../../lib/supabase';
 import ArticleEditor from '../../components/ArticleEditor';
+import ArticleQAEditor from './ArticleQAEditor';
 
 interface Article {
   id: string;
@@ -14,6 +15,9 @@ interface Article {
   status: 'draft' | 'published';
   published_date: string | null;
   featured: boolean;
+  author: string | null;
+  category: string | null;
+  region: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -29,6 +33,7 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
   const [previewMode, setPreviewMode] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [managingQA, setManagingQA] = useState<string | null>(null);
   const { logout, isAuthenticated } = useAdminAuth();
 
   useEffect(() => {
@@ -73,6 +78,9 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
       featured_image: '',
       status: 'draft',
       featured: false,
+      author: '',
+      category: '',
+      region: '',
     });
     setPreviewMode(false);
     setError('');
@@ -122,17 +130,44 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
         body: editingArticle.body || null,
         featured_image: editingArticle.featured_image || null,
         status,
-        published_date: status === 'published' ? (editingArticle.published_date || new Date().toISOString()) : null,
+        published_date: editingArticle.published_date || null, // Will be set in save logic if needed
         featured: editingArticle.featured || false,
+        author: editingArticle.author || null,
+        category: editingArticle.category || null,
+        region: editingArticle.region || null,
       };
 
       if (editingArticle.id) {
+        // For existing articles, preserve published_date if it exists
+        // Only set new date if article is being published for the first time (was draft, now published)
+        if (status === 'published' && !articleData.published_date) {
+          // Check if article was previously published
+          const { data: currentArticle } = await supabase
+            .from('articles')
+            .select('published_date, status')
+            .eq('id', editingArticle.id)
+            .single();
+          
+          // Only set new date if article was previously unpublished (draft)
+          if (currentArticle && currentArticle.status !== 'published' && !currentArticle.published_date) {
+            articleData.published_date = new Date().toISOString();
+          } else if (currentArticle && currentArticle.published_date) {
+            // Preserve existing published_date - don't overwrite it
+            articleData.published_date = currentArticle.published_date;
+          }
+        }
+        
         const { error } = await supabase
           .from('articles')
           .update(articleData)
           .eq('id', editingArticle.id);
         if (error) throw error;
       } else {
+        // For new articles, set published_date if publishing
+        if (status === 'published' && !articleData.published_date) {
+          articleData.published_date = new Date().toISOString();
+        }
+        
         const { error } = await supabase.from('articles').insert([articleData]);
         if (error) throw error;
       }
@@ -283,6 +318,9 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                   <p className="mt-1 text-xs text-neutral-500">
                     URL: /insights/{editingArticle.slug || 'article-slug'}
                   </p>
+                  <p className="mt-1 text-xs text-neutral-400">
+                    💡 The slug is auto-generated from the title, but you can edit it. Use lowercase letters, numbers, and hyphens only.
+                  </p>
                 </div>
 
                 <div className="bg-white rounded-lg shadow-sm p-6">
@@ -296,16 +334,23 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                     className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-transparent outline-none resize-none"
                     placeholder="Brief summary of the article (optional)"
                   />
+                  <p className="mt-2 text-xs text-neutral-500">
+                    This appears in article listings and search results
+                  </p>
                 </div>
 
                 <div className="bg-white rounded-lg shadow-sm p-6">
                   <label className="block text-sm font-medium text-neutral-700 mb-4">
-                    Article Body
+                    Article Body *
                   </label>
                   <ArticleEditor
                     value={editingArticle.body || ''}
                     onChange={(value) => setEditingArticle({ ...editingArticle, body: value })}
+                    placeholder="Start writing your article... Use the toolbar above to format text, add headings, lists, images, and more."
                   />
+                  <p className="mt-3 text-xs text-neutral-500">
+                    💡 <strong>Tip:</strong> Use the toolbar to format your content. You can add headings, bold/italic text, lists, links, images, and more. Images can be uploaded directly from your computer.
+                  </p>
                 </div>
               </div>
 
@@ -352,7 +397,9 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                     value={
                       editingArticle.published_date
                         ? new Date(editingArticle.published_date).toISOString().slice(0, 16)
-                        : new Date().toISOString().slice(0, 16)
+                        : editingArticle.id 
+                          ? '' // Don't set default date for existing articles
+                          : new Date().toISOString().slice(0, 16) // Only set default for new articles
                     }
                     onChange={(e) => {
                       const date = e.target.value ? new Date(e.target.value).toISOString() : null;
@@ -361,8 +408,19 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                     className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-transparent outline-none text-sm"
                   />
                   <p className="mt-2 text-xs text-neutral-500">
-                    Set when this article should be considered published
+                    Set when this article was published. If left empty, will use current date when publishing.
                   </p>
+                  {editingArticle.published_date && (
+                    <p className="mt-1 text-xs text-neutral-400">
+                      Current: {new Date(editingArticle.published_date).toLocaleDateString('en-GB', { 
+                        day: 'numeric', 
+                        month: 'long', 
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </p>
+                  )}
                 </div>
 
                 <div className="bg-white rounded-lg shadow-sm p-6">
@@ -388,6 +446,54 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                   )}
                   <p className="mt-2 text-xs text-neutral-500">
                     Enter the full URL of the featured image
+                  </p>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-sm p-6">
+                  <label className="block text-sm font-medium text-neutral-700 mb-2">
+                    Author
+                  </label>
+                  <input
+                    type="text"
+                    value={editingArticle.author || ''}
+                    onChange={(e) => setEditingArticle({ ...editingArticle, author: e.target.value })}
+                    className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-transparent outline-none text-sm"
+                    placeholder="Author name (optional)"
+                  />
+                  <p className="mt-2 text-xs text-neutral-500">
+                    The author's name for this article
+                  </p>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-sm p-6">
+                  <label className="block text-sm font-medium text-neutral-700 mb-2">
+                    Category
+                  </label>
+                  <input
+                    type="text"
+                    value={editingArticle.category || ''}
+                    onChange={(e) => setEditingArticle({ ...editingArticle, category: e.target.value })}
+                    className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-transparent outline-none text-sm"
+                    placeholder="e.g., Analysis, News, Opinion (optional)"
+                  />
+                  <p className="mt-2 text-xs text-neutral-500">
+                    Category helps organize and filter articles
+                  </p>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-sm p-6">
+                  <label className="block text-sm font-medium text-neutral-700 mb-2">
+                    Region
+                  </label>
+                  <input
+                    type="text"
+                    value={editingArticle.region || ''}
+                    onChange={(e) => setEditingArticle({ ...editingArticle, region: e.target.value })}
+                    className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-transparent outline-none text-sm"
+                    placeholder="e.g., England, Surrey, London (optional)"
+                  />
+                  <p className="mt-2 text-xs text-neutral-500">
+                    Geographic region this article relates to
                   </p>
                 </div>
               </div>
@@ -428,6 +534,15 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {managingQA && (
+          <div className="mb-8">
+            <ArticleQAEditor
+              articleSlug={managingQA}
+              onClose={() => setManagingQA(null)}
+            />
+          </div>
+        )}
+
         {error && (
           <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
             {error}
@@ -479,6 +594,13 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                     </div>
                   </div>
                   <div className="flex items-center gap-2 ml-4">
+                    <button
+                      onClick={() => setManagingQA(article.slug)}
+                      className="p-2 text-teal-600 hover:bg-teal-50 rounded-lg transition-colors"
+                      title="Manage Q&A"
+                    >
+                      <MessageSquare size={18} />
+                    </button>
                     <button
                       onClick={() => handleEdit(article)}
                       className="p-2 text-neutral-600 hover:bg-neutral-100 rounded-lg transition-colors"

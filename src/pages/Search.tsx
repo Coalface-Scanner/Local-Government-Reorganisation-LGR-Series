@@ -253,7 +253,7 @@ export default function Search({ onNavigate }: SearchProps) {
 
   const handleResultClick = (result: SearchResult) => {
     if (result.type === 'article' && result.slug) {
-      onNavigate('insights-article', result.slug);
+      onNavigate('insights', result.slug);
     } else if (result.type === 'fact') {
       onNavigate('facts');
     } else if (result.type === 'lesson') {

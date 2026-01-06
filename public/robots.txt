@@ -28,4 +28,4 @@ Allow: /
 Disallow: /admin-login
 Disallow: /admin-dashboard
 
-Sitemap: https://lgrreform.com/sitemap.xml
+Sitemap: https://localgovernmentreorganisation.co.uk/sitemap.xml

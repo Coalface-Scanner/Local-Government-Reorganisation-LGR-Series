@@ -15,6 +15,10 @@ export default function ArticleStructuredData({
   imageUrl,
   slug
 }: ArticleStructuredDataProps) {
+  const baseUrl = typeof window !== 'undefined' 
+    ? window.location.origin 
+    : 'https://localgovernmentreorganisation.co.uk';
+  
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -29,14 +33,26 @@ export default function ArticleStructuredData({
     "publisher": {
       "@type": "Organization",
       "name": "LGR Series",
+      "legalName": "Coalface Engagement Ltd",
+      "foundingDate": "2019",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Prebend House, 72 London Road",
+        "addressLocality": "Leicester",
+        "postalCode": "LE2 0QR",
+        "addressCountry": "GB"
+      },
       "logo": {
         "@type": "ImageObject",
-        "url": "https://lgrreform.com/lgr_banner.png"
-      }
+        "url": `${baseUrl}/lgr_banner.png`
+      },
+      "sameAs": [
+        "https://localgovernmentreorganisation.co.uk"
+      ]
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://lgrreform.com/article/${slug}`
+      "@id": `${baseUrl}/article/${slug}`
     },
     ...(imageUrl && {
       "image": {

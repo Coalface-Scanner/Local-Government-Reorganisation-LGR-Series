@@ -4,6 +4,7 @@ import LastUpdated from '../components/LastUpdated';
 import ShareButtons from '../components/ShareButtons';
 import MetaTags from '../components/MetaTags';
 import ArticleStructuredData from '../components/ArticleStructuredData';
+import ArticleQASection from '../components/ArticleQASection';
 import { ArrowLeft, Calendar } from 'lucide-react';
 
 interface Article {
@@ -249,6 +250,8 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
           />
         </div>
       </div>
+
+      <ArticleQASection articleSlug={article.slug} />
 
       <LastUpdated />
     </div>

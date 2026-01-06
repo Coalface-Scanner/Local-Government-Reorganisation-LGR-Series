@@ -1,0 +1,13 @@
+{
+  "title": "Example Article Title",
+  "slug": "example-article",
+  "excerpt": "This is a short description of the article that appears in listings.",
+  "body": "<h1>Main Heading</h1><p>This is a paragraph with <strong>bold text</strong> and <em>italic text</em>.</p><h2>Subheading</h2><ul><li>Bullet point one</li><li>Bullet point two</li></ul><ol><li>Numbered item one</li><li>Numbered item two</li></ol><blockquote><p>This is a blockquote for important quotes or highlights.</p></blockquote><p>You can also add <a href=\"https://example.com\">links</a> and format text with <span style=\"color: #ff0000;\">colors</span>.</p><p><img src=\"https://example.com/image.jpg\" alt=\"Image description\" /></p><pre><code>Code blocks for technical content</code></pre>",
+  "status": "published",
+  "published_date": "2024-01-15T00:00:00Z",
+  "featured": false,
+  "author": "Author Name",
+  "category": "Analysis",
+  "region": "England"
+}
+
