@@ -12,11 +12,13 @@
     "upload-content": "node scripts/upload-content.js",
     "upload-facts": "node scripts/upload-facts.js",
     "import-substack": "node scripts/import-substack-rss.js",
-    "import-substack:update": "node scripts/import-substack-rss.js --update"
+    "import-substack:update": "node scripts/import-substack-rss.js --update",
+    "add-moran-article": "node scripts/add-robert-moran-article.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
     "@types/leaflet": "^1.9.21",
+    "chart.js": "^4.5.1",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",

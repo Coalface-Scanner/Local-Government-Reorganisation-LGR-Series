@@ -16,38 +16,75 @@ export default function SubscriptionForm({ variant = 'default' }: SubscriptionFo
     setMessage(null);
 
     try {
-      const { data: existingSubscription } = await supabase
+      // Check for existing subscription
+      const { data: existingSubscription, error: checkError } = await supabase
         .from('subscriptions')
         .select('id, active')
         .eq('email', email)
         .maybeSingle();
 
+      if (checkError) {
+        console.error('Error checking existing subscription:', checkError);
+        throw checkError;
+      }
+
       if (existingSubscription) {
         if (existingSubscription.active) {
           setMessage({ type: 'error', text: 'This email is already subscribed.' });
         } else {
-          const { error } = await supabase
+          const { data: updateData, error: updateError } = await supabase
             .from('subscriptions')
             .update({ active: true, unsubscribed_at: null })
-            .eq('id', existingSubscription.id);
+            .eq('id', existingSubscription.id)
+            .select(); // Get updated data back
 
-          if (error) throw error;
+          if (updateError) {
+            console.error('Error updating subscription:', updateError);
+            throw updateError;
+          }
 
+          console.log('Subscription reactivated:', updateData);
           setMessage({ type: 'success', text: 'Welcome back! You have been resubscribed.' });
           setEmail('');
         }
       } else {
-        const { error } = await supabase
+        // Insert new subscription - add .select() to verify it worked
+        const { data: insertData, error: insertError } = await supabase
           .from('subscriptions')
-          .insert([{ email, active: true }]);
+          .insert([{ email, active: true }])
+          .select(); // This returns the inserted row so we can verify
 
-        if (error) throw error;
+        if (insertError) {
+          console.error('Error inserting subscription:', insertError);
+          console.error('Error details:', {
+            message: insertError.message,
+            details: insertError.details,
+            hint: insertError.hint,
+            code: insertError.code
+          });
+          throw insertError;
+        }
 
+        console.log('Subscription inserted successfully:', insertData);
         setMessage({ type: 'success', text: 'Successfully subscribed! Check your email.' });
         setEmail('');
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Something went wrong. Please try again.' });
+      // Log the actual error with full details
+      console.error('Subscription error:', error);
+      console.error('Error type:', error instanceof Error ? error.constructor.name : typeof error);
+      
+      // Show more detailed error message
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : typeof error === 'object' && error !== null && 'message' in error
+        ? String(error.message)
+        : 'Unknown error occurred';
+      
+      setMessage({ 
+        type: 'error', 
+        text: `Something went wrong: ${errorMessage}. Please check the console for details.` 
+      });
     } finally {
       setLoading(false);
     }

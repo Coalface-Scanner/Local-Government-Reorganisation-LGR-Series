@@ -219,6 +219,12 @@ export default function Surrey({ onNavigate }: SurreyProps) {
                 <h4 className="font-bold text-slate-900 mb-3">Related Analysis</h4>
                 <div className="space-y-3">
                   <button
+                    onClick={() => onNavigate('surrey/election-simulator')}
+                    className="w-full text-left px-4 py-3 bg-yellow-100 rounded-lg hover:shadow-md transition-all text-sm font-bold text-slate-900 hover:text-yellow-700 border border-yellow-300"
+                  >
+                    🗳️ Election Simulator →
+                  </button>
+                  <button
                     onClick={() => onNavigate('facts')}
                     className="w-full text-left px-4 py-3 bg-white rounded-lg hover:shadow-md transition-all text-sm font-medium text-slate-700 hover:text-cyan-600"
                   >

@@ -161,6 +161,8 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
           <img
             src={article.featured_image}
             alt={article.title}
+            loading="lazy"
+            decoding="async"
             className="w-full h-auto rounded-2xl shadow-lg mb-8"
           />
         )}

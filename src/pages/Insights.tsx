@@ -123,6 +123,7 @@ export default function Insights({ onNavigate }: InsightsProps) {
                         src={article.featured_image}
                         alt={article.title}
                         loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                       {article.featured && (

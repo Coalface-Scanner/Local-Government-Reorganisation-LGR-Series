@@ -205,6 +205,7 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
             src={material.main_image_url || material.image_url}
             alt={material.title}
             loading="lazy"
+            decoding="async"
             className="w-full h-64 md:h-96 object-cover rounded-2xl shadow-lg mb-8"
           />
         )}
