@@ -85,7 +85,7 @@ export default function CookieBanner() {
                       rel="noopener noreferrer"
                       className="text-teal-700 hover:text-teal-800 underline"
                     >
-                      Learn more
+                      Learn more about our cookie policy
                     </a>
                   </p>
                 </div>
