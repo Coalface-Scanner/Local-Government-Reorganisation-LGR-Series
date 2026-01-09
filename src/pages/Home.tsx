@@ -91,15 +91,22 @@ export default function Home({ onNavigate }: HomeProps) {
           .order('published_date', { ascending: false })
           .limit(4);
 
-        if (recentError) {
-          console.error('Error fetching recent articles:', recentError);
-          setError('Unable to load articles. Please refresh the page.');
-        } else if (recentData) {
+        // Handle data and error independently - use data if available even if error exists
+        if (recentData && recentData.length > 0) {
           // Filter out featured article if it exists
           const filtered = featuredData 
             ? recentData.filter(a => a.id !== featuredData.id)
             : recentData;
           setRecentArticles(filtered.slice(0, 4));
+          
+          // If there was an error but we got data, log a warning but don't show error to user
+          if (recentError) {
+            console.warn('Partial error fetching recent articles, but data was received:', recentError);
+          }
+        } else if (recentError) {
+          // Only show error if we have no data
+          console.error('Error fetching recent articles:', recentError);
+          setError('Unable to load articles. Please refresh the page.');
         }
       } catch (err) {
         console.error('Unexpected error fetching articles:', err);
