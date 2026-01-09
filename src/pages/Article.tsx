@@ -4,7 +4,13 @@ import LastUpdated from '../components/LastUpdated';
 import ShareButtons from '../components/ShareButtons';
 import MetaTags from '../components/MetaTags';
 import ArticleStructuredData from '../components/ArticleStructuredData';
+import OptimizedImage from '../components/OptimizedImage';
+import ReadingTime from '../components/ReadingTime';
+import TableOfContents from '../components/TableOfContents';
+import ReadingProgress from '../components/ReadingProgress';
+import ErrorDisplay from '../components/ErrorDisplay';
 import { ArrowLeft, Download, ExternalLink, Calendar, User, Eye } from 'lucide-react';
+import { retryWithBackoff } from '../lib/utils';
 
 interface Material {
   id: string;
@@ -40,6 +46,7 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
   const [material, setMaterial] = useState<Material | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (slug) {
@@ -49,44 +56,51 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
 
   const fetchMaterial = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from('materials')
-      .select('*')
-      .eq('slug', slug)
-      .maybeSingle();
+    setError(null);
+    
+    try {
+      const data = await retryWithBackoff(async () => {
+        const { data, error } = await supabase
+          .from('materials')
+          .select('*')
+          .eq('slug', slug)
+          .maybeSingle();
 
-    if (error) {
-      setNotFound(true);
-      setLoading(false);
-      return;
-    }
-
-    if (!data) {
-      setNotFound(true);
-      setLoading(false);
-      return;
-    }
-
-    const parsedData = {
-      ...data,
-      additional_images: typeof data.additional_images === 'string'
-        ? JSON.parse(data.additional_images)
-        : data.additional_images
-    };
-
-    setMaterial(parsedData);
-    setLoading(false);
-
-    // Update read count (non-blocking, errors are ignored)
-    supabase
-      .from('materials')
-      .update({ read_count: (data.read_count || 0) + 1 })
-      .eq('id', data.id)
-      .then(({ error }) => {
-        if (error) {
-          // Silently fail - read count update is not critical
-        }
+        if (error) throw error;
+        return data;
       });
+
+      if (!data) {
+        setNotFound(true);
+        setLoading(false);
+        return;
+      }
+
+      const parsedData = {
+        ...data,
+        additional_images: typeof data.additional_images === 'string'
+          ? JSON.parse(data.additional_images)
+          : data.additional_images
+      };
+
+      setMaterial(parsedData);
+      setLoading(false);
+
+      // Update read count (non-blocking, errors are ignored)
+      supabase
+        .from('materials')
+        .update({ read_count: (data.read_count || 0) + 1 })
+        .eq('id', data.id)
+        .then(({ error }) => {
+          if (error) {
+            console.error('Failed to update read count:', error);
+          }
+        });
+    } catch (err) {
+      setError('Failed to load article. Please try again.');
+      setLoading(false);
+      console.error('Error fetching material:', err);
+    }
   };
 
   if (loading) {
@@ -128,6 +142,7 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      <ReadingProgress />
       <MetaTags
         title={material.title}
         description={material.description}
@@ -154,8 +169,9 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
           <button
             onClick={() => onNavigate('materials')}
             className="flex items-center gap-2 text-slate-300 hover:text-white font-medium mb-6 group"
+            aria-label="Back to Materials"
           >
-            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" aria-hidden="true" />
             Back to Materials
           </button>
 
@@ -181,38 +197,48 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
           <div className="flex flex-wrap items-center gap-6 text-sm text-slate-300">
             {material.author_name && (
               <div className="flex items-center gap-2">
-                <User size={16} />
+                <User size={16} aria-hidden="true" />
                 <span>{material.author_name}</span>
               </div>
             )}
             <div className="flex items-center gap-2">
-              <Calendar size={16} />
+              <Calendar size={16} aria-hidden="true" />
               <span>{new Date(material.published_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
             </div>
             {material.read_count > 0 && (
               <div className="flex items-center gap-2">
-                <Eye size={16} />
+                <Eye size={16} aria-hidden="true" />
                 <span>{material.read_count} reads</span>
               </div>
             )}
+            <ReadingTime content={material.rich_content || material.content} />
           </div>
         </div>
       </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {(material.main_image_url || material.image_url) && (
-          <img
-            src={material.main_image_url || material.image_url}
-            alt={material.title}
-            loading="lazy"
-            decoding="async"
-            className="w-full h-64 md:h-96 object-cover rounded-2xl shadow-lg mb-8"
+        {error && (
+          <ErrorDisplay
+            message={error}
+            onRetry={fetchMaterial}
+            className="mb-8"
           />
         )}
 
-        <div className="bg-white rounded-2xl p-4 sm:p-8 md:p-12 shadow-lg border-2 border-slate-200 mb-8">
-          {(material.rich_content || material.content) ? (
-            <div className="prose prose-sm sm:prose-base lg:prose-lg max-w-none
+        {(material.main_image_url || material.image_url) && (
+          <OptimizedImage
+            src={material.main_image_url || material.image_url}
+            alt={material.title}
+            className="w-full h-64 md:h-96 object-cover rounded-2xl shadow-lg mb-8"
+            priority={false}
+          />
+        )}
+
+        <div className="grid lg:grid-cols-4 gap-8">
+          <div className="lg:col-span-3">
+            <div className="bg-white rounded-2xl p-4 sm:p-8 md:p-12 shadow-lg border-2 border-slate-200 mb-8">
+              {(material.rich_content || material.content) ? (
+                <div className="prose prose-sm sm:prose-base lg:prose-lg max-w-none print:prose-sm
               prose-headings:font-bold prose-headings:text-neutral-900 prose-headings:tracking-tight
               prose-h2:text-2xl sm:prose-h2:text-3xl prose-h2:mt-10 prose-h2:mb-6 prose-h2:border-b prose-h2:border-slate-200 prose-h2:pb-3
               prose-h3:text-xl sm:prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
@@ -231,44 +257,60 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
               prose-th:p-2 sm:prose-th:p-3 prose-th:text-left prose-th:font-bold prose-th:text-slate-900
               prose-td:p-2 sm:prose-td:p-3 prose-td:border-b prose-td:border-slate-200 prose-td:text-slate-700
               [&_table]:block [&_table]:overflow-x-auto [&_table]:whitespace-nowrap sm:[&_table]:whitespace-normal">
-              <div dangerouslySetInnerHTML={{ __html: material.rich_content || material.content }} />
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <p className="text-lg text-slate-600 mb-6">
-                This content is available as a downloadable document.
-              </p>
-              {material.pdf_url && (
-                <a
-                  href={material.pdf_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors font-semibold"
-                >
-                  <Download size={20} />
-                  Download Document
-                </a>
-              )}
-            </div>
-          )}
-
-          {material.additional_images && material.additional_images.length > 0 && (
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-              {material.additional_images.map((img, index) => (
-                <div key={index} className="space-y-2">
-                  <img
-                    src={img.url}
-                    alt={img.caption || `Image ${index + 1}`}
-                    loading="lazy"
-                    className="w-full rounded-lg shadow-md"
-                  />
-                  {img.caption && (
-                    <p className="text-sm text-slate-600 italic text-center">{img.caption}</p>
+                  <div dangerouslySetInnerHTML={{ __html: material.rich_content || material.content }} />
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <p className="text-lg text-slate-600 mb-6">
+                    This content is available as a downloadable document.
+                  </p>
+                  {material.pdf_url && (
+                    <a
+                      href={material.pdf_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors font-semibold"
+                    >
+                      <Download size={20} aria-hidden="true" />
+                      Download Document
+                    </a>
                   )}
                 </div>
-              ))}
+              )}
+
+              {material.additional_images && material.additional_images.length > 0 && (
+                <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {material.additional_images.map((img, index) => (
+                    <div key={index} className="space-y-2">
+                      <OptimizedImage
+                        src={img.url}
+                        alt={img.caption || `Image ${index + 1}`}
+                        className="w-full rounded-lg shadow-md"
+                        priority={false}
+                      />
+                      {img.caption && (
+                        <p className="text-sm text-slate-600 italic text-center">{img.caption}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-          )}
+
+            <div className="mb-8 print:hidden">
+              <ShareButtons
+                title={material.title}
+                description={material.description}
+                url={`${window.location.origin}${window.location.pathname}`}
+              />
+            </div>
+          </div>
+
+          <aside className="lg:col-span-1">
+            <div className="sticky top-24">
+              <TableOfContents content={material.rich_content || material.content} />
+            </div>
+          </aside>
         </div>
 
         {(material.pdf_url || material.external_url) && (

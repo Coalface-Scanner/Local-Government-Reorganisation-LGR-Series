@@ -5,6 +5,8 @@ import Footer from './components/Footer';
 import CookieBanner from './components/CookieBanner';
 import ErrorBoundary from './components/ErrorBoundary';
 import BackToTop from './components/BackToTop';
+import KeyboardShortcuts from './components/KeyboardShortcuts';
+import SkipLink from './components/SkipLink';
 import { AuthProvider } from './contexts/AuthContext';
 
 // Lazy load pages for code splitting - improves initial load time
@@ -75,7 +77,15 @@ function ArticleWrapper() {
 function ArticleViewWrapper() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  const handleNavigate = (page: string) => navigate(`/${page}`);
+  const handleNavigate = (page: string, data?: unknown) => {
+    if (typeof data === 'string') {
+      navigate(`/${page}/${data}`);
+    } else if (data && typeof data === 'object' && 'slug' in data) {
+      navigate(`/${page}/${(data as { slug: string }).slug}`);
+    } else {
+      navigate(`/${page}`);
+    }
+  };
 
   return <ArticleView slug={slug} onNavigate={handleNavigate} />;
 }
@@ -108,12 +118,8 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-neutral-50 flex flex-col">
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded"
-      >
-        Skip to main content
-      </a>
+      <SkipLink />
+      <KeyboardShortcuts />
       <Navigation onNavigate={handleNavigate} currentPage={getCurrentPage()} />
       <main id="main-content" className="flex-grow">
         <Suspense fallback={<PageLoader />}>
