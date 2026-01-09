@@ -1,0 +1,110 @@
+# Netlify Configuration
+# This file defines build settings, redirects, headers, and other deployment options
+
+[build]
+  # Build command to run
+  command = "npm run build"
+  
+  # Directory containing the built files to publish
+  publish = "dist"
+  
+  # Environment variables (set these in Netlify Dashboard under Site Settings > Environment variables)
+  # Don't put actual secrets here - use Netlify Dashboard instead
+  # [build.environment]
+  #   NODE_VERSION = "18"
+  #   VITE_SUPABASE_URL = "your_supabase_url_here"
+  #   VITE_SUPABASE_ANON_KEY = "your_anon_key_here"
+
+# Build settings per branch/context (optional)
+# Uncomment and customize if needed
+# [context.production.environment]
+#   NODE_VERSION = "18"
+# 
+# [context.deploy-preview.environment]
+#   NODE_VERSION = "18"
+
+# Redirects
+# You can define redirects here OR use the public/_redirects file (both work)
+# The _redirects file takes precedence if both exist
+[[redirects]]
+  from = "/insights-article/*"
+  to = "/insights/:splat"
+  status = 301
+
+# SPA fallback - all routes go to index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers
+# You can define headers here OR use the public/_headers file (both work)
+# The _headers file takes precedence if both exist
+# For now, we'll keep using the _headers file since it's already set up
+
+# Security headers (already in public/_headers, but can be here too)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://elevenlabs.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://elevenlabs.io wss://*.supabase.co; frame-src 'self' https://open.spotify.com https://elevenlabs.io; object-src 'none'; base-uri 'self'; form-action 'self';"
+
+# Image caching headers
+[[headers]]
+  for = "/*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.jpeg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.webp"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.gif"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Static assets caching
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# HTML caching (short cache)
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Service worker caching
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Manifest caching
+[[headers]]
+  for = "/manifest.json"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+# Plugin configuration (optional - if you're using Netlify plugins)
+# Uncomment and customize if you're using plugins like Sitemap, Submit Sitemap, etc.
+# [[plugins]]
+#   package = "@netlify/plugin-sitemap"
