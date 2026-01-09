@@ -253,6 +253,32 @@ export default function Home({ onNavigate }: HomeProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-12">
+            <section className="bg-gradient-to-br from-teal-50 to-white border-2 border-teal-700 p-8 md:p-10">
+              <div className="flex items-start gap-4 mb-6">
+                <div className="w-12 h-12 bg-teal-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <TrendingUp size={24} className="text-white" />
+                </div>
+                <div className="flex-1">
+                  <div className="text-xs font-bold tracking-wider text-teal-700 mb-2">
+                    INTERACTIVE TOOL
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-black text-neutral-900 mb-3 leading-tight">
+                    Surrey Election Simulator
+                  </h3>
+                  <p className="text-neutral-700 mb-6 leading-relaxed">
+                    Model election outcomes for East and West Surrey unitary authorities. Use our interactive seat planner to explore different scenarios and understand the political composition of the new councils.
+                  </p>
+                  <button
+                    onClick={() => onNavigate('surrey/election-simulator')}
+                    className="group inline-flex items-center gap-2 px-6 py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold text-sm tracking-wide rounded-full transition-all"
+                  >
+                    OPEN SIMULATOR
+                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              </div>
+            </section>
+
             <section className="border-t-2 border-teal-700 pt-8">
               <div className="flex items-center gap-4 mb-8">
                 <h2 className="text-3xl font-black text-neutral-900 tracking-tight">
@@ -378,32 +404,6 @@ export default function Home({ onNavigate }: HomeProps) {
                   </button>
                 </div>
               )}
-            </section>
-
-            <section className="bg-gradient-to-br from-teal-50 to-white border-2 border-teal-700 p-8 md:p-10">
-              <div className="flex items-start gap-4 mb-6">
-                <div className="w-12 h-12 bg-teal-700 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <TrendingUp size={24} className="text-white" />
-                </div>
-                <div className="flex-1">
-                  <div className="text-xs font-bold tracking-wider text-teal-700 mb-2">
-                    INTERACTIVE TOOL
-                  </div>
-                  <h3 className="text-2xl md:text-3xl font-black text-neutral-900 mb-3 leading-tight">
-                    Surrey Election Simulator
-                  </h3>
-                  <p className="text-neutral-700 mb-6 leading-relaxed">
-                    Model election outcomes for East and West Surrey unitary authorities. Use our interactive seat planner to explore different scenarios and understand the political composition of the new councils.
-                  </p>
-                  <button
-                    onClick={() => onNavigate('surrey/election-simulator')}
-                    className="group inline-flex items-center gap-2 px-6 py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold text-sm tracking-wide rounded-full transition-all"
-                  >
-                    OPEN SIMULATOR
-                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                  </button>
-                </div>
-              </div>
             </section>
 
             <section className="bg-neutral-100 border-2 border-neutral-900 p-8">
