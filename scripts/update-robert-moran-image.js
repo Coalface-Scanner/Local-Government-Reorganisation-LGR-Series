@@ -99,3 +99,4 @@ async function updateArticleImage() {
 }
 
 updateArticleImage();
+
