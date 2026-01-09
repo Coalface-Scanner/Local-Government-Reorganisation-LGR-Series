@@ -33,7 +33,7 @@ export default function OptimizedImage({
 
   if (imageError) {
     return (
-      <div className={`bg-slate-100 flex items-center justify-center ${className}`}>
+      <div className={`bg-slate-100 flex items-center justify-center min-h-[200px] ${className}`}>
         <div className="text-center p-8">
           <p className="text-slate-400 text-sm">Image unavailable</p>
         </div>

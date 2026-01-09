@@ -34,22 +34,20 @@ export default function RelatedArticles({
   const fetchRelatedArticles = async () => {
     setLoading(true);
     try {
-      let query = supabase
+      // Fetch recent articles - theme/category filtering can be added later if needed
+      // For now, just get the most recent articles excluding the current one
+      const { data, error } = await supabase
         .from('articles')
         .select('id, title, slug, excerpt, featured_image, published_date')
         .eq('status', 'published')
         .neq('slug', currentSlug)
+        .order('published_date', { ascending: false })
         .limit(3);
-
-      // Prioritize articles with same theme or category
-      if (currentTheme) {
-        query = query.or(`theme.eq.${currentTheme},category.eq.${currentCategory || currentTheme}`);
-      }
-
-      const { data, error } = await query.order('published_date', { ascending: false });
 
       if (!error && data) {
         setRelatedArticles(data);
+      } else if (error) {
+        console.error('Error fetching related articles:', error);
       }
     } catch (error) {
       console.error('Error fetching related articles:', error);
@@ -86,7 +84,7 @@ export default function RelatedArticles({
               {article.featured_image && (
                 <img
                   src={article.featured_image}
-                  alt=""
+                  alt={article.title}
                   className="w-20 h-20 object-cover rounded flex-shrink-0"
                   loading="lazy"
                 />

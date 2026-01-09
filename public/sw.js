@@ -3,11 +3,11 @@ const CACHE_NAME = 'lgr-series-v1';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/assets/index.css',
-  '/assets/index.js',
   '/lgr.png',
   '/lgr_banner.png'
 ];
+// Note: JS/CSS files are cached dynamically via fetch handler
+// since Vite generates hashed filenames
 
 // Install event - cache resources
 self.addEventListener('install', (event) => {

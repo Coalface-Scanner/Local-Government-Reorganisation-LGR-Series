@@ -17,24 +17,30 @@ export default function TableOfContents({ content, className = '' }: TableOfCont
     const extracted = extractHeadings(content);
     setHeadings(extracted);
 
-    // Update content in DOM if needed - add IDs to headings
-    if (extracted.length > 0) {
-      // Use setTimeout to ensure DOM is ready
-      setTimeout(() => {
-        const articleElement = document.querySelector('article.prose');
-        if (articleElement) {
-          extracted.forEach(({ id, text, level }) => {
-            const headings = Array.from(articleElement.querySelectorAll(`h${level}`));
-            const heading = headings.find(
-              h => h.textContent?.trim() === text && !h.id
-            );
-            if (heading) {
-              heading.id = id;
-            }
-          });
+    // Add IDs to actual DOM headings after render
+    const addIdsToHeadings = () => {
+      const articleElement = document.querySelector('article.prose');
+      if (!articleElement) {
+        // Retry if DOM not ready yet
+        setTimeout(addIdsToHeadings, 100);
+        return;
+      }
+
+      extracted.forEach(({ id, text, level }) => {
+        const headings = Array.from(articleElement.querySelectorAll(`h${level}`));
+        const heading = headings.find(
+          h => h.textContent?.trim() === text && !h.id
+        );
+        if (heading) {
+          heading.id = id;
         }
-      }, 100);
-    }
+      });
+    };
+
+    // Use requestAnimationFrame to ensure DOM is ready
+    requestAnimationFrame(() => {
+      setTimeout(addIdsToHeadings, 200);
+    });
   }, [content]);
 
   useEffect(() => {
