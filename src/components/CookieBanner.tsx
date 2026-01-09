@@ -80,7 +80,7 @@ export default function CookieBanner() {
                   <p className="text-xs text-neutral-600 leading-relaxed">
                     We use cookies to improve your experience.{' '}
                     <a
-                      href="https://coalfaceengagement.co.uk/cookie-policy/"
+                      href="https://coalfaceengagement.co.uk/cookies"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-teal-700 hover:text-teal-800 underline"
@@ -191,7 +191,7 @@ export default function CookieBanner() {
 
               <div className="flex flex-col gap-2 pt-2 border-t border-neutral-200">
                 <a
-                  href="https://coalfaceengagement.co.uk/cookie-policy/"
+                  href="https://coalfaceengagement.co.uk/cookies"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-xs text-teal-700 hover:text-teal-800 underline text-center"
