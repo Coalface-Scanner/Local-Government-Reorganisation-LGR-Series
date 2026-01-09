@@ -4,23 +4,32 @@ import App from './App.tsx';
 import './index.css';
 import { AdminAuthProvider } from './contexts/AdminAuthContext';
 
-// TEMPORARILY DISABLE SERVICE WORKER - Unregister any existing ones
+// TEMPORARILY DISABLE SERVICE WORKER - Aggressively unregister and clear
 if ('serviceWorker' in navigator) {
+  // Immediately unregister all service workers
   navigator.serviceWorker.getRegistrations().then((registrations) => {
-    for (const registration of registrations) {
-      registration.unregister().then((success) => {
-        if (success && import.meta.env.DEV) {
-          console.log('Service Worker unregistered');
-        }
+    registrations.forEach((registration) => {
+      registration.unregister().catch(() => {
+        // Ignore errors
       });
-    }
+    });
   });
-  // Clear all caches
-  caches.keys().then((cacheNames) => {
-    return Promise.all(
-      cacheNames.map((cacheName) => caches.delete(cacheName))
-    );
-  });
+  
+  // Clear all caches immediately
+  if ('caches' in window) {
+    caches.keys().then((cacheNames) => {
+      cacheNames.forEach((cacheName) => {
+        caches.delete(cacheName).catch(() => {
+          // Ignore errors
+        });
+      });
+    });
+  }
+  
+  // Also try to unregister via the service worker controller
+  if (navigator.serviceWorker.controller) {
+    navigator.serviceWorker.controller.postMessage({ type: 'SKIP_WAITING' });
+  }
 }
 
 createRoot(document.getElementById('root')!).render(
