@@ -279,6 +279,8 @@ export default function Home({ onNavigate }: HomeProps) {
                           loading="lazy"
                           decoding="async"
                           className="absolute inset-0 w-full h-full object-cover object-center"
+                          width={800}
+                          height={600}
                         />
                       </div>
                     )}

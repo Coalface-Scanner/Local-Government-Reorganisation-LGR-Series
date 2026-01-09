@@ -13,7 +13,7 @@ export default function ReadingTime({ content, className = '' }: ReadingTimeProp
   const readingTime = formatReadingTime(minutes);
 
   return (
-    <div className={`flex items-center gap-2 text-sm text-slate-400 ${className}`}>
+    <div className={`flex items-center gap-2 text-sm text-slate-600 ${className}`}>
       <Clock size={14} />
       <span>{readingTime}</span>
     </div>

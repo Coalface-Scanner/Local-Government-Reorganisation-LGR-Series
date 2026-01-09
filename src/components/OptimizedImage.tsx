@@ -7,6 +7,8 @@ interface OptimizedImageProps {
   loading?: 'lazy' | 'eager';
   priority?: boolean;
   sizes?: string;
+  width?: number;
+  height?: number;
 }
 
 export default function OptimizedImage({
@@ -15,7 +17,9 @@ export default function OptimizedImage({
   className = '',
   loading = 'lazy',
   priority = false,
-  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px'
+  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px',
+  width,
+  height
 }: OptimizedImageProps) {
   const [imageError, setImageError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -35,14 +39,18 @@ export default function OptimizedImage({
     return (
       <div className={`bg-slate-100 flex items-center justify-center min-h-[200px] ${className}`}>
         <div className="text-center p-8">
-          <p className="text-slate-400 text-sm">Image unavailable</p>
+          <p className="text-slate-600 text-sm">Image unavailable</p>
         </div>
       </div>
     );
   }
 
+  // Calculate aspect ratio if width and height are provided
+  const aspectRatio = width && height ? `${width} / ${height}` : undefined;
+  const aspectRatioStyle = aspectRatio ? { aspectRatio } : {};
+
   return (
-    <div className="relative">
+    <div className="relative" style={aspectRatioStyle}>
       {isLoading && (
         <div className="absolute inset-0 bg-slate-100 animate-pulse rounded-lg" />
       )}
@@ -55,6 +63,8 @@ export default function OptimizedImage({
         onError={handleError}
         className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
         sizes={sizes}
+        width={width}
+        height={height}
       />
     </div>
   );

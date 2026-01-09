@@ -425,6 +425,8 @@ export default function Materials({ onNavigate }: MaterialsProps) {
                           alt={material.title}
                           loading="lazy"
                           className="w-full md:w-48 h-32 object-cover rounded-lg"
+                          width={192}
+                          height={128}
                         />
                       )}
                       <div className="flex-1">

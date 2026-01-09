@@ -125,6 +125,8 @@ export default function Insights({ onNavigate }: InsightsProps) {
                         loading="lazy"
                         decoding="async"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        width={400}
+                        height={192}
                       />
                       {article.featured && (
                         <div className="absolute top-3 right-3">

@@ -115,6 +115,8 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
                       src={interview.image_url}
                       alt={`${interview.name} interview`}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      width={400}
+                      height={400}
                     />
                     <div className="absolute top-4 right-4 flex gap-2">
                       {interview.status === 'coming_soon' && (
