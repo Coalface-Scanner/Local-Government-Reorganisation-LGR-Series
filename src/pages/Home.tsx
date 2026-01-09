@@ -171,7 +171,7 @@ export default function Home({ onNavigate }: HomeProps) {
 
           <div className="max-w-5xl">
             <h1 className="text-3xl sm:text-5xl md:text-7xl font-black text-neutral-900 leading-[0.95] mb-4">
-              The LGR Series:{' '}
+              LGR Series:{' '}
               <span className="text-xl sm:text-2xl md:text-3xl text-teal-700 font-serif italic block mt-2">
                 Recentering communities & councillors in local decision-making
               </span>
@@ -531,7 +531,7 @@ export default function Home({ onNavigate }: HomeProps) {
                 </div>
                 <div className="text-sm sm:text-base text-neutral-700 leading-relaxed sm:leading-loose space-y-4">
                   <p>
-                    <span className="font-bold text-neutral-900">The LGR Series exists to improve understanding of local government reorganisation</span> by examining what works, what fails and why governance matters more than structural change alone.
+                    <span className="font-bold text-neutral-900">LGR Series exists to improve understanding of local government reorganisation</span> by examining what works, what fails and why governance matters more than structural change alone.
                   </p>
                   <p>
                     It treats reorganisation and devolution as intrinsically linked reforms, analysing how power, accountability and decision making shift together, and what that means in practice for planning, leadership and communities.
