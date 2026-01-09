@@ -4,32 +4,37 @@ import App from './App.tsx';
 import './index.css';
 import { AdminAuthProvider } from './contexts/AdminAuthContext';
 
-// TEMPORARILY DISABLE SERVICE WORKER - Aggressively unregister and clear
+// URGENT: Disable service worker completely
 if ('serviceWorker' in navigator) {
-  // Immediately unregister all service workers
-  navigator.serviceWorker.getRegistrations().then((registrations) => {
-    registrations.forEach((registration) => {
-      registration.unregister().catch(() => {
-        // Ignore errors
+  // Run immediately, don't wait
+  (function() {
+    // Unregister all service workers
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      registrations.forEach((registration) => {
+        registration.unregister().catch(() => {});
       });
     });
-  });
-  
-  // Clear all caches immediately
-  if ('caches' in window) {
-    caches.keys().then((cacheNames) => {
-      cacheNames.forEach((cacheName) => {
-        caches.delete(cacheName).catch(() => {
-          // Ignore errors
+    
+    // Clear all caches
+    if ('caches' in window) {
+      caches.keys().then((cacheNames) => {
+        cacheNames.forEach((cacheName) => {
+          caches.delete(cacheName).catch(() => {});
         });
       });
-    });
-  }
-  
-  // Also try to unregister via the service worker controller
-  if (navigator.serviceWorker.controller) {
-    navigator.serviceWorker.controller.postMessage({ type: 'SKIP_WAITING' });
-  }
+    }
+    
+    // Stop any active service worker
+    if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({ type: 'SKIP_WAITING' });
+      // Force unregister
+      navigator.serviceWorker.getRegistration().then((registration) => {
+        if (registration) {
+          registration.unregister().catch(() => {});
+        }
+      });
+    }
+  })();
 }
 
 createRoot(document.getElementById('root')!).render(

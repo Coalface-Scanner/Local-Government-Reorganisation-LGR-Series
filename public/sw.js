@@ -1,93 +1,36 @@
-// Service Worker for LGR Series
-const CACHE_NAME = 'lgr-series-v1';
-const urlsToCache = [
-  '/',
-  '/index.html',
-  '/lgr.png',
-  '/lgr_banner.png'
-];
-// Note: JS/CSS files are cached dynamically via fetch handler
-// since Vite generates hashed filenames
+// Service Worker DISABLED - This file is now a no-op
+// All requests pass through to the network without caching
 
-// Install event - cache resources
+// Immediately unregister and clear caches
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(urlsToCache))
-      .then(() => self.skipWaiting())
-  );
-});
-
-// Activate event - clean up old caches
-self.addEventListener('activate', (event) => {
+  // Skip waiting and unregister immediately
+  self.skipWaiting();
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
-        cacheNames
-          .filter((cacheName) => cacheName !== CACHE_NAME)
-          .map((cacheName) => caches.delete(cacheName))
+        cacheNames.map((cacheName) => caches.delete(cacheName))
       );
-    }).then(() => self.clients.claim())
+    }).then(() => {
+      return self.registration.unregister();
+    })
   );
 });
 
-// Fetch event - serve from cache, fallback to network
-self.addEventListener('fetch', (event) => {
-  // Skip non-GET requests
-  if (event.request.method !== 'GET') return;
-
-  // Skip non-HTTP(S) requests (chrome-extension, data:, blob:, etc.)
-  try {
-    const url = new URL(event.request.url);
-    if (!url.protocol.startsWith('http')) {
-      return; // Let the browser handle it normally
-    }
-  } catch (e) {
-    // Invalid URL, let browser handle it
-    return;
-  }
-
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Return cached version or fetch from network
-        return response || fetch(event.request).then((response) => {
-          // Don't cache non-successful responses
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
-          }
-
-          // Only cache same-origin requests
-          try {
-            const responseUrl = new URL(response.url);
-            const requestUrl = new URL(event.request.url);
-            if (responseUrl.origin !== requestUrl.origin) {
-              return response; // Don't cache cross-origin requests
-            }
-          } catch (e) {
-            // Invalid URL, don't cache
-            return response;
-          }
-
-          // Clone the response
-          const responseToCache = response.clone();
-
-          // Cache with error handling
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache).catch((err) => {
-              // Silently fail if caching fails (e.g., chrome-extension URLs)
-              console.warn('Failed to cache request:', event.request.url, err);
-            });
-          });
-
-          return response;
-        });
-      })
-      .catch(() => {
-        // Return offline page if available
-        if (event.request.destination === 'document') {
-          return caches.match('/index.html');
-        }
-      })
+self.addEventListener('activate', (event) => {
+  // Clear all caches and unregister
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => caches.delete(cacheName))
+      );
+    }).then(() => {
+      return self.clients.claim();
+    })
   );
+});
+
+// Don't intercept any fetches - let everything go to network
+self.addEventListener('fetch', (event) => {
+  // Do nothing - let browser handle all requests normally
+  return;
 });
