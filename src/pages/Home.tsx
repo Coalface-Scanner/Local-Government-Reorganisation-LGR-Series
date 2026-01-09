@@ -143,37 +143,50 @@ export default function Home({ onNavigate }: HomeProps) {
     }).toUpperCase();
   };
 
-  // Lazy load background image component
+  // Lazy load background image component - delayed to improve LCP
   const BackgroundImageLazy = () => {
     const [imageLoaded, setImageLoaded] = useState(false);
     const [shouldLoad, setShouldLoad] = useState(false);
     const sectionRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-      // Load image after initial render
-      const timer = setTimeout(() => setShouldLoad(true), 100);
-      
-      // Intersection Observer for viewport-based loading
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting) {
+      // Delay loading significantly to not block initial render
+      // Only load after page is interactive
+      const delayTimer = setTimeout(() => {
+        // Intersection Observer for viewport-based loading
+        const observer = new IntersectionObserver(
+          (entries) => {
+            if (entries[0].isIntersecting) {
+              // Additional delay even when in viewport to prioritize critical content
+              setTimeout(() => setShouldLoad(true), 500);
+            }
+          },
+          { rootMargin: '100px', threshold: 0.1 }
+        );
+
+        if (sectionRef.current) {
+          observer.observe(sectionRef.current);
+        }
+
+        // Fallback: load after 2 seconds if still not intersecting
+        const fallbackTimer = setTimeout(() => {
+          if (!shouldLoad) {
             setShouldLoad(true);
           }
-        },
-        { rootMargin: '50px' }
-      );
+        }, 2000);
 
-      if (sectionRef.current) {
-        observer.observe(sectionRef.current);
-      }
+        return () => {
+          clearTimeout(fallbackTimer);
+          if (sectionRef.current) {
+            observer.unobserve(sectionRef.current);
+          }
+        };
+      }, 1000); // Wait 1 second before even starting to observe
 
       return () => {
-        clearTimeout(timer);
-        if (sectionRef.current) {
-          observer.unobserve(sectionRef.current);
-        }
+        clearTimeout(delayTimer);
       };
-    }, []);
+    }, [shouldLoad]);
 
     return (
       <>
@@ -194,6 +207,8 @@ export default function Home({ onNavigate }: HomeProps) {
             className="hidden"
             onLoad={() => setImageLoaded(true)}
             loading="lazy"
+            fetchPriority="low"
+            decoding="async"
           />
         )}
       </>
