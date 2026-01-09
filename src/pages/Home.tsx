@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react';
-import SubscriptionForm from '../components/SubscriptionForm';
-import FAQSection from '../components/FAQSection';
+import { useEffect, useState, lazy, Suspense, useRef } from 'react';
 import MetaTags from '../components/MetaTags';
 import OrganizationStructuredData from '../components/OrganizationStructuredData';
-import WelcomeModal from '../components/WelcomeModal';
 import { ArrowRight, BarChart3, MapPin, Quote, Download, FileText, BookOpen, Clock, Target, TrendingUp } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import ErrorDisplay from '../components/ErrorDisplay';
+
+// Lazy load heavy components
+const WelcomeModal = lazy(() => import('../components/WelcomeModal'));
+const SubscriptionForm = lazy(() => import('../components/SubscriptionForm'));
+const FAQSection = lazy(() => import('../components/FAQSection'));
 
 interface HomeProps {
   onNavigate: (page: string, slug?: string) => void;
@@ -116,8 +118,8 @@ export default function Home({ onNavigate }: HomeProps) {
       }
     };
 
-    fetchRecentUpdates();
-    fetchArticles();
+    // Run queries in parallel for faster loading
+    Promise.all([fetchRecentUpdates(), fetchArticles()]);
   }, []);
 
   const formatTimeAgo = (dateString: string) => {
@@ -142,9 +144,68 @@ export default function Home({ onNavigate }: HomeProps) {
     }).toUpperCase();
   };
 
+  // Lazy load background image component
+  const BackgroundImageLazy = () => {
+    const [imageLoaded, setImageLoaded] = useState(false);
+    const [shouldLoad, setShouldLoad] = useState(false);
+    const sectionRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      // Load image after initial render
+      const timer = setTimeout(() => setShouldLoad(true), 100);
+      
+      // Intersection Observer for viewport-based loading
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            setShouldLoad(true);
+          }
+        },
+        { rootMargin: '50px' }
+      );
+
+      if (sectionRef.current) {
+        observer.observe(sectionRef.current);
+      }
+
+      return () => {
+        clearTimeout(timer);
+        if (sectionRef.current) {
+          observer.unobserve(sectionRef.current);
+        }
+      };
+    }, []);
+
+    return (
+      <>
+        <div
+          ref={sectionRef}
+          className="absolute inset-0 opacity-[0.23] transition-opacity duration-500"
+          style={{
+            backgroundImage: shouldLoad && imageLoaded ? `url('/polling_station.png')` : 'none',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}
+        />
+        {shouldLoad && (
+          <img
+            src="/polling_station.png"
+            alt=""
+            className="hidden"
+            onLoad={() => setImageLoaded(true)}
+            loading="lazy"
+          />
+        )}
+      </>
+    );
+  };
+
   return (
     <div className="bg-neutral-50">
-      <WelcomeModal onNavigate={onNavigate} />
+      <Suspense fallback={null}>
+        <WelcomeModal onNavigate={onNavigate} />
+      </Suspense>
       <MetaTags
         title="Home"
         description="In-depth analysis and research on local government reorganisation across the United Kingdom. Examining lessons learned, governance risks, and practical guidance for councils undergoing structural reform."
@@ -152,15 +213,7 @@ export default function Home({ onNavigate }: HomeProps) {
       />
       <OrganizationStructuredData />
       <section className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-12 overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.23]"
-          style={{
-            backgroundImage: `url('/polling_station.png')`,
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
-        />
+        <BackgroundImageLazy />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="border-l-4 border-teal-700 pl-6 mb-8">
@@ -645,14 +698,18 @@ export default function Home({ onNavigate }: HomeProps) {
                 <p className="text-sm text-white mb-4">
                   Get the LGR Series directly in your inbox. No fluff, just deep analysis.
                 </p>
-                <SubscriptionForm variant="compact" />
+                <Suspense fallback={<div className="h-20 bg-teal-700/50 animate-pulse rounded" />}>
+                  <SubscriptionForm variant="compact" />
+                </Suspense>
               </div>
             </div>
           </aside>
         </div>
       </div>
 
-      <FAQSection page="home" />
+      <Suspense fallback={<div className="min-h-[400px] bg-slate-50 animate-pulse rounded-lg" />}>
+        <FAQSection page="home" />
+      </Suspense>
     </div>
   );
 }
