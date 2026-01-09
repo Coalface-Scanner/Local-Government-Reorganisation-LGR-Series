@@ -61,7 +61,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
               <Link
                 to="/admin/login"
                 aria-label="Members login"
-                className="hover:text-neutral-900 transition-colors"
+                className="hover:text-neutral-900 transition-colors px-3 py-2 min-h-[48px] min-w-[48px] flex items-center justify-center"
               >
                 MEMBERS LOGIN
               </Link>
@@ -96,7 +96,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
             <Link
               key={item.id}
               to={item.path}
-              className={`px-4 py-2 text-xs font-bold tracking-wider transition-all duration-200 ${
+              className={`px-4 py-3 text-xs font-bold tracking-wider transition-all duration-200 min-h-[48px] min-w-[48px] flex items-center justify-center ${
                 currentPage === item.id
                   ? 'text-teal-700 border-b-2 border-teal-700'
                   : 'text-neutral-700 hover:text-neutral-900'
@@ -107,7 +107,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
           ))}
           <Link
             to="/subscribe"
-            className="ml-4 px-6 py-2 bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold tracking-wider rounded-full transition-all"
+            className="ml-4 px-6 py-3 bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold tracking-wider rounded-full transition-all min-h-[48px] flex items-center justify-center"
           >
             SUBSCRIBE
           </Link>

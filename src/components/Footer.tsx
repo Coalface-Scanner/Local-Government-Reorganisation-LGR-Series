@@ -43,32 +43,32 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
             <h3 className="text-white font-bold text-sm mb-3 tracking-wider">LGR SERIES</h3>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link to="/" className="text-neutral-300 hover:text-teal-400 transition-colors">
+                <Link to="/" className="text-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center">
                   Home
                 </Link>
               </li>
               <li>
-                <Link to="/facts" className="text-neutral-300 hover:text-teal-400 transition-colors">
+                <Link to="/facts" className="text-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center">
                   Facts & Data
                 </Link>
               </li>
               <li>
-                <Link to="/lessons" className="text-neutral-300 hover:text-teal-400 transition-colors">
+                <Link to="/lessons" className="text-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center">
                   Lessons
                 </Link>
               </li>
               <li>
-                <Link to="/100days" className="text-neutral-300 hover:text-teal-400 transition-colors">
+                <Link to="/100days" className="text-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center">
                   100 Days
                 </Link>
               </li>
               <li>
-                <Link to="/surrey" className="text-neutral-300 hover:text-teal-400 transition-colors">
+                <Link to="/surrey" className="text-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center">
                   Focus: Surrey
                 </Link>
               </li>
               <li>
-                <Link to="/materials" className="text-neutral-300 hover:text-teal-400 transition-colors">
+                <Link to="/materials" className="text-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center">
                   Library
                 </Link>
               </li>
@@ -104,32 +104,36 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
         </div>
 
         <div className="py-4 border-t border-neutral-700 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex flex-wrap justify-center md:justify-start gap-3 text-xs">
-            <a href="https://coalfaceengagement.co.uk/privacy" target="_blank" rel="noopener noreferrer" className="text-neutral-300 hover:text-teal-400 transition-colors">
+          <div className="flex flex-wrap justify-center md:justify-start gap-2 text-xs items-center">
+            <a href="https://coalfaceengagement.co.uk/privacy" target="_blank" rel="noopener noreferrer" className="text-neutral-300 hover:text-teal-400 transition-colors px-3 py-2 min-h-[48px] inline-flex items-center">
               Privacy Policy
             </a>
             <span className="text-neutral-500">|</span>
-            <a href="https://coalfaceengagement.co.uk/accessibility" target="_blank" rel="noopener noreferrer" className="text-neutral-300 hover:text-teal-400 transition-colors">
+            <a href="https://coalfaceengagement.co.uk/accessibility" target="_blank" rel="noopener noreferrer" className="text-neutral-300 hover:text-teal-400 transition-colors px-3 py-2 min-h-[48px] inline-flex items-center">
               Accessibility
             </a>
             <span className="text-neutral-500">|</span>
-            <a href="https://coalfaceengagement.co.uk/terms" target="_blank" rel="noopener noreferrer" className="text-neutral-300 hover:text-teal-400 transition-colors">
+            <a href="https://coalfaceengagement.co.uk/terms" target="_blank" rel="noopener noreferrer" className="text-neutral-300 hover:text-teal-400 transition-colors px-3 py-2 min-h-[48px] inline-flex items-center">
               Terms & Conditions
             </a>
             <span className="text-neutral-500">|</span>
-            <a href="https://coalfaceengagement.co.uk/cookies" target="_blank" rel="noopener noreferrer" className="text-neutral-300 hover:text-teal-400 transition-colors">
+            <a href="https://coalfaceengagement.co.uk/cookies" target="_blank" rel="noopener noreferrer" className="text-neutral-300 hover:text-teal-400 transition-colors px-3 py-2 min-h-[48px] inline-flex items-center">
               Cookie Policy
             </a>
             <span className="text-neutral-500">|</span>
-            <a href="https://coalfaceengagement.co.uk/accessibility" target="_blank" rel="noopener noreferrer" className="text-neutral-300 hover:text-teal-400 transition-colors">
+            <a href="https://coalfaceengagement.co.uk/accessibility" target="_blank" rel="noopener noreferrer" className="text-neutral-300 hover:text-teal-400 transition-colors px-3 py-2 min-h-[48px] inline-flex items-center">
               AI Statement
             </a>
             <span className="text-neutral-500">|</span>
-            <Link to="/unsubscribe" className="text-neutral-300 hover:text-teal-400 transition-colors">
+            <Link to="/unsubscribe" className="text-neutral-300 hover:text-teal-400 transition-colors px-3 py-2 min-h-[48px] inline-flex items-center">
               Unsubscribe
             </Link>
             <span className="text-neutral-500">|</span>
-            <Link to="/admin/login" className="text-neutral-500 hover:text-neutral-400 transition-colors">
+            <Link 
+              to="/admin/login" 
+              className="text-neutral-500 hover:text-neutral-400 transition-colors px-3 py-2 min-h-[48px] min-w-[48px] inline-flex items-center justify-center"
+              aria-label="Admin login"
+            >
               •
             </Link>
           </div>
