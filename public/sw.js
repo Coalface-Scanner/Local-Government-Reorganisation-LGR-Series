@@ -37,9 +37,14 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   // Skip non-HTTP(S) requests (chrome-extension, data:, blob:, etc.)
-  const url = new URL(event.request.url);
-  if (!url.protocol.startsWith('http')) {
-    return; // Let the browser handle it normally
+  try {
+    const url = new URL(event.request.url);
+    if (!url.protocol.startsWith('http')) {
+      return; // Let the browser handle it normally
+    }
+  } catch (e) {
+    // Invalid URL, let browser handle it
+    return;
   }
 
   event.respondWith(
@@ -53,10 +58,15 @@ self.addEventListener('fetch', (event) => {
           }
 
           // Only cache same-origin requests
-          const responseUrl = new URL(response.url);
-          const requestUrl = new URL(event.request.url);
-          if (responseUrl.origin !== requestUrl.origin) {
-            return response; // Don't cache cross-origin requests
+          try {
+            const responseUrl = new URL(response.url);
+            const requestUrl = new URL(event.request.url);
+            if (responseUrl.origin !== requestUrl.origin) {
+              return response; // Don't cache cross-origin requests
+            }
+          } catch (e) {
+            // Invalid URL, don't cache
+            return response;
           }
 
           // Clone the response
