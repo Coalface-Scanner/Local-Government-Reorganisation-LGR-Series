@@ -5,7 +5,14 @@ import ShareButtons from '../components/ShareButtons';
 import MetaTags from '../components/MetaTags';
 import ArticleStructuredData from '../components/ArticleStructuredData';
 import ArticleQASection from '../components/ArticleQASection';
+import OptimizedImage from '../components/OptimizedImage';
+import ReadingTime from '../components/ReadingTime';
+import TableOfContents from '../components/TableOfContents';
+import RelatedArticles from '../components/RelatedArticles';
+import ReadingProgress from '../components/ReadingProgress';
+import ErrorDisplay from '../components/ErrorDisplay';
 import { ArrowLeft, Calendar } from 'lucide-react';
+import { retryWithBackoff } from '../lib/utils';
 
 interface Article {
   id: string;
@@ -23,13 +30,14 @@ interface Article {
 
 interface ArticleViewProps {
   slug?: string;
-  onNavigate: (page: string) => void;
+  onNavigate: (page: string, data?: unknown) => void;
 }
 
 export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (slug) {
@@ -39,27 +47,34 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
 
   const fetchArticle = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from('articles')
-      .select('*')
-      .eq('slug', slug)
-      .eq('status', 'published')
-      .maybeSingle();
+    setError(null);
+    
+    try {
+      const data = await retryWithBackoff(async () => {
+        const { data, error } = await supabase
+          .from('articles')
+          .select('*')
+          .eq('slug', slug)
+          .eq('status', 'published')
+          .maybeSingle();
 
-    if (error) {
-      setNotFound(true);
+        if (error) throw error;
+        return data;
+      });
+
+      if (!data) {
+        setNotFound(true);
+        setLoading(false);
+        return;
+      }
+
+      setArticle(data);
       setLoading(false);
-      return;
-    }
-
-    if (!data) {
-      setNotFound(true);
+    } catch (err) {
+      setError('Failed to load article. Please try again.');
       setLoading(false);
-      return;
+      console.error('Error fetching article:', err);
     }
-
-    setArticle(data);
-    setLoading(false);
   };
 
   if (loading) {
@@ -101,6 +116,7 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      <ReadingProgress />
       <MetaTags
         title={article.title}
         description={article.excerpt || ''}
@@ -128,6 +144,7 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
           <button
             onClick={() => onNavigate('insights')}
             className="flex items-center gap-2 text-slate-300 hover:text-white font-medium mb-6 group"
+            aria-label="Back to Insights"
           >
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
             Back to Insights
@@ -148,26 +165,36 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
           <div className="flex flex-wrap items-center gap-6 text-sm text-slate-300">
             {article.published_date && (
               <div className="flex items-center gap-2">
-                <Calendar size={16} />
+                <Calendar size={16} aria-hidden="true" />
                 <span>{new Date(article.published_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
               </div>
             )}
+            <ReadingTime content={article.body} />
           </div>
         </div>
       </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {article.featured_image && (
-          <img
-            src={article.featured_image}
-            alt={article.title}
-            loading="lazy"
-            decoding="async"
-            className="w-full h-auto rounded-2xl shadow-lg mb-8"
+        {error && (
+          <ErrorDisplay
+            message={error}
+            onRetry={fetchArticle}
+            className="mb-8"
           />
         )}
 
-        <article className="prose prose-lg max-w-none">
+        {article.featured_image && (
+          <OptimizedImage
+            src={article.featured_image}
+            alt={article.title}
+            className="w-full h-auto rounded-2xl shadow-lg mb-8"
+            priority={false}
+          />
+        )}
+
+        <div className="grid lg:grid-cols-4 gap-8">
+          <div className="lg:col-span-3">
+            <article className="prose prose-lg max-w-none print:prose-sm">
           <style>{`
             .prose h2 {
               font-size: 1.875rem;
@@ -242,14 +269,29 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
               font-style: italic;
             }
           `}</style>
-          <div dangerouslySetInnerHTML={{ __html: article.body || '' }} />
-        </article>
+              <div dangerouslySetInnerHTML={{ __html: article.body || '' }} />
+            </article>
 
-        <div className="mt-12 pt-8 border-t border-slate-200">
-          <ShareButtons 
-            title={article.title}
-            url={window.location.href}
-          />
+            <div className="mt-12 pt-8 border-t border-slate-200 print:hidden">
+              <ShareButtons 
+                title={article.title}
+                url={window.location.href}
+              />
+            </div>
+
+            <div className="mt-8">
+              <RelatedArticles
+                currentSlug={article.slug}
+                onNavigate={onNavigate}
+              />
+            </div>
+          </div>
+
+          <aside className="lg:col-span-1">
+            <div className="sticky top-24">
+              <TableOfContents content={article.body} />
+            </div>
+          </aside>
         </div>
       </div>
 

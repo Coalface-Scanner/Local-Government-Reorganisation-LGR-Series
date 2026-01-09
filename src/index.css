@@ -52,3 +52,74 @@
 .animate-fade-in {
   animation: fade-in 0.3s ease-out;
 }
+
+/* Print styles */
+@media print {
+  @page {
+    margin: 2cm;
+  }
+
+  * {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  a[href^="http"]:after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+  }
+
+  .no-print,
+  nav,
+  footer,
+  .print\\:hidden,
+  button,
+  .share-buttons,
+  .cookie-banner,
+  .back-to-top {
+    display: none !important;
+  }
+
+  article {
+    page-break-inside: avoid;
+  }
+
+  blockquote {
+    border-left: 3px solid #000;
+    padding-left: 1em;
+    margin: 1em 0;
+  }
+
+  table {
+    page-break-inside: avoid;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr {
+    page-break-inside: avoid;
+  }
+}

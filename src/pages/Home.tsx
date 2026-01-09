@@ -6,6 +6,7 @@ import OrganizationStructuredData from '../components/OrganizationStructuredData
 import WelcomeModal from '../components/WelcomeModal';
 import { ArrowRight, BarChart3, MapPin, Quote, Download, FileText, BookOpen, Clock, Target, TrendingUp } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import ErrorDisplay from '../components/ErrorDisplay';
 
 interface HomeProps {
   onNavigate: (page: string, slug?: string) => void;
@@ -36,31 +37,38 @@ export default function Home({ onNavigate }: HomeProps) {
   const [featuredArticle, setFeaturedArticle] = useState<Article | null>(null);
   const [recentArticles, setRecentArticles] = useState<Article[]>([]);
   const [loadingArticles, setLoadingArticles] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchRecentUpdates = async () => {
-      const { data, error } = await supabase
-        .from('site_updates')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(10);
+      try {
+        const { data, error } = await supabase
+          .from('site_updates')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(10);
 
-      if (error) {
-        // Silently fail - site updates are not critical for page functionality
-        return;
-      }
+        if (error) {
+          console.error('Error fetching site updates:', error);
+          // Site updates are not critical, so we continue without them
+          return;
+        }
 
-      if (data) {
-        setRecentUpdates(data);
+        if (data) {
+          setRecentUpdates(data);
+        }
+      } catch (err) {
+        console.error('Unexpected error fetching updates:', err);
       }
     };
 
     const fetchArticles = async () => {
       setLoadingArticles(true);
+      setError(null);
       
       try {
         // Fetch featured article
-        const { data: featuredData } = await supabase
+        const { data: featuredData, error: featuredError } = await supabase
           .from('articles')
           .select('id, title, slug, excerpt, featured_image, published_date, featured')
           .eq('status', 'published')
@@ -69,27 +77,33 @@ export default function Home({ onNavigate }: HomeProps) {
           .limit(1)
           .maybeSingle();
 
-        if (featuredData) {
+        if (featuredError) {
+          console.error('Error fetching featured article:', featuredError);
+        } else if (featuredData) {
           setFeaturedArticle(featuredData);
         }
 
         // Fetch recent articles (excluding featured one)
-        const { data: recentData } = await supabase
+        const { data: recentData, error: recentError } = await supabase
           .from('articles')
           .select('id, title, slug, excerpt, featured_image, published_date, featured')
           .eq('status', 'published')
           .order('published_date', { ascending: false })
           .limit(4);
 
-        if (recentData) {
+        if (recentError) {
+          console.error('Error fetching recent articles:', recentError);
+          setError('Unable to load articles. Please refresh the page.');
+        } else if (recentData) {
           // Filter out featured article if it exists
           const filtered = featuredData 
             ? recentData.filter(a => a.id !== featuredData.id)
             : recentData;
           setRecentArticles(filtered.slice(0, 4));
         }
-      } catch (error) {
-        // Silently fail - articles are not critical for page functionality
+      } catch (err) {
+        console.error('Unexpected error fetching articles:', err);
+        setError('Unable to load content. Please refresh the page.');
       } finally {
         setLoadingArticles(false);
       }
@@ -245,6 +259,17 @@ export default function Home({ onNavigate }: HomeProps) {
                 </h2>
                 <div className="h-px flex-grow bg-neutral-300"></div>
               </div>
+
+              {error && (
+                <ErrorDisplay
+                  message={error}
+                  onRetry={() => {
+                    setError(null);
+                    window.location.reload();
+                  }}
+                  className="mb-8"
+                />
+              )}
 
               {loadingArticles ? (
                 <div className="space-y-8">
