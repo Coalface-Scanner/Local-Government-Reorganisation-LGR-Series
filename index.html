@@ -1,14 +1,21 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1CQR5MEY37"></script>
+    <!-- Google tag (gtag.js) - Deferred for performance -->
     <script>
+      // Defer Google Analytics until after page load
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-1CQR5MEY37');
+      window.addEventListener('load', function() {
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-1CQR5MEY37';
+        document.head.appendChild(script);
+        script.onload = function() {
+          gtag('js', new Date());
+          gtag('config', 'G-1CQR5MEY37');
+        };
+      });
     </script>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/lgr.png" />
@@ -42,7 +49,33 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <elevenlabs-convai agent-id="agent_0601kdkcebt6erjbx8bv26x75c46"></elevenlabs-convai>
-    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed@beta" async type="text/javascript"></script>
+    <!-- ElevenLabs widget - Deferred for performance -->
+    <script>
+      // Load ElevenLabs widget after page is interactive
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(function() {
+          var convai = document.createElement('elevenlabs-convai');
+          convai.setAttribute('agent-id', 'agent_0601kdkcebt6erjbx8bv26x75c46');
+          document.body.appendChild(convai);
+          var script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed@beta';
+          script.type = 'text/javascript';
+          document.body.appendChild(script);
+        });
+      } else {
+        // Fallback for browsers without requestIdleCallback
+        setTimeout(function() {
+          var convai = document.createElement('elevenlabs-convai');
+          convai.setAttribute('agent-id', 'agent_0601kdkcebt6erjbx8bv26x75c46');
+          document.body.appendChild(convai);
+          var script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed@beta';
+          script.type = 'text/javascript';
+          document.body.appendChild(script);
+        }, 2000);
+      }
+    </script>
   </body>
 </html>

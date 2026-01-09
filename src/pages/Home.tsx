@@ -6,7 +6,6 @@ import { supabase } from '../lib/supabase';
 import ErrorDisplay from '../components/ErrorDisplay';
 
 // Lazy load heavy components
-const WelcomeModal = lazy(() => import('../components/WelcomeModal'));
 const SubscriptionForm = lazy(() => import('../components/SubscriptionForm'));
 const FAQSection = lazy(() => import('../components/FAQSection'));
 
@@ -46,9 +45,9 @@ export default function Home({ onNavigate }: HomeProps) {
       try {
         const { data, error } = await supabase
           .from('site_updates')
-          .select('*')
+          .select('id, title, description, update_type, created_at, link_page, link_slug')
           .order('created_at', { ascending: false })
-          .limit(10);
+          .limit(5);
 
         if (error) {
           console.error('Error fetching site updates:', error);
@@ -203,9 +202,6 @@ export default function Home({ onNavigate }: HomeProps) {
 
   return (
     <div className="bg-neutral-50">
-      <Suspense fallback={null}>
-        <WelcomeModal onNavigate={onNavigate} />
-      </Suspense>
       <MetaTags
         title="Home"
         description="In-depth analysis and research on local government reorganisation across the United Kingdom. Examining lessons learned, governance risks, and practical guidance for councils undergoing structural reform."
