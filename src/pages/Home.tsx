@@ -148,6 +148,8 @@ export default function Home({ onNavigate }: HomeProps) {
     const [imageLoaded, setImageLoaded] = useState(false);
     const [shouldLoad, setShouldLoad] = useState(false);
     const sectionRef = useRef<HTMLDivElement>(null);
+    const observerRef = useRef<IntersectionObserver | null>(null);
+    const fallbackTimerRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
       // Delay loading significantly to not block initial render
@@ -156,7 +158,7 @@ export default function Home({ onNavigate }: HomeProps) {
         // Intersection Observer for viewport-based loading
         const observer = new IntersectionObserver(
           (entries) => {
-            if (entries[0].isIntersecting) {
+            if (entries[0].isIntersecting && !shouldLoad) {
               // Additional delay even when in viewport to prioritize critical content
               setTimeout(() => setShouldLoad(true), 500);
             }
@@ -164,27 +166,28 @@ export default function Home({ onNavigate }: HomeProps) {
           { rootMargin: '100px', threshold: 0.1 }
         );
 
+        observerRef.current = observer;
+
         if (sectionRef.current) {
           observer.observe(sectionRef.current);
         }
 
         // Fallback: load after 2 seconds if still not intersecting
-        const fallbackTimer = setTimeout(() => {
+        fallbackTimerRef.current = setTimeout(() => {
           if (!shouldLoad) {
             setShouldLoad(true);
           }
         }, 2000);
-
-        return () => {
-          clearTimeout(fallbackTimer);
-          if (sectionRef.current) {
-            observer.unobserve(sectionRef.current);
-          }
-        };
       }, 1000); // Wait 1 second before even starting to observe
 
       return () => {
         clearTimeout(delayTimer);
+        if (fallbackTimerRef.current) {
+          clearTimeout(fallbackTimerRef.current);
+        }
+        if (observerRef.current && sectionRef.current) {
+          observerRef.current.unobserve(sectionRef.current);
+        }
       };
     }, [shouldLoad]);
 
