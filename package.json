@@ -1,7 +1,8 @@
 {
-  "name": "vite-react-typescript-starter",
+  "name": "lgr-series-website",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Local Government Reorganisation (LGR) Insights Website - Expert analysis and insights on local government reorganisation in England",
   "type": "module",
   "scripts": {
     "dev": "vite",
