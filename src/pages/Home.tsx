@@ -382,10 +382,17 @@ export default function Home({ onNavigate }: HomeProps) {
                 <div className="space-y-8">
                   {[1, 2, 3, 4].map((i) => (
                     <div key={i} className="border-b border-neutral-200 pb-8">
-                      <div className="h-4 bg-neutral-200 rounded w-32 mb-3 animate-pulse"></div>
-                      <div className="h-8 bg-neutral-200 rounded w-3/4 mb-3 animate-pulse"></div>
-                      <div className="h-4 bg-neutral-200 rounded w-full mb-2 animate-pulse"></div>
-                      <div className="h-4 bg-neutral-200 rounded w-2/3 animate-pulse"></div>
+                      <div className="flex flex-col md:flex-row gap-4 md:gap-6">
+                        <div className="flex-1 min-w-0">
+                          <div className="h-4 bg-neutral-200 rounded w-32 mb-3 animate-pulse"></div>
+                          <div className="h-8 bg-neutral-200 rounded w-3/4 mb-3 animate-pulse"></div>
+                          <div className="h-4 bg-neutral-200 rounded w-full mb-2 animate-pulse"></div>
+                          <div className="h-4 bg-neutral-200 rounded w-2/3 animate-pulse"></div>
+                        </div>
+                        <div className="flex-shrink-0 w-full md:w-48 lg:w-56">
+                          <div className="aspect-video md:aspect-square bg-neutral-200 rounded-lg animate-pulse"></div>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -393,26 +400,50 @@ export default function Home({ onNavigate }: HomeProps) {
                 <div className="space-y-8">
                   {recentArticles.map((article, index) => (
                     <article key={article.id} className="border-b border-neutral-200 pb-8">
-                      <div className="text-xs font-bold tracking-wider text-neutral-700 mb-2">
-                        {article.published_date && formatArticleDate(article.published_date)}
-                        {article.featured && ' • EXCLUSIVE'}
-                      </div>
-                      <button
-                        onClick={() => onNavigate('insights', article.slug)}
-                        className="group text-left w-full"
-                      >
-                        <h3 className={`font-black text-neutral-900 mb-3 group-hover:text-teal-700 transition-colors leading-tight ${
-                          index === 0 ? 'text-3xl md:text-4xl' : 'text-2xl'
-                        }`}>
-                          {article.title}
-                        </h3>
-                        {article.excerpt && (
-                          <p className="text-neutral-700 leading-relaxed mb-3">
-                            {article.excerpt}
-                          </p>
+                      <div className="flex flex-col md:flex-row gap-4 md:gap-6">
+                        <div className="flex-1 min-w-0">
+                          <div className="text-xs font-bold tracking-wider text-neutral-700 mb-2">
+                            {article.published_date && formatArticleDate(article.published_date)}
+                            {article.featured && ' • EXCLUSIVE'}
+                          </div>
+                          <button
+                            onClick={() => onNavigate('insights', article.slug)}
+                            className="group text-left w-full"
+                          >
+                            <h3 className={`font-black text-neutral-900 mb-3 group-hover:text-teal-700 transition-colors leading-tight ${
+                              index === 0 ? 'text-3xl md:text-4xl' : 'text-2xl'
+                            }`}>
+                              {article.title}
+                            </h3>
+                            {article.excerpt && (
+                              <p className="text-neutral-700 leading-relaxed mb-3">
+                                {article.excerpt}
+                              </p>
+                            )}
+                            <div className="text-sm font-bold text-teal-700">READ MORE →</div>
+                          </button>
+                        </div>
+                        {article.featured_image && (
+                          <div className="flex-shrink-0 w-full md:w-48 lg:w-56">
+                            <button
+                              onClick={() => onNavigate('insights', article.slug)}
+                              className="group block w-full"
+                            >
+                              <div className="relative aspect-video md:aspect-square overflow-hidden rounded-lg border-2 border-neutral-200 group-hover:border-teal-700 transition-colors">
+                                <img
+                                  src={article.featured_image}
+                                  alt={article.title}
+                                  loading="lazy"
+                                  decoding="async"
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                  width={224}
+                                  height={224}
+                                />
+                              </div>
+                            </button>
+                          </div>
                         )}
-                        <div className="text-sm font-bold text-teal-700">READ MORE →</div>
-                      </button>
+                      </div>
                     </article>
                   ))}
                 </div>
