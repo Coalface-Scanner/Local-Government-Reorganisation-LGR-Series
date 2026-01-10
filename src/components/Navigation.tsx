@@ -55,7 +55,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
       <div className="border-b border-neutral-200 bg-neutral-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5">
           <div className="flex justify-between items-center text-xs tracking-wider text-neutral-700 font-medium">
-            <div className="hidden sm:block">EST. 2025 | A <a href="https://www.coalfaceengagement.co.uk" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900 transition-colors underline">COALFACE</a> INSIGHT PROJECT</div>
+            <div className="hidden sm:block">EST. 2025 | A <a href="https://www.coalfaceengagement.co.uk" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900 transition-colors underline">COALFACE</a> Insight Project</div>
             <div className="sm:hidden text-[10px]">EST. 2025</div>
             <div className="flex gap-4 sm:gap-6 text-[10px] sm:text-xs">
               <Link
@@ -77,14 +77,10 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
             aria-label="Go to homepage"
             className="flex flex-col items-center hover:opacity-80 transition-opacity"
           >
-            <div className="flex items-baseline gap-2 mb-1">
-              <span className="text-3xl md:text-4xl font-black text-neutral-900 tracking-tight">
-                LOCAL GOVERNMENT
-              </span>
-              <span className="text-3xl md:text-4xl font-serif italic text-teal-700">
-                Reorganisation
-              </span>
-            </div>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-neutral-900 tracking-tight mb-1 text-center leading-tight">
+              <span className="block sm:inline">Local Government </span>
+              <span className="block sm:inline font-serif italic text-teal-700">Reorganisation</span>
+            </h1>
           </Link>
           <div className="text-xs tracking-widest text-neutral-700 mt-1 font-medium">
             DECISIONS, POWER AND PLACE • {currentDate || 'Loading...'}

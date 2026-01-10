@@ -56,7 +56,14 @@ export default function Home({ onNavigate }: HomeProps) {
         }
 
         if (data) {
-          setRecentUpdates(data);
+          // Remove duplicates based on title and created_at
+          const uniqueUpdates = data.filter((update, index, self) =>
+            index === self.findIndex((u) => 
+              u.title === update.title && 
+              u.created_at === update.created_at
+            )
+          );
+          setRecentUpdates(uniqueUpdates);
         }
       } catch (err) {
         console.error('Unexpected error fetching updates:', err);
@@ -315,19 +322,17 @@ export default function Home({ onNavigate }: HomeProps) {
                   className="group block w-full"
                 >
                   <div className="grid md:grid-cols-5 gap-6 bg-white border-2 border-neutral-900 hover:border-teal-700 overflow-hidden transition-all">
-                    {featuredArticle.featured_image && (
-                      <div className="relative h-64 md:h-auto md:col-span-3">
-                        <img
-                          src={featuredArticle.featured_image}
-                          alt={featuredArticle.title}
-                          loading="lazy"
-                          decoding="async"
-                          className="absolute inset-0 w-full h-full object-cover object-center"
-                          width={800}
-                          height={600}
-                        />
-                      </div>
-                    )}
+                    <div className="relative h-64 md:h-auto md:col-span-3">
+                      <img
+                        src="/LGR-PODCAST-TIM-OLIVER.png"
+                        alt={featuredArticle.title}
+                        loading="lazy"
+                        decoding="async"
+                        className="absolute inset-0 w-full h-full object-cover object-center"
+                        width={800}
+                        height={600}
+                      />
+                    </div>
                     <div className={`p-6 md:p-8 flex flex-col justify-center ${featuredArticle.featured_image ? 'md:col-span-2' : 'md:col-span-5'}`}>
                       <div className="text-xs font-bold tracking-wider text-teal-700 mb-3">
                         {featuredArticle.published_date && formatArticleDate(featuredArticle.published_date)}

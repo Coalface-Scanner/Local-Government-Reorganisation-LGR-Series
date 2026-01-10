@@ -63,7 +63,7 @@ export default function Contact({ onNavigate }: ContactProps) {
               </h2>
             </div>
             <p className="text-neutral-700 mb-4">
-              Receive new insights as they publish, plus access to case material and the 100 Day Playbook:
+              Receive new insights as they're published, plus access to case material and the 100 Day Playbook:
             </p>
             <button
               onClick={() => onNavigate('subscribe')}

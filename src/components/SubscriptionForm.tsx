@@ -101,13 +101,13 @@ export default function SubscriptionForm({ variant = 'default' }: SubscriptionFo
             <h3 className="text-2xl font-black text-slate-900 tracking-tight">Get the Series</h3>
           </div>
           <p className="text-base text-slate-600 mb-8 leading-relaxed">
-            New insights as they publish. <span className="font-semibold text-slate-700">Free.</span> No spam.
+            New insights as they're published. <span className="font-semibold text-slate-700">Free</span> — no spam.
           </p>
         </>
       )}
       {isCompact && (
         <p className="text-sm text-slate-600 mb-4 leading-relaxed">
-          New insights as they publish. <span className="font-semibold text-slate-700">Free.</span> No spam.
+          New insights as they're published. <span className="font-semibold text-slate-700">Free</span> — no spam.
         </p>
       )}
 
