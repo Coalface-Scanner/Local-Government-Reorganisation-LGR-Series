@@ -202,7 +202,7 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
 
                   <h4 className="text-lg font-semibold text-slate-900 mb-3">Quality Standards</h4>
                   <p className="text-slate-700 leading-relaxed mb-4">
-                    All analysis is grounded in publicly available data, cross-referenced across multiple sources, and validated against official records. We prioritize empirical evidence over anecdote, and clearly distinguish between observation, analysis, and interpretation.
+                    All analysis is grounded in publicly available data, cross-referenced across multiple sources, and validated against official records. We prioritise empirical evidence over anecdote, and clearly distinguish between observation, analysis, and interpretation.
                   </p>
                 </div>
               </div>
@@ -301,7 +301,7 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
                   <h4 className="text-lg font-semibold text-slate-900 mb-3">Programme Objectives</h4>
                   <ul className="list-disc pl-6 space-y-2 text-slate-700 mb-6">
                     <li>Document the reorganisation process and its impact on planning authority functions</li>
-                    <li>Analyze governance risks and opportunities created by structural change</li>
+                    <li>Analyse governance risks and opportunities created by structural change</li>
                     <li>Provide practical insights for authorities, developers, and practitioners</li>
                     <li>Build evidence on what works and what doesn't in reorganisation transitions</li>
                     <li>Strengthen sector understanding of institutional and political factors affecting delivery</li>

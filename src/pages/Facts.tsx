@@ -31,7 +31,7 @@ const serviceCards: ServiceCard[] = [
   {
     id: 'councils',
     title: 'Councils Involved',
-    description: 'Overview of councils affected by local government reorganisation proposals across England, organized by region.',
+    description: 'Overview of councils affected by local government reorganisation proposals across England, organised by region.',
     icon: MapPin,
     color: 'from-emerald-500 to-teal-600',
     route: '/facts/councils-involved'

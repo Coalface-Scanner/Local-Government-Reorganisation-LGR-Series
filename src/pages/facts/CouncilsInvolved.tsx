@@ -12,7 +12,7 @@ export default function CouncilsInvolved() {
     <div className="min-h-screen bg-neutral-50">
       <MetaTags
         title="Councils Involved - Facts & Data"
-        description="Overview of councils affected by local government reorganisation proposals across England, organized by region."
+        description="Overview of councils affected by local government reorganisation proposals across England, organised by region."
         keywords="LGR councils, reorganisation scope, unitary authorities, local government reorganisation areas"
       />
       

@@ -477,7 +477,7 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                     placeholder="e.g., Analysis, News, Opinion (optional)"
                   />
                   <p className="mt-2 text-xs text-neutral-500">
-                    Category helps organize and filter articles
+                    Category helps organise and filter articles
                   </p>
                 </div>
 

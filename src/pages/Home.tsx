@@ -159,7 +159,7 @@ export default function Home({ onNavigate }: HomeProps) {
         const observer = new IntersectionObserver(
           (entries) => {
             if (entries[0].isIntersecting && !shouldLoad) {
-              // Additional delay even when in viewport to prioritize critical content
+              // Additional delay even when in viewport to prioritise critical content
               setTimeout(() => setShouldLoad(true), 500);
             }
           },
