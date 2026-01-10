@@ -28,17 +28,17 @@ const PARTY_NAMES: Record<string, string> = {
 };
 
 const districts: District[] = [
-  { name: "Elmbridge", group: "East", composition: { Res: 19, LD: 19, Con: 10 } },
-  { name: "Epsom & Ewell", group: "East", composition: { Res: 26, Lab: 4, LD: 4, Con: 1 } },
-  { name: "Guildford", group: "West", composition: { LD: 25, Con: 10, Res: 7, Lab: 3, Green: 3 } },
-  { name: "Mole Valley", group: "East", composition: { LD: 29, Ind: 6, Con: 3, Green: 1 } },
-  { name: "Reigate & Banstead", group: "East", composition: { Con: 23, Green: 11, Res: 7, LD: 4 } },
-  { name: "Runnymede", group: "West", composition: { Con: 18, Lab: 10, LD: 6, Res: 6, Green: 1 } },
-  { name: "Spelthorne", group: "West", composition: { Con: 16, Lab: 10, LD: 8, Green: 2, Ind: 3 } },
-  { name: "Surrey Heath", group: "West", composition: { LD: 24, Con: 6, Ind: 3, Lab: 1, Green: 1 } },
-  { name: "Tandridge", group: "East", composition: { Res: 18, LD: 11, Con: 9, Ind: 4 } },
-  { name: "Waverley", group: "West", composition: { LD: 22, Res: 15, Con: 10, Lab: 2, Green: 1 } },
-  { name: "Woking", group: "West", composition: { LD: 24, Con: 4, Ind: 1, Lab: 1 } }
+  { name: "Elmbridge", group: "East", composition: { Lab: 0, Con: 10, LD: 20, Green: 0, Ind: 0, Res: 1, Other: 17 } },
+  { name: "Epsom & Ewell", group: "East", composition: { Lab: 3, Con: 2, LD: 3, Green: 0, Ind: 0, Res: 0, Other: 27 } },
+  { name: "Guildford", group: "West", composition: { Lab: 3, Con: 10, LD: 25, Green: 0, Ind: 0, Res: 0, Other: 10 } },
+  { name: "Mole Valley", group: "East", composition: { Lab: 0, Con: 2, LD: 31, Green: 0, Ind: 0, Res: 0, Other: 6 } },
+  { name: "Reigate & Banstead", group: "East", composition: { Lab: 0, Con: 17, LD: 4, Green: 13, Ind: 0, Res: 0, Other: 11 } },
+  { name: "Runnymede", group: "West", composition: { Lab: 8, Con: 12, LD: 6, Green: 3, Ind: 0, Res: 2, Other: 10 } },
+  { name: "Spelthorne", group: "West", composition: { Lab: 7, Con: 15, LD: 10, Green: 1, Ind: 0, Res: 0, Other: 5 } },
+  { name: "Surrey Heath", group: "West", composition: { Lab: 2, Con: 6, LD: 23, Green: 0, Ind: 0, Res: 0, Other: 4 } },
+  { name: "Tandridge", group: "East", composition: { Lab: 0, Con: 5, LD: 12, Green: 0, Ind: 0, Res: 1, Other: 25 } },
+  { name: "Waverley", group: "West", composition: { Lab: 0, Con: 11, LD: 24, Green: 1, Ind: 0, Res: 0, Other: 14 } },
+  { name: "Woking", group: "West", composition: { Lab: 1, Con: 0, LD: 24, Green: 0, Ind: 0, Res: 0, Other: 5 } }
 ];
 
 const countyCouncil = { composition: { Con: 47, LD: 16, Res: 13, Lab: 2, Green: 2, Ind: 1 } };
