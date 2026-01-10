@@ -77,13 +77,14 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
             aria-label="Go to homepage"
             className="flex flex-col items-center hover:opacity-80 transition-opacity"
           >
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-neutral-900 tracking-tight mb-1 text-center leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-neutral-900 tracking-tight mb-2 text-center leading-tight">
               <span className="block sm:inline">Local Government </span>
               <span className="block sm:inline font-serif italic text-teal-700">Reorganisation</span>
             </h1>
           </Link>
-          <div className="text-xs tracking-widest text-neutral-700 mt-1 font-medium">
-            DECISIONS, POWER AND PLACE • {currentDate || 'Loading...'}
+          <div className="text-sm sm:text-base tracking-widest text-neutral-700 mt-3 font-medium text-center max-w-3xl mx-auto">
+            <div className="mb-2">Putting communities and councillors back at the heart of local decision making</div>
+            <div className="text-teal-700 font-bold">{currentDate || 'Loading...'}</div>
           </div>
         </div>
 

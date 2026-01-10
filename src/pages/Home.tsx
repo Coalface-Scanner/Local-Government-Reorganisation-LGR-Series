@@ -1,7 +1,7 @@
 import { useEffect, useState, lazy, Suspense, useRef } from 'react';
+import { ArrowRight, BarChart3, MapPin, Quote, Download, FileText, BookOpen, Clock, Target, TrendingUp } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
 import OrganizationStructuredData from '../components/OrganizationStructuredData';
-import { ArrowRight, BarChart3, MapPin, Quote, Download, FileText, BookOpen, Clock, Target, TrendingUp } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import ErrorDisplay from '../components/ErrorDisplay';
 
@@ -39,6 +39,8 @@ export default function Home({ onNavigate }: HomeProps) {
   const [recentArticles, setRecentArticles] = useState<Article[]>([]);
   const [loadingArticles, setLoadingArticles] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentBanner, setCurrentBanner] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     const fetchRecentUpdates = async () => {
@@ -126,6 +128,19 @@ export default function Home({ onNavigate }: HomeProps) {
 
     // Run queries in parallel for faster loading
     Promise.all([fetchRecentUpdates(), fetchArticles()]);
+  }, []);
+
+  // Banner rotation logic
+  useEffect(() => {
+    const bannerInterval = setInterval(() => {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentBanner((prev) => (prev + 1) % 4);
+        setIsTransitioning(false);
+      }, 500); // Transition duration
+    }, 8000); // Change banner every 8 seconds
+
+    return () => clearInterval(bannerInterval);
   }, []);
 
   const formatTimeAgo = (dateString: string) => {
@@ -233,43 +248,128 @@ export default function Home({ onNavigate }: HomeProps) {
         keywords="local government reorganisation, LGR, council reform, unitary authorities, devolution, UK local government, local democracy"
       />
       <OrganizationStructuredData />
-      <section className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-12 overflow-hidden">
+      <section className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-16 lg:py-20 overflow-hidden">
         <BackgroundImageLazy />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border-l-4 border-teal-700 pl-6 mb-8">
-            <div className="text-xs font-bold tracking-widest text-teal-700 mb-3">
-              FEATURED ANALYSIS
-            </div>
-          </div>
+          {/* Banner Container */}
+          <div className="relative min-h-[400px] md:min-h-[500px] flex items-center">
+            {/* Banner 1 - What this is */}
+            {currentBanner === 0 && (
+              <div className={`w-full transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+                <div className="max-w-5xl">
+                  <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-neutral-900 leading-[0.95] mb-4">
+                    The LGR Series
+                  </h1>
+                  <h2 className="text-xl sm:text-2xl md:text-3xl text-teal-700 font-bold mb-6">
+                    Independent insight on local government reorganisation
+                  </h2>
+                  <p className="text-base sm:text-lg md:text-xl text-neutral-700 leading-relaxed max-w-3xl mb-8">
+                    Evidence led analysis of how reorganisation is reshaping governance, planning and local decision making.
+                  </p>
+                  <button
+                    onClick={() => onNavigate('insights')}
+                    className="group flex items-center justify-center gap-2 px-8 py-4 bg-teal-700 hover:bg-teal-800 text-white rounded-full transition-all w-full sm:w-auto font-bold text-sm tracking-wide"
+                  >
+                    VIEW THE SERIES
+                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              </div>
+            )}
 
-          <div className="max-w-5xl">
-            <h1 className="text-3xl sm:text-5xl md:text-7xl font-black text-neutral-900 leading-[0.95] mb-4">
-              LGR Series:{' '}
-              <span className="text-xl sm:text-2xl md:text-3xl text-teal-700 font-serif italic block mt-2">
-                Recentering communities & councillors in local decision-making
-              </span>
-            </h1>
+            {/* Banner 3 - Election Tracker */}
+            {currentBanner === 1 && (
+              <div className={`w-full transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+                <div className="max-w-5xl">
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-neutral-900 leading-[0.95] mb-4">
+                    Election Tracker and Surrey Simulation
+                  </h1>
+                  <h2 className="text-xl sm:text-2xl md:text-3xl text-teal-700 font-bold mb-6">
+                    Understanding political control, turnout risk and governance scenarios
+                  </h2>
+                  <p className="text-base sm:text-lg md:text-xl text-neutral-700 leading-relaxed max-w-3xl mb-8">
+                    Tracking and scenario modelling to test how election outcomes could shape decision making, legitimacy and early governance choices in the new Surrey councils.
+                  </p>
+                  <button
+                    onClick={() => onNavigate('surrey/election-simulator')}
+                    className="group flex items-center justify-center gap-2 px-8 py-4 bg-teal-700 hover:bg-teal-800 text-white rounded-full transition-all w-full sm:w-auto font-bold text-sm tracking-wide"
+                  >
+                    VIEW THE TRACKER
+                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              </div>
+            )}
 
-            <p className="text-base sm:text-lg md:text-xl text-neutral-700 leading-relaxed max-w-3xl mb-8">
-              What local government reorganisation means for communities, elected members and the opportunities it creates for local leadership.
-            </p>
+            {/* Banner 2 - Why it matters */}
+            {currentBanner === 2 && (
+              <div className={`w-full transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+                <div className="max-w-5xl">
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-neutral-900 leading-[0.95] mb-4">
+                    Putting communities and councillors back at the heart of decision making
+                  </h1>
+                  <h2 className="text-xl sm:text-2xl md:text-3xl text-teal-700 font-bold mb-6">
+                    Why democratic legitimacy will determine whether LGR succeeds
+                  </h2>
+                  <p className="text-base sm:text-lg md:text-xl text-neutral-700 leading-relaxed max-w-3xl mb-8">
+                    Too much reorganisation is treated as systems change. This Series focuses on governance, leadership and accountability.
+                  </p>
+                  <button
+                    onClick={() => onNavigate('lessons')}
+                    className="group flex items-center justify-center gap-2 px-8 py-4 bg-teal-700 hover:bg-teal-800 text-white rounded-full transition-all w-full sm:w-auto font-bold text-sm tracking-wide"
+                  >
+                    WHY THIS MATTERS
+                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              </div>
+            )}
 
-            <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
-              <button
-                onClick={() => onNavigate('lessons')}
-                className="group flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-teal-700 hover:bg-teal-800 text-white rounded-full transition-all w-full sm:w-auto"
-              >
-                <span className="font-bold text-sm tracking-wide">LEARN THE LESSONS</span>
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </button>
+            {/* Banner 4 - Lessons */}
+            {currentBanner === 3 && (
+              <div className={`w-full transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+                <div className="max-w-5xl">
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-neutral-900 leading-[0.95] mb-4">
+                    Lessons from recent reorganisations
+                  </h1>
+                  <h2 className="text-xl sm:text-2xl md:text-3xl text-teal-700 font-bold mb-6">
+                    What Dorset, Somerset, Northumberland and Surrey show us
+                  </h2>
+                  <p className="text-base sm:text-lg md:text-xl text-neutral-700 leading-relaxed max-w-3xl mb-8">
+                    Practical lessons drawn from councils already living with reorganisation, before mistakes become fixed.
+                  </p>
+                  <button
+                    onClick={() => onNavigate('lessons')}
+                    className="group flex items-center justify-center gap-2 px-8 py-4 bg-teal-700 hover:bg-teal-800 text-white rounded-full transition-all w-full sm:w-auto font-bold text-sm tracking-wide"
+                  >
+                    READ THE INSIGHTS
+                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              </div>
+            )}
 
-              <button
-                onClick={() => onNavigate('facts')}
-                className="px-6 sm:px-8 py-3 sm:py-4 bg-white border-2 border-neutral-900 hover:bg-neutral-50 text-neutral-900 font-bold text-sm tracking-wide rounded-full transition-all w-full sm:w-auto"
-              >
-                EXPLORE FACTS
-              </button>
+            {/* Banner Indicators */}
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+              {[0, 1, 2, 3].map((index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    setIsTransitioning(true);
+                    setTimeout(() => {
+                      setCurrentBanner(index);
+                      setIsTransitioning(false);
+                    }, 500);
+                  }}
+                  className={`w-3 h-3 rounded-full transition-all ${
+                    currentBanner === index
+                      ? 'bg-teal-700 w-8'
+                      : 'bg-neutral-300 hover:bg-neutral-400'
+                  }`}
+                  aria-label={`Go to banner ${index + 1}`}
+                />
+              ))}
             </div>
           </div>
         </div>
