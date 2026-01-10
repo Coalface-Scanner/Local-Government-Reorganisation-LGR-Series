@@ -55,8 +55,9 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
       <div className="border-b border-neutral-200 bg-neutral-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5">
           <div className="flex justify-between items-center text-xs tracking-wider text-neutral-700 font-medium">
-            <div className="hidden sm:block">EST. 2025 | A <a href="https://www.coalfaceengagement.co.uk" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900 transition-colors underline">COALFACE</a> Insight Project</div>
-            <div className="sm:hidden text-[10px]">EST. 2025</div>
+            <div className="hidden md:block">EST. 2025 | A <a href="https://www.coalfaceengagement.co.uk" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900 transition-colors underline">COALFACE</a> Insight Project</div>
+            <div className="md:hidden text-[10px]">EST. 2025</div>
+            <div className="hidden sm:block text-xs font-medium text-neutral-600 text-center flex-1 mx-4">{currentDate || 'Loading...'}</div>
             <div className="flex gap-4 sm:gap-6 text-[10px] sm:text-xs">
               <Link
                 to="/admin/login"
@@ -83,8 +84,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
             </h1>
           </Link>
           <div className="text-sm sm:text-base md:text-lg lg:text-xl tracking-widest text-neutral-700 mt-3 font-medium text-center max-w-6xl mx-auto px-4">
-            <div className="mb-2 whitespace-nowrap">Putting communities and councillors back at the heart of local decision making</div>
-            <div className="text-teal-700 font-bold">{currentDate || 'Loading...'}</div>
+            <div className="whitespace-nowrap">Putting communities and councillors back at the heart of local decision making</div>
           </div>
         </div>
 
