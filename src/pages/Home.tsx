@@ -365,7 +365,7 @@ export default function Home({ onNavigate }: HomeProps) {
                   <div className="grid md:grid-cols-5 gap-6 bg-white border-2 border-neutral-900 hover:border-teal-700 overflow-hidden transition-all">
                     <div className="relative h-64 md:h-auto md:col-span-3">
                       <img
-                        src="/LGR-PODCAST-TIM-OLIVER.png"
+                        src={featuredArticle.featured_image || '/Oliver_TNail_Article.png'}
                         alt={featuredArticle.title}
                         loading="lazy"
                         decoding="async"
