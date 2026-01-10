@@ -28,20 +28,32 @@ const PARTY_NAMES: Record<string, string> = {
 };
 
 const districts: District[] = [
-  { name: "Elmbridge", group: "East", composition: { Lab: 0, Con: 10, LD: 20, Green: 0, Ind: 0, Res: 1, Other: 17 } },
-  { name: "Epsom & Ewell", group: "East", composition: { Lab: 3, Con: 2, LD: 3, Green: 0, Ind: 0, Res: 0, Other: 27 } },
-  { name: "Guildford", group: "West", composition: { Lab: 3, Con: 10, LD: 25, Green: 0, Ind: 0, Res: 0, Other: 10 } },
+  // ELMBRIDGE: LD: 20, Res: 14 (12+2), Con: 10, Ind: 1, Other: 3 (Elmbridge Independents)
+  { name: "Elmbridge", group: "East", composition: { Lab: 0, Con: 10, LD: 20, Green: 0, Ind: 1, Res: 14, Other: 3 } },
+  // EPSOM AND EWELL: Res: 25, LD: 3, Lab: 3, Con: 2, Ind: 2
+  { name: "Epsom & Ewell", group: "East", composition: { Lab: 3, Con: 2, LD: 3, Green: 0, Ind: 2, Res: 25, Other: 0 } },
+  // GUILDFORD: LD: 25, Con: 10, Res: 7, Other: 3 (Guildford Greenbelt Group), Lab: 3
+  { name: "Guildford", group: "West", composition: { Lab: 3, Con: 10, LD: 25, Green: 0, Ind: 0, Res: 7, Other: 3 } },
+  // MOLE VALLEY: LD: 31, Other: 6 (Informal Independent), Con: 2
   { name: "Mole Valley", group: "East", composition: { Lab: 0, Con: 2, LD: 31, Green: 0, Ind: 0, Res: 0, Other: 6 } },
-  { name: "Reigate & Banstead", group: "East", composition: { Lab: 0, Con: 17, LD: 4, Green: 13, Ind: 0, Res: 0, Other: 11 } },
-  { name: "Runnymede", group: "West", composition: { Lab: 8, Con: 12, LD: 6, Green: 3, Ind: 0, Res: 2, Other: 10 } },
-  { name: "Spelthorne", group: "West", composition: { Lab: 7, Con: 15, LD: 10, Green: 1, Ind: 0, Res: 0, Other: 5 } },
-  { name: "Surrey Heath", group: "West", composition: { Lab: 2, Con: 6, LD: 23, Green: 0, Ind: 0, Res: 0, Other: 4 } },
-  { name: "Tandridge", group: "East", composition: { Lab: 0, Con: 5, LD: 12, Green: 0, Ind: 0, Res: 1, Other: 25 } },
-  { name: "Waverley", group: "West", composition: { Lab: 0, Con: 11, LD: 24, Green: 1, Ind: 0, Res: 0, Other: 14 } },
-  { name: "Woking", group: "West", composition: { Lab: 1, Con: 0, LD: 24, Green: 0, Ind: 0, Res: 0, Other: 5 } }
+  // REIGATE & BANSTEAD: Con: 18, Green: 13, Res: 6, LD: 4, Ind: 2, Lab: 2
+  { name: "Reigate & Banstead", group: "East", composition: { Lab: 2, Con: 18, LD: 4, Green: 13, Ind: 2, Res: 6, Other: 0 } },
+  // RUNNYMEDE: Con: 13, Green: 3, Ind: 5, Lab: 8, LD: 6, Res: 6 (Runnymede Independent Residents' Group)
+  { name: "Runnymede", group: "West", composition: { Lab: 8, Con: 13, LD: 6, Green: 3, Ind: 5, Res: 6, Other: 0 } },
+  // SPELTHORNE: Con: 16, LD: 11, Other: 6 (Independent Spelthorne incl. 1 Green), Lab: 6
+  { name: "Spelthorne", group: "West", composition: { Lab: 6, Con: 16, LD: 11, Green: 0, Ind: 0, Res: 0, Other: 6 } },
+  // SURREY HEATH: LD: 24, Con: 6, Ind: 3 (The Community Group), Lab: 2
+  { name: "Surrey Heath", group: "West", composition: { Lab: 2, Con: 6, LD: 24, Green: 0, Ind: 3, Res: 0, Other: 0 } },
+  // TANDRIDGE: Res: 20 (Residents' Alliance), LD: 11, Con: 7, Other: 5 (Independent Group)
+  { name: "Tandridge", group: "East", composition: { Lab: 0, Con: 7, LD: 11, Green: 0, Ind: 0, Res: 20, Other: 5 } },
+  // WAVERLEY: LD: 22, Res: 13 (Farnham Residents), Con: 11, Ind: 2, Lab: 1, Green: 1
+  { name: "Waverley", group: "West", composition: { Lab: 1, Con: 11, LD: 22, Green: 1, Ind: 2, Res: 13, Other: 0 } },
+  // WOKING: LD: 24, Ind: 5, Lab: 1
+  { name: "Woking", group: "West", composition: { Lab: 1, Con: 0, LD: 24, Green: 0, Ind: 5, Res: 0, Other: 0 } }
 ];
 
-const countyCouncil = { composition: { Con: 47, LD: 16, Res: 13, Lab: 2, Green: 2, Ind: 1 } };
+// SURREY COUNTY COUNCIL: Con: 38, LD: 19, Res: 16 (Residents' Association/Independent), Lab: 2, Green: 2, Other: 2 (Reform UK), Ind: 1, 1 vacancy
+const countyCouncil = { composition: { Con: 38, LD: 19, Res: 16, Lab: 2, Green: 2, Ind: 1, Other: 2 } };
 
 export default function SurreyElectionSimulator({ onNavigate }: SurreyElectionSimulatorProps) {
   const navigate = useNavigate();
