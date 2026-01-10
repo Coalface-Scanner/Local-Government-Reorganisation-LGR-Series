@@ -188,12 +188,12 @@ export default function Home({ onNavigate }: HomeProps) {
         keywords="local government reorganisation, LGR, council reform, unitary authorities, devolution, UK local government, local democracy"
       />
       <OrganizationStructuredData />
-      <section className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-16 lg:py-20 overflow-hidden">
+      <section className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-[43px] lg:py-[54px] overflow-hidden">
         <StaticBackgroundImage />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
           {/* Banner Container */}
-          <div className="relative min-h-[400px] md:min-h-[500px] flex items-center">
+          <div className="relative min-h-[267px] md:min-h-[335px] flex items-center">
             {/* Banner 1 - What this is */}
             {currentBanner === 0 && (
               <div className={`w-full relative z-10 transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
@@ -671,15 +671,23 @@ export default function Home({ onNavigate }: HomeProps) {
                     <Target size={20} className="text-white" />
                   </div>
                   <h3 className="text-sm font-black tracking-wider text-neutral-900">
-                    ABOUT THIS SERIES
+                    PURPOSE OF THE SERIES
                   </h3>
                 </div>
                 <div className="text-sm sm:text-base text-neutral-700 leading-relaxed sm:leading-loose space-y-4">
                   <p>
-                    <span className="font-bold text-neutral-900">LGR Series exists to improve understanding of local government reorganisation</span> by examining what works, what fails and why governance matters more than structural change alone.
+                    The LGR Series provides independent, governance led insight into local government reorganisation and devolution.
                   </p>
                   <p>
-                    It treats reorganisation and devolution as intrinsically linked reforms, analysing how power, accountability and decision making shift together, and what that means in practice for planning, leadership and communities.
+                    It examines what works, what fails, and how changes in power, accountability and decision making affect political leadership, communities, housing delivery and the wider economy. Drawing on community insight, councillor experience and business perspective, the Series is intended to support reform that works in practice, not just on paper.
+                  </p>
+                  <p>
+                    <button
+                      onClick={() => onNavigate('about')}
+                      className="text-teal-700 hover:text-teal-800 font-semibold underline transition-colors"
+                    >
+                      Find out more
+                    </button>
                   </p>
                 </div>
               </div>

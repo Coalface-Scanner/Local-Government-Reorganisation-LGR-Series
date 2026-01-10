@@ -45,7 +45,16 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
   };
 
   return (
-    <nav className="bg-white shadow-sm sticky top-0 z-50 border-b border-neutral-200">
+    <nav 
+      className="bg-white shadow-sm sticky top-0 z-50 border-b border-neutral-200 relative" 
+      style={{
+        backgroundImage: `
+          radial-gradient(circle at 1px 1px, rgba(0,0,0,0.006) 0.5px, transparent 0)
+        `,
+        backgroundSize: '32px 32px',
+        backgroundColor: '#fefefe'
+      }}
+    >
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-teal-700 focus:text-white focus:rounded-md focus:shadow-lg"
@@ -72,7 +81,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center py-6 border-b border-neutral-200">
+        <div className="flex flex-col items-center py-4 border-b border-neutral-200">
           <Link
             to="/"
             aria-label="Go to homepage"
@@ -83,12 +92,12 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
               <span className="block sm:inline font-serif italic text-teal-700">Reorganisation</span>
             </h1>
           </Link>
-          <div className="text-sm sm:text-base md:text-lg lg:text-xl tracking-widest text-neutral-700 mt-3 font-medium text-center max-w-6xl mx-auto px-4">
+          <div className="text-sm sm:text-base md:text-lg lg:text-xl tracking-widest text-neutral-700 mt-2 font-medium text-center max-w-6xl mx-auto px-4">
             <div className="whitespace-nowrap">Putting communities and councillors back at the heart of local decision making</div>
           </div>
         </div>
 
-        <div className="hidden md:flex justify-center items-center space-x-1 py-4">
+        <div className="hidden md:flex justify-center items-center space-x-1 py-3">
           {navItems.map((item) => (
             <Link
               key={item.id}
