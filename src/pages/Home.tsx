@@ -1,5 +1,5 @@
 import { useEffect, useState, lazy, Suspense } from 'react';
-import { ArrowRight, BarChart3, MapPin, Quote, Download, FileText, BookOpen, Clock, Target, TrendingUp } from 'lucide-react';
+import { ArrowRight, BarChart3, MapPin, Quote, Download, FileText, BookOpen, Clock, Target } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
 import OrganizationStructuredData from '../components/OrganizationStructuredData';
 import { supabase } from '../lib/supabase';
@@ -318,29 +318,30 @@ export default function Home({ onNavigate }: HomeProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-12">
-            <section className="bg-gradient-to-br from-teal-50 to-white border-2 border-teal-700 p-8 md:p-10">
-              <div className="flex items-start gap-4 mb-6">
-                <div className="w-12 h-12 bg-teal-700 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <TrendingUp size={24} className="text-white" />
+            <section className="bg-white border-4 border-neutral-900 p-8 md:p-10">
+              <div className="mb-6">
+                <div className="text-xs font-bold tracking-wider text-neutral-700 mb-3">
+                  LIVE GOVERNANCE INTELLIGENCE
                 </div>
-                <div className="flex-1">
-                  <div className="text-xs font-bold tracking-wider text-teal-700 mb-2">
-                    INTERACTIVE TOOL
-                  </div>
-                  <h3 className="text-2xl md:text-3xl font-black text-neutral-900 mb-3 leading-tight">
-                    Surrey Election Simulator
-                  </h3>
-                  <p className="text-neutral-700 mb-6 leading-relaxed">
-                    Model election outcomes for East and West Surrey unitary authorities. Use our interactive seat planner to explore different scenarios and understand the political composition of the new councils.
-                  </p>
-                  <button
-                    onClick={() => onNavigate('surrey/election-simulator')}
-                    className="group inline-flex items-center gap-2 px-6 py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold text-sm tracking-wide rounded-full transition-all"
-                  >
-                    OPEN SIMULATOR
-                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                  </button>
-                </div>
+                <h3 className="text-2xl md:text-3xl font-black text-neutral-900 mb-4 leading-tight">
+                  Election Track 2026
+                </h3>
+                <p className="text-neutral-700 mb-4 leading-relaxed">
+                  Track political control, turnout risk and governance scenarios for the new East and West Surrey unitary councils.
+                </p>
+                <p className="text-neutral-600 mb-4 leading-relaxed text-sm">
+                  Updated to reflect boundary changes, turnout patterns and early governance implications following reorganisation.
+                </p>
+                <p className="text-xs text-neutral-500 mb-6 leading-relaxed italic">
+                  Used by councillors, officers and advisers to test assumptions ahead of key decisions.
+                </p>
+                <button
+                  onClick={() => onNavigate('surrey/election-simulator')}
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold text-sm tracking-wide rounded-full transition-colors"
+                >
+                  OPEN ELECTION TRACK 2026
+                  <ArrowRight size={18} />
+                </button>
               </div>
             </section>
 
