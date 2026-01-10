@@ -1,31 +1,94 @@
+# Robots.txt for Local Government Reorganisation (LGR) Series
+# Optimized for search engines and AI crawlers
+
 User-agent: *
 Allow: /
+Disallow: /admin
 Disallow: /admin-login
 Disallow: /admin-dashboard
+Disallow: /admin/articles
+Crawl-delay: 1
 
+# Google Search
+User-agent: Googlebot
+Allow: /
+Disallow: /admin
+Disallow: /admin-login
+Disallow: /admin-dashboard
+Disallow: /admin/articles
+Crawl-delay: 0
+
+# Bing Search
+User-agent: Bingbot
+Allow: /
+Disallow: /admin
+Disallow: /admin-login
+Disallow: /admin-dashboard
+Disallow: /admin/articles
+Crawl-delay: 0
+
+# OpenAI GPTBot
 User-agent: GPTBot
 Allow: /
+Disallow: /admin
 Disallow: /admin-login
 Disallow: /admin-dashboard
+Disallow: /admin/articles
 
+# ChatGPT
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /admin
 Disallow: /admin-login
 Disallow: /admin-dashboard
+Disallow: /admin/articles
 
+# Anthropic Claude
 User-agent: Claude-Web
 Allow: /
+Disallow: /admin
 Disallow: /admin-login
 Disallow: /admin-dashboard
-
-User-agent: PerplexityBot
-Allow: /
-Disallow: /admin-login
-Disallow: /admin-dashboard
+Disallow: /admin/articles
 
 User-agent: Anthropic-AI
 Allow: /
+Disallow: /admin
 Disallow: /admin-login
 Disallow: /admin-dashboard
+Disallow: /admin/articles
 
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin
+Disallow: /admin-login
+Disallow: /admin-dashboard
+Disallow: /admin/articles
+
+# Google AI
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin
+Disallow: /admin-login
+Disallow: /admin-dashboard
+Disallow: /admin/articles
+
+# CCBot (Common Crawl)
+User-agent: CCBot
+Allow: /
+Disallow: /admin
+Disallow: /admin-login
+Disallow: /admin-dashboard
+Disallow: /admin/articles
+
+# Applebot
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin
+Disallow: /admin-login
+Disallow: /admin-dashboard
+Disallow: /admin/articles
+
+# Sitemap location
 Sitemap: https://localgovernmentreorganisation.co.uk/sitemap.xml

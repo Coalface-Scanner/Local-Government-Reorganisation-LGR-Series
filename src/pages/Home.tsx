@@ -2,6 +2,7 @@ import { useEffect, useState, lazy, Suspense } from 'react';
 import { ArrowRight, BarChart3, MapPin, Quote, Download, FileText, BookOpen, Clock, Target } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
 import OrganizationStructuredData from '../components/OrganizationStructuredData';
+import WebSiteStructuredData from '../components/WebSiteStructuredData';
 import { supabase } from '../lib/supabase';
 import ErrorDisplay from '../components/ErrorDisplay';
 
@@ -183,11 +184,12 @@ export default function Home({ onNavigate }: HomeProps) {
   return (
     <div className="bg-neutral-50">
       <MetaTags
-        title="Home"
-        description="In-depth analysis and research on local government reorganisation across the United Kingdom. Examining lessons learned, governance risks, and practical guidance for councils undergoing structural reform."
-        keywords="local government reorganisation, LGR, council reform, unitary authorities, devolution, UK local government, local democracy"
+        title="LGR - Local Government Reorganisation & Council Reform | Expert Analysis"
+        description="The leading resource on Local Government Reorganisation (LGR), council reform, and English devolution. Expert analysis, evidence-based research, and practical insights on local government reform, unitary authorities, and devolution across the UK."
+        keywords="LGR, Local Government Reorganisation, Local Government Reform, Council Reform, English Devolution, unitary authorities, council reorganisation, local government reform UK, local government reorganisation England, council restructuring, devolution England, local authority reorganisation"
       />
       <OrganizationStructuredData />
+      <WebSiteStructuredData />
       <section className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-[43px] lg:py-[54px] overflow-hidden">
         <StaticBackgroundImage />
 
@@ -199,13 +201,13 @@ export default function Home({ onNavigate }: HomeProps) {
               <div className={`w-full relative z-10 transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
                 <div className="max-w-5xl">
                   <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-neutral-900 leading-[0.95] mb-4">
-                    The LGR Series
+                    LGR - Local Government Reorganisation & Council Reform
                   </h1>
                   <h2 className="text-xl sm:text-2xl md:text-3xl text-teal-700 font-bold mb-6">
-                    Independent insight on local government reorganisation
+                    Expert analysis on Local Government Reorganisation, Council Reform, and English Devolution
                   </h2>
                   <p className="text-base sm:text-lg md:text-xl text-neutral-700 leading-relaxed max-w-3xl mb-8">
-                    Evidence led analysis of how reorganisation is reshaping governance, planning and local decision making.
+                    The leading resource on Local Government Reorganisation (LGR) and council reform. Evidence-led analysis of how reorganisation and local government reform are reshaping governance, planning, and decision-making across England.
                   </p>
                   <button
                     onClick={() => onNavigate('insights')}

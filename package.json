@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/generate-sitemap.js",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -14,7 +15,8 @@
     "upload-facts": "node scripts/upload-facts.js",
     "import-substack": "node scripts/import-substack-rss.js",
     "import-substack:update": "node scripts/import-substack-rss.js --update",
-    "add-moran-article": "node scripts/add-robert-moran-article.js"
+    "add-moran-article": "node scripts/add-robert-moran-article.js",
+    "generate-sitemap": "node scripts/generate-sitemap.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",

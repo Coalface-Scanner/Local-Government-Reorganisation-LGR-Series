@@ -26,14 +26,19 @@ export default function OrganizationStructuredData() {
       "name": "United Kingdom"
     },
     "knowsAbout": [
-      "Local Government",
+      "LGR",
       "Local Government Reorganisation",
+      "Local Government Reform",
       "Council Reform",
+      "English Devolution",
       "Unitary Authorities",
       "Devolution",
-      "Public Policy"
+      "Public Policy",
+      "Local Authority Reorganisation",
+      "Council Restructuring",
+      "Local Government Reform UK"
     ],
-    "description": "Independent analysis and expert perspectives on local government reorganisation across the United Kingdom. Evidence-based research, interviews with sector leaders, and practical lessons from reorganisation experiences.",
+    "description": "The leading resource on Local Government Reorganisation (LGR), council reform, and English devolution. Expert analysis, evidence-based research, and practical insights on local government reform, unitary authorities, and devolution across the UK.",
     "foundingDate": "2019",
     "sameAs": [
       baseUrl
