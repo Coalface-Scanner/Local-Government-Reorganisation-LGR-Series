@@ -223,10 +223,10 @@ export default function Home({ onNavigate }: HomeProps) {
               <div className={`w-full relative z-10 transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
                 <div className="max-w-5xl">
                   <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-neutral-900 leading-[0.95] mb-4">
-                    Election Tracker and Surrey Simulation
+                    Election Track 2026
                   </h1>
                   <h2 className="text-xl sm:text-2xl md:text-3xl text-teal-700 font-bold mb-6">
-                    Understanding political control, turnout risk and governance scenarios
+                    Understanding political control, turnout risk and governance implications
                   </h2>
                   <p className="text-base sm:text-lg md:text-xl text-neutral-700 leading-relaxed max-w-3xl mb-8">
                     Tracking and scenario modelling to test how election outcomes could shape decision making, legitimacy and early governance choices in the new Surrey councils.
@@ -235,7 +235,7 @@ export default function Home({ onNavigate }: HomeProps) {
                     onClick={() => onNavigate('surrey/election-simulator')}
                     className="group flex items-center justify-center gap-2 px-8 py-4 bg-teal-700 hover:bg-teal-800 text-white rounded-full transition-all w-full sm:w-auto font-bold text-sm tracking-wide"
                   >
-                    VIEW THE TRACKER
+                    OPEN ELECTION TRACK 2026
                     <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                   </button>
                 </div>
@@ -342,6 +342,15 @@ export default function Home({ onNavigate }: HomeProps) {
                   OPEN ELECTION TRACK 2026
                   <ArrowRight size={18} />
                 </button>
+              </div>
+              <div className="mt-6">
+                <img
+                  src="/Mayors-Together.jpg"
+                  alt="Mayors Together"
+                  className="w-full h-auto rounded-lg"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
             </section>
 
