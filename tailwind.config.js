@@ -16,7 +16,7 @@ export default {
           800: '#065f46',
           900: '#064e3b',
         },
-        // Override teal with vibrant green - one shade more vibrant (brighter emerald)
+        // Override teal with vibrant green - emerald green (slightly darker shade)
         teal: {
           50: '#ecfdf5',
           100: '#d1fae5',
@@ -25,8 +25,8 @@ export default {
           400: '#34d399',
           500: '#10b981',
           600: '#059669',
-          700: '#10b981', // Using 500 (brighter) instead of 600 for teal-700
-          800: '#059669', // Using 600 instead of 700 for teal-800
+          700: '#059669', // Using 600 (slightly darker) for teal-700
+          800: '#047857', // Using 700 for teal-800
           900: '#047857',
         },
       },
