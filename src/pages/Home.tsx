@@ -343,15 +343,6 @@ export default function Home({ onNavigate }: HomeProps) {
                   <ArrowRight size={18} />
                 </button>
               </div>
-              <div className="mt-6">
-                <img
-                  src="/Mayors-Together.jpg"
-                  alt="Mayors Together"
-                  className="w-full h-auto rounded-lg"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
             </section>
 
             <section className="border-t-2 border-teal-700 pt-8">
