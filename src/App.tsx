@@ -29,6 +29,8 @@ const Contact = lazy(() => import('./pages/Contact'));
 const News = lazy(() => import('./pages/News'));
 const ArticleView = lazy(() => import('./pages/ArticleView'));
 const FactDetail = lazy(() => import('./pages/FactDetail'));
+const CouncilProfiles = lazy(() => import('./pages/CouncilProfiles'));
+const CouncilProfileDetail = lazy(() => import('./pages/CouncilProfileDetail'));
 
 // Admin pages - lazy loaded (less frequently accessed)
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
@@ -144,6 +146,8 @@ function AppContent() {
             <Route path="/100days" element={<PageWrapper>{(nav) => <HundredDays onNavigate={nav} />}</PageWrapper>} />
             <Route path="/contact" element={<PageWrapper>{(nav) => <Contact onNavigate={nav} />}</PageWrapper>} />
             <Route path="/councils" element={<Councils />} />
+            <Route path="/council-profiles" element={<CouncilProfiles />} />
+            <Route path="/council-profiles/:slug" element={<CouncilProfileDetail />} />
             <Route path="/subscribe" element={<PageWrapper>{(nav) => <Subscribe onNavigate={nav} />}</PageWrapper>} />
             <Route path="/unsubscribe" element={<Unsubscribe />} />
             <Route path="/news" element={<News />} />
