@@ -1,4 +1,4 @@
-import { useEffect, useState, lazy, Suspense, useRef } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import { ArrowRight, BarChart3, MapPin, Quote, Download, FileText, BookOpen, Clock, Target, TrendingUp } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
 import OrganizationStructuredData from '../components/OrganizationStructuredData';
@@ -165,78 +165,18 @@ export default function Home({ onNavigate }: HomeProps) {
     }).toUpperCase();
   };
 
-  // Lazy load background image component - delayed to improve LCP
-  const BackgroundImageLazy = () => {
-    const [imageLoaded, setImageLoaded] = useState(false);
-    const [shouldLoad, setShouldLoad] = useState(false);
-    const sectionRef = useRef<HTMLDivElement>(null);
-    const observerRef = useRef<IntersectionObserver | null>(null);
-    const fallbackTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-    useEffect(() => {
-      // Delay loading significantly to not block initial render
-      // Only load after page is interactive
-      const delayTimer = setTimeout(() => {
-        // Intersection Observer for viewport-based loading
-        const observer = new IntersectionObserver(
-          (entries) => {
-            if (entries[0].isIntersecting && !shouldLoad) {
-              // Additional delay even when in viewport to prioritise critical content
-              setTimeout(() => setShouldLoad(true), 500);
-            }
-          },
-          { rootMargin: '100px', threshold: 0.1 }
-        );
-
-        observerRef.current = observer;
-
-        if (sectionRef.current) {
-          observer.observe(sectionRef.current);
-        }
-
-        // Fallback: load after 2 seconds if still not intersecting
-        fallbackTimerRef.current = setTimeout(() => {
-          if (!shouldLoad) {
-            setShouldLoad(true);
-          }
-        }, 2000);
-      }, 1000); // Wait 1 second before even starting to observe
-
-      return () => {
-        clearTimeout(delayTimer);
-        if (fallbackTimerRef.current) {
-          clearTimeout(fallbackTimerRef.current);
-        }
-        if (observerRef.current && sectionRef.current) {
-          observerRef.current.unobserve(sectionRef.current);
-        }
-      };
-    }, [shouldLoad]);
-
+  // Static background image - loads once and stays static while text rotates
+  const StaticBackgroundImage = () => {
     return (
-      <>
-        <div
-          ref={sectionRef}
-          className="absolute inset-0 opacity-[0.23] transition-opacity duration-500"
-          style={{
-            backgroundImage: shouldLoad && imageLoaded ? `url('/polling_station.png')` : 'none',
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
-        />
-        {shouldLoad && (
-          <img
-            src="/polling_station.png"
-            alt=""
-            className="hidden"
-            onLoad={() => setImageLoaded(true)}
-            loading="lazy"
-            fetchPriority="low"
-            decoding="async"
-          />
-        )}
-      </>
+      <div
+        className="absolute inset-0 opacity-[0.23] z-0"
+        style={{
+          backgroundImage: "url('/polling_station.png')",
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      />
     );
   };
 
@@ -249,14 +189,14 @@ export default function Home({ onNavigate }: HomeProps) {
       />
       <OrganizationStructuredData />
       <section className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-16 lg:py-20 overflow-hidden">
-        <BackgroundImageLazy />
+        <StaticBackgroundImage />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
           {/* Banner Container */}
           <div className="relative min-h-[400px] md:min-h-[500px] flex items-center">
             {/* Banner 1 - What this is */}
             {currentBanner === 0 && (
-              <div className={`w-full transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+              <div className={`w-full relative z-10 transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
                 <div className="max-w-5xl">
                   <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-neutral-900 leading-[0.95] mb-4">
                     The LGR Series
@@ -280,7 +220,7 @@ export default function Home({ onNavigate }: HomeProps) {
 
             {/* Banner 3 - Election Tracker */}
             {currentBanner === 1 && (
-              <div className={`w-full transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+              <div className={`w-full relative z-10 transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
                 <div className="max-w-5xl">
                   <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-neutral-900 leading-[0.95] mb-4">
                     Election Tracker and Surrey Simulation
@@ -304,7 +244,7 @@ export default function Home({ onNavigate }: HomeProps) {
 
             {/* Banner 2 - Why it matters */}
             {currentBanner === 2 && (
-              <div className={`w-full transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+              <div className={`w-full relative z-10 transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
                 <div className="max-w-5xl">
                   <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-neutral-900 leading-[0.95] mb-4">
                     Putting communities and councillors back at the heart of decision making
@@ -328,7 +268,7 @@ export default function Home({ onNavigate }: HomeProps) {
 
             {/* Banner 4 - Lessons */}
             {currentBanner === 3 && (
-              <div className={`w-full transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+              <div className={`w-full relative z-10 transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
                 <div className="max-w-5xl">
                   <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-neutral-900 leading-[0.95] mb-4">
                     Lessons from recent reorganisations

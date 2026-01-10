@@ -82,8 +82,8 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
               <span className="block sm:inline font-serif italic text-teal-700">Reorganisation</span>
             </h1>
           </Link>
-          <div className="text-sm sm:text-base tracking-widest text-neutral-700 mt-3 font-medium text-center max-w-3xl mx-auto">
-            <div className="mb-2">Putting communities and councillors back at the heart of local decision making</div>
+          <div className="text-sm sm:text-base md:text-lg lg:text-xl tracking-widest text-neutral-700 mt-3 font-medium text-center max-w-6xl mx-auto px-4">
+            <div className="mb-2 whitespace-nowrap">Putting communities and councillors back at the heart of local decision making</div>
             <div className="text-teal-700 font-bold">{currentDate || 'Loading...'}</div>
           </div>
         </div>
