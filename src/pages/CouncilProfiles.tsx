@@ -4,6 +4,7 @@ import MetaTags from '../components/MetaTags';
 import { surreyCouncils } from '../data/surreyCouncils';
 import FAQSection from '../components/FAQSection';
 import LastUpdated from '../components/LastUpdated';
+import CouncilProfilesPasswordProtection from '../components/CouncilProfilesPasswordProtection';
 
 export default function CouncilProfiles() {
   const eastSurrey = surreyCouncils.filter(c => c.futureUnitary === 'East Surrey');
@@ -37,6 +38,7 @@ export default function CouncilProfiles() {
   };
 
   return (
+    <CouncilProfilesPasswordProtection>
     <div className="min-h-screen bg-neutral-50">
       <MetaTags
         title="Surrey Council Profiles"
@@ -235,5 +237,6 @@ export default function CouncilProfiles() {
       <FAQSection page="council-profiles" />
       <LastUpdated />
     </div>
+    </CouncilProfilesPasswordProtection>
   );
 }

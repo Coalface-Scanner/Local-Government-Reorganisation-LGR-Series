@@ -4,6 +4,7 @@ import MetaTags from '../components/MetaTags';
 import { getCouncilBySlug, surreyCouncils } from '../data/surreyCouncils';
 import FAQSection from '../components/FAQSection';
 import LastUpdated from '../components/LastUpdated';
+import CouncilProfilesPasswordProtection from '../components/CouncilProfilesPasswordProtection';
 
 export default function CouncilProfileDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -12,19 +13,21 @@ export default function CouncilProfileDetail() {
 
   if (!council) {
     return (
-      <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-3xl font-black text-neutral-900 mb-4">Council Not Found</h1>
-          <p className="text-neutral-600 mb-6">The council profile you're looking for doesn't exist.</p>
-          <Link
-            to="/council-profiles"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-teal-700 text-white font-bold rounded-lg hover:bg-teal-800 transition-colors"
-          >
-            <ArrowLeft size={18} />
-            Back to Council Profiles
-          </Link>
+      <CouncilProfilesPasswordProtection>
+        <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-3xl font-black text-neutral-900 mb-4">Council Not Found</h1>
+            <p className="text-neutral-600 mb-6">The council profile you're looking for doesn't exist.</p>
+            <Link
+              to="/council-profiles"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-teal-700 text-white font-bold rounded-lg hover:bg-teal-800 transition-colors"
+            >
+              <ArrowLeft size={18} />
+              Back to Council Profiles
+            </Link>
+          </div>
         </div>
-      </div>
+      </CouncilProfilesPasswordProtection>
     );
   }
 
@@ -64,6 +67,7 @@ export default function CouncilProfileDetail() {
   );
 
   return (
+    <CouncilProfilesPasswordProtection>
     <div className="min-h-screen bg-neutral-50">
       <MetaTags
         title={`${council.name} Profile - Surrey Council Profiles`}
@@ -364,5 +368,6 @@ export default function CouncilProfileDetail() {
       <FAQSection page="council-profile" />
       <LastUpdated />
     </div>
+    </CouncilProfilesPasswordProtection>
   );
 }
