@@ -1,13 +1,23 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 interface FooterProps {
   onNavigate: (page: string) => void;
 }
 
 export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
+
   return (
     <footer className="bg-neutral-900 text-neutral-300 mt-20 border-t-4 border-neutral-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Subtle sponsorship statement - all pages */}
+        <div className="py-2 border-b border-neutral-800">
+          <p className="text-xs text-teal-400/60 text-center">
+            Sponsored by <span className="text-teal-400/80">COALFACE™</span>
+          </p>
+        </div>
+
         <div className="py-4 border-b border-neutral-700 bg-teal-900/20">
           <p className="text-sm text-center text-neutral-200">
             <span className="font-semibold">The LGR Series is being constantly updated and added to.</span>{' '}
@@ -141,6 +151,23 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
             © {new Date().getFullYear()} Coalface Engagement Ltd. All rights reserved.
           </div>
         </div>
+
+        {/* Full sponsorship banner - home page only */}
+        {isHomePage && (
+          <div className="bg-neutral-900 border-t border-teal-700/30 py-4">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <img 
+                src="/coalface-logo.png" 
+                alt="COALFACE" 
+                className="h-8 w-auto"
+                loading="lazy"
+              />
+              <p className="text-sm text-teal-400 font-medium">
+                Sponsored by <span className="text-teal-300">COALFACE™</span>
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     </footer>
   );
