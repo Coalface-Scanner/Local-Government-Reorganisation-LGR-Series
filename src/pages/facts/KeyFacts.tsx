@@ -63,8 +63,8 @@ export default function KeyFacts() {
         keywords="LGR facts, reorganisation evidence, unitary authority outcomes, local government reorganisation analysis"
       />
       
-      <div className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-16">
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <button
             onClick={() => navigate('/facts')}
             className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
@@ -77,7 +77,7 @@ export default function KeyFacts() {
               EVIDENCE-BASED ANALYSIS
             </div>
           </div>
-          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-6">
+          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-3">
             Key{' '}
             <span className="text-teal-700 font-serif italic">
               Facts
@@ -89,9 +89,9 @@ export default function KeyFacts() {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {loading ? (
-          <div className="text-center py-12 text-slate-600">Loading facts...</div>
+          <div className="text-center py-6 text-slate-600">Loading facts...</div>
         ) : facts.length > 0 ? (
           <div className="grid md:grid-cols-2 gap-6 mb-12">
             {facts.map((fact) => {

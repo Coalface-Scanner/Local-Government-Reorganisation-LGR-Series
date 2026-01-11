@@ -47,7 +47,7 @@ export default function CouncilProfiles() {
       />
 
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-16">
+      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="border-l-4 border-teal-700 pl-6 mb-6">
             <div className="text-xs font-bold tracking-widest text-teal-700 mb-3">
@@ -67,7 +67,7 @@ export default function CouncilProfiles() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
         {/* Overview Stats */}
         <div className="grid md:grid-cols-4 gap-6 mb-12">
           <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-200">

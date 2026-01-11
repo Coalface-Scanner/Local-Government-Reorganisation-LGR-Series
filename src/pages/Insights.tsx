@@ -78,14 +78,14 @@ export default function Insights({ onNavigate }: InsightsProps) {
         keywords="local government, reorganisation, insights, articles, analysis, LGR"
       />
 
-      <div className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-16">
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border-l-4 border-teal-700 pl-6 mb-6">
-            <div className="text-xs font-bold tracking-widest text-teal-700 mb-3">
+      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="border-l-4 border-teal-700 pl-6 mb-3">
+            <div className="text-xs font-bold tracking-widest text-teal-700 mb-1.5">
               EXPERT ANALYSIS
             </div>
           </div>
-          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-6">
+          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-3">
             Insights{' '}
             <span className="text-teal-700 font-serif italic">
               & Analysis
@@ -97,7 +97,7 @@ export default function Insights({ onNavigate }: InsightsProps) {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="mb-8">
           <div className="text-slate-600">
             {articles.length} {articles.length === 1 ? 'article' : 'articles'}
@@ -105,7 +105,7 @@ export default function Insights({ onNavigate }: InsightsProps) {
         </div>
 
         {paginatedArticles.length === 0 ? (
-          <div className="text-center py-12">
+          <div className="text-center py-6">
             <p className="text-slate-600 text-lg">No articles available yet.</p>
           </div>
         ) : (

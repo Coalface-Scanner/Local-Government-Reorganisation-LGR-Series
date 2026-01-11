@@ -23,8 +23,8 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
         description="Strategic framework for managing the critical first 100 days of unitary transition. Evidence-based guidance on priorities, risks, and success factors for new unitary authorities."
         keywords="unitary transition, first 100 days, LGR implementation, council transition plan, reorganisation playbook"
       />
-      <div className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-16 overflow-hidden">
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8 overflow-hidden">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="border-l-4 border-teal-700 pl-6 mb-8">
             <div className="text-xs font-bold tracking-widest text-teal-700 mb-2">
               RESEARCH SERIES
@@ -34,14 +34,14 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
             </div>
           </div>
 
-          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-6">
+          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-3">
             The First 100 Days:{' '}
             <span className="text-teal-700 font-serif italic">
               A Playbook for Unitary Transition
             </span>
           </h1>
 
-          <p className="text-xl text-neutral-600 leading-relaxed mb-8">
+          <p className="text-xl text-neutral-600 leading-relaxed mb-4">
             Drawing on evidence from recent reorganisations, this playbook identifies critical actions
             for new unitary authorities in their first 100 days. It examines the governance, planning,
             and political challenges that emerge during transition and provides a framework for managing them.
@@ -71,7 +71,7 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
       </div>
 
       <article className="bg-white">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
               <div className="prose prose-lg max-w-none">
@@ -275,7 +275,7 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
         </div>
       </article>
 
-      <aside className="bg-neutral-100 border-t border-neutral-200 py-12">
+      <aside className="bg-neutral-100 border-t border-neutral-200 py-6">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h3 className="text-2xl font-black text-neutral-900 mb-6">
             Related Resources

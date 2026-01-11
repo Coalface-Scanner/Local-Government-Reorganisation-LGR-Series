@@ -253,14 +253,14 @@ export default function Materials({ onNavigate }: MaterialsProps) {
         description="Browse articles, research papers, factsheets, and interviews on local government reorganisation. Comprehensive resource library for practitioners and policymakers."
         keywords="LGR research, council reform materials, reorganisation case studies, local government resources, unitary authority research"
       />
-      <div className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-16">
+      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border-l-4 border-teal-700 pl-6 mb-6">
-            <div className="text-xs font-bold tracking-widest text-teal-700 mb-3">
+          <div className="border-l-4 border-teal-700 pl-6 mb-3">
+            <div className="text-xs font-bold tracking-widest text-teal-700 mb-1.5">
               RESEARCH LIBRARY
             </div>
           </div>
-          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-6">
+          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-3">
             Materials{' '}
             <span className="text-teal-700 font-serif italic">
               Library
@@ -272,7 +272,7 @@ export default function Materials({ onNavigate }: MaterialsProps) {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col lg:flex-row gap-8">
           <div className={`lg:w-80 ${showFilters ? 'block' : 'hidden lg:block'}`}>
             <div className="sticky top-24 space-y-6">

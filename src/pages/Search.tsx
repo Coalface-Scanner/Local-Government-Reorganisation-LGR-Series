@@ -266,7 +266,7 @@ export default function Search({ onNavigate }: SearchProps) {
   };
 
   return (
-    <div id="main-content" className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 py-12">
+    <div id="main-content" className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 py-6">
       <div className="container mx-auto px-6 max-w-5xl">
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold text-gray-900 mb-4">
@@ -380,7 +380,7 @@ export default function Search({ onNavigate }: SearchProps) {
         </div>
 
         {loading ? (
-          <div className="text-center py-12">
+          <div className="text-center py-6">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
             <p className="mt-4 text-gray-600">Searching...</p>
           </div>
@@ -392,7 +392,7 @@ export default function Search({ onNavigate }: SearchProps) {
               </div>
             )}
             {results.length === 0 && !error ? (
-              <div className="text-center py-12 bg-white rounded-2xl shadow-lg">
+              <div className="text-center py-6 bg-white rounded-2xl shadow-lg">
                 <SearchIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                 <p className="text-xl text-gray-600">
                   No results found. Try adjusting your search or filters.

@@ -25,14 +25,14 @@ export default function Surrey({ onNavigate }: SurreyProps) {
         description="Detailed analysis of Surrey's local government reorganisation. Risks, opportunities, and practical guidance for the transition to East and West Surrey unitary authorities."
         keywords="Surrey reorganisation, Surrey LGR, East Surrey council, West Surrey council, Surrey devolution, Surrey unitary"
       />
-      <div className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-16 overflow-hidden">
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border-l-4 border-teal-700 pl-6 mb-6">
-            <div className="text-xs font-bold tracking-widest text-teal-700 mb-3">
+      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8 overflow-hidden">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="border-l-4 border-teal-700 pl-6 mb-3">
+            <div className="text-xs font-bold tracking-widest text-teal-700 mb-1.5">
               CASE STUDY
             </div>
           </div>
-          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-6">
+          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-3">
             Surrey:{' '}
             <span className="text-teal-700 font-serif italic">
               Lessons & Warnings
@@ -44,7 +44,7 @@ export default function Surrey({ onNavigate }: SurreyProps) {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-10">
             <div id="playbook" className="bg-white rounded-2xl p-8 shadow-lg border border-slate-200">

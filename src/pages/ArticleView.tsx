@@ -91,7 +91,7 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
   if (notFound || !article) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <button
             onClick={() => onNavigate('insights')}
             className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-8 group"
@@ -139,7 +139,7 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
         slug={article.slug}
       />
 
-      <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-12">
+      <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-6">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <button
             onClick={() => onNavigate('insights')}
@@ -174,7 +174,7 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {error && (
           <ErrorDisplay
             message={error}

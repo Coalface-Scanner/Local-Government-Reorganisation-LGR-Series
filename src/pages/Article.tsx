@@ -117,7 +117,7 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
   if (notFound || !material) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <button
             onClick={() => onNavigate('materials')}
             className="flex items-center gap-2 text-cyan-600 hover:text-cyan-700 font-medium mb-8 group"
@@ -164,7 +164,7 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
         imageUrl={material.main_image_url || material.image_url || undefined}
         slug={material.slug}
       />
-      <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-12">
+      <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-6">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <button
             onClick={() => onNavigate('materials')}
@@ -260,7 +260,7 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
                   <div dangerouslySetInnerHTML={{ __html: material.rich_content || material.content }} />
                 </div>
               ) : (
-                <div className="text-center py-12">
+                <div className="text-center py-6">
                   <p className="text-lg text-slate-600 mb-6">
                     This content is available as a downloadable document.
                   </p>

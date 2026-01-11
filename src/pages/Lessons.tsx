@@ -22,10 +22,10 @@ export default function Lessons({ onNavigate }: LessonsProps) {
         description="Critical lessons from recent local government reorganisations. Evidence-based insights on what works, what fails, and how to navigate structural reform successfully."
         keywords="LGR lessons, council reform insights, reorganisation best practices, local government change management, unitary transition guidance"
       />
-      <div className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-16 overflow-hidden">
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border-l-4 border-teal-700 pl-6 mb-6">
-            <div className="text-xs font-bold tracking-widest text-teal-700 mb-3">
+      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8 overflow-hidden">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="border-l-4 border-teal-700 pl-6 mb-3">
+            <div className="text-xs font-bold tracking-widest text-teal-700 mb-1.5">
               LEARNING FROM EXPERIENCE
             </div>
           </div>
@@ -41,7 +41,7 @@ export default function Lessons({ onNavigate }: LessonsProps) {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-10">
             <div id="insights" className="bg-white border-2 border-neutral-900 p-8 shadow-sm">

@@ -190,7 +190,7 @@ export default function Home({ onNavigate }: HomeProps) {
       />
       <OrganizationStructuredData />
       <WebSiteStructuredData />
-      <section className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-[43px] lg:py-[54px] overflow-hidden">
+      <section className="relative bg-gradient-to-b from-teal-50 to-white py-[43px] lg:py-[54px] overflow-hidden">
         <StaticBackgroundImage />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
@@ -317,7 +317,7 @@ export default function Home({ onNavigate }: HomeProps) {
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-12">
             <section className="bg-white border-4 border-neutral-900 p-8 md:p-10">

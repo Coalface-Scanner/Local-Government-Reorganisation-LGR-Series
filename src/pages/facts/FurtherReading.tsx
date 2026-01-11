@@ -15,21 +15,21 @@ export default function FurtherReading() {
         keywords="LGR resources, reorganisation reading, local government publications, unitary authority research"
       />
       
-      <div className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-16">
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <button
             onClick={() => navigate('/facts')}
-            className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
+            className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-3 group"
           >
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
             Back to Facts & Data
           </button>
-          <div className="border-l-4 border-teal-700 pl-6 mb-6">
-            <div className="text-xs font-bold tracking-widest text-teal-700 mb-3">
+          <div className="border-l-4 border-teal-700 pl-6 mb-3">
+            <div className="text-xs font-bold tracking-widest text-teal-700 mb-1.5">
               ADDITIONAL RESOURCES
             </div>
           </div>
-          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-6">
+          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-3">
             Further{' '}
             <span className="text-teal-700 font-serif italic">
               Reading
@@ -41,7 +41,7 @@ export default function FurtherReading() {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-white rounded-2xl p-8 md:p-12 shadow-lg border border-slate-200 space-y-8">
           <div>
             <h2 className="text-2xl font-bold text-slate-900 mb-6">Recommended Resources</h2>

@@ -8,15 +8,15 @@ interface ContactProps {
 export default function Contact({ onNavigate }: ContactProps) {
   return (
     <div className="bg-neutral-50 min-h-screen">
-      <div className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-16 overflow-hidden">
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border-l-4 border-teal-700 pl-6 mb-8">
-            <div className="text-xs font-bold tracking-widest text-teal-700 mb-2">
+      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8 overflow-hidden">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="border-l-4 border-teal-700 pl-6 mb-4">
+            <div className="text-xs font-bold tracking-widest text-teal-700 mb-1">
               GET IN TOUCH
             </div>
           </div>
 
-          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-6">
+          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-3">
             Contact{' '}
             <span className="text-teal-700 font-serif italic">
               the Series
@@ -30,7 +30,7 @@ export default function Contact({ onNavigate }: ContactProps) {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           <div className="bg-white border-2 border-neutral-200 p-8">

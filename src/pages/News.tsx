@@ -77,14 +77,14 @@ export default function News() {
         keywords="LGR news, local government updates, council reform news, reorganisation announcements"
       />
 
-      <div className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-16">
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border-l-4 border-teal-700 pl-6 mb-6">
-            <div className="text-xs font-bold tracking-widest text-teal-700 mb-3">
+      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="border-l-4 border-teal-700 pl-6 mb-3">
+            <div className="text-xs font-bold tracking-widest text-teal-700 mb-1.5">
               LATEST UPDATES
             </div>
           </div>
-          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-6">
+          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-3">
             News{' '}
             <span className="text-teal-700 font-serif italic">
               & Updates
@@ -96,9 +96,9 @@ export default function News() {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
         {loading ? (
-          <div className="text-center py-16">
+          <div className="text-center py-8">
             <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-teal-700 mb-4"></div>
             <p className="text-neutral-600 font-medium">Loading news...</p>
           </div>

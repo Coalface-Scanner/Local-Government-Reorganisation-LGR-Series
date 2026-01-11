@@ -52,7 +52,7 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
         description="In-depth interviews with council leaders, officers, and practitioners on local government reorganisation. First-hand accounts and expert perspectives on structural reform."
         keywords="LGR interviews, council leader interviews, local government insights, reorganisation experiences, practitioner perspectives"
       />
-      <div className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-16 overflow-hidden">
+      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8 overflow-hidden">
         <div
           className="absolute inset-0 opacity-[0.05]"
           style={{
@@ -62,13 +62,13 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
             backgroundPosition: 'center'
           }}
         />
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border-l-4 border-teal-700 pl-6 mb-6">
-            <div className="text-xs font-bold tracking-widest text-teal-700 mb-3">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="border-l-4 border-teal-700 pl-6 mb-3">
+            <div className="text-xs font-bold tracking-widest text-teal-700 mb-1.5">
               EXPERT PERSPECTIVES
             </div>
           </div>
-          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-6">
+          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-3">
             Interviews{' '}
             <span className="text-teal-700 font-serif italic">
               Series
@@ -80,7 +80,7 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-12 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-2xl p-8 border border-cyan-200">
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -103,9 +103,9 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
 
         <div className="grid lg:grid-cols-3 gap-8 mb-16">
           {loading ? (
-            <div className="col-span-3 text-center py-12 text-slate-600">Loading interviews...</div>
+            <div className="col-span-3 text-center py-6 text-slate-600">Loading interviews...</div>
           ) : interviews.length === 0 ? (
-            <div className="col-span-3 text-center py-12 text-slate-600">No interviews available yet.</div>
+            <div className="col-span-3 text-center py-6 text-slate-600">No interviews available yet.</div>
           ) : (
             interviews.map((interview) => (
               <div key={interview.id} className="bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-200 hover:shadow-2xl transition-all duration-300 group">

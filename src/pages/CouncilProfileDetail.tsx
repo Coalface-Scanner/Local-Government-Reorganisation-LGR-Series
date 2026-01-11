@@ -76,7 +76,7 @@ export default function CouncilProfileDetail() {
       />
 
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-b from-teal-50 to-white border-b-4 border-neutral-900 py-12 lg:py-16">
+      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link
             to="/council-profiles"
@@ -105,7 +105,7 @@ export default function CouncilProfileDetail() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">

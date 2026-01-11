@@ -1,6 +1,6 @@
-import { Menu, X } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Menu, X, ChevronDown } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 interface NavigationProps {
   onNavigate: (page: string) => void;
@@ -9,7 +9,11 @@ interface NavigationProps {
 
 export default function Navigation({ onNavigate: _onNavigate, currentPage }: NavigationProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [surreyDropdownOpen, setSurreyDropdownOpen] = useState(false);
+  const [surreyMobileExpanded, setSurreyMobileExpanded] = useState(false);
   const [currentDate, setCurrentDate] = useState('');
+  const surreyDropdownRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
 
   useEffect(() => {
     const updateDate = () => {
@@ -42,7 +46,28 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
 
   const handleNavClick = () => {
     setMobileMenuOpen(false);
+    setSurreyMobileExpanded(false);
   };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (surreyDropdownRef.current && !surreyDropdownRef.current.contains(event.target as Node)) {
+        setSurreyDropdownOpen(false);
+      }
+    };
+
+    if (surreyDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [surreyDropdownOpen]);
+
+  // Check if current page is under surrey section
+  const isSurreySection = location.pathname.startsWith('/surrey');
 
   return (
     <nav 
@@ -62,7 +87,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
         Skip to main content
       </a>
       <div className="border-b border-neutral-200 bg-neutral-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-0.5">
           <div className="flex justify-between items-center text-xs tracking-wider text-neutral-700 font-medium">
             <div className="hidden md:block">EST. 2025 | A <a href="https://www.coalfaceengagement.co.uk" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900 transition-colors underline">COALFACE</a> Insight Project</div>
             <div className="md:hidden text-[10px]">EST. 2025</div>
@@ -81,36 +106,89 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center py-4 border-b border-neutral-200">
+        <div className="flex flex-col items-center py-1.5 border-b border-neutral-200">
           <Link
             to="/"
             aria-label="Go to homepage"
             className="flex flex-col items-center hover:opacity-80 transition-opacity"
           >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-neutral-900 tracking-tight mb-2 text-center leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-neutral-900 tracking-tight mb-0.5 text-center leading-tight">
               <span className="block sm:inline">Local Government </span>
               <span className="block sm:inline font-serif italic text-teal-700">Reorganisation</span>
             </h1>
           </Link>
-          <div className="text-sm sm:text-base md:text-lg lg:text-xl tracking-widest text-neutral-700 mt-2 font-medium text-center max-w-6xl mx-auto px-4">
+          <div className="text-xs sm:text-sm md:text-base lg:text-lg tracking-widest text-neutral-700 mt-0.5 font-medium text-center max-w-6xl mx-auto px-4">
             <div className="whitespace-nowrap">Putting communities and councillors back at the heart of local decision making</div>
           </div>
         </div>
 
-        <div className="hidden md:flex justify-center items-center space-x-1 py-3">
-          {navItems.map((item) => (
-            <Link
-              key={item.id}
-              to={item.path}
-              className={`px-4 py-3 text-xs font-bold tracking-wider transition-all duration-200 min-h-[48px] min-w-[48px] flex items-center justify-center ${
-                currentPage === item.id
-                  ? 'text-teal-700 border-b-2 border-teal-700'
-                  : 'text-neutral-700 hover:text-neutral-900'
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
+        <div className="hidden md:flex justify-center items-center space-x-1 py-1.5">
+          {navItems.map((item) => {
+            if (item.id === 'surrey') {
+              return (
+                <div
+                  key={item.id}
+                  ref={surreyDropdownRef}
+                  className="relative"
+                  onMouseEnter={() => setSurreyDropdownOpen(true)}
+                  onMouseLeave={() => setSurreyDropdownOpen(false)}
+                >
+                  <Link
+                    to={item.path}
+                    className={`px-4 py-3 text-xs font-bold tracking-wider transition-all duration-200 min-h-[48px] flex items-center justify-center gap-1 ${
+                      isSurreySection
+                        ? 'text-teal-700 border-b-2 border-teal-700'
+                        : 'text-neutral-700 hover:text-neutral-900'
+                    }`}
+                  >
+                    {item.label}
+                    <ChevronDown 
+                      size={14} 
+                      className={`transition-transform duration-200 ${surreyDropdownOpen ? 'rotate-180' : ''}`}
+                    />
+                  </Link>
+                  
+                  {surreyDropdownOpen && (
+                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 bg-white/95 backdrop-blur-sm rounded-lg shadow-xl border border-neutral-200/50 py-2 min-w-[200px] z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                      <Link
+                        to="/surrey"
+                        className={`block px-4 py-2 text-xs font-bold tracking-wider transition-colors ${
+                          location.pathname === '/surrey'
+                            ? 'text-teal-700 bg-teal-50'
+                            : 'text-neutral-700 hover:bg-neutral-50'
+                        }`}
+                      >
+                        Focus: Surrey
+                      </Link>
+                      <Link
+                        to="/surrey/election-tracker"
+                        className={`block px-4 py-2 text-xs font-bold tracking-wider transition-colors ${
+                          location.pathname.startsWith('/surrey/election-tracker')
+                            ? 'text-teal-700 bg-teal-50'
+                            : 'text-neutral-700 hover:bg-neutral-50'
+                        }`}
+                      >
+                        Election Tracker
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              );
+            }
+            return (
+              <Link
+                key={item.id}
+                to={item.path}
+                className={`px-4 py-3 text-xs font-bold tracking-wider transition-all duration-200 min-h-[48px] min-w-[48px] flex items-center justify-center ${
+                  currentPage === item.id
+                    ? 'text-teal-700 border-b-2 border-teal-700'
+                    : 'text-neutral-700 hover:text-neutral-900'
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
           <Link
             to="/subscribe"
             className="ml-4 px-6 py-3 bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold tracking-wider rounded-full transition-all min-h-[48px] flex items-center justify-center"
@@ -119,7 +197,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
           </Link>
         </div>
 
-        <div className="md:hidden py-3">
+        <div className="md:hidden py-1.5">
           <button
             aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileMenuOpen}
@@ -134,20 +212,68 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
         {mobileMenuOpen && (
           <div className="md:hidden pb-4 border-t border-neutral-200">
             <div className="flex flex-col">
-              {navItems.map((item) => (
-                <Link
-                  key={item.id}
-                  to={item.path}
-                  onClick={handleNavClick}
-                  className={`px-4 py-3 text-sm font-bold tracking-wider text-left border-b border-neutral-100 transition-colors ${
-                    currentPage === item.id
-                      ? 'text-teal-700 bg-teal-50'
-                      : 'text-neutral-700 hover:bg-neutral-50'
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {navItems.map((item) => {
+                if (item.id === 'surrey') {
+                  return (
+                    <div key={item.id}>
+                      <button
+                        onClick={() => setSurreyMobileExpanded(!surreyMobileExpanded)}
+                        className={`w-full px-4 py-3 text-sm font-bold tracking-wider text-left border-b border-neutral-100 transition-colors flex items-center justify-between ${
+                          isSurreySection
+                            ? 'text-teal-700 bg-teal-50'
+                            : 'text-neutral-700 hover:bg-neutral-50'
+                        }`}
+                      >
+                        {item.label}
+                        <ChevronDown 
+                          size={16} 
+                          className={`transition-transform duration-200 ${surreyMobileExpanded ? 'rotate-180' : ''}`}
+                        />
+                      </button>
+                      {surreyMobileExpanded && (
+                        <div className="bg-neutral-50 border-b border-neutral-100">
+                          <Link
+                            to="/surrey"
+                            onClick={handleNavClick}
+                            className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
+                              location.pathname === '/surrey'
+                                ? 'text-teal-700 bg-teal-100'
+                                : 'text-neutral-600 hover:bg-neutral-100'
+                            }`}
+                          >
+                            Focus: Surrey
+                          </Link>
+                          <Link
+                            to="/surrey/election-tracker"
+                            onClick={handleNavClick}
+                            className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
+                              location.pathname.startsWith('/surrey/election-tracker')
+                                ? 'text-teal-700 bg-teal-100'
+                                : 'text-neutral-600 hover:bg-neutral-100'
+                            }`}
+                          >
+                            Election Tracker
+                          </Link>
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+                return (
+                  <Link
+                    key={item.id}
+                    to={item.path}
+                    onClick={handleNavClick}
+                    className={`px-4 py-3 text-sm font-bold tracking-wider text-left border-b border-neutral-100 transition-colors ${
+                      currentPage === item.id
+                        ? 'text-teal-700 bg-teal-50'
+                        : 'text-neutral-700 hover:bg-neutral-50'
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
               <Link
                 to="/subscribe"
                 onClick={handleNavClick}
