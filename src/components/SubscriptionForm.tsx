@@ -129,7 +129,7 @@ export default function SubscriptionForm({ variant = 'default' }: SubscriptionFo
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-gradient-to-r from-teal-700 to-cyan-600 text-white py-4 px-6 rounded-xl font-bold tracking-wide hover:shadow-xl hover:shadow-teal-500/25 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98] text-sm uppercase letterspacing-wider"
+          className="w-full bg-gradient-to-r from-teal-700 to-cyan-600 text-white py-4 px-6 rounded-xl font-bold tracking-wide hover:shadow-xl hover:shadow-teal-500/25 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98] text-sm uppercase letterspacing-wider min-h-[52px] flex items-center justify-center"
         >
           {loading ? 'Subscribing...' : 'Subscribe Now'}
         </button>

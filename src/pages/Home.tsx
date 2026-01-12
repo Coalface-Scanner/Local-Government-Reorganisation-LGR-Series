@@ -1,5 +1,5 @@
 import { useEffect, useState, lazy, Suspense } from 'react';
-import { ArrowRight, BarChart3, MapPin, Quote, Download, FileText, BookOpen, Clock, Target } from 'lucide-react';
+import { ArrowRight, BarChart3, MapPin, Quote, Download, FileText, BookOpen, Clock, Target, Route, TrendingUp, Mail } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
 import OrganizationStructuredData from '../components/OrganizationStructuredData';
 import WebSiteStructuredData from '../components/WebSiteStructuredData';
@@ -318,35 +318,107 @@ export default function Home({ onNavigate }: HomeProps) {
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Service Cards Section - Full Width */}
+        <section className="grid md:grid-cols-3 gap-4 mb-8" aria-label="Featured services">
+          {/* The LGR Road Ahead Card */}
+          <div className="group bg-gradient-to-br from-indigo-50 to-purple-50 border-2 border-indigo-200 hover:border-indigo-400 hover:shadow-xl p-4 text-left transition-all duration-300 rounded-xl flex flex-col relative overflow-hidden">
+            {/* Decorative Road Outline */}
+            <div className="absolute bottom-0 right-0 opacity-10 group-hover:opacity-15 transition-opacity pointer-events-none">
+              <svg width="120" height="80" viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 40 L110 40" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+                <path d="M10 35 L110 35" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" />
+                <path d="M10 45 L110 45" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" />
+                <circle cx="30" cy="40" r="4" fill="currentColor" />
+                <circle cx="60" cy="40" r="4" fill="currentColor" />
+                <circle cx="90" cy="40" r="4" fill="currentColor" />
+              </svg>
+            </div>
+            <div className="flex items-center gap-2 mb-2 relative z-10">
+              <div className="w-8 h-8 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-indigo-500/20">
+                <Route size={18} className="text-white" aria-hidden="true" />
+              </div>
+            </div>
+            <h3 className="text-3xl font-black text-neutral-900 mb-2 group-hover:text-indigo-700 transition-colors leading-tight relative z-10">
+              The LGR Road Ahead
+            </h3>
+            <p className="text-xs text-neutral-700 mb-2 line-clamp-2 relative z-10 flex-grow">
+              How 2026 is expected to unfold for LGR. Navigate the key milestones, decisions, and transitions.
+            </p>
+            <div className="mt-auto relative z-10">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onNavigate('forecast-2026-27');
+              }}
+              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl font-bold text-sm tracking-wide hover:shadow-xl hover:shadow-indigo-500/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] uppercase min-h-[52px] flex items-center justify-center"
+            >
+              Follow the Journey
+            </button>
+            </div>
+          </div>
+
+          {/* Election Tracker Card (Condensed) */}
+          <div className="group bg-gradient-to-br from-teal-50 to-cyan-50 border-2 border-teal-200 hover:border-teal-400 hover:shadow-xl p-4 text-left transition-all duration-300 rounded-xl flex flex-col relative overflow-hidden">
+            {/* Decorative Chart Outline */}
+            <div className="absolute bottom-0 right-0 opacity-10 group-hover:opacity-15 transition-opacity pointer-events-none">
+              <svg width="120" height="80" viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <line x1="20" y1="70" x2="20" y2="10" stroke="currentColor" strokeWidth="2" />
+                <line x1="20" y1="70" x2="110" y2="70" stroke="currentColor" strokeWidth="2" />
+                <polyline points="30,60 50,45 70,35 90,25 110,20" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="30" cy="60" r="3" fill="currentColor" />
+                <circle cx="50" cy="45" r="3" fill="currentColor" />
+                <circle cx="70" cy="35" r="3" fill="currentColor" />
+                <circle cx="90" cy="25" r="3" fill="currentColor" />
+                <circle cx="110" cy="20" r="3" fill="currentColor" />
+              </svg>
+            </div>
+            <div className="flex items-center gap-2 mb-2 relative z-10">
+              <div className="w-8 h-8 bg-gradient-to-br from-teal-600 to-cyan-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-teal-500/20">
+                <TrendingUp size={18} className="text-white" aria-hidden="true" />
+              </div>
+            </div>
+            <h3 className="text-3xl font-black text-neutral-900 mb-2 group-hover:text-teal-700 transition-colors leading-tight relative z-10">
+              Election Tracker
+            </h3>
+            <p className="text-xs text-neutral-700 mb-2 line-clamp-2 relative z-10 flex-grow">
+              Track political control, turnout risk and governance scenarios for the new Surrey councils.
+            </p>
+            <div className="mt-auto relative z-10">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onNavigate('surrey/election-tracker');
+              }}
+              className="w-full bg-gradient-to-r from-teal-700 to-cyan-600 text-white py-4 px-6 rounded-xl font-bold text-sm tracking-wide hover:shadow-xl hover:shadow-teal-500/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] uppercase min-h-[52px] flex items-center justify-center"
+            >
+              Start your simulation
+            </button>
+            </div>
+          </div>
+
+          {/* Subscription Card */}
+          <div className="bg-gradient-to-br from-slate-50 to-neutral-50 border-2 border-slate-200 hover:border-slate-400 hover:shadow-xl p-4 transition-all duration-300 rounded-xl flex flex-col">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-8 h-8 bg-gradient-to-br from-slate-700 to-neutral-800 rounded-lg flex items-center justify-center shadow-lg shadow-slate-500/20">
+                <Mail size={18} className="text-white" aria-hidden="true" />
+              </div>
+            </div>
+            <h3 className="text-3xl font-black text-neutral-900 mb-2 leading-tight">
+              Weekly Insights
+            </h3>
+            <p className="text-xs text-neutral-700 mb-2 line-clamp-2 flex-grow">
+              Get the LGR Series directly in your inbox. No fluff, just deep analysis.
+            </p>
+            <div className="mt-auto">
+              <Suspense fallback={<div className="h-12 bg-slate-200/50 animate-pulse rounded" />}>
+                <SubscriptionForm variant="compact" />
+              </Suspense>
+            </div>
+          </div>
+        </section>
+
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-12">
-            <section className="bg-white border-4 border-neutral-900 p-8 md:p-10">
-              <div className="mb-6">
-                <div className="text-xs font-bold tracking-wider text-neutral-700 mb-3">
-                  LIVE GOVERNANCE INTELLIGENCE
-                </div>
-                <h3 className="text-2xl md:text-3xl font-black text-neutral-900 mb-4 leading-tight">
-                  Election Track 2026
-                </h3>
-                <p className="text-neutral-700 mb-4 leading-relaxed">
-                  Track political control, turnout risk and governance scenarios for the new East and West Surrey unitary councils.
-                </p>
-                <p className="text-neutral-600 mb-4 leading-relaxed text-sm">
-                  Updated to reflect boundary changes, turnout patterns and early governance implications following reorganisation.
-                </p>
-                <p className="text-xs text-neutral-500 mb-6 leading-relaxed italic">
-                  Used by councillors, officers and advisers to test assumptions ahead of key decisions.
-                </p>
-                <button
-                  onClick={() => onNavigate('surrey/election-simulator')}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold text-sm tracking-wide rounded-full transition-colors"
-                >
-                  OPEN ELECTION TRACK 2026
-                  <ArrowRight size={18} />
-                </button>
-              </div>
-            </section>
-
             <section className="border-t-2 border-teal-700 pt-8">
               <div className="flex items-center gap-4 mb-8">
                 <h2 className="text-3xl font-black text-neutral-900 tracking-tight">
@@ -794,17 +866,6 @@ export default function Home({ onNavigate }: HomeProps) {
                 )}
               </div>
 
-              <div className="bg-teal-800 text-white p-6">
-                <h3 className="text-xl font-black mb-3">
-                  The Dispatch
-                </h3>
-                <p className="text-sm text-white mb-4">
-                  Get the LGR Series directly in your inbox. No fluff, just deep analysis.
-                </p>
-                <Suspense fallback={<div className="h-20 bg-teal-700/50 animate-pulse rounded" />}>
-                  <SubscriptionForm variant="compact" />
-                </Suspense>
-              </div>
             </div>
           </aside>
         </div>

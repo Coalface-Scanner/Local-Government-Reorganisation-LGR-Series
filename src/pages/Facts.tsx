@@ -2,7 +2,7 @@ import MetaTags from '../components/MetaTags';
 import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import SubscriptionForm from '../components/SubscriptionForm';
-import { Calendar, MapPin, List, CheckCircle, FileText, BookOpen, ArrowRight } from 'lucide-react';
+import { Calendar, MapPin, List, CheckCircle, FileText, BookOpen, ArrowRight, Route } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface FactsProps {
@@ -68,6 +68,14 @@ const serviceCards: ServiceCard[] = [
     icon: BookOpen,
     color: 'from-slate-500 to-slate-700',
     route: '/facts/further-reading'
+  },
+  {
+    id: 'forecast-2026-27',
+    title: 'Forecast 2026-27',
+    description: 'Interactive journey map visualizing the LGR forecast for 2026-27, navigating the key milestones, decisions, and transitions in local government reorganisation.',
+    icon: Route,
+    color: 'from-indigo-500 to-purple-600',
+    route: '/forecast-2026-27'
   }
 ];
 

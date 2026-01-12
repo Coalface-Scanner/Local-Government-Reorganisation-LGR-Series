@@ -32,6 +32,7 @@ const ArticleView = lazy(() => import('./pages/ArticleView'));
 const FactDetail = lazy(() => import('./pages/FactDetail'));
 const CouncilProfiles = lazy(() => import('./pages/CouncilProfiles'));
 const CouncilProfileDetail = lazy(() => import('./pages/CouncilProfileDetail'));
+const JourneyMap = lazy(() => import('./pages/JourneyMap'));
 
 // Admin pages - lazy loaded (less frequently accessed)
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
@@ -138,6 +139,7 @@ function AppContent() {
             <Route path="/facts/sources" element={<Sources />} />
             <Route path="/facts/further-reading" element={<FurtherReading />} />
             <Route path="/facts/:slug" element={<FactDetail />} />
+            <Route path="/forecast-2026-27" element={<PageWrapper>{(nav) => <JourneyMap onNavigate={nav} />}</PageWrapper>} />
             <Route path="/lessons" element={<PageWrapper>{(nav) => <Lessons onNavigate={nav} />}</PageWrapper>} />
             <Route path="/reasons" element={<PageWrapper>{(nav) => <Reasons onNavigate={nav} />}</PageWrapper>} />
             <Route path="/about" element={<PageWrapper>{(nav) => <Reasons onNavigate={nav} />}</PageWrapper>} />
