@@ -7,8 +7,8 @@ export default function Councils() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <MetaTags
-        title="UK Councils Map - Interactive Local Authority Directory"
-        description="Interactive map of Local Authority Districts across England, Scotland, Wales, and Northern Ireland. Explore council boundaries, profiles, and reorganisation status for all UK local authorities."
+        title="UK Councils Map - Interactive Authority Directory"
+        description="Interactive map of Local Authority Districts across England, Scotland, Wales, and Northern Ireland. Explore council boundaries, profiles, and reorganisation status."
         keywords="UK councils map, local authority districts, council boundaries, England councils, Scotland councils, Wales councils, Northern Ireland councils"
       />
       <header className="bg-white shadow-sm border-b border-gray-200">

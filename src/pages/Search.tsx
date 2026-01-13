@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Search as SearchIcon, Filter, MapPin, User, Tag, Calendar } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import MetaTags from '../components/MetaTags';
 
 interface SearchResult {
   id: string;
@@ -267,6 +268,11 @@ export default function Search({ onNavigate }: SearchProps) {
 
   return (
     <div id="main-content" className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 py-6">
+      <MetaTags
+        title="Search - LGR Series Library"
+        description="Search and browse all published articles, reports, data, and insights on local government reorganisation. Filter by type, region, category, or author."
+        keywords="LGR search, local government reorganisation articles, council reform research, search library"
+      />
       <div className="container mx-auto px-6 max-w-5xl">
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold text-gray-900 mb-4">

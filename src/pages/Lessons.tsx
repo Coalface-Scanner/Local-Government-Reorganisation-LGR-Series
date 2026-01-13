@@ -19,7 +19,7 @@ export default function Lessons({ onNavigate }: LessonsProps) {
     <div className="min-h-screen bg-neutral-50">
       <MetaTags
         title="Lessons from Recent Reorganisations"
-        description="Critical lessons from recent local government reorganisations across England. Evidence-based insights on what works, what fails, and how to navigate structural reform successfully. Learn from Dorset, Somerset, Northumberland, and Surrey."
+        description="Critical lessons from recent local government reorganisations across England. Evidence-based insights on what works, what fails, and how to navigate reform."
         keywords="LGR lessons, council reform insights, reorganisation best practices, local government change management, unitary transition guidance"
       />
       <div className="relative bg-gradient-to-b from-teal-50 to-white py-8 overflow-hidden">

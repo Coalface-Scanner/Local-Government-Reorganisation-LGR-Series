@@ -114,30 +114,45 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
     );
   }
 
-  // Generate description from excerpt or body content
+  // Truncate title to ensure full title (with " | LGR Series") stays under 70 chars
+  const getTitle = () => {
+    const maxTitleLength = 56; // 70 - 14 (" | LGR Series")
+    if (article.title.length > maxTitleLength) {
+      return article.title.substring(0, maxTitleLength - 3) + '...';
+    }
+    return article.title;
+  };
+
+  // Generate description from excerpt or body content (25-160 chars)
   const getDescription = () => {
-    if (article.excerpt && article.excerpt.length >= 150) {
-      return article.excerpt;
-    }
-    if (article.excerpt) {
-      return article.excerpt;
-    }
-    if (article.body) {
-      // Strip HTML and get first 160 characters
+    let desc = '';
+    
+    if (article.excerpt && article.excerpt.trim().length >= 25) {
+      desc = article.excerpt.trim();
+    } else if (article.body) {
+      // Strip HTML and get text content
       const textContent = article.body.replace(/<[^>]*>/g, '').trim();
-      if (textContent.length > 160) {
-        return textContent.substring(0, 157) + '...';
+      if (textContent.length >= 25) {
+        desc = textContent;
       }
-      return textContent;
     }
-    return `Expert analysis on ${article.title}. Read the full article for insights on local government reorganisation, council reform, and English devolution.`;
+    
+    // Ensure description is between 25-160 chars
+    if (desc.length < 25) {
+      desc = `Expert analysis on ${article.title}. Read insights on local government reorganisation and council reform.`;
+    }
+    if (desc.length > 160) {
+      desc = desc.substring(0, 157) + '...';
+    }
+    
+    return desc;
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <ReadingProgress />
       <MetaTags
-        title={article.title}
+        title={getTitle()}
         description={getDescription()}
         keywords="local government, reorganisation, LGR, insights, article"
         ogType="article"

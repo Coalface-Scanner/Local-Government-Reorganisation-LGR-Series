@@ -12,7 +12,7 @@ export default function Subscribe({ onNavigate }: SubscribeProps) {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <MetaTags
         title="Subscribe - The Dispatch Newsletter"
-        description="Subscribe to The Dispatch for weekly insights on local government reorganisation. Get notified about new articles, exclusive content, case studies, and access to the 100 Day Playbook."
+        description="Subscribe to The Dispatch for weekly insights on local government reorganisation. Get notified about new articles, exclusive content, and case studies."
         keywords="LGR newsletter, subscribe to LGR series, weekly insights, local government reorganisation updates, dispatch newsletter"
       />
       <div className="relative bg-gradient-to-b from-teal-50 to-white py-8 overflow-hidden">

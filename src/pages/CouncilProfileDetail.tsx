@@ -70,8 +70,21 @@ export default function CouncilProfileDetail() {
     <CouncilProfilesPasswordProtection>
     <div className="min-h-screen bg-neutral-50">
       <MetaTags
-        title={`${council.name} Profile - Surrey Council Profiles`}
-        description={council.description}
+        title={(() => {
+          const title = `${council.name} Profile - Surrey Council Profiles`;
+          const maxTitleLength = 56; // 70 - 14 (" | LGR Series")
+          return title.length > maxTitleLength ? title.substring(0, maxTitleLength - 3) + '...' : title;
+        })()}
+        description={(() => {
+          let desc = council.description || `Profile of ${council.name}, a ${council.type.toLowerCase()} council in Surrey.`;
+          if (desc.length < 25) {
+            desc = `Profile of ${council.name}, a ${council.type.toLowerCase()} council in Surrey. Key statistics and information.`;
+          }
+          if (desc.length > 160) {
+            desc = desc.substring(0, 157) + '...';
+          }
+          return desc;
+        })()}
         keywords={`${council.name}, Surrey council, ${council.type}, local authority profile, council statistics`}
       />
 

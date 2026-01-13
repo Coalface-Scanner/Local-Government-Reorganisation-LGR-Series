@@ -140,30 +140,45 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
     );
   }
 
-  // Generate description from material description or content
+  // Truncate title to ensure full title (with " | LGR Series") stays under 70 chars
+  const getTitle = () => {
+    const maxTitleLength = 56; // 70 - 14 (" | LGR Series")
+    if (material.title.length > maxTitleLength) {
+      return material.title.substring(0, maxTitleLength - 3) + '...';
+    }
+    return material.title;
+  };
+
+  // Generate description from material description or content (25-160 chars)
   const getDescription = () => {
-    if (material.description && material.description.length >= 150) {
-      return material.description;
-    }
-    if (material.description) {
-      return material.description;
-    }
-    if (material.content) {
-      // Strip HTML and get first 160 characters
+    let desc = '';
+    
+    if (material.description && material.description.trim().length >= 25) {
+      desc = material.description.trim();
+    } else if (material.content) {
+      // Strip HTML and get text content
       const textContent = material.content.replace(/<[^>]*>/g, '').trim();
-      if (textContent.length > 160) {
-        return textContent.substring(0, 157) + '...';
+      if (textContent.length >= 25) {
+        desc = textContent;
       }
-      return textContent;
     }
-    return `Research material on ${material.title}. Explore insights on local government reorganisation, ${material.theme || 'council reform'}, and ${material.geography || 'English devolution'}.`;
+    
+    // Ensure description is between 25-160 chars
+    if (desc.length < 25) {
+      desc = `Research material on ${material.title}. Explore insights on local government reorganisation and ${material.theme || 'council reform'}.`;
+    }
+    if (desc.length > 160) {
+      desc = desc.substring(0, 157) + '...';
+    }
+    
+    return desc;
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <ReadingProgress />
       <MetaTags
-        title={material.title}
+        title={getTitle()}
         description={getDescription()}
         keywords={`local government, reorganisation, LGR, ${material.theme}, ${material.geography}`}
         ogType="article"

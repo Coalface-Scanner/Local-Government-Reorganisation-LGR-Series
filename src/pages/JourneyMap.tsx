@@ -64,7 +64,7 @@ export default function JourneyMap({ onNavigate: _onNavigate }: JourneyMapProps)
     <div className="min-h-screen bg-gradient-to-b from-blue-50 via-blue-50/40 to-slate-50 bg-fixed">
       <MetaTags
         title="LGR Forecast 2026-27: The Journey Map"
-        description="Navigating the twisting highway of Local Government Reorganisation over the next 12 months. Interactive forecast visualization of LGR journey from 2026 to 2027."
+        description="Interactive forecast visualization of Local Government Reorganisation from 2026 to 2027. Navigate the key milestones, decisions, and transitions."
         keywords="LGR forecast, local government reorganisation 2026, LGR journey map, unitary authority timeline, shadow elections, structural changes orders"
       />
 

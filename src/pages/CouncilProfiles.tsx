@@ -42,7 +42,7 @@ export default function CouncilProfiles() {
     <div className="min-h-screen bg-neutral-50">
       <MetaTags
         title="Surrey Council Profiles"
-        description="Comprehensive profiles of all 12 Surrey councils: 11 boroughs and districts plus Surrey County Council. Key statistics, demographics, services, and future unitary arrangements."
+        description="Profiles of all 12 Surrey councils: 11 boroughs and districts plus Surrey County Council. Key statistics, demographics, and future unitary arrangements."
         keywords="Surrey councils, borough profiles, district councils, Surrey County Council, local authority profiles, council statistics"
       />
 

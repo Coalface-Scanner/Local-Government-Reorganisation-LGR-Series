@@ -11,7 +11,7 @@ export default function Contact({ onNavigate }: ContactProps) {
     <div className="bg-neutral-50 min-h-screen">
       <MetaTags
         title="Contact - Editorial Team & Inquiries"
-        description="Get in touch with the LGR Series editorial team. For editorial inquiries, research questions, contributions, or to subscribe to The Dispatch newsletter for weekly insights."
+        description="Get in touch with the LGR Series editorial team. For editorial inquiries, research questions, contributions, or newsletter subscriptions."
         keywords="LGR contact, editorial inquiries, research questions, contribute to LGR series, newsletter subscription"
       />
       <div className="relative bg-gradient-to-b from-teal-50 to-white py-8 overflow-hidden">

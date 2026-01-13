@@ -20,7 +20,7 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
     <div className="bg-neutral-50 min-h-screen">
       <MetaTags
         title="The First 100 Days Playbook"
-        description="Strategic framework for managing the critical first 100 days of unitary transition. Evidence-based guidance on priorities, risks, and success factors for new unitary authorities."
+        description="Strategic framework for managing the critical first 100 days of unitary transition. Evidence-based guidance on priorities, risks, and success factors."
         keywords="unitary transition, first 100 days, LGR implementation, council transition plan, reorganisation playbook"
       />
       <div className="relative bg-gradient-to-b from-teal-50 to-white py-8 overflow-hidden">
