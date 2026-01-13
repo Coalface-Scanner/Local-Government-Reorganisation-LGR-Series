@@ -4,6 +4,7 @@ import SubscriptionForm from '../components/SubscriptionForm';
 import PageNavigation from '../components/PageNavigation';
 import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
+import MetaTags from '../components/MetaTags';
 
 interface ReasonsProps {
   onNavigate: (page: string) => void;
@@ -25,6 +26,11 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
 
   return (
     <div className="min-h-screen bg-neutral-50">
+      <MetaTags
+        title="About the LGR Series - Methodology & Purpose"
+        description="Learn about the LGR Series methodology, editorial approach, and purpose. Discover how we examine local government reorganisation through evidence-based analysis, governance insights, and community perspectives."
+        keywords="LGR series, local government reorganisation methodology, council reform research, editorial approach, COALFACE insights"
+      />
       <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="border-l-4 border-teal-700 pl-6 mb-3">

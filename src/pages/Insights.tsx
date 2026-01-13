@@ -73,9 +73,9 @@ export default function Insights({ onNavigate }: InsightsProps) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <MetaTags
-        title="Insights - Local Government Reorganisation"
-        description="Expert insights and analysis on local government reorganisation, planning, and governance"
-        keywords="local government, reorganisation, insights, articles, analysis, LGR"
+        title="Insights & Analysis - LGR Expert Articles"
+        description="Expert insights and analysis on local government reorganisation, planning, and governance. In-depth articles examining council reform, unitary authorities, and English devolution from leading researchers and practitioners."
+        keywords="local government, reorganisation, insights, articles, analysis, LGR, council reform, unitary authorities"
       />
 
       <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">

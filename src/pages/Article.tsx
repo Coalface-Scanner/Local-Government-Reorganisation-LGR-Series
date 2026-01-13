@@ -140,12 +140,31 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
     );
   }
 
+  // Generate description from material description or content
+  const getDescription = () => {
+    if (material.description && material.description.length >= 150) {
+      return material.description;
+    }
+    if (material.description) {
+      return material.description;
+    }
+    if (material.content) {
+      // Strip HTML and get first 160 characters
+      const textContent = material.content.replace(/<[^>]*>/g, '').trim();
+      if (textContent.length > 160) {
+        return textContent.substring(0, 157) + '...';
+      }
+      return textContent;
+    }
+    return `Research material on ${material.title}. Explore insights on local government reorganisation, ${material.theme || 'council reform'}, and ${material.geography || 'English devolution'}.`;
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <ReadingProgress />
       <MetaTags
         title={material.title}
-        description={material.description}
+        description={getDescription()}
         keywords={`local government, reorganisation, LGR, ${material.theme}, ${material.geography}`}
         ogType="article"
         ogImage={material.main_image_url || material.image_url || undefined}
