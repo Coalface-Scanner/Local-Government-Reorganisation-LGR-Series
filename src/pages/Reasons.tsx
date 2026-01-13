@@ -28,7 +28,7 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
     <div className="min-h-screen bg-neutral-50">
       <MetaTags
         title="About the LGR Series - Methodology & Purpose"
-        description="Learn about the LGR Series methodology, editorial approach, and purpose. Discover how we examine local government reorganisation through evidence-based analysis, governance insights, and community perspectives."
+        description="Learn about the LGR Series methodology, editorial approach, and purpose. Discover how we examine local government reorganisation through evidence-based analysis."
         keywords="LGR series, local government reorganisation methodology, council reform research, editorial approach, COALFACE insights"
       />
       <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">

@@ -73,8 +73,8 @@ export default function Unsubscribe() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <MetaTags
-        title="Unsubscribe - Local Government Reorganisation Research Hub"
-        description="Unsubscribe from our mailing list"
+        title="Unsubscribe - LGR Series Newsletter"
+        description="Unsubscribe from the LGR Series mailing list. Enter your email address to stop receiving weekly insights and updates."
       />
       <Navigation onNavigate={handleNavigate} currentPage="unsubscribe" />
 

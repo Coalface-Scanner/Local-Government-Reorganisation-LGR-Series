@@ -49,7 +49,7 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
     <div className="min-h-screen bg-neutral-50">
       <MetaTags
         title="Interviews - Council Leaders & Practitioners"
-        description="In-depth interviews with council leaders, officers, and practitioners on local government reorganisation. First-hand accounts and expert perspectives on structural reform, governance challenges, and transition management."
+        description="In-depth interviews with council leaders, officers, and practitioners on local government reorganisation. First-hand accounts and expert perspectives on reform."
         keywords="LGR interviews, council leader interviews, local government insights, reorganisation experiences, practitioner perspectives"
       />
       <div className="relative bg-gradient-to-b from-teal-50 to-white py-8 overflow-hidden">

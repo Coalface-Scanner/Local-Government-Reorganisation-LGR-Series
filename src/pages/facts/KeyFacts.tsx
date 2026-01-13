@@ -59,7 +59,7 @@ export default function KeyFacts() {
     <div className="min-h-screen bg-neutral-50">
       <MetaTags
         title="Key Facts - Facts & Data"
-        description="Evidence-based analysis of local government reorganisation outcomes, including workforce impact, financial performance, service delivery, and democratic representation."
+        description="Evidence-based analysis of local government reorganisation outcomes, including workforce, financial performance, service delivery, and democratic outcomes."
         keywords="LGR facts, reorganisation evidence, unitary authority outcomes, local government reorganisation analysis"
       />
       

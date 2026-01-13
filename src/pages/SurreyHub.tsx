@@ -43,7 +43,7 @@ export default function SurreyHub({ onNavigate: _onNavigate }: SurreyHubProps) {
     <div className="min-h-screen bg-slate-950 text-slate-100 antialiased overflow-x-hidden">
       <MetaTags
         title="Surrey Strategic Intelligence | Command Centre"
-        description="Strategic Intelligence Portal for Surrey's Local Government Reorganisation. Interactive analysis of harmonisation, council deep dives, housing, and election forecasts."
+        description="Strategic Intelligence Portal for Surrey's Local Government Reorganisation. Interactive analysis of harmonisation, council deep dives, and election forecasts."
         keywords="Surrey intelligence, Surrey strategic analysis, Surrey reorganisation, Surrey LGR, Surrey councils"
       />
 

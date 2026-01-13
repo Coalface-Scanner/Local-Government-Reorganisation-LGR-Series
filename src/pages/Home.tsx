@@ -184,8 +184,8 @@ export default function Home({ onNavigate }: HomeProps) {
   return (
     <div className="bg-neutral-50">
       <MetaTags
-        title="LGR - Local Government Reorganisation & Council Reform | Expert Analysis"
-        description="The leading resource on Local Government Reorganisation (LGR), council reform, and English devolution. Expert analysis, evidence-based research, and practical insights on local government reform, unitary authorities, and devolution across the UK."
+        title="LGR - Local Government Reorganisation & Reform"
+        description="Expert analysis on Local Government Reorganisation (LGR), council reform, and English devolution. Evidence-based research and practical insights."
         keywords="LGR, Local Government Reorganisation, Local Government Reform, Council Reform, English Devolution, unitary authorities, council reorganisation, local government reform UK, local government reorganisation England, council restructuring, devolution England, local authority reorganisation"
       />
       <OrganizationStructuredData />

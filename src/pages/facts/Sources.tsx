@@ -11,7 +11,7 @@ export default function Sources() {
     <div className="min-h-screen bg-neutral-50">
       <MetaTags
         title="Sources - Facts & Data"
-        description="Evidence from recent reorganisations across England, including illustrative council experience and sources from Dorset, Buckinghamshire, Somerset, North Yorkshire, and Cumbria."
+        description="Evidence from recent reorganisations across England, including council experience and sources from Dorset, Buckinghamshire, Somerset, North Yorkshire, and Cumbria."
         keywords="LGR sources, reorganisation evidence, council case studies, local government reorganisation references"
       />
       

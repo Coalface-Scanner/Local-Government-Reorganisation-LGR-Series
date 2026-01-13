@@ -119,8 +119,22 @@ export default function FactDetail() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <MetaTags
-        title={`${fact.title} - Facts & Figures`}
-        description={fact.content.replace(/<[^>]*>/g, '').substring(0, 160)}
+        title={(() => {
+          const title = `${fact.title} - Facts & Figures`;
+          const maxTitleLength = 56; // 70 - 14 (" | LGR Series")
+          return title.length > maxTitleLength ? title.substring(0, maxTitleLength - 3) + '...' : title;
+        })()}
+        description={(() => {
+          const textContent = fact.content.replace(/<[^>]*>/g, '').trim();
+          let desc = textContent.length > 0 ? textContent : `Key facts about ${fact.title} in local government reorganisation.`;
+          if (desc.length < 25) {
+            desc = `Key facts about ${fact.title} in local government reorganisation and council reform.`;
+          }
+          if (desc.length > 160) {
+            desc = desc.substring(0, 157) + '...';
+          }
+          return desc;
+        })()}
         keywords="local government, reorganisation, facts, LGR, evidence"
       />
 
