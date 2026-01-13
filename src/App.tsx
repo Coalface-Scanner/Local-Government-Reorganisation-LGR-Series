@@ -20,6 +20,7 @@ const Interviews = lazy(() => import('./pages/Interviews'));
 const Surrey = lazy(() => import('./pages/Surrey'));
 const SurreyElectionTracker = lazy(() => import('./pages/SurreyElectionTracker'));
 const SurreyElectionSimulator = lazy(() => import('./pages/SurreyElectionSimulator'));
+const SurreyHub = lazy(() => import('./pages/SurreyHub'));
 const Article = lazy(() => import('./pages/Article'));
 const Insights = lazy(() => import('./pages/Insights'));
 const Councils = lazy(() => import('./pages/Councils'));
@@ -147,6 +148,7 @@ function AppContent() {
             <Route path="/surrey" element={<PageWrapper>{(nav) => <Surrey onNavigate={nav} />}</PageWrapper>} />
             <Route path="/surrey/election-tracker" element={<PageWrapper>{(nav) => <SurreyElectionTracker onNavigate={nav} />}</PageWrapper>} />
             <Route path="/surrey/election-tracker/simulator" element={<PageWrapper>{(nav) => <SurreyElectionSimulator onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/surrey/hub" element={<PageWrapper>{(nav) => <SurreyHub onNavigate={nav} />}</PageWrapper>} />
             <Route path="/100days" element={<PageWrapper>{(nav) => <HundredDays onNavigate={nav} />}</PageWrapper>} />
             <Route path="/contact" element={<PageWrapper>{(nav) => <Contact onNavigate={nav} />}</PageWrapper>} />
             <Route path="/councils" element={<Councils />} />

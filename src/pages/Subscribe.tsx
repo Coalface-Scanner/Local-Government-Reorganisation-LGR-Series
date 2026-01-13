@@ -1,5 +1,6 @@
 import SubscriptionForm from '../components/SubscriptionForm';
 import LastUpdated from '../components/LastUpdated';
+import MetaTags from '../components/MetaTags';
 import { Mail, FileText, Bell, ArrowRight } from 'lucide-react';
 
 interface SubscribeProps {
@@ -9,6 +10,11 @@ interface SubscribeProps {
 export default function Subscribe({ onNavigate }: SubscribeProps) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      <MetaTags
+        title="Subscribe - The Dispatch Newsletter"
+        description="Subscribe to The Dispatch for weekly insights on local government reorganisation. Get notified about new articles, exclusive content, case studies, and access to the 100 Day Playbook."
+        keywords="LGR newsletter, subscribe to LGR series, weekly insights, local government reorganisation updates, dispatch newsletter"
+      />
       <div className="relative bg-gradient-to-b from-teal-50 to-white py-8 overflow-hidden">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="border-l-4 border-teal-700 pl-6 mb-4">

@@ -114,12 +114,31 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
     );
   }
 
+  // Generate description from excerpt or body content
+  const getDescription = () => {
+    if (article.excerpt && article.excerpt.length >= 150) {
+      return article.excerpt;
+    }
+    if (article.excerpt) {
+      return article.excerpt;
+    }
+    if (article.body) {
+      // Strip HTML and get first 160 characters
+      const textContent = article.body.replace(/<[^>]*>/g, '').trim();
+      if (textContent.length > 160) {
+        return textContent.substring(0, 157) + '...';
+      }
+      return textContent;
+    }
+    return `Expert analysis on ${article.title}. Read the full article for insights on local government reorganisation, council reform, and English devolution.`;
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <ReadingProgress />
       <MetaTags
         title={article.title}
-        description={article.excerpt || ''}
+        description={getDescription()}
         keywords="local government, reorganisation, LGR, insights, article"
         ogType="article"
         ogImage={article.featured_image || undefined}

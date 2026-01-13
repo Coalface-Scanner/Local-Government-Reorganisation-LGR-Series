@@ -21,8 +21,8 @@ export default function Surrey({ onNavigate }: SurreyProps) {
   return (
     <div className="min-h-screen bg-neutral-50">
       <MetaTags
-        title="Surrey Reorganisation Analysis"
-        description="Detailed analysis of Surrey's local government reorganisation. Risks, opportunities, and practical guidance for the transition to East and West Surrey unitary authorities."
+        title="Surrey Focus - LGR Analysis & Transition Guide"
+        description="Detailed analysis of Surrey's local government reorganisation. Risks, opportunities, and practical guidance for the transition to East and West Surrey unitary authorities. Election tracking, governance scenarios, and first 100 days playbook."
         keywords="Surrey reorganisation, Surrey LGR, East Surrey council, West Surrey council, Surrey devolution, Surrey unitary"
       />
       <div className="relative bg-gradient-to-b from-teal-50 to-white py-8 overflow-hidden">

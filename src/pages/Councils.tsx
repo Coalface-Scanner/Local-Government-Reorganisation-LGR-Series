@@ -1,10 +1,16 @@
 import { MapPin } from 'lucide-react';
 import CouncilMap from '../components/CouncilMap';
 import FAQSection from '../components/FAQSection';
+import MetaTags from '../components/MetaTags';
 
 export default function Councils() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
+      <MetaTags
+        title="UK Councils Map - Interactive Local Authority Directory"
+        description="Interactive map of Local Authority Districts across England, Scotland, Wales, and Northern Ireland. Explore council boundaries, profiles, and reorganisation status for all UK local authorities."
+        keywords="UK councils map, local authority districts, council boundaries, England councils, Scotland councils, Wales councils, Northern Ireland councils"
+      />
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="container mx-auto px-6 py-6">
           <div className="flex items-center gap-3 mb-2">

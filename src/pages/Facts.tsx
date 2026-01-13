@@ -85,8 +85,8 @@ export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
   return (
     <div className="min-h-screen bg-neutral-50">
       <MetaTags
-        title="Facts & Data"
-        description="Comprehensive evidence-based analysis of local government reorganisation in England. Timeline, councils involved, key facts, methodology, sources, and further reading."
+        title="Facts & Figures - LGR Reorganisation Data"
+        description="Key statistics, data, and facts about local government reorganisation in England. Explore timelines, councils involved, methodology, sources, and evidence-based analysis of unitary authority outcomes."
         keywords="LGR facts, reorganisation data, unitary authority evidence, local government reorganisation analysis, LGR statistics"
       />
       

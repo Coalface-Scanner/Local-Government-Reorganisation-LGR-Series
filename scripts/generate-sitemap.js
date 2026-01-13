@@ -101,8 +101,8 @@ async function generateSitemap() {
       // Fetch news items
       const { data: newsData, error: newsError } = await supabase
         .from('news')
-        .select('id, created_at, updated_at')
-        .eq('status', 'published')
+        .select('id, slug, created_at, updated_at')
+        .eq('published', true)
         .order('created_at', { ascending: false })
         .limit(100);
 
@@ -110,6 +110,7 @@ async function generateSitemap() {
         news = newsData;
       } else if (newsError) {
         console.error('Error fetching news:', newsError);
+        console.error('News query failed - check that published field exists and is boolean');
       }
     } else {
       console.log('  Skipping database queries - using static sitemap only');

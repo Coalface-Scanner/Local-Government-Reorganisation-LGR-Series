@@ -1,5 +1,6 @@
 import { Mail, Send } from 'lucide-react';
 import SubscriptionForm from '../components/SubscriptionForm';
+import MetaTags from '../components/MetaTags';
 
 interface ContactProps {
   onNavigate: (page: string) => void;
@@ -8,6 +9,11 @@ interface ContactProps {
 export default function Contact({ onNavigate }: ContactProps) {
   return (
     <div className="bg-neutral-50 min-h-screen">
+      <MetaTags
+        title="Contact - Editorial Team & Inquiries"
+        description="Get in touch with the LGR Series editorial team. For editorial inquiries, research questions, contributions, or to subscribe to The Dispatch newsletter for weekly insights."
+        keywords="LGR contact, editorial inquiries, research questions, contribute to LGR series, newsletter subscription"
+      />
       <div className="relative bg-gradient-to-b from-teal-50 to-white py-8 overflow-hidden">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="border-l-4 border-teal-700 pl-6 mb-4">

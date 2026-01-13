@@ -249,8 +249,8 @@ export default function Materials({ onNavigate }: MaterialsProps) {
   return (
     <div id="main-content" className="min-h-screen bg-neutral-50">
       <MetaTags
-        title="Research & Materials"
-        description="Browse articles, research papers, factsheets, and interviews on local government reorganisation. Comprehensive resource library for practitioners and policymakers."
+        title="Research Library - LGR Materials & Resources"
+        description="Browse articles, research papers, factsheets, and interviews on local government reorganisation. Comprehensive resource library for practitioners and policymakers working on council reform and unitary transitions."
         keywords="LGR research, council reform materials, reorganisation case studies, local government resources, unitary authority research"
       />
       <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">
