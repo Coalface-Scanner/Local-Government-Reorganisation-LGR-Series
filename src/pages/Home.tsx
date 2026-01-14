@@ -207,7 +207,7 @@ export default function Home({ onNavigate }: HomeProps) {
                     Expert analysis on Local Government Reorganisation, Council Reform, and English Devolution
                   </h2>
                   <p className="text-base sm:text-lg md:text-xl text-neutral-700 leading-relaxed max-w-3xl mb-8">
-                    The leading resource on Local Government Reorganisation (LGR) and council reform. Evidence-led analysis of how reorganisation and local government reform are reshaping governance, planning, and decision-making across England.
+                    The leading resource on Local Government Reorganisation (LGR) and council reform. Evidence-led analysis of how reorganisation and local government reform are reshaping governance, <span className="underline">planning</span>, and decision-making across England.
                   </p>
                   <button
                     onClick={() => onNavigate('insights')}
@@ -342,7 +342,7 @@ export default function Home({ onNavigate }: HomeProps) {
               The LGR Road Ahead
             </h3>
             <p className="text-xs text-neutral-700 mb-2 line-clamp-2 relative z-10 flex-grow">
-              How 2026 is expected to unfold for LGR. Navigate the key milestones, decisions, and transitions.
+              How 2026 is expected to unfold for LGR. <span className="underline">Navigate</span> the key milestones, decisions, and transitions.
             </p>
             <div className="mt-auto relative z-10">
             <button
