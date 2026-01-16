@@ -9,8 +9,10 @@ import OptimizedImage from '../components/OptimizedImage';
 import ReadingTime from '../components/ReadingTime';
 import TableOfContents from '../components/TableOfContents';
 import RelatedArticles from '../components/RelatedArticles';
+import RelatedContent from '../components/RelatedContent';
 import ReadingProgress from '../components/ReadingProgress';
 import ErrorDisplay from '../components/ErrorDisplay';
+import Breadcrumbs from '../components/Breadcrumbs';
 import { ArrowLeft, Calendar } from 'lucide-react';
 import { retryWithBackoff } from '../lib/utils';
 
@@ -167,14 +169,22 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
       <ArticleStructuredData
         title={article.title}
         description={article.excerpt || ''}
-        author="Local Government Reorganisation"
+        author="LGR Series Editorial Team"
         publishedDate={article.published_date || article.created_at}
+        updatedDate={article.updated_at}
         imageUrl={article.featured_image || undefined}
         slug={article.slug}
       />
 
       <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-6">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Breadcrumbs 
+            items={[
+              { label: 'Insights', path: '/insights' },
+              { label: article.title }
+            ]}
+            className="mb-6 text-slate-300"
+          />
           <button
             onClick={() => onNavigate('insights')}
             className="flex items-center gap-2 text-slate-300 hover:text-white font-medium mb-6 group"
@@ -319,6 +329,11 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
                 onNavigate={onNavigate}
               />
             </div>
+            <RelatedContent
+              currentSlug={article.slug}
+              contentType="article"
+              maxItems={6}
+            />
           </div>
 
           <aside className="lg:col-span-1">

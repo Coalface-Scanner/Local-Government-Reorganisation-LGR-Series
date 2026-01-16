@@ -70,6 +70,7 @@ async function generateSitemap() {
     let articles = [];
     let materials = [];
     let news = [];
+    let facts = [];
 
     if (supabase) {
       // Fetch published articles (insights)
@@ -96,6 +97,18 @@ async function generateSitemap() {
         materials = materialsData;
       } else if (materialsError) {
         console.error('Error fetching materials:', materialsError);
+      }
+
+      // Fetch facts
+      const { data: factsData, error: factsError } = await supabase
+        .from('facts')
+        .select('id, title, created_at, updated_at')
+        .order('order_index', { ascending: true });
+
+      if (!factsError && factsData) {
+        facts = factsData;
+      } else if (factsError) {
+        console.error('Error fetching facts:', factsError);
       }
 
       // Fetch news items
@@ -145,6 +158,40 @@ async function generateSitemap() {
       });
       console.log(`  Added ${materials.length} published materials`);
     }
+
+    // Add facts to sitemap
+    if (facts.length > 0) {
+      const generateSlug = (title) => {
+        return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      };
+      
+      facts.forEach(fact => {
+        const slug = generateSlug(fact.title);
+        urls.push({
+          loc: `${baseUrl}/facts/${slug}`,
+          changefreq: 'monthly',
+          priority: '0.7',
+          lastmod: (fact.updated_at || fact.created_at || new Date().toISOString()).split('T')[0]
+        });
+      });
+      console.log(`  Added ${facts.length} facts`);
+    }
+
+    // Add council profiles (from static data)
+    const councilSlugs = [
+      'elmbridge', 'epsom-and-ewell', 'guildford', 'mole-valley',
+      'reigate-and-banstead', 'runnymede', 'spelthorne', 'surrey-heath',
+      'tandridge', 'waverley', 'woking', 'surrey-county-council'
+    ];
+    councilSlugs.forEach(slug => {
+      urls.push({
+        loc: `${baseUrl}/council-profiles/${slug}`,
+        changefreq: 'monthly',
+        priority: '0.6',
+        lastmod: new Date().toISOString().split('T')[0]
+      });
+    });
+    console.log(`  Added ${councilSlugs.length} council profiles`);
 
     // News page is already in static pages
     if (news.length > 0) {

@@ -3,6 +3,7 @@ import { supabase } from '../../lib/supabase';
 import MetaTags from '../../components/MetaTags';
 import LastUpdated from '../../components/LastUpdated';
 import FAQSection from '../../components/FAQSection';
+import DatasetStructuredData from '../../components/DatasetStructuredData';
 import { ArrowLeft, Users, DollarSign, FileText, CheckCircle, AlertCircle, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -55,12 +56,27 @@ export default function KeyFacts() {
     fetchFacts();
   }, []);
 
+  const baseUrl = typeof window !== 'undefined' 
+    ? window.location.origin 
+    : 'https://localgovernmentreorganisation.co.uk';
+
   return (
     <div className="min-h-screen bg-neutral-50">
       <MetaTags
         title="Key Facts - Facts & Data"
         description="Evidence-based analysis of local government reorganisation outcomes, including workforce, financial performance, service delivery, and democratic outcomes."
         keywords="LGR facts, reorganisation evidence, unitary authority outcomes, local government reorganisation analysis"
+      />
+      <DatasetStructuredData
+        name="Local Government Reorganisation Key Facts"
+        description="Evidence-based analysis of local government reorganisation outcomes, including workforce impact, financial performance, service delivery, and democratic representation. Curated dataset of key facts from recent reorganisations across England."
+        keywords={['local government reorganisation', 'LGR', 'unitary authority', 'council reform', 'reorganisation outcomes', 'workforce impact', 'financial performance', 'service delivery', 'democratic impact']}
+        datePublished={facts.length > 0 ? facts[0]?.order_index ? new Date().toISOString() : undefined : undefined}
+        url="/facts/key-facts"
+        creator={{
+          name: 'LGR Series',
+          url: baseUrl
+        }}
       />
       
       <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">
@@ -141,6 +157,14 @@ export default function KeyFacts() {
             <p className="text-slate-600">No facts available yet.</p>
           </div>
         )}
+      </div>
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <RelatedContent
+          currentSlug="key-facts"
+          contentType="fact"
+          maxItems={6}
+        />
       </div>
 
       <FAQSection page="facts" />

@@ -3,6 +3,7 @@ import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
 import PageNavigation from '../components/PageNavigation';
+import RelatedContent from '../components/RelatedContent';
 import { BookOpen, Lightbulb, Target, Users, TrendingUp, AlertTriangle } from 'lucide-react';
 
 interface LessonsProps {
@@ -201,6 +202,14 @@ export default function Lessons({ onNavigate }: LessonsProps) {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <RelatedContent
+          currentSlug="lessons"
+          contentType="fact"
+          maxItems={6}
+        />
       </div>
 
       <FAQSection page="lessons" />

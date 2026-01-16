@@ -3,6 +3,7 @@ import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
 import PageNavigation from '../components/PageNavigation';
+import LocalPlaceStructuredData from '../components/LocalPlaceStructuredData';
 import { Target, Users, BarChart, Shield, Clock, BookOpen, Calendar, TrendingUp } from 'lucide-react';
 
 interface SurreyProps {
@@ -24,6 +25,25 @@ export default function Surrey({ onNavigate }: SurreyProps) {
         title="Surrey Focus - LGR Analysis & Transition Guide"
         description="Detailed analysis of Surrey's local government reorganisation. Risks, opportunities, and practical guidance for the transition to East and West Surrey unitary authorities."
         keywords="Surrey reorganisation, Surrey LGR, East Surrey council, West Surrey council, Surrey devolution, Surrey unitary"
+      />
+      <LocalPlaceStructuredData
+        name="Surrey"
+        description="Surrey is a county in South East England, currently undergoing local government reorganisation to form East Surrey and West Surrey unitary authorities."
+        type="AdministrativeArea"
+        address={{
+          addressRegion: "Surrey",
+          addressCountry: "GB"
+        }}
+        containedInPlace={{
+          name: "South East England",
+          type: "AdministrativeArea"
+        }}
+        areaServed={[
+          "Elmbridge", "Epsom and Ewell", "Guildford", "Mole Valley", 
+          "Reigate and Banstead", "Runnymede", "Spelthorne", "Surrey Heath",
+          "Tandridge", "Waverley", "Woking", "Surrey County Council"
+        ]}
+        url="/surrey"
       />
       <div className="relative bg-gradient-to-b from-teal-50 to-white py-8 overflow-hidden">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

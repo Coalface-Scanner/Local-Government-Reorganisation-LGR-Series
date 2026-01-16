@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ChevronRight, Home } from 'lucide-react';
+import BreadcrumbStructuredData from './BreadcrumbStructuredData';
 
 interface BreadcrumbItem {
   label: string;
@@ -15,7 +16,9 @@ export default function Breadcrumbs({ items, className = '' }: BreadcrumbsProps)
   if (items.length === 0) return null;
 
   return (
-    <nav aria-label="Breadcrumb" className={className}>
+    <>
+      <BreadcrumbStructuredData items={items} />
+      <nav aria-label="Breadcrumb" className={className}>
       <ol className="flex items-center gap-2 text-sm text-slate-600 flex-wrap">
         <li>
           <Link
@@ -46,5 +49,6 @@ export default function Breadcrumbs({ items, className = '' }: BreadcrumbsProps)
         ))}
       </ol>
     </nav>
+    </>
   );
 }

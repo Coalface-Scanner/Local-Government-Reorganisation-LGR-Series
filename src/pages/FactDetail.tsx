@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase';
 import MetaTags from '../components/MetaTags';
 import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
+import Breadcrumbs from '../components/Breadcrumbs';
 import { ArrowLeft, AlertCircle, Users, DollarSign, FileText, CheckCircle } from 'lucide-react';
 
 interface Fact {
@@ -140,6 +141,13 @@ export default function FactDetail() {
 
       <div className={`bg-gradient-to-br ${gradientClass} text-white py-6`}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Breadcrumbs 
+            items={[
+              { label: 'Facts & Figures', path: '/facts' },
+              { label: fact.title }
+            ]}
+            className="mb-6 text-white/80"
+          />
           <button
             onClick={() => navigate('/facts')}
             className="flex items-center gap-2 text-white/80 hover:text-white font-medium mb-6 group"

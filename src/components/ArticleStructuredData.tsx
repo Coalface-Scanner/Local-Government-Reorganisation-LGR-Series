@@ -3,6 +3,7 @@ interface ArticleStructuredDataProps {
   description: string;
   author: string;
   publishedDate: string;
+  updatedDate?: string;
   imageUrl?: string;
   slug: string;
 }
@@ -12,6 +13,7 @@ export default function ArticleStructuredData({
   description,
   author,
   publishedDate,
+  updatedDate,
   imageUrl,
   slug
 }: ArticleStructuredDataProps) {
@@ -25,11 +27,11 @@ export default function ArticleStructuredData({
     "headline": title,
     "description": description,
     "author": {
-      "@type": "Person",
+      "@type": author === "LGR Series Editorial Team" || author === "Coalface Engagement" || author === "Local Government Reorganisation" ? "Organization" : "Person",
       "name": author
     },
     "datePublished": publishedDate,
-    "dateModified": publishedDate,
+    "dateModified": updatedDate || publishedDate,
     "publisher": {
       "@type": "Organization",
       "name": "LGR Series",

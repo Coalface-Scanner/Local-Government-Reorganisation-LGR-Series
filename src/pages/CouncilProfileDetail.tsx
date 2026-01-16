@@ -5,6 +5,8 @@ import { getCouncilBySlug, surreyCouncils } from '../data/surreyCouncils';
 import FAQSection from '../components/FAQSection';
 import LastUpdated from '../components/LastUpdated';
 import CouncilProfilesPasswordProtection from '../components/CouncilProfilesPasswordProtection';
+import Breadcrumbs from '../components/Breadcrumbs';
+import LocalPlaceStructuredData from '../components/LocalPlaceStructuredData';
 
 export default function CouncilProfileDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -87,10 +89,33 @@ export default function CouncilProfileDetail() {
         })()}
         keywords={`${council.name}, Surrey council, ${council.type}, local authority profile, council statistics`}
       />
+      <LocalPlaceStructuredData
+        name={council.name}
+        description={council.description}
+        type="AdministrativeArea"
+        address={{
+          addressLocality: council.name.replace(' Council', '').replace(' Borough', '').replace(' District', ''),
+          addressRegion: "Surrey",
+          addressCountry: "GB"
+        }}
+        containedInPlace={{
+          name: "Surrey",
+          type: "AdministrativeArea"
+        }}
+        areaServed={[council.name.replace(' Council', '')]}
+        url={`/council-profiles/${council.slug}`}
+      />
 
       {/* Hero Section */}
       <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Breadcrumbs 
+            items={[
+              { label: 'Council Profiles', path: '/council-profiles' },
+              { label: council.name.replace(' Council', '') }
+            ]}
+            className="mb-6"
+          />
           <Link
             to="/council-profiles"
             className="inline-flex items-center gap-2 text-sm font-bold text-teal-700 hover:text-teal-900 mb-6 transition-colors"

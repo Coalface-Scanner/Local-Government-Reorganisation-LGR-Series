@@ -2,6 +2,7 @@ import MetaTags from '../components/MetaTags';
 import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import SubscriptionForm from '../components/SubscriptionForm';
+import CollectionPageStructuredData from '../components/CollectionPageStructuredData';
 import { Calendar, MapPin, List, CheckCircle, FileText, BookOpen, ArrowRight, Route } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -88,6 +89,17 @@ export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
         title="Facts & Figures - LGR Reorganisation Data"
         description="Key statistics, data, and facts about local government reorganisation in England. Explore timelines, councils involved, methodology, and sources."
         keywords="LGR facts, reorganisation data, unitary authority evidence, local government reorganisation analysis, LGR statistics"
+      />
+      <CollectionPageStructuredData
+        name="Facts & Figures"
+        description="Key statistics, data, and facts about local government reorganisation in England. Explore timelines, councils involved, methodology, and sources."
+        url="/facts"
+        numberOfItems={serviceCards.length}
+        items={serviceCards.map(card => ({
+          name: card.title,
+          url: card.route,
+          description: card.description
+        }))}
       />
       
       <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">

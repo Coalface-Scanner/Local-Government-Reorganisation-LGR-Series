@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabase';
 import { Calendar } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
 import LastUpdated from '../components/LastUpdated';
+import CollectionPageStructuredData from '../components/CollectionPageStructuredData';
 
 interface Article {
   id: string;
@@ -76,6 +77,17 @@ export default function Insights({ onNavigate }: InsightsProps) {
         title="Insights & Analysis - LGR Expert Articles"
         description="Expert insights on local government reorganisation, planning, and governance. In-depth articles examining council reform, unitary authorities, and devolution."
         keywords="local government, reorganisation, insights, articles, analysis, LGR, council reform, unitary authorities"
+      />
+      <CollectionPageStructuredData
+        name="Insights & Analysis"
+        description="Expert insights on local government reorganisation, planning, and governance. In-depth articles examining council reform, unitary authorities, and devolution."
+        url="/insights"
+        numberOfItems={articles.length}
+        items={articles.map(article => ({
+          name: article.title,
+          url: `/insights/${article.slug}`,
+          description: article.excerpt || undefined
+        }))}
       />
 
       <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">

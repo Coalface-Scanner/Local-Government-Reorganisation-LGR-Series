@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabase';
 import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
+import CollectionPageStructuredData from '../components/CollectionPageStructuredData';
 import { Search, Filter, ArrowUpDown, FileText, Download, ExternalLink } from 'lucide-react';
 
 interface Material {
@@ -252,6 +253,17 @@ export default function Materials({ onNavigate }: MaterialsProps) {
         title="Research Library - LGR Materials & Resources"
         description="Browse articles, research papers, factsheets, and interviews on local government reorganisation. Comprehensive resource library for practitioners and policymakers."
         keywords="LGR research, council reform materials, reorganisation case studies, local government resources, unitary authority research"
+      />
+      <CollectionPageStructuredData
+        name="Research Library - Materials & Resources"
+        description="Browse articles, research papers, factsheets, and interviews on local government reorganisation. Comprehensive resource library for practitioners and policymakers."
+        url="/materials"
+        numberOfItems={materials.length}
+        items={materials.map(material => ({
+          name: material.title,
+          url: `/materials/${material.slug}`,
+          description: material.description || undefined
+        }))}
       />
       <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

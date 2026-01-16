@@ -24,7 +24,31 @@ export default function MetaTags({
   article
 }: MetaTagsProps) {
   const fullTitle = `${title} | LGR Series`;
-  const canonicalUrl = typeof window !== 'undefined' ? window.location.href : '';
+  
+  // Build canonical URL - remove query params, ensure HTTPS, handle trailing slashes
+  const getCanonicalUrl = (): string => {
+    if (typeof window === 'undefined') {
+      return 'https://localgovernmentreorganisation.co.uk';
+    }
+    
+    const url = new URL(window.location.href);
+    // Remove query parameters
+    url.search = '';
+    // Remove hash
+    url.hash = '';
+    // Ensure HTTPS
+    url.protocol = 'https:';
+    // Remove trailing slash except for root
+    let pathname = url.pathname;
+    if (pathname !== '/' && pathname.endsWith('/')) {
+      pathname = pathname.slice(0, -1);
+      url.pathname = pathname;
+    }
+    
+    return url.toString();
+  };
+  
+  const canonicalUrl = getCanonicalUrl();
 
   useEffect(() => {
     document.title = fullTitle;

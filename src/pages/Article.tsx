@@ -9,6 +9,8 @@ import ReadingTime from '../components/ReadingTime';
 import TableOfContents from '../components/TableOfContents';
 import ReadingProgress from '../components/ReadingProgress';
 import ErrorDisplay from '../components/ErrorDisplay';
+import Breadcrumbs from '../components/Breadcrumbs';
+import RelatedContent from '../components/RelatedContent';
 import { ArrowLeft, Download, ExternalLink, Calendar, User, Eye } from 'lucide-react';
 import { retryWithBackoff } from '../lib/utils';
 
@@ -22,6 +24,7 @@ interface Material {
   main_image_url: string | null;
   additional_images: Array<{ url: string; caption?: string }> | null;
   published_date: string;
+  updated_at: string;
   read_count: number;
   editors_pick: boolean;
   type: string;
@@ -193,13 +196,21 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
       <ArticleStructuredData
         title={material.title}
         description={material.description}
-        author={material.author_name}
+        author={material.author_name || material.author || "LGR Series Editorial Team"}
         publishedDate={material.published_date}
+        updatedDate={material.updated_at}
         imageUrl={material.main_image_url || material.image_url || undefined}
         slug={material.slug}
       />
       <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-6">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Breadcrumbs 
+            items={[
+              { label: 'Materials', path: '/materials' },
+              { label: material.title }
+            ]}
+            className="mb-6 text-slate-300"
+          />
           <button
             onClick={() => onNavigate('materials')}
             className="flex items-center gap-2 text-slate-300 hover:text-white font-medium mb-6 group"
@@ -415,6 +426,14 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
           </div>
         </div>
 
+        <RelatedContent
+          currentSlug={material.slug}
+          contentType="material"
+          theme={material.theme}
+          geography={material.geography}
+          lgrPhase={material.lgr_phase}
+          maxItems={6}
+        />
         <div className="mt-8">
           <LastUpdated />
         </div>
