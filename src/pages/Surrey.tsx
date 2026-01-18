@@ -64,7 +64,7 @@ export default function Surrey({ onNavigate }: SurreyProps) {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-10">
             <div id="playbook" className="bg-white rounded-2xl p-8 shadow-lg border border-slate-200">
@@ -233,28 +233,38 @@ export default function Surrey({ onNavigate }: SurreyProps) {
           <div className="lg:col-span-1">
             <div className="sticky top-24 space-y-6">
               <PageNavigation items={navItems} />
-              <SubscriptionForm />
+              <div className="bg-teal-800 text-white p-6">
+                <h3 className="text-xl font-black mb-3">
+                  The Dispatch
+                </h3>
+                <p className="text-sm text-white mb-4">
+                  Get the LGR Series directly in your inbox. No fluff, just deep analysis.
+                </p>
+                <SubscriptionForm variant="compact" />
+              </div>
 
-              <div className="bg-cyan-50 rounded-xl p-6 border border-cyan-200">
-                <h4 className="font-bold text-slate-900 mb-3">Related Analysis</h4>
+              <div className="border-2 border-neutral-900 bg-white p-6">
+                <h4 className="font-black text-neutral-900 mb-4 text-sm tracking-wider border-b-2 border-neutral-200 pb-3">
+                  RELATED CONTENT
+                </h4>
                 <div className="space-y-3">
                   <button
                     onClick={() => onNavigate('surrey/election-simulator')}
-                    className="w-full text-left px-4 py-3 bg-yellow-100 rounded-lg hover:shadow-md transition-all text-sm font-bold text-slate-900 hover:text-yellow-700 border border-yellow-300"
+                    className="w-full text-left px-4 py-3 bg-neutral-50 hover:bg-teal-50 border border-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-neutral-700 hover:text-teal-700"
                   >
-                    🗳️ Election Simulator →
+                    Election Simulator →
                   </button>
                   <button
                     onClick={() => onNavigate('facts')}
-                    className="w-full text-left px-4 py-3 bg-white rounded-lg hover:shadow-md transition-all text-sm font-medium text-slate-700 hover:text-cyan-600"
+                    className="w-full text-left px-4 py-3 bg-neutral-50 hover:bg-teal-50 border border-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-neutral-700 hover:text-teal-700"
                   >
-                    View the Facts →
+                    View the Facts & Data →
                   </button>
                   <button
                     onClick={() => onNavigate('lessons')}
-                    className="w-full text-left px-4 py-3 bg-white rounded-lg hover:shadow-md transition-all text-sm font-medium text-slate-700 hover:text-cyan-600"
+                    className="w-full text-left px-4 py-3 bg-neutral-50 hover:bg-teal-50 border border-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-neutral-700 hover:text-teal-700"
                   >
-                    Key Lessons →
+                    Lessons from Reorganisation →
                   </button>
                 </div>
               </div>

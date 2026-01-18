@@ -105,7 +105,7 @@ export default function KeyFacts() {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {loading ? (
           <div className="text-center py-6 text-slate-600">Loading facts...</div>
         ) : facts.length > 0 ? (
@@ -159,7 +159,7 @@ export default function KeyFacts() {
         )}
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <RelatedContent
           currentSlug="key-facts"
           contentType="fact"

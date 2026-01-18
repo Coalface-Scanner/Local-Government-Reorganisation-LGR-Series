@@ -29,6 +29,10 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
   const [interviews, setInterviews] = useState<Interview[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const navItems = [
+    { id: 'interviews', label: 'Interviews', icon: <Mic size={16} /> }
+  ];
+
   useEffect(() => {
     const fetchInterviews = async () => {
       const { data, error} = await supabase
@@ -80,7 +84,7 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-12 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-2xl p-8 border border-cyan-200">
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -101,7 +105,7 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8 mb-16">
+        <div id="interviews" className="grid lg:grid-cols-3 gap-8 mb-16">
           {loading ? (
             <div className="col-span-3 text-center py-6 text-slate-600">Loading interviews...</div>
           ) : interviews.length === 0 ? (
@@ -265,42 +269,40 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
           </div>
 
           <div className="lg:col-span-1">
-            <div className="sticky top-24">
-              <SubscriptionForm />
-
-              <div className="mt-6 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-6 text-white shadow-lg">
-                <div className="flex items-center gap-2 mb-3">
-                  <FileText size={20} />
-                  <h4 className="font-bold">Read on Substack</h4>
-                </div>
-                <p className="text-sm text-orange-50 mb-4">
-                  Get full articles and analysis delivered to your inbox
+            <div className="sticky top-24 space-y-6">
+              <PageNavigation items={navItems} />
+              <div className="bg-teal-800 text-white p-6">
+                <h3 className="text-xl font-black mb-3">
+                  The Dispatch
+                </h3>
+                <p className="text-sm text-white mb-4">
+                  Get the LGR Series directly in your inbox. No fluff, just deep analysis.
                 </p>
-                <a
-                  href="https://rowancole.substack.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 w-full justify-center px-4 py-2.5 bg-white text-orange-600 rounded-lg hover:shadow-xl transition-all font-semibold text-sm"
-                >
-                  Visit Substack
-                  <ExternalLink size={16} />
-                </a>
+                <SubscriptionForm variant="compact" />
               </div>
 
-              <div className="mt-6 bg-cyan-50 rounded-xl p-6 border border-cyan-200">
-                <h4 className="font-bold text-slate-900 mb-3">Related Content</h4>
+              <div className="border-2 border-neutral-900 bg-white p-6">
+                <h4 className="font-black text-neutral-900 mb-4 text-sm tracking-wider border-b-2 border-neutral-200 pb-3">
+                  RELATED CONTENT
+                </h4>
                 <div className="space-y-3">
                   <button
                     onClick={() => onNavigate('lessons')}
-                    className="w-full text-left px-4 py-3 bg-white rounded-lg hover:shadow-md transition-all text-sm font-medium text-slate-700 hover:text-cyan-600"
+                    className="w-full text-left px-4 py-3 bg-neutral-50 hover:bg-teal-50 border border-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-neutral-700 hover:text-teal-700"
                   >
-                    Key Lessons →
+                    View the Lessons →
                   </button>
                   <button
                     onClick={() => onNavigate('facts')}
-                    className="w-full text-left px-4 py-3 bg-white rounded-lg hover:shadow-md transition-all text-sm font-medium text-slate-700 hover:text-cyan-600"
+                    className="w-full text-left px-4 py-3 bg-neutral-50 hover:bg-teal-50 border border-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-neutral-700 hover:text-teal-700"
                   >
-                    Facts & Data →
+                    View the Facts & Data →
+                  </button>
+                  <button
+                    onClick={() => onNavigate('surrey')}
+                    className="w-full text-left px-4 py-3 bg-neutral-50 hover:bg-teal-50 border border-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-neutral-700 hover:text-teal-700"
+                  >
+                    Surrey Analysis →
                   </button>
                 </div>
               </div>

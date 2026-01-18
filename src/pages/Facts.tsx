@@ -77,6 +77,14 @@ const serviceCards: ServiceCard[] = [
     icon: Route,
     color: 'from-indigo-500 to-purple-600',
     route: '/forecast-2026-27'
+  },
+  {
+    id: 'councilopedia',
+    title: 'Councylopedia',
+    description: 'Comprehensive guide to local government reorganisation terminology, concepts, and resources for understanding LGR processes.',
+    icon: BookOpen,
+    color: 'from-violet-500 to-purple-600',
+    route: '/facts/councilopedia'
   }
 ];
 
@@ -162,7 +170,15 @@ export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
                     </div>
 
         <div className="max-w-2xl mx-auto">
-              <SubscriptionForm />
+          <div className="bg-teal-800 text-white p-6">
+            <h3 className="text-xl font-black mb-3">
+              The Dispatch
+            </h3>
+            <p className="text-sm text-white mb-4">
+              Get the LGR Series directly in your inbox. No fluff, just deep analysis.
+            </p>
+            <SubscriptionForm variant="compact" />
+          </div>
         </div>
       </div>
 

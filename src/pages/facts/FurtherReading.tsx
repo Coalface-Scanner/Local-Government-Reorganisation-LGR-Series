@@ -41,7 +41,7 @@ export default function FurtherReading() {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-white rounded-2xl p-8 md:p-12 shadow-lg border border-slate-200 space-y-8">
           <div>
             <h2 className="text-2xl font-bold text-slate-900 mb-6">Recommended Resources</h2>

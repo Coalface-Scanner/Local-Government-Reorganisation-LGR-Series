@@ -36,73 +36,106 @@ export default function Contact({ onNavigate }: ContactProps) {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-          <div className="bg-white border-2 border-neutral-200 p-8">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-teal-700 rounded-full flex items-center justify-center">
-                <Mail size={24} className="text-white" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-8">
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="bg-white border-2 border-neutral-200 p-8">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-teal-700 rounded-full flex items-center justify-center">
+                    <Mail size={24} className="text-white" />
+                  </div>
+                  <h2 className="text-2xl font-black text-neutral-900">
+                    Editorial Team
+                  </h2>
+                </div>
+                <p className="text-neutral-700 mb-4">
+                  For editorial inquiries, research questions, or to contribute case studies:
+                </p>
+                <a
+                  href="mailto:insights@coalface.co.uk"
+                  className="text-teal-700 font-bold hover:text-teal-900 transition-colors"
+                >
+                  insights@coalface.co.uk
+                </a>
               </div>
-              <h2 className="text-2xl font-black text-neutral-900">
-                Editorial Team
-              </h2>
+
+              <div className="bg-white border-2 border-neutral-200 p-8">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-teal-700 rounded-full flex items-center justify-center">
+                    <Send size={24} className="text-white" />
+                  </div>
+                  <h2 className="text-2xl font-black text-neutral-900">
+                    Subscribe
+                  </h2>
+                </div>
+                <p className="text-neutral-700 mb-4">
+                  Receive new insights as they're published, plus access to case material and the 100 Day Playbook:
+                </p>
+                <button
+                  onClick={() => onNavigate('subscribe')}
+                  className="text-teal-700 font-bold hover:text-teal-900 transition-colors"
+                >
+                  Subscribe to The Dispatch →
+                </button>
+              </div>
             </div>
-            <p className="text-neutral-700 mb-4">
-              For editorial inquiries, research questions, or to contribute case studies:
-            </p>
-            <a
-              href="mailto:insights@coalface.co.uk"
-              className="text-teal-700 font-bold hover:text-teal-900 transition-colors"
-            >
-              insights@coalface.co.uk
-            </a>
+
+            <div className="bg-neutral-900 text-white p-8">
+              <h2 className="text-2xl font-black mb-4">About COALFACE Insights</h2>
+              <p className="text-neutral-300 leading-relaxed mb-4">
+                COALFACE Insights produces research-driven analysis on local government, planning, and
+                place-making. Our work combines data from the COALFACE Council Scanner™ with evidence
+                from real reorganisations to support better decision-making.
+              </p>
+              <button
+                onClick={() => onNavigate('about')}
+                className="text-teal-400 font-bold hover:text-teal-300 transition-colors"
+              >
+                Learn more about our methodology →
+              </button>
+            </div>
           </div>
 
-          <div className="bg-white border-2 border-neutral-200 p-8">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-teal-700 rounded-full flex items-center justify-center">
-                <Send size={24} className="text-white" />
+          <div className="lg:col-span-1">
+            <div className="sticky top-24 space-y-6">
+              <div className="bg-teal-800 text-white p-6">
+                <h3 className="text-xl font-black mb-3">
+                  The Dispatch
+                </h3>
+                <p className="text-sm text-white mb-4">
+                  Get the LGR Series directly in your inbox. No fluff, just deep analysis.
+                </p>
+                <SubscriptionForm variant="compact" />
               </div>
-              <h2 className="text-2xl font-black text-neutral-900">
-                Subscribe
-              </h2>
+
+              <div className="border-2 border-neutral-900 bg-white p-6">
+                <h4 className="font-black text-neutral-900 mb-4 text-sm tracking-wider border-b-2 border-neutral-200 pb-3">
+                  RELATED CONTENT
+                </h4>
+                <div className="space-y-3">
+                  <button
+                    onClick={() => onNavigate('insights')}
+                    className="w-full text-left px-4 py-3 bg-neutral-50 hover:bg-teal-50 border border-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-neutral-700 hover:text-teal-700"
+                  >
+                    View Insights & Analysis →
+                  </button>
+                  <button
+                    onClick={() => onNavigate('facts')}
+                    className="w-full text-left px-4 py-3 bg-neutral-50 hover:bg-teal-50 border border-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-neutral-700 hover:text-teal-700"
+                  >
+                    View the Facts & Data →
+                  </button>
+                  <button
+                    onClick={() => onNavigate('lessons')}
+                    className="w-full text-left px-4 py-3 bg-neutral-50 hover:bg-teal-50 border border-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-neutral-700 hover:text-teal-700"
+                  >
+                    Lessons from Reorganisation →
+                  </button>
+                </div>
+              </div>
             </div>
-            <p className="text-neutral-700 mb-4">
-              Receive new insights as they're published, plus access to case material and the 100 Day Playbook:
-            </p>
-            <button
-              onClick={() => onNavigate('subscribe')}
-              className="text-teal-700 font-bold hover:text-teal-900 transition-colors"
-            >
-              Subscribe to The Dispatch →
-            </button>
           </div>
-        </div>
-
-        <div className="bg-neutral-900 text-white p-8 mb-12">
-          <h2 className="text-2xl font-black mb-4">About COALFACE Insights</h2>
-          <p className="text-neutral-300 leading-relaxed mb-4">
-            COALFACE Insights produces research-driven analysis on local government, planning, and
-            place-making. Our work combines data from the COALFACE Council Scanner™ with evidence
-            from real reorganisations to support better decision-making.
-          </p>
-          <button
-            onClick={() => onNavigate('about')}
-            className="text-teal-400 font-bold hover:text-teal-300 transition-colors"
-          >
-            Learn more about our methodology →
-          </button>
-        </div>
-
-        <div className="bg-white border-2 border-neutral-200 p-8">
-          <h2 className="text-2xl font-black text-neutral-900 mb-6">
-            Subscribe to The Dispatch
-          </h2>
-          <p className="text-neutral-700 mb-6">
-            Get the LGR Series directly in your inbox. No fluff, just deep analysis.
-          </p>
-          <SubscriptionForm />
         </div>
       </div>
     </div>

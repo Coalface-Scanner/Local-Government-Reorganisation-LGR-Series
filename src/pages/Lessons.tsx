@@ -42,7 +42,7 @@ export default function Lessons({ onNavigate }: LessonsProps) {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-10">
             <div id="insights" className="bg-white border-2 border-neutral-900 p-8 shadow-sm">
@@ -204,7 +204,7 @@ export default function Lessons({ onNavigate }: LessonsProps) {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <RelatedContent
           currentSlug="lessons"
           contentType="fact"

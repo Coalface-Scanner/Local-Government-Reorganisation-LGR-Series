@@ -71,7 +71,7 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
       </div>
 
       <article className="bg-white">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
               <div className="prose prose-lg max-w-none">
@@ -268,7 +268,41 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
             <div className="lg:col-span-1">
               <div className="sticky top-24 space-y-6">
                 <PageNavigation items={navItems} />
-                <SubscriptionForm />
+                <div className="bg-teal-800 text-white p-6">
+                  <h3 className="text-xl font-black mb-3">
+                    The Dispatch
+                  </h3>
+                  <p className="text-sm text-white mb-4">
+                    Get the LGR Series directly in your inbox. No fluff, just deep analysis.
+                  </p>
+                  <SubscriptionForm variant="compact" />
+                </div>
+
+                <div className="border-2 border-neutral-900 bg-white p-6">
+                  <h4 className="font-black text-neutral-900 mb-4 text-sm tracking-wider border-b-2 border-neutral-200 pb-3">
+                    RELATED CONTENT
+                  </h4>
+                  <div className="space-y-3">
+                    <button
+                      onClick={() => onNavigate('lessons')}
+                      className="w-full text-left px-4 py-3 bg-neutral-50 hover:bg-teal-50 border border-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-neutral-700 hover:text-teal-700"
+                    >
+                      View the Lessons →
+                    </button>
+                    <button
+                      onClick={() => onNavigate('facts')}
+                      className="w-full text-left px-4 py-3 bg-neutral-50 hover:bg-teal-50 border border-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-neutral-700 hover:text-teal-700"
+                    >
+                      View the Facts & Data →
+                    </button>
+                    <button
+                      onClick={() => onNavigate('surrey')}
+                      className="w-full text-left px-4 py-3 bg-neutral-50 hover:bg-teal-50 border border-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-neutral-700 hover:text-teal-700"
+                    >
+                      Surrey Analysis →
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -276,7 +310,7 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
       </article>
 
       <aside className="bg-neutral-100 border-t border-neutral-200 py-6">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h3 className="text-2xl font-black text-neutral-900 mb-6">
             Related Resources
           </h3>

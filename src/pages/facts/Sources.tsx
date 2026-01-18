@@ -38,7 +38,7 @@ export default function Sources() {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-8 text-slate-700">
           <div className="bg-white rounded-2xl p-8 shadow-lg border border-slate-200">
             <h2 className="text-2xl font-bold text-slate-900 mb-4">Evidence from Recent Reorganisations</h2>
