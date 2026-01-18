@@ -136,10 +136,6 @@ export default function FactDetail() {
     return title.length > maxTitleLength ? title.substring(0, maxTitleLength - 3) + '...' : title;
   };
 
-  const generateSlug = (title: string): string => {
-    return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <MetaTags

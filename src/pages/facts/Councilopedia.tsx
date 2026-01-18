@@ -1,7 +1,7 @@
 import MetaTags from '../../components/MetaTags';
 import LastUpdated from '../../components/LastUpdated';
 import FAQSection from '../../components/FAQSection';
-import { ArrowLeft, BookOpen, ArrowRight, GraduationCap, FileText, Users, Building2, TrendingUp, HelpCircle } from 'lucide-react';
+import { ArrowLeft, ArrowRight, GraduationCap, FileText, Users, Building2, TrendingUp, HelpCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface ServiceCard {
@@ -67,6 +67,7 @@ const serviceCards: ServiceCard[] = [
 
 export default function Councilopedia() {
   const navigate = useNavigate();
+  const activeServiceCards = serviceCards.filter((card) => !card.disabled);
 
   return (
     <div className="min-h-screen bg-neutral-50">
@@ -101,7 +102,7 @@ export default function Councilopedia() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {serviceCards.map((card) => {
+          {activeServiceCards.map((card) => {
             const Icon = card.icon;
             const isDisabled = card.disabled;
             return (
