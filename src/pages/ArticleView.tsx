@@ -28,6 +28,7 @@ interface Article {
   featured: boolean;
   created_at: string;
   updated_at: string;
+  author: string | null;
 }
 
 interface ArticleViewProps {
@@ -161,7 +162,7 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
         ogImage={article.featured_image || undefined}
         article={{
           publishedTime: article.published_date || article.created_at,
-          author: 'Local Government Reorganisation',
+          author: article.author || 'LGR Series Editorial Team',
           section: 'Insights',
           tags: ['LGR', 'Local Government', 'Reorganisation']
         }}
@@ -169,7 +170,7 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
       <ArticleStructuredData
         title={article.title}
         description={article.excerpt || ''}
-        author="LGR Series Editorial Team"
+        author={article.author || "LGR Series Editorial Team"}
         publishedDate={article.published_date || article.created_at}
         updatedDate={article.updated_at}
         imageUrl={article.featured_image || undefined}

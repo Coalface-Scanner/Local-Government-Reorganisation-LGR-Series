@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import MetaTags from '../components/MetaTags';
+import ArticleStructuredData from '../components/ArticleStructuredData';
 import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import Breadcrumbs from '../components/Breadcrumbs';
@@ -117,26 +118,43 @@ export default function FactDetail() {
   const Icon = categoryIcons[fact.category || 'Overview'] || AlertCircle;
   const gradientClass = categoryColors[fact.category || 'Overview'] || 'from-slate-500 to-slate-700';
 
+  const getDescription = () => {
+    const textContent = fact.content.replace(/<[^>]*>/g, '').trim();
+    let desc = textContent.length > 0 ? textContent : `Key facts about ${fact.title} in local government reorganisation.`;
+    if (desc.length < 25) {
+      desc = `Key facts about ${fact.title} in local government reorganisation and council reform.`;
+    }
+    if (desc.length > 160) {
+      desc = desc.substring(0, 157) + '...';
+    }
+    return desc;
+  };
+
+  const getTitle = () => {
+    const title = `${fact.title} - Facts & Figures`;
+    const maxTitleLength = 56; // 70 - 14 (" | LGR Series")
+    return title.length > maxTitleLength ? title.substring(0, maxTitleLength - 3) + '...' : title;
+  };
+
+  const generateSlug = (title: string): string => {
+    return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <MetaTags
-        title={(() => {
-          const title = `${fact.title} - Facts & Figures`;
-          const maxTitleLength = 56; // 70 - 14 (" | LGR Series")
-          return title.length > maxTitleLength ? title.substring(0, maxTitleLength - 3) + '...' : title;
-        })()}
-        description={(() => {
-          const textContent = fact.content.replace(/<[^>]*>/g, '').trim();
-          let desc = textContent.length > 0 ? textContent : `Key facts about ${fact.title} in local government reorganisation.`;
-          if (desc.length < 25) {
-            desc = `Key facts about ${fact.title} in local government reorganisation and council reform.`;
-          }
-          if (desc.length > 160) {
-            desc = desc.substring(0, 157) + '...';
-          }
-          return desc;
-        })()}
+        title={getTitle()}
+        description={getDescription()}
         keywords="local government, reorganisation, facts, LGR, evidence"
+        ogType="article"
+      />
+      <ArticleStructuredData
+        title={fact.title}
+        description={getDescription()}
+        author="LGR Series Editorial Team"
+        publishedDate={new Date().toISOString()}
+        imageUrl={undefined}
+        slug={generateSlug(fact.title)}
       />
 
       <div className={`bg-gradient-to-br ${gradientClass} text-white py-6`}>
