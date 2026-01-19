@@ -22,7 +22,7 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
 
   const login = (password: string): boolean => {
     // VITE_ADMIN_PASSWORD is optional - access it safely
-    const adminPassword = (import.meta.env as any).VITE_ADMIN_PASSWORD as string | undefined;
+    const adminPassword = (import.meta.env as { VITE_ADMIN_PASSWORD?: string }).VITE_ADMIN_PASSWORD;
 
     if (!adminPassword) {
       // If admin password is not configured, allow access with any password

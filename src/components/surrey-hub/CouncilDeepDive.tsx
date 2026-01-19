@@ -93,7 +93,7 @@ export default function CouncilDeepDive() {
     try {
       const content = await generateBrief(council);
       setBriefContent((prev) => ({ ...prev, [councilId]: content }));
-    } catch (error) {
+    } catch (_error) {
       setBriefContent((prev) => ({
         ...prev,
         [councilId]: 'Error generating brief. Please try again.',
@@ -118,7 +118,7 @@ export default function CouncilDeepDive() {
     try {
       const content = await simulateObjection(council);
       setSimContent((prev) => ({ ...prev, [councilId]: content }));
-    } catch (error) {
+    } catch (_error) {
       setSimContent((prev) => ({
         ...prev,
         [councilId]: 'Error simulating objection. Please try again.',
