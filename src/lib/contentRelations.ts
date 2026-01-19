@@ -22,7 +22,7 @@ export async function findRelatedArticles(
   limit: number = 4
 ): Promise<ContentRelation[]> {
   try {
-    let query = supabase
+    const query = supabase
       .from('articles')
       .select('id, title, slug, excerpt, published_date')
       .eq('status', 'published')
@@ -73,7 +73,7 @@ export async function findRelatedMaterials(
   limit: number = 3
 ): Promise<ContentRelation[]> {
   try {
-    let query = supabase
+    const query = supabase
       .from('materials')
       .select('id, title, slug, description, theme, geography, lgr_phase, published_date')
       .neq('slug', currentSlug)

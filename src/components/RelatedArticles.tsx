@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import { ArrowRight } from 'lucide-react';
 
@@ -27,11 +27,7 @@ export default function RelatedArticles({
   const [relatedArticles, setRelatedArticles] = useState<RelatedArticle[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchRelatedArticles();
-  }, [currentSlug, currentTheme, currentCategory]);
-
-  const fetchRelatedArticles = async () => {
+  const fetchRelatedArticles = useCallback(async () => {
     setLoading(true);
     try {
       // Fetch recent articles - theme/category filtering can be added later if needed
@@ -54,7 +50,11 @@ export default function RelatedArticles({
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentSlug]);
+
+  useEffect(() => {
+    fetchRelatedArticles();
+  }, [fetchRelatedArticles, currentTheme, currentCategory]);
 
   if (loading) {
     return (
