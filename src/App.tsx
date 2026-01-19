@@ -49,6 +49,7 @@ const Methodology = lazy(() => import('./pages/facts/Methodology'));
 const Sources = lazy(() => import('./pages/facts/Sources'));
 const FurtherReading = lazy(() => import('./pages/facts/FurtherReading'));
 const Councilopedia = lazy(() => import('./pages/facts/Councilopedia'));
+const BeginnersGuide = lazy(() => import('./pages/facts/BeginnersGuide'));
 
 // Loading component for Suspense
 function PageLoader() {
@@ -141,6 +142,7 @@ function AppContent() {
             <Route path="/facts/sources" element={<Sources />} />
             <Route path="/facts/further-reading" element={<FurtherReading />} />
             <Route path="/facts/councilopedia" element={<Councilopedia />} />
+            <Route path="/facts/councilopedia/beginners-guide" element={<BeginnersGuide />} />
             <Route path="/facts/:slug" element={<FactDetail />} />
             <Route path="/forecast-2026-27" element={<PageWrapper>{(nav) => <JourneyMap onNavigate={nav} />}</PageWrapper>} />
             <Route path="/lessons" element={<PageWrapper>{(nav) => <Lessons onNavigate={nav} />}</PageWrapper>} />
