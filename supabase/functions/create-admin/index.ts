@@ -135,9 +135,10 @@ Deno.serve(async (req: Request) => {
       }
     );
   } catch (_error) {
+    const errorMessage = _error instanceof Error ? _error.message : 'Unknown error occurred';
     return new Response(
       JSON.stringify({ 
-        error: error.message,
+        error: errorMessage,
         details: 'Failed to create admin user'
       }),
       {
