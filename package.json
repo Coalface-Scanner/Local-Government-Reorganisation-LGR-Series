@@ -11,6 +11,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
+    "healthcheck": "npm run lint && npm run typecheck && npm run build",
     "upload-content": "node scripts/upload-content.js",
     "upload-facts": "node scripts/upload-facts.js",
     "import-substack": "node scripts/import-substack-rss.js",
