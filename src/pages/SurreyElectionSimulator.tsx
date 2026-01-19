@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Chart, ChartConfiguration } from 'chart.js/auto';
+import { Chart } from 'chart.js/auto';
 import MetaTags from '../components/MetaTags';
-import { X, Sparkles, TrendingUp, Info, CheckCircle2, AlertCircle, BarChart3, Zap, BookOpen, MapPin, Share2, Mail, Facebook, Linkedin, Twitter, Link2, MessageCircle, ArrowLeft } from 'lucide-react';
+import { X, Sparkles, CheckCircle2, Zap, BookOpen, MapPin, Share2, ArrowLeft, BarChart3 } from 'lucide-react';
 import ShareButtons from '../components/ShareButtons';
 
 interface SurreyElectionSimulatorProps {
@@ -56,10 +56,9 @@ const districts: District[] = [
 // SURREY COUNTY COUNCIL: Con: 38, LD: 19, Res: 16 (Residents' Association/Independent), Lab: 2, Green: 2, Reform: 2 (Reform UK), Ind: 1, Other: 0, 1 vacancy
 const countyCouncil = { composition: { Con: 38, LD: 19, Res: 16, Lab: 2, Green: 2, Reform: 2, Ind: 1, Other: 0 } };
 
-export default function SurreyElectionSimulator({ onNavigate }: SurreyElectionSimulatorProps) {
+export default function SurreyElectionSimulator({ onNavigate: _onNavigate }: SurreyElectionSimulatorProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const handleNavigate = onNavigate || ((page: string) => navigate(`/${page}`));
   
   // Get current hash from URL (e.g., #aggregate, #simulator, #existing)
   const currentHash = location.hash.replace('#', '') || null;
@@ -358,7 +357,7 @@ export default function SurreyElectionSimulator({ onNavigate }: SurreyElectionSi
   const updateSim = (side: 'West' | 'East', party: string, change: number) => {
     setSimulation(prev => {
       const simData = prev[side];
-      const currentVal = simData.composition[party];
+      const currentVal = simData.composition[party as keyof typeof simData.composition];
       const totalFilled = Object.values(simData.composition).reduce((a, b) => a + b, 0);
 
       if (change > 0 && totalFilled >= simData.target) return prev;
@@ -499,7 +498,7 @@ export default function SurreyElectionSimulator({ onNavigate }: SurreyElectionSi
 
   const applyPreset = (preset: 'clear' | 'aggregate' | 'ge2024', side: 'West' | 'East') => {
     const target = simulation[side].target;
-    let newComposition: Record<string, number> = { Con: 0, LD: 0, Res: 0, Lab: 0, Green: 0, Reform: 0, Ind: 0, Other: 0 };
+    const newComposition: Record<string, number> = { Con: 0, LD: 0, Res: 0, Lab: 0, Green: 0, Reform: 0, Ind: 0, Other: 0 };
 
     if (preset === 'clear') {
       // No seats assigned - already initialized

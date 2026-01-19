@@ -6,7 +6,7 @@ import ArticleStructuredData from '../components/ArticleStructuredData';
 import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import Breadcrumbs from '../components/Breadcrumbs';
-import { ArrowLeft, AlertCircle, Users, DollarSign, FileText, CheckCircle } from 'lucide-react';
+import { ArrowLeft, AlertCircle, Users, DollarSign, FileText, CheckCircle, type LucideIcon } from 'lucide-react';
 
 interface Fact {
   id: string;
@@ -16,7 +16,7 @@ interface Fact {
   order_index: number;
 }
 
-const categoryIcons: Record<string, any> = {
+const categoryIcons: Record<string, LucideIcon> = {
   'Workforce Impact': Users,
   'Financial Performance': DollarSign,
   'Service Delivery': FileText,

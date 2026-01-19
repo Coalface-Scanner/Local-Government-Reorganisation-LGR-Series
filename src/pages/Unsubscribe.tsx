@@ -60,7 +60,7 @@ export default function Unsubscribe() {
         message: 'You have been successfully unsubscribed. We\'re sorry to see you go!'
       });
       setEmail('');
-    } catch (error) {
+    } catch (_error) {
       setResult({
         type: 'error',
         message: 'Something went wrong. Please try again or contact us for assistance.'

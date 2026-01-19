@@ -20,7 +20,7 @@ export default function KeyFacts() {
   const [facts, setFacts] = useState<Fact[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const categoryIcons: Record<string, any> = {
+  const categoryIcons: Record<string, typeof Users> = {
     'Workforce Impact': Users,
     'Financial Performance': DollarSign,
     'Service Delivery': FileText,

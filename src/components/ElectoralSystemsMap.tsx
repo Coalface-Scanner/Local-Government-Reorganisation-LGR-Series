@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   Plus, Minus, CheckCircle2, XCircle, AlertTriangle, 
   Info, Move, Trophy, PieChart, GitMerge, Lightbulb, 
-  Scale, Users, Vote, Globe, ChevronRight 
+  Scale, Vote, Globe, ChevronRight 
 } from 'lucide-react';
 
 // --- Data Structure ---
@@ -160,10 +160,10 @@ interface TreeNodeProps {
 
 const CategoryIcon = ({ icon, color }: { icon: string; color?: string }) => {
   const icons: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
-    trophy: Trophy,
-    pie: PieChart,
-    list: Scale,
-    bulb: Lightbulb
+    trophy: Trophy as React.ComponentType<{ size?: number; className?: string }>,
+    pie: PieChart as React.ComponentType<{ size?: number; className?: string }>,
+    list: Scale as React.ComponentType<{ size?: number; className?: string }>,
+    bulb: Lightbulb as React.ComponentType<{ size?: number; className?: string }>
   };
   const Icon = icons[icon] || GitMerge;
   
@@ -194,7 +194,7 @@ const TreeNode = ({ node, level = 0, onExpand, expandedNodes }: TreeNodeProps) =
     switch(type) {
       case 'root': 
         return `${base} bg-slate-900/90 border-slate-700 text-white shadow-2xl min-w-[280px]`;
-      case 'category': 
+      case 'category': {
         const colors: Record<string, string> = {
           blue: 'bg-blue-900/80 border-blue-500/30 text-blue-50 shadow-[0_0_15px_rgba(59,130,246,0.2)]',
           purple: 'bg-purple-900/80 border-purple-500/30 text-purple-50 shadow-[0_0_15px_rgba(168,85,247,0.2)]',
@@ -202,6 +202,7 @@ const TreeNode = ({ node, level = 0, onExpand, expandedNodes }: TreeNodeProps) =
           orange: 'bg-orange-900/80 border-orange-500/30 text-orange-50 shadow-[0_0_15px_rgba(249,115,22,0.2)]',
         };
         return `${base} ${colors[color || ''] || 'bg-slate-800 border-slate-600'} min-w-[260px]`;
+      }
       case 'system': 
         return `${base} bg-white/95 border-slate-200 text-slate-800 shadow-lg hover:shadow-xl hover:scale-[1.02] min-w-[240px]`;
       case 'pro': 
@@ -227,8 +228,6 @@ const TreeNode = ({ node, level = 0, onExpand, expandedNodes }: TreeNodeProps) =
       default: return null;
     }
   };
-
-  const isLeaf = !hasChildren;
 
   return (
     <div className="flex flex-row items-center animate-in fade-in zoom-in duration-300">

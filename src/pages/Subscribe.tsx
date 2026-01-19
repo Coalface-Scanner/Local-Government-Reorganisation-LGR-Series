@@ -1,7 +1,6 @@
 import SubscriptionForm from '../components/SubscriptionForm';
 import LastUpdated from '../components/LastUpdated';
 import MetaTags from '../components/MetaTags';
-import PageNavigation from '../components/PageNavigation';
 import { Mail, FileText, Bell, ArrowRight } from 'lucide-react';
 
 interface SubscribeProps {

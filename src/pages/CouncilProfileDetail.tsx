@@ -1,5 +1,5 @@
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { MapPin, Users, Building2, Home, TrendingUp, Target, AlertCircle, CheckCircle, ArrowLeft, Calendar } from 'lucide-react';
+import { useParams, Link } from 'react-router-dom';
+import { MapPin, Users, Building2, Home, TrendingUp, AlertCircle, CheckCircle, ArrowLeft, Calendar } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
 import { getCouncilBySlug, surreyCouncils } from '../data/surreyCouncils';
 import FAQSection from '../components/FAQSection';
@@ -10,7 +10,6 @@ import LocalPlaceStructuredData from '../components/LocalPlaceStructuredData';
 
 export default function CouncilProfileDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
   const council = slug ? getCouncilBySlug(slug) : undefined;
 
   if (!council) {

@@ -222,7 +222,7 @@ export default function Search({ onNavigate }: SearchProps) {
       });
 
       setResults(allResults);
-    } catch (err: unknown) {
+    } catch (_err: unknown) {
       setError('Failed to perform search. Please try again.');
       setResults([]);
     } finally {

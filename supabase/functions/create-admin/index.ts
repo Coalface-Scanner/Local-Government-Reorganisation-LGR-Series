@@ -29,7 +29,7 @@ Deno.serve(async (req: Request) => {
     const adminEmail = 'Rowan@coalfaceebgagement.co.uk';
     const temporaryPassword = 'Admin2025!LGR';
 
-    const { data: existingUser, error: checkError } = await supabase.auth.admin.listUsers();
+    const { data: existingUser, error: _checkError } = await supabase.auth.admin.listUsers();
 
     if (existingUser?.users.some(u => u.email === adminEmail)) {
       const existingAuthUser = existingUser.users.find(u => u.email === adminEmail);
@@ -134,7 +134,7 @@ Deno.serve(async (req: Request) => {
         },
       }
     );
-  } catch (error) {
+  } catch (_error) {
     return new Response(
       JSON.stringify({ 
         error: error.message,

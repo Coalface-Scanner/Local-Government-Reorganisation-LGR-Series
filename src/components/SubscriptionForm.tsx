@@ -17,15 +17,15 @@ export default function SubscriptionForm({ variant = 'default' }: SubscriptionFo
 
     try {
       // Check for existing subscription
-      const { data: existingSubscription, error: checkError } = await supabase
+      const { data: existingSubscription, error: _checkError } = await supabase
         .from('subscriptions')
         .select('id, active')
         .eq('email', email)
         .maybeSingle();
 
-      if (checkError) {
-        console.error('Error checking existing subscription:', checkError);
-        throw checkError;
+      if (_checkError) {
+        console.error('Error checking existing subscription:', _checkError);
+        throw _checkError;
       }
 
       if (existingSubscription) {

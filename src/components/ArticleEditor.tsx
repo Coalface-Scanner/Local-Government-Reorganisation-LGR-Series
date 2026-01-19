@@ -1,5 +1,6 @@
 import { useRef, useMemo, useEffect } from 'react';
 import ReactQuill from 'react-quill';
+import type Quill from 'quill';
 import 'react-quill/dist/quill.snow.css';
 import { supabase } from '../lib/supabase';
 
@@ -49,7 +50,7 @@ export default function ArticleEditor({ value, onChange, placeholder }: ArticleE
           quill.insertEmbed(range.index, 'image', data.publicUrl);
           quill.setSelection(range.index + 1, 0);
         }
-      } catch (error) {
+      } catch (_error) {
         alert('Failed to upload image. Please try again.');
       }
     };
@@ -92,7 +93,8 @@ export default function ArticleEditor({ value, onChange, placeholder }: ArticleE
     const blockquoteHTML = `<blockquote class="${blockquoteClass}" data-style="${style}">${text}</blockquote>`;
     
     const delta = quill.clipboard.convert(blockquoteHTML);
-    quill.updateContents(new (quill.constructor as any).Delta().retain(startIndex).concat(delta), 'user');
+    const Delta = (quill.constructor as typeof Quill).import('delta');
+    quill.updateContents(new Delta().retain(startIndex).concat(delta), 'user');
     quill.setSelection(startIndex + text.length + 1, 0);
   };
 
@@ -107,7 +109,8 @@ export default function ArticleEditor({ value, onChange, placeholder }: ArticleE
     // Insert section break HTML
     const dividerHTML = '<hr class="section-break" />';
     const delta = quill.clipboard.convert(dividerHTML);
-    quill.updateContents(new (quill.constructor as any).Delta().retain(index).concat(delta), 'user');
+    const Delta = (quill.constructor as typeof Quill).import('delta');
+    quill.updateContents(new Delta().retain(index).concat(delta), 'user');
     quill.setSelection(index + 1, 0);
   };
 
@@ -145,7 +148,8 @@ export default function ArticleEditor({ value, onChange, placeholder }: ArticleE
     // Insert highlight box HTML
     const highlightHTML = `<span class="highlight-box">${text}</span>`;
     const delta = quill.clipboard.convert(highlightHTML);
-    quill.updateContents(new (quill.constructor as any).Delta().retain(startIndex).concat(delta), 'user');
+    const Delta = (quill.constructor as typeof Quill).import('delta');
+    quill.updateContents(new Delta().retain(startIndex).concat(delta), 'user');
     quill.setSelection(startIndex + text.length, 0);
   };
 
