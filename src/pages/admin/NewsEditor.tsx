@@ -57,13 +57,7 @@ export default function NewsEditor() {
   };
 
   const handleCreate = async () => {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/88a481fd-d50d-4443-a40c-d5f5149aa669',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'NewsEditor.tsx:59',message:'handleCreate called',data:{title:formData.title,slug:formData.slug},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-    // #endregion
     if (!formData.title || !formData.slug) {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/88a481fd-d50d-4443-a40c-d5f5149aa669',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'NewsEditor.tsx:62',message:'Validation failed',data:{hasTitle:!!formData.title,hasSlug:!!formData.slug},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-      // #endregion
       alert('Title and slug are required');
       return;
     }
@@ -74,29 +68,16 @@ export default function NewsEditor() {
       excerpt: formData.excerpt || null,
     };
 
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/88a481fd-d50d-4443-a40c-d5f5149aa669',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'NewsEditor.tsx:71',message:'Before insert call',data:{dataToInsert},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-    // #endregion
     const { error } = await supabase
       .from('news')
       .insert([dataToInsert]);
 
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/88a481fd-d50d-4443-a40c-d5f5149aa669',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'NewsEditor.tsx:75',message:'After insert call',data:{error:error?.message,hasError:!!error},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-    // #endregion
-
     if (!error) {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/88a481fd-d50d-4443-a40c-d5f5149aa669',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'NewsEditor.tsx:78',message:'Insert successful',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
-      // #endregion
       await updateSiteTimestamp();
       fetchNews();
       resetForm();
       setIsCreating(false);
     } else {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/88a481fd-d50d-4443-a40c-d5f5149aa669',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'NewsEditor.tsx:82',message:'Insert failed with error',data:{errorMessage:error.message,errorCode:error.code,errorDetails:error.details},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
-      // #endregion
       alert('Error creating news: ' + error.message);
     }
   };

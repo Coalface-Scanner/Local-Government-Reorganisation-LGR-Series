@@ -43,7 +43,9 @@ export default function SubscriptionForm({ variant = 'default' }: SubscriptionFo
             throw updateError;
           }
 
-          console.log('Subscription reactivated:', updateData);
+          if (import.meta.env.DEV) {
+            console.log('Subscription reactivated:', updateData);
+          }
           setMessage({ type: 'success', text: 'Welcome back! You have been resubscribed.' });
           setEmail('');
         }
@@ -65,7 +67,9 @@ export default function SubscriptionForm({ variant = 'default' }: SubscriptionFo
           throw insertError;
         }
 
-        console.log('Subscription inserted successfully:', insertData);
+        if (import.meta.env.DEV) {
+          console.log('Subscription inserted successfully:', insertData);
+        }
         setMessage({ type: 'success', text: 'Successfully subscribed! Check your email.' });
         setEmail('');
       }
