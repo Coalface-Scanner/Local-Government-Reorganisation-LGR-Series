@@ -24,18 +24,7 @@ export default function CouncilProfiles() {
     }
   };
 
-  const getUnitaryColor = (unitary: string) => {
-    switch (unitary) {
-      case 'East Surrey':
-        return 'bg-green-50 border-green-200 text-green-800';
-      case 'West Surrey':
-        return 'bg-purple-50 border-purple-200 text-purple-800';
-      case 'County':
-        return 'bg-amber-50 border-amber-200 text-amber-800';
-      default:
-        return 'bg-neutral-50 border-neutral-200 text-neutral-800';
-    }
-  };
+  // Removed unused _getUnitaryColor function
 
   return (
     <CouncilProfilesPasswordProtection>

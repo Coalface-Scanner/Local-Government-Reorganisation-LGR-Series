@@ -3,7 +3,7 @@ import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import SubscriptionForm from '../components/SubscriptionForm';
 import CollectionPageStructuredData from '../components/CollectionPageStructuredData';
-import { Calendar, MapPin, List, CheckCircle, FileText, BookOpen, ArrowRight, Route } from 'lucide-react';
+import { Calendar, MapPin, List, CheckCircle, FileText, BookOpen, ArrowRight, Route, type LucideIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface FactsProps {
@@ -14,7 +14,7 @@ interface ServiceCard {
   id: string;
   title: string;
   description: string;
-  icon: any;
+  icon: LucideIcon;
   color: string;
   route: string;
   disabled?: boolean;

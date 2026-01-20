@@ -1,14 +1,14 @@
 import MetaTags from '../../components/MetaTags';
 import LastUpdated from '../../components/LastUpdated';
 import FAQSection from '../../components/FAQSection';
-import { ArrowLeft, ArrowRight, GraduationCap, FileText, Users, Building2, TrendingUp, HelpCircle } from 'lucide-react';
+import { ArrowLeft, ArrowRight, GraduationCap, FileText, Users, Building2, TrendingUp, HelpCircle, type LucideIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface ServiceCard {
   id: string;
   title: string;
   description: string;
-  icon: any;
+  icon: LucideIcon;
   color: string;
   route?: string;
   disabled?: boolean;

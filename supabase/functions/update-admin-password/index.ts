@@ -43,7 +43,7 @@ Deno.serve(async (req: Request) => {
     }
 
     // Update the user's password
-    const { data, error: updateError } = await supabase.auth.admin.updateUserById(
+    const { error: updateError } = await supabase.auth.admin.updateUserById(
       targetUser.id,
       { password: newPassword }
     );
@@ -67,9 +67,10 @@ Deno.serve(async (req: Request) => {
       }
     );
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     return new Response(
       JSON.stringify({ 
-        error: error.message,
+        error: errorMessage,
         details: 'Failed to update password'
       }),
       {

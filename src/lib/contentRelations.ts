@@ -17,8 +17,8 @@ export interface ContentRelation {
  */
 export async function findRelatedArticles(
   currentSlug: string,
-  theme?: string,
-  geography?: string,
+  _theme?: string,
+  _geography?: string,
   limit: number = 4
 ): Promise<ContentRelation[]> {
   try {

@@ -38,7 +38,6 @@ export function extractHeadings(html: string): Array<{ id: string; text: string;
   return Array.from(headings).map((heading, index) => {
     const level = parseInt(heading.tagName.charAt(1));
     const text = heading.textContent || '';
-    const id = heading.id || `heading-${index}`;
     
     // If no ID, create one from text
     if (!heading.id) {
