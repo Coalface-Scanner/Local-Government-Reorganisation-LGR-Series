@@ -4,6 +4,7 @@ import { Chart } from 'chart.js/auto';
 import MetaTags from '../components/MetaTags';
 import { X, Sparkles, CheckCircle2, BarChart3, Zap, BookOpen, MapPin, Share2, ArrowLeft } from 'lucide-react';
 import ShareButtons from '../components/ShareButtons';
+import './SurreyElectionSimulator.css';
 
 interface SurreyElectionSimulatorProps {
   onNavigate?: (page: string, data?: unknown) => void;
@@ -688,7 +689,7 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
                     <span className="text-[10px] uppercase text-slate-500 font-bold tracking-wider mt-1">Total Cllrs</span>
                   </div>
                 </div>
-                <div className="w-2/3 relative" style={{ height: '200px' }}>
+                <div className="w-2/3 relative chart-container-200">
                   <canvas id="aggWestChart"></canvas>
                 </div>
               </div>
@@ -707,7 +708,7 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
                     <span className="text-[10px] uppercase text-slate-500 font-bold tracking-wider mt-1">Total Cllrs</span>
                   </div>
                 </div>
-                <div className="w-2/3 relative" style={{ height: '200px' }}>
+                <div className="w-2/3 relative chart-container-200">
                   <canvas id="aggEastChart"></canvas>
                 </div>
               </div>
@@ -872,8 +873,8 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
                     </div>
                     <div className="h-2.5 bg-slate-200 rounded-full overflow-hidden shadow-inner">
                       <div 
-                        className="h-full bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 rounded-full transition-all duration-500 ease-out shadow-sm"
-                        style={{ width: `${getProgressPercentage('West')}%` }}
+                        className="h-full bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 rounded-full transition-all duration-500 ease-out shadow-sm progress-bar-container"
+                        style={{ '--progress-width': `${getProgressPercentage('West')}%` } as React.CSSProperties}
                       ></div>
                     </div>
                   </div>
@@ -888,7 +889,7 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {/* Chart */}
-                <div className="relative flex items-center justify-center bg-gradient-to-br from-slate-50 to-white rounded-xl p-4 border border-slate-200/50 shadow-inner" style={{ height: '250px' }}>
+                <div className="relative flex items-center justify-center bg-gradient-to-br from-slate-50 to-white rounded-xl p-4 border border-slate-200/50 shadow-inner chart-container-250">
                   <canvas id="simWestChart"></canvas>
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <div className="text-center p-4 bg-white/90 backdrop-blur-sm rounded-xl border border-slate-200/50 shadow-lg">
@@ -912,8 +913,8 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
                       <div className="flex items-center gap-3">
                         <div className="relative">
                           <span
-                            className="w-4 h-4 rounded-full shadow-sm border-2 border-white"
-                            style={{ background: PARTY_COLORS[party] }}
+                            className="w-4 h-4 rounded-full shadow-sm border-2 border-white party-color-indicator"
+                            style={{ '--party-color': PARTY_COLORS[party] } as React.CSSProperties}
                           ></span>
                           {simulation.West.composition[party] > 0 && (
                             <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full border border-white shadow-sm animate-pulse"></span>
@@ -998,8 +999,8 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
                     </div>
                     <div className="h-2.5 bg-slate-200 rounded-full overflow-hidden shadow-inner">
                       <div 
-                        className="h-full bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 rounded-full transition-all duration-500 ease-out shadow-sm"
-                        style={{ width: `${getProgressPercentage('East')}%` }}
+                        className="h-full bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 rounded-full transition-all duration-500 ease-out shadow-sm progress-bar-container"
+                        style={{ '--progress-width': `${getProgressPercentage('East')}%` } as React.CSSProperties}
                       ></div>
                     </div>
                   </div>
@@ -1014,7 +1015,7 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {/* Chart */}
-                <div className="relative flex items-center justify-center bg-gradient-to-br from-slate-50 to-white rounded-xl p-4 border border-slate-200/50 shadow-inner" style={{ height: '250px' }}>
+                <div className="relative flex items-center justify-center bg-gradient-to-br from-slate-50 to-white rounded-xl p-4 border border-slate-200/50 shadow-inner chart-container-250">
                   <canvas id="simEastChart"></canvas>
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <div className="text-center p-4 bg-white/90 backdrop-blur-sm rounded-xl border border-slate-200/50 shadow-lg">
@@ -1038,8 +1039,8 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
                       <div className="flex items-center gap-3">
                         <div className="relative">
                           <span
-                            className="w-4 h-4 rounded-full shadow-sm border-2 border-white"
-                            style={{ background: PARTY_COLORS[party] }}
+                            className="w-4 h-4 rounded-full shadow-sm border-2 border-white party-color-indicator"
+                            style={{ '--party-color': PARTY_COLORS[party] } as React.CSSProperties}
                           ></span>
                           {simulation.East.composition[party] > 0 && (
                             <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full border border-white shadow-sm animate-pulse"></span>
@@ -1127,7 +1128,7 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
                 </div>
                 <h4 className="font-bold text-slate-900 text-sm">Surrey County Council</h4>
               </div>
-              <div className="relative mb-3 bg-white/60 rounded-xl p-2 border border-slate-200/50 shadow-inner" style={{ height: '128px' }}>
+              <div className="relative mb-3 bg-white/60 rounded-xl p-2 border border-slate-200/50 shadow-inner chart-container-128">
                 <canvas id="countyChart"></canvas>
               </div>
               <div className="space-y-1.5 text-xs">
@@ -1137,7 +1138,7 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
                   .map(([p, c]) => (
                     <div key={p} className="flex justify-between items-center p-2 bg-white/60 rounded-lg border border-slate-200/50">
                       <span className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full shadow-sm" style={{ background: PARTY_COLORS[p] }}></span>
+                        <span className="w-2.5 h-2.5 rounded-full shadow-sm party-color-indicator-sm" style={{ '--party-color': PARTY_COLORS[p] } as React.CSSProperties}></span>
                         <span className="font-medium text-slate-700">{PARTY_NAMES[p]}</span>
                       </span>
                       <span className="font-black text-slate-900">{c}</span>
@@ -1164,7 +1165,7 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
                     <div className="flex justify-between items-start mb-3">
                       <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider bg-slate-100 px-2 py-0.5 rounded-full">{d.group}</span>
                       <div className="relative">
-                        <div className="h-3 w-3 rounded-full shadow-sm border-2 border-white" style={{ background: color }}></div>
+                        <div className="h-3 w-3 rounded-full shadow-sm border-2 border-white party-color-indicator-xs" style={{ '--party-color': color } as React.CSSProperties}></div>
                         {lead[1] >= magic && (
                           <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-500 rounded-full border border-white shadow-sm"></div>
                         )}
@@ -1180,8 +1181,8 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
                           return (
                             <div
                               key={p}
-                              className="transition-all duration-300 group-hover:shadow-sm"
-                              style={{ width: `${pct}%`, background: PARTY_COLORS[p] }}
+                              className="transition-all duration-300 group-hover:shadow-sm seat-bar-segment"
+                              style={{ '--segment-width': `${pct}%`, '--party-color': PARTY_COLORS[p] } as React.CSSProperties}
                               title={`${PARTY_NAMES[p]}: ${c} seats`}
                             ></div>
                           );
@@ -1227,7 +1228,7 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
 
             {/* Body */}
             <div className="p-6">
-              <div className="relative mb-6 bg-gradient-to-br from-slate-50 to-white rounded-xl p-4 border border-slate-200/50 shadow-inner" style={{ height: '250px' }}>
+              <div className="relative mb-6 bg-gradient-to-br from-slate-50 to-white rounded-xl p-4 border border-slate-200/50 shadow-inner chart-container-250">
                 <canvas id="modalChart"></canvas>
               </div>
 
@@ -1250,8 +1251,8 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
                         <div className="flex items-center gap-3">
                           <div className="relative">
                             <span
-                              className="w-4 h-4 rounded-full shadow-md border-2 border-white"
-                              style={{ background: PARTY_COLORS[p] }}
+                              className="w-4 h-4 rounded-full shadow-md border-2 border-white party-color-indicator"
+                              style={{ '--party-color': PARTY_COLORS[p] } as React.CSSProperties}
                             ></span>
                           </div>
                           <div>

@@ -1,0 +1,74 @@
+/* SurreyElectionSimulator Component Styles */
+
+/* Chart container heights */
+.chart-container-200 {
+  height: 200px;
+}
+
+.chart-container-250 {
+  height: 250px;
+}
+
+.chart-container-128 {
+  height: 128px;
+}
+
+/* Progress bar container - uses CSS custom property for width */
+.progress-bar-container {
+  height: 100%;
+  background: linear-gradient(to right, rgb(250, 204, 21), rgb(245, 158, 11), rgb(250, 204, 21));
+  border-radius: 9999px;
+  transition: all 0.5s ease-out;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  width: var(--progress-width, 0%);
+}
+
+/* Party color indicator - uses CSS custom property for background color */
+.party-color-indicator {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 9999px;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  border-width: 2px;
+  border-color: white;
+  background-color: var(--party-color);
+}
+
+.party-color-indicator-sm {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 9999px;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  background-color: var(--party-color);
+}
+
+.party-color-indicator-xs {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 9999px;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  border-width: 2px;
+  border-color: white;
+  background-color: var(--party-color);
+}
+
+.party-color-indicator-tiny {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 9999px;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  border-width: 2px;
+  border-color: white;
+  background-color: var(--party-color);
+}
+
+/* Seat bar segment - uses CSS custom properties for width and background */
+.seat-bar-segment {
+  transition: all 0.3s;
+  width: var(--segment-width, 0%);
+  background-color: var(--party-color);
+}
+
+.seat-bar-segment:hover {
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
