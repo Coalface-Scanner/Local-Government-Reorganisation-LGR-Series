@@ -466,10 +466,10 @@ export default function ElectoralSystemsMap() {
             transform: `translate(${position.x + 50}px, ${position.y + 50}px) scale(${scale})`
           }}
         >
-          <TreeNode 
-            node={mapData} 
-            onExpand={toggleNode} 
-            expandedNodes={expandedNodes} 
+          <TreeNode
+            node={mapData}
+            onExpand={toggleNode}
+            expandedNodes={expandedNodes}
           />
         </div>
       </div>
