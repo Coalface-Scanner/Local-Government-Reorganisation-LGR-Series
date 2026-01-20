@@ -1,8 +1,8 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Chart, ChartConfiguration } from 'chart.js/auto';
+import { Chart } from 'chart.js/auto';
 import MetaTags from '../components/MetaTags';
-import { X, Sparkles, TrendingUp, Info, CheckCircle2, AlertCircle, BarChart3, Zap, BookOpen, MapPin, Share2, Mail, Facebook, Linkedin, Twitter, Link2, MessageCircle, ArrowLeft } from 'lucide-react';
+import { X, Sparkles, CheckCircle2, BarChart3, Zap, BookOpen, MapPin, Share2, ArrowLeft } from 'lucide-react';
 import ShareButtons from '../components/ShareButtons';
 
 interface SurreyElectionSimulatorProps {
@@ -56,10 +56,11 @@ const districts: District[] = [
 // SURREY COUNTY COUNCIL: Con: 38, LD: 19, Res: 16 (Residents' Association/Independent), Lab: 2, Green: 2, Reform: 2 (Reform UK), Ind: 1, Other: 0, 1 vacancy
 const countyCouncil = { composition: { Con: 38, LD: 19, Res: 16, Lab: 2, Green: 2, Reform: 2, Ind: 1, Other: 0 } };
 
-export default function SurreyElectionSimulator({ onNavigate }: SurreyElectionSimulatorProps) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorProps) {
+  // Props are intentionally unused - component doesn't use onNavigate prop
   const navigate = useNavigate();
   const location = useLocation();
-  const handleNavigate = onNavigate || ((page: string) => navigate(`/${page}`));
   
   // Get current hash from URL (e.g., #aggregate, #simulator, #existing)
   const currentHash = location.hash.replace('#', '') || null;
@@ -81,7 +82,7 @@ export default function SurreyElectionSimulator({ onNavigate }: SurreyElectionSi
   const urlUpdateTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Serialize simulation state to URL parameters
-  const serializeStateToUrl = (sim: typeof simulation): string => {
+  const serializeStateToUrl = useCallback((sim: typeof simulation): string => {
     const params = new URLSearchParams();
     
     // Add West Surrey composition
@@ -99,19 +100,19 @@ export default function SurreyElectionSimulator({ onNavigate }: SurreyElectionSi
     });
     
     return params.toString();
-  };
+  }, []);
 
   // Deserialize URL parameters to simulation state
   const deserializeStateFromUrl = (search: string): typeof simulation | null => {
     const params = new URLSearchParams(search);
-    const westComposition: Record<string, number> = { Con: 0, LD: 0, Res: 0, Lab: 0, Green: 0, Reform: 0, Ind: 0, Other: 0 };
-    const eastComposition: Record<string, number> = { Con: 0, LD: 0, Res: 0, Lab: 0, Green: 0, Reform: 0, Ind: 0, Other: 0 };
+    const westComposition: { Con: number; LD: number; Res: number; Lab: number; Green: number; Reform: number; Ind: number; Other: number } = { Con: 0, LD: 0, Res: 0, Lab: 0, Green: 0, Reform: 0, Ind: 0, Other: 0 };
+    const eastComposition: { Con: number; LD: number; Res: number; Lab: number; Green: number; Reform: number; Ind: number; Other: number } = { Con: 0, LD: 0, Res: 0, Lab: 0, Green: 0, Reform: 0, Ind: 0, Other: 0 };
     
     let hasData = false;
     
     params.forEach((value, key) => {
       if (key.startsWith('west_')) {
-        const party = key.replace('west_', '');
+        const party = key.replace('west_', '') as keyof typeof westComposition;
         if (PARTIES.includes(party as typeof PARTIES[number])) {
           const count = parseInt(value, 10);
           if (!isNaN(count) && count >= 0) {
@@ -120,7 +121,7 @@ export default function SurreyElectionSimulator({ onNavigate }: SurreyElectionSi
           }
         }
       } else if (key.startsWith('east_')) {
-        const party = key.replace('east_', '');
+        const party = key.replace('east_', '') as keyof typeof eastComposition;
         if (PARTIES.includes(party as typeof PARTIES[number])) {
           const count = parseInt(value, 10);
           if (!isNaN(count) && count >= 0) {
@@ -145,6 +146,7 @@ export default function SurreyElectionSimulator({ onNavigate }: SurreyElectionSi
     if (restoredState) {
       setSimulation(restoredState);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Only run on mount
 
   // Update URL when simulation changes (debounced)
@@ -167,7 +169,7 @@ export default function SurreyElectionSimulator({ onNavigate }: SurreyElectionSi
         clearTimeout(urlUpdateTimeoutRef.current);
       }
     };
-  }, [simulation, location.pathname]);
+  }, [simulation, location.pathname, serializeStateToUrl]);
 
   // 2024 General Election vote shares
   const GE2024_SHARES: Record<string, number> = {
@@ -181,21 +183,7 @@ export default function SurreyElectionSimulator({ onNavigate }: SurreyElectionSi
     Other: 0
   };
 
-  // Initialize charts when component mounts and when data changes
-  useEffect(() => {
-    initCharts();
-
-    // Cleanup on unmount
-    return () => {
-      Object.values(chartsRef.current).forEach((chart) => {
-        if (chart && typeof chart.destroy === 'function') {
-          chart.destroy();
-        }
-      });
-    };
-  }, [simulation, isModalOpen, selectedDistrict]);
-
-  const initCharts = () => {
+  const initCharts = useCallback(() => {
     // Destroy existing charts
     Object.values(chartsRef.current).forEach((chart) => {
       if (chart && typeof chart.destroy === 'function') {
@@ -220,7 +208,24 @@ export default function SurreyElectionSimulator({ onNavigate }: SurreyElectionSi
     if (isModalOpen && selectedDistrict) {
       renderReferenceChart('modalChart', selectedDistrict.composition);
     }
-  };
+    // Note: renderSimChart, renderAggregateChart, renderReferenceChart, and calculateAggregates
+    // are stable function declarations that don't change between renders, so they don't need to be in deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [simulation, isModalOpen, selectedDistrict]);
+
+  // Initialize charts when component mounts and when data changes
+  useEffect(() => {
+    initCharts();
+
+    // Cleanup on unmount
+    return () => {
+      Object.values(chartsRef.current).forEach((chart) => {
+        if (chart && typeof chart.destroy === 'function') {
+          chart.destroy();
+        }
+      });
+    };
+  }, [initCharts]);
 
   const calculateAggregates = () => {
     const west = { total: 0, composition: {} as Record<string, number> };
@@ -288,7 +293,7 @@ export default function SurreyElectionSimulator({ onNavigate }: SurreyElectionSi
     const filled = Object.values(simData.composition).reduce((a, b) => a + b, 0);
     const remaining = simData.target - filled;
 
-    const chartData = { ...simData.composition };
+    const chartData: Record<string, number> = { ...simData.composition };
     if (remaining > 0) chartData['Empty'] = remaining;
 
     const labels = Object.keys(chartData).filter(k => chartData[k] > 0);
@@ -358,7 +363,7 @@ export default function SurreyElectionSimulator({ onNavigate }: SurreyElectionSi
   const updateSim = (side: 'West' | 'East', party: string, change: number) => {
     setSimulation(prev => {
       const simData = prev[side];
-      const currentVal = simData.composition[party];
+      const currentVal = simData.composition[party as keyof typeof simData.composition];
       const totalFilled = Object.values(simData.composition).reduce((a, b) => a + b, 0);
 
       if (change > 0 && totalFilled >= simData.target) return prev;
@@ -406,7 +411,7 @@ export default function SurreyElectionSimulator({ onNavigate }: SurreyElectionSi
   const getBiggestParty = (side: 'West' | 'East') => {
     const simData = simulation[side];
     const sorted = Object.entries(simData.composition)
-      .filter(([_, count]) => count > 0)
+      .filter(([, count]) => count > 0)
       .sort((a, b) => b[1] - a[1]);
     return sorted.length > 0 ? sorted[0] : null;
   };
@@ -457,7 +462,7 @@ export default function SurreyElectionSimulator({ onNavigate }: SurreyElectionSi
       summary += '- No seats assigned\n';
     } else {
       const westEntries = Object.entries(simulation.West.composition)
-        .filter(([_, count]) => count > 0)
+        .filter(([, count]) => count > 0)
         .sort((a, b) => b[1] - a[1]);
       
       westEntries.forEach(([party, count]) => {
@@ -474,7 +479,7 @@ export default function SurreyElectionSimulator({ onNavigate }: SurreyElectionSi
       summary += '- No seats assigned\n';
     } else {
       const eastEntries = Object.entries(simulation.East.composition)
-        .filter(([_, count]) => count > 0)
+        .filter(([, count]) => count > 0)
         .sort((a, b) => b[1] - a[1]);
       
       eastEntries.forEach(([party, count]) => {
@@ -499,7 +504,7 @@ export default function SurreyElectionSimulator({ onNavigate }: SurreyElectionSi
 
   const applyPreset = (preset: 'clear' | 'aggregate' | 'ge2024', side: 'West' | 'East') => {
     const target = simulation[side].target;
-    let newComposition: Record<string, number> = { Con: 0, LD: 0, Res: 0, Lab: 0, Green: 0, Reform: 0, Ind: 0, Other: 0 };
+    const newComposition: Record<string, number> = { Con: 0, LD: 0, Res: 0, Lab: 0, Green: 0, Reform: 0, Ind: 0, Other: 0 };
 
     if (preset === 'clear') {
       // No seats assigned - already initialized
@@ -1128,7 +1133,7 @@ export default function SurreyElectionSimulator({ onNavigate }: SurreyElectionSi
               <div className="space-y-1.5 text-xs">
                 {Object.entries(countyCouncil.composition)
                   .sort((a, b) => b[1] - a[1])
-                  .filter(([_, c]) => c > 0)
+                  .filter(([, c]) => c > 0)
                   .map(([p, c]) => (
                     <div key={p} className="flex justify-between items-center p-2 bg-white/60 rounded-lg border border-slate-200/50">
                       <span className="flex items-center gap-1.5">
@@ -1213,6 +1218,7 @@ export default function SurreyElectionSimulator({ onNavigate }: SurreyElectionSi
               </div>
               <button
                 onClick={closeModal}
+                aria-label="Close modal"
                 className="text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-white transition-all duration-200 hover:scale-110 active:scale-95"
               >
                 <X size={24} />
@@ -1232,7 +1238,7 @@ export default function SurreyElectionSimulator({ onNavigate }: SurreyElectionSi
               <div className="space-y-2.5 max-h-48 overflow-y-auto pr-2">
                 {Object.entries(selectedDistrict.composition)
                   .sort((a, b) => b[1] - a[1])
-                  .filter(([_, count]) => count > 0)
+                  .filter(([, count]) => count > 0)
                   .map(([p, count]) => {
                     const total = Object.values(selectedDistrict.composition).reduce((a, b) => a + b, 0);
                     const percentage = ((count / total) * 100).toFixed(1);
