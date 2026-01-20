@@ -159,7 +159,7 @@ interface TreeNodeProps {
 // --- Helper Components ---
 
 const CategoryIcon = ({ icon, color }: { icon: string; color?: string }) => {
-  const icons: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  const icons: Record<string, typeof Trophy> = {
     trophy: Trophy,
     pie: PieChart,
     list: Scale,

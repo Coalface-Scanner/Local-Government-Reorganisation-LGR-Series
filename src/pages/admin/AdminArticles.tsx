@@ -216,6 +216,9 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <button
+                  type="button"
+                  title="Discard changes"
+                  aria-label="Discard changes"
                   onClick={() => {
                     if (confirm('Discard changes?')) {
                       setEditingArticle(null);
@@ -395,13 +398,16 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                   </label>
                   <input
                     type="datetime-local"
+                    id="publication-date"
                     value={
                       editingArticle.published_date
                         ? new Date(editingArticle.published_date).toISOString().slice(0, 16)
-                        : editingArticle.id 
+                        : editingArticle.id
                           ? '' // Don't set default date for existing articles
                           : new Date().toISOString().slice(0, 16) // Only set default for new articles
                     }
+                    placeholder="YYYY-MM-DDThh:mm"
+                    title="Set the publication date and time"
                     onChange={(e) => {
                       const date = e.target.value ? new Date(e.target.value).toISOString() : null;
                       setEditingArticle({ ...editingArticle, published_date: date });
