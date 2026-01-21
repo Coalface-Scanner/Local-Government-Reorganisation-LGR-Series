@@ -3,7 +3,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 interface CouncilFeature {
-  type: string;
+  type: 'Feature';
   properties: {
     LAD13CD?: string;
     LAD13NM?: string;
@@ -13,13 +13,13 @@ interface CouncilFeature {
     LGD2014NAME?: string;
   };
   geometry: {
-    type: string;
+    type: 'Polygon' | 'MultiPolygon';
     coordinates: number[][][] | number[][][][];
   };
 }
 
 interface GeoJSONData {
-  type: string;
+  type: 'FeatureCollection';
   features: CouncilFeature[];
 }
 

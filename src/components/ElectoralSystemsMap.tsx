@@ -5,8 +5,26 @@ import {
   Scale, Vote, Globe, ChevronRight 
 } from 'lucide-react';
 
+// --- Type Definitions ---
+interface TreeNodeData {
+  id: string;
+  label: string;
+  subLabel?: string;
+  type: 'root' | 'category' | 'system' | 'info' | 'usage' | 'pro' | 'con' | 'issue';
+  color?: 'blue' | 'purple' | 'green' | 'orange';
+  icon?: 'trophy' | 'pie' | 'list' | 'bulb';
+  children?: TreeNodeData[];
+}
+
+interface TreeNodeProps {
+  node: TreeNodeData;
+  level?: number;
+  onExpand: (id: string) => void;
+  expandedNodes: Record<string, boolean>;
+}
+
 // --- Data Structure ---
-const mapData = {
+const mapData: TreeNodeData = {
   id: 'root',
   label: 'Democratic Election Systems',
   type: 'root',
@@ -138,23 +156,6 @@ const mapData = {
     }
   ]
 };
-
-interface TreeNodeData {
-  id: string;
-  label: string;
-  subLabel?: string;
-  type: 'root' | 'category' | 'system' | 'info' | 'usage' | 'pro' | 'con' | 'issue';
-  color?: 'blue' | 'purple' | 'green' | 'orange';
-  icon?: 'trophy' | 'pie' | 'list' | 'bulb';
-  children?: TreeNodeData[];
-}
-
-interface TreeNodeProps {
-  node: TreeNodeData;
-  level?: number;
-  onExpand: (id: string) => void;
-  expandedNodes: Record<string, boolean>;
-}
 
 // --- Helper Components ---
 
