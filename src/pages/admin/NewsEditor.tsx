@@ -397,8 +397,11 @@ export default function NewsEditor() {
                       <button
                         onClick={() => handleDelete(item.id)}
                         className="text-red-600 hover:text-red-900"
+                        title="Delete"
+                        aria-label="Delete"
                       >
                         <Trash2 size={18} />
+                        <span className="sr-only">Delete</span>
                       </button>
                     </div>
                   </td>
