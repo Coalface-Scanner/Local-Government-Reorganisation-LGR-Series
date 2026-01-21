@@ -3,7 +3,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 interface CouncilFeature {
-  type: string;
+  type: 'Feature';
   properties: {
     LAD13CD?: string;
     LAD13NM?: string;
@@ -13,13 +13,13 @@ interface CouncilFeature {
     LGD2014NAME?: string;
   };
   geometry: {
-    type: string;
+    type: 'Polygon' | 'MultiPolygon';
     coordinates: number[][][] | number[][][][];
   };
 }
 
 interface GeoJSONData {
-  type: string;
+  type: 'FeatureCollection';
   features: CouncilFeature[];
 }
 
@@ -72,14 +72,14 @@ export default function CouncilMap() {
         responses.forEach((data: GeoJSONData, index) => {
           const countryColor = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'][index];
 
-          L.geoJSON(data as any, {
+          L.geoJSON(data as GeoJSONData, {
             style: {
               fillColor: countryColor,
               fillOpacity: 0.3,
               color: '#1e293b',
               weight: 1.5,
             },
-            onEachFeature: (feature: any, layer: L.Layer) => {
+            onEachFeature: (feature, layer: L.Layer) => {
               const props = feature.properties;
               const councilName =
                 props.LAD23NM || props.LAD13NM || props.LGD2014NAME || 'Unknown';
@@ -122,7 +122,7 @@ export default function CouncilMap() {
         });
 
         setLoading(false);
-      } catch (err) {
+      } catch (_err) {
         setError('Failed to load council boundary data. Please try again later.');
         setLoading(false);
       }

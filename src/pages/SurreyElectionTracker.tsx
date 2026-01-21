@@ -1,12 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Sparkles, TrendingUp, BookOpen, ArrowRight, BarChart3, MapPin, ArrowLeft } from 'lucide-react';
+import { Sparkles, TrendingUp, BookOpen, ArrowRight, MapPin, ArrowLeft } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
 
 interface SurreyElectionTrackerProps {
   onNavigate: (page: string, data?: unknown) => void;
 }
 
-export default function SurreyElectionTracker({ onNavigate }: SurreyElectionTrackerProps) {
+export default function SurreyElectionTracker({ onNavigate: _onNavigate }: SurreyElectionTrackerProps) {
   const navigate = useNavigate();
   const serviceCards = [
     {

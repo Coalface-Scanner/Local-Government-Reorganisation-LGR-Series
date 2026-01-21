@@ -27,7 +27,7 @@ export default function CollectionPageStructuredData({
 
   const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url.startsWith('/') ? url : `/${url}`}`;
 
-  const structuredData: any = {
+  const structuredData: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     "name": name,

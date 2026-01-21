@@ -4,7 +4,8 @@ import MetaTags from '../../components/MetaTags';
 import LastUpdated from '../../components/LastUpdated';
 import FAQSection from '../../components/FAQSection';
 import DatasetStructuredData from '../../components/DatasetStructuredData';
-import { ArrowLeft, Users, DollarSign, FileText, CheckCircle, AlertCircle, ArrowRight } from 'lucide-react';
+import RelatedContent from '../../components/RelatedContent';
+import { ArrowLeft, Users, DollarSign, FileText, CheckCircle, AlertCircle, ArrowRight, type LucideIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface Fact {
@@ -20,7 +21,7 @@ export default function KeyFacts() {
   const [facts, setFacts] = useState<Fact[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const categoryIcons: Record<string, any> = {
+  const categoryIcons: Record<string, LucideIcon> = {
     'Workforce Impact': Users,
     'Financial Performance': DollarSign,
     'Service Delivery': FileText,

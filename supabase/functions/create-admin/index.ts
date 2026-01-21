@@ -1,5 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import { createClient } from "npm:@supabase/supabase-js@2.57.4";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -29,7 +29,7 @@ Deno.serve(async (req: Request) => {
     const adminEmail = 'Rowan@coalfaceebgagement.co.uk';
     const temporaryPassword = 'Admin2025!LGR';
 
-    const { data: existingUser, error: checkError } = await supabase.auth.admin.listUsers();
+    const { data: existingUser, error: _checkError } = await supabase.auth.admin.listUsers();
 
     if (existingUser?.users.some(u => u.email === adminEmail)) {
       const existingAuthUser = existingUser.users.find(u => u.email === adminEmail);

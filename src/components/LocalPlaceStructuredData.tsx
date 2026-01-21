@@ -35,7 +35,7 @@ export default function LocalPlaceStructuredData({
     ? window.location.origin 
     : 'https://localgovernmentreorganisation.co.uk';
 
-  const structuredData: any = {
+  const structuredData: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": type,
     "name": name,

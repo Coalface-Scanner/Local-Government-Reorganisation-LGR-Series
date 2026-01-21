@@ -45,7 +45,7 @@ export default function StrategicOracle() {
       
       const response = await generateChatResponse(userMessage, context);
       setMessages(prev => [...prev, { type: 'ai', content: response }]);
-    } catch (error) {
+    } catch (_error) {
       setMessages(prev => [...prev, { 
         type: 'ai', 
         content: 'I encountered an error processing your request. Please try again.' 

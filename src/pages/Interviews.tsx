@@ -3,6 +3,7 @@ import SubscriptionForm from '../components/SubscriptionForm';
 import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
+import PageNavigation from '../components/PageNavigation';
 import { Mic, Calendar, Users, FileText, Headphones, ExternalLink, Video } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 

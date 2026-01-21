@@ -1,12 +1,30 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   Plus, Minus, CheckCircle2, XCircle, AlertTriangle, 
   Info, Move, Trophy, PieChart, GitMerge, Lightbulb, 
-  Scale, Users, Vote, Globe, ChevronRight 
+  Scale, Vote, Globe, ChevronRight 
 } from 'lucide-react';
 
+// --- Type Definitions ---
+interface TreeNodeData {
+  id: string;
+  label: string;
+  subLabel?: string;
+  type: 'root' | 'category' | 'system' | 'info' | 'usage' | 'pro' | 'con' | 'issue';
+  color?: 'blue' | 'purple' | 'green' | 'orange';
+  icon?: 'trophy' | 'pie' | 'list' | 'bulb';
+  children?: TreeNodeData[];
+}
+
+interface TreeNodeProps {
+  node: TreeNodeData;
+  level?: number;
+  onExpand: (id: string) => void;
+  expandedNodes: Record<string, boolean>;
+}
+
 // --- Data Structure ---
-const mapData = {
+const mapData: TreeNodeData = {
   id: 'root',
   label: 'Democratic Election Systems',
   type: 'root',
@@ -139,27 +157,10 @@ const mapData = {
   ]
 };
 
-interface TreeNodeData {
-  id: string;
-  label: string;
-  subLabel?: string;
-  type: 'root' | 'category' | 'system' | 'info' | 'usage' | 'pro' | 'con' | 'issue';
-  color?: 'blue' | 'purple' | 'green' | 'orange';
-  icon?: 'trophy' | 'pie' | 'list' | 'bulb';
-  children?: TreeNodeData[];
-}
-
-interface TreeNodeProps {
-  node: TreeNodeData;
-  level?: number;
-  onExpand: (id: string) => void;
-  expandedNodes: Record<string, boolean>;
-}
-
 // --- Helper Components ---
 
 const CategoryIcon = ({ icon, color }: { icon: string; color?: string }) => {
-  const icons: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  const icons: Record<string, typeof Trophy> = {
     trophy: Trophy,
     pie: PieChart,
     list: Scale,
@@ -194,7 +195,7 @@ const TreeNode = ({ node, level = 0, onExpand, expandedNodes }: TreeNodeProps) =
     switch(type) {
       case 'root': 
         return `${base} bg-slate-900/90 border-slate-700 text-white shadow-2xl min-w-[280px]`;
-      case 'category': 
+      case 'category': {
         const colors: Record<string, string> = {
           blue: 'bg-blue-900/80 border-blue-500/30 text-blue-50 shadow-[0_0_15px_rgba(59,130,246,0.2)]',
           purple: 'bg-purple-900/80 border-purple-500/30 text-purple-50 shadow-[0_0_15px_rgba(168,85,247,0.2)]',
@@ -202,6 +203,7 @@ const TreeNode = ({ node, level = 0, onExpand, expandedNodes }: TreeNodeProps) =
           orange: 'bg-orange-900/80 border-orange-500/30 text-orange-50 shadow-[0_0_15px_rgba(249,115,22,0.2)]',
         };
         return `${base} ${colors[color || ''] || 'bg-slate-800 border-slate-600'} min-w-[260px]`;
+      }
       case 'system': 
         return `${base} bg-white/95 border-slate-200 text-slate-800 shadow-lg hover:shadow-xl hover:scale-[1.02] min-w-[240px]`;
       case 'pro': 
@@ -228,7 +230,7 @@ const TreeNode = ({ node, level = 0, onExpand, expandedNodes }: TreeNodeProps) =
     }
   };
 
-  const isLeaf = !hasChildren;
+  // const isLeaf = !hasChildren; // Removed unused variable
 
   return (
     <div className="flex flex-row items-center animate-in fade-in zoom-in duration-300">
@@ -465,10 +467,10 @@ export default function ElectoralSystemsMap() {
             transform: `translate(${position.x + 50}px, ${position.y + 50}px) scale(${scale})`
           }}
         >
-          <TreeNode 
-            node={mapData} 
-            onExpand={toggleNode} 
-            expandedNodes={expandedNodes} 
+          <TreeNode
+            node={mapData}
+            onExpand={toggleNode}
+            expandedNodes={expandedNodes}
           />
         </div>
       </div>
