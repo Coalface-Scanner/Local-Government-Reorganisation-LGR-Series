@@ -89,16 +89,16 @@ export default function Search({ onNavigate }: SearchProps) {
 
     try {
       if (shouldSearchType('article')) {
-        let query = supabase.from('articles').select('*').eq('status', 'published');
+        let queryBuilder = supabase.from('articles').select('*').eq('status', 'published');
 
         if (sanitizedQuery) {
-          query = query.or(`title.ilike.%${sanitizedQuery}%,body.ilike.%${sanitizedQuery}%,excerpt.ilike.%${sanitizedQuery}%`);
+          queryBuilder = queryBuilder.or(`title.ilike.%${sanitizedQuery}%,body.ilike.%${sanitizedQuery}%,excerpt.ilike.%${sanitizedQuery}%`);
         }
-        if (filters.region !== 'all') query = query.eq('region', filters.region);
-        if (filters.category !== 'all') query = query.eq('category', filters.category);
-        if (filters.author !== 'all') query = query.eq('author', filters.author);
+        if (filters.region !== 'all') queryBuilder = queryBuilder.eq('region', filters.region);
+        if (filters.category !== 'all') queryBuilder = queryBuilder.eq('category', filters.category);
+        if (filters.author !== 'all') queryBuilder = queryBuilder.eq('author', filters.author);
 
-        const { data, error } = await query;
+        const { data, error } = await queryBuilder;
         if (error) throw error;
         if (data) {
           allResults.push(...data.map(item => ({
@@ -117,15 +117,15 @@ export default function Search({ onNavigate }: SearchProps) {
       }
 
       if (shouldSearchType('fact')) {
-        let query = supabase.from('facts').select('*').eq('published', true);
+        let queryBuilder = supabase.from('facts').select('*').eq('published', true);
 
         if (sanitizedQuery) {
-          query = query.or(`title.ilike.%${sanitizedQuery}%,content.ilike.%${sanitizedQuery}%`);
+          queryBuilder = queryBuilder.or(`title.ilike.%${sanitizedQuery}%,content.ilike.%${sanitizedQuery}%`);
         }
-        if (filters.region !== 'all') query = query.eq('region', filters.region);
-        if (filters.category !== 'all') query = query.eq('category', filters.category);
+        if (filters.region !== 'all') queryBuilder = queryBuilder.eq('region', filters.region);
+        if (filters.category !== 'all') queryBuilder = queryBuilder.eq('category', filters.category);
 
-        const { data, error } = await query;
+        const { data, error } = await queryBuilder;
         if (error) throw error;
         if (data) {
           allResults.push(...data.map(item => ({
@@ -141,15 +141,15 @@ export default function Search({ onNavigate }: SearchProps) {
       }
 
       if (shouldSearchType('lesson')) {
-        let query = supabase.from('lessons').select('*').eq('published', true);
+        let queryBuilder = supabase.from('lessons').select('*').eq('published', true);
 
         if (sanitizedQuery) {
-          query = query.or(`title.ilike.%${sanitizedQuery}%,content.ilike.%${sanitizedQuery}%`);
+          queryBuilder = queryBuilder.or(`title.ilike.%${sanitizedQuery}%,content.ilike.%${sanitizedQuery}%`);
         }
-        if (filters.region !== 'all') query = query.eq('region', filters.region);
-        if (filters.category !== 'all') query = query.eq('category', filters.category);
+        if (filters.region !== 'all') queryBuilder = queryBuilder.eq('region', filters.region);
+        if (filters.category !== 'all') queryBuilder = queryBuilder.eq('category', filters.category);
 
-        const { data, error } = await query;
+        const { data, error } = await queryBuilder;
         if (error) throw error;
         if (data) {
           allResults.push(...data.map(item => ({
@@ -165,13 +165,13 @@ export default function Search({ onNavigate }: SearchProps) {
       }
 
       if (shouldSearchType('interview')) {
-        let query = supabase.from('interviews').select('*').eq('published', true);
+        let queryBuilder = supabase.from('interviews').select('*').eq('published', true);
 
         if (sanitizedQuery) {
-          query = query.or(`title.ilike.%${sanitizedQuery}%,interviewee.ilike.%${sanitizedQuery}%,description.ilike.%${sanitizedQuery}%`);
+          queryBuilder = queryBuilder.or(`title.ilike.%${sanitizedQuery}%,interviewee.ilike.%${sanitizedQuery}%,description.ilike.%${sanitizedQuery}%`);
         }
 
-        const { data, error } = await query;
+        const { data, error } = await queryBuilder;
         if (error) throw error;
         if (data) {
           allResults.push(...data.map(item => ({
@@ -186,16 +186,16 @@ export default function Search({ onNavigate }: SearchProps) {
     }
 
       if (shouldSearchType('material')) {
-        let query = supabase.from('materials').select('*').eq('published', true);
+        let queryBuilder = supabase.from('materials').select('*').eq('published', true);
 
         if (sanitizedQuery) {
-          query = query.or(`title.ilike.%${sanitizedQuery}%,description.ilike.%${sanitizedQuery}%`);
+          queryBuilder = queryBuilder.or(`title.ilike.%${sanitizedQuery}%,description.ilike.%${sanitizedQuery}%`);
         }
-        if (filters.region !== 'all') query = query.eq('region', filters.region);
-        if (filters.category !== 'all') query = query.eq('category', filters.category);
-        if (filters.author !== 'all') query = query.eq('author', filters.author);
+        if (filters.region !== 'all') queryBuilder = queryBuilder.eq('region', filters.region);
+        if (filters.category !== 'all') queryBuilder = queryBuilder.eq('category', filters.category);
+        if (filters.author !== 'all') queryBuilder = queryBuilder.eq('author', filters.author);
 
-        const { data, error } = await query;
+        const { data, error } = await queryBuilder;
         if (error) throw error;
         if (data) {
           allResults.push(...data.map(item => ({
