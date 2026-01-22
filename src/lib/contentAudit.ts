@@ -9,7 +9,7 @@
  * - Title length
  */
 
-import { validateHeadingStructure, getFirstH1, type HeadingValidationResult } from './headingValidator';
+import { validateHeadingStructure } from './headingValidator';
 import { extractCouncilNames } from './geographyHelpers';
 
 export interface ContentAuditResult {
@@ -255,7 +255,7 @@ export function getAuditSummary(result: ContentAuditResult): string {
   if (result.issues.length > 0) {
     lines.push('');
     lines.push('Issues:');
-    result.issues.forEach((issue, index) => {
+    result.issues.forEach((issue) => {
       const icon = issue.severity === 'error' ? '✗' : issue.severity === 'warning' ? '⚠' : 'ℹ';
       lines.push(`  ${icon} ${issue.message}`);
       if (issue.suggestion) {

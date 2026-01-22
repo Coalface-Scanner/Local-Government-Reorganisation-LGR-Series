@@ -99,7 +99,7 @@ export function normalizeGeographyName(name: string): string {
   }
   
   // Remove common suffixes and normalize
-  let cleaned = normalized
+  const cleaned = normalized
     .replace(/\s+and\s+/gi, ' & ')
     .replace(/\s+&\s+/gi, ' & ')
     .replace(/\s+/g, ' ')

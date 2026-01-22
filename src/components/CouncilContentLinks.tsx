@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FileText, BookOpen, List, Lightbulb, ArrowRight } from 'lucide-react';
+import { FileText, BookOpen, List, ArrowRight } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 interface CouncilContentLinksProps {

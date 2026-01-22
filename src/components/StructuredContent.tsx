@@ -7,7 +7,7 @@
  * - Key takeaways (bulleted lists)
  */
 
-import { Calendar, ArrowRight, CheckCircle, AlertCircle } from 'lucide-react';
+import { Calendar, ArrowRight, CheckCircle } from 'lucide-react';
 
 interface TimelineItem {
   date: string;

@@ -1,5 +1,5 @@
 import { AlertTriangle, CheckCircle, Info } from 'lucide-react';
-import { validateHeadingStructure, getHeadingHierarchy, type HeadingValidationResult } from '../lib/headingValidator';
+import { validateHeadingStructure, getHeadingHierarchy } from '../lib/headingValidator';
 
 interface HeadingGuidelinesProps {
   htmlContent: string;
