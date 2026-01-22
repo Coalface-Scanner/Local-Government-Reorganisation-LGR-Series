@@ -396,9 +396,9 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
             <RelatedContent
               currentSlug={article.slug}
               contentType="article"
-              geography={article.geography}
-              theme={article.theme}
-              lgrPhase={article.lgr_phase}
+              geography={article.geography ?? undefined}
+              theme={article.theme ?? undefined}
+              lgrPhase={article.lgr_phase ?? undefined}
               maxItems={6}
             />
           </div>

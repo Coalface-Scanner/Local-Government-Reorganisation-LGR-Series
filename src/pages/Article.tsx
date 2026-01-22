@@ -465,9 +465,9 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
         <RelatedContent
           currentSlug={material.slug}
           contentType="material"
-          theme={material.theme}
-          geography={material.geography}
-          lgrPhase={material.lgr_phase}
+          theme={material.theme ?? undefined}
+          geography={material.geography ?? undefined}
+          lgrPhase={material.lgr_phase ?? undefined}
           maxItems={6}
         />
         <div className="mt-8">
