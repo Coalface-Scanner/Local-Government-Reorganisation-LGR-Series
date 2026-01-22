@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Search as SearchIcon, Filter, MapPin, User, Tag, Calendar } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import MetaTags from '../components/MetaTags';
@@ -41,10 +41,6 @@ export default function Search({ onNavigate }: SearchProps) {
     loadFilterOptions();
   }, []);
 
-  useEffect(() => {
-    performSearch();
-  }, [searchQuery, filters]);
-
   const loadFilterOptions = async () => {
     const regions = new Set<string>();
     const categories = new Set<string>();
@@ -82,7 +78,7 @@ export default function Search({ onNavigate }: SearchProps) {
     setAvailableAuthors(Array.from(authors).sort());
   };
 
-  const performSearch = async () => {
+  const performSearch = useCallback(async () => {
     setLoading(true);
     setError('');
     const allResults: SearchResult[] = [];
@@ -228,7 +224,15 @@ export default function Search({ onNavigate }: SearchProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [searchQuery, filters]);
+
+  useEffect(() => {
+    loadFilterOptions();
+  }, []);
+
+  useEffect(() => {
+    performSearch();
+  }, [performSearch]);
 
   const getTypeLabel = (type: string) => {
     const labels: Record<string, string> = {

@@ -57,7 +57,6 @@ const districts: District[] = [
 // SURREY COUNTY COUNCIL: Con: 38, LD: 19, Res: 16 (Residents' Association/Independent), Lab: 2, Green: 2, Reform: 2 (Reform UK), Ind: 1, Other: 0, 1 vacancy
 const countyCouncil = { composition: { Con: 38, LD: 19, Res: 16, Lab: 2, Green: 2, Reform: 2, Ind: 1, Other: 0 } };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorProps) {
   // Props are intentionally unused - component doesn't use onNavigate prop
   const navigate = useNavigate();

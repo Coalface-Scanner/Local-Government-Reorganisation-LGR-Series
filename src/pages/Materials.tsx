@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
@@ -128,11 +128,6 @@ export default function Materials({ onNavigate }: MaterialsProps) {
     fetchMaterials();
   }, []);
 
-  useEffect(() => {
-    applyFiltersAndSort();
-    setCurrentPage(1);
-  }, [materials, searchQuery, sortBy, selectedType, selectedGeography, selectedTheme, selectedAudience, selectedPhase, selectedFormat, selectedAuthor]);
-
   const fetchMaterials = async () => {
     const { data, error } = await supabase
       .from('materials')
@@ -149,7 +144,7 @@ export default function Materials({ onNavigate }: MaterialsProps) {
     }
   };
 
-  const applyFiltersAndSort = () => {
+  const applyFiltersAndSort = useCallback(() => {
     let filtered = [...materials];
 
     if (searchQuery) {
@@ -206,7 +201,16 @@ export default function Materials({ onNavigate }: MaterialsProps) {
     }
 
     setFilteredMaterials(filtered);
-  };
+  }, [materials, searchQuery, sortBy, selectedType, selectedGeography, selectedTheme, selectedAudience, selectedPhase, selectedFormat, selectedAuthor]);
+
+  useEffect(() => {
+    fetchMaterials();
+  }, []);
+
+  useEffect(() => {
+    applyFiltersAndSort();
+    setCurrentPage(1);
+  }, [applyFiltersAndSort]);
 
   const toggleFilter = (value: string, selected: string[], setSelected: (val: string[]) => void) => {
     if (selected.includes(value)) {

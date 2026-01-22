@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import LastUpdated from '../components/LastUpdated';
 import ShareButtons from '../components/ShareButtons';
@@ -42,13 +42,7 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
   const [notFound, setNotFound] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (slug) {
-      fetchArticle();
-    }
-  }, [slug]);
-
-  const fetchArticle = async () => {
+  const fetchArticle = useCallback(async () => {
     setLoading(true);
     setError(null);
     
@@ -78,7 +72,13 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
       setLoading(false);
       console.error('Error fetching article:', err);
     }
-  };
+  }, [slug]);
+
+  useEffect(() => {
+    if (slug) {
+      fetchArticle();
+    }
+  }, [slug, fetchArticle]);
 
   if (loading) {
     return (

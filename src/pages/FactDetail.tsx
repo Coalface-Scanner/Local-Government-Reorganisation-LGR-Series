@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import MetaTags from '../components/MetaTags';
@@ -32,6 +32,10 @@ const categoryColors: Record<string, string> = {
   'Overview': 'from-slate-500 to-slate-700',
 };
 
+const generateSlug = (title: string): string => {
+  return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+};
+
 export default function FactDetail() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -39,17 +43,7 @@ export default function FactDetail() {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
-  useEffect(() => {
-    if (slug) {
-      fetchFact();
-    }
-  }, [slug]);
-
-  const generateSlug = (title: string): string => {
-    return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  };
-
-  const fetchFact = async () => {
+  const fetchFact = useCallback(async () => {
     setLoading(true);
     // Generate slug from title for matching
     const { data: facts, error } = await supabase
@@ -76,7 +70,13 @@ export default function FactDetail() {
       setNotFound(true);
     }
     setLoading(false);
-  };
+  }, [slug]);
+
+  useEffect(() => {
+    if (slug) {
+      fetchFact();
+    }
+  }, [slug, fetchFact]);
 
   if (loading) {
     return (
