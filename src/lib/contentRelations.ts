@@ -126,7 +126,7 @@ export async function findRelatedFacts(
   limit: number = 2
 ): Promise<ContentRelation[]> {
   try {
-    let query = supabase
+    let queryBuilder = supabase
       .from('facts')
       .select('id, title, category, order_index')
       .neq('id', currentId)
@@ -134,10 +134,10 @@ export async function findRelatedFacts(
       .limit(limit * 2);
 
     if (category) {
-      query = query.eq('category', category);
+      queryBuilder = queryBuilder.eq('category', category);
     }
 
-    const { data, error } = await query;
+    const { data, error } = await queryBuilder;
 
     if (error || !data) {
       return [];
