@@ -4,6 +4,7 @@ import { useAdminAuth } from '../../contexts/AdminAuthContext';
 import { supabase } from '../../lib/supabase';
 import ArticleEditor from '../../components/ArticleEditor';
 import ArticleQAEditor from './ArticleQAEditor';
+import HeadingGuidelines from '../../components/HeadingGuidelines';
 
 interface Article {
   id: string;
@@ -18,6 +19,9 @@ interface Article {
   author: string | null;
   category: string | null;
   region: string | null;
+  geography: string | null;
+  theme: string | null;
+  lgr_phase: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -81,6 +85,9 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
       author: '',
       category: '',
       region: '',
+      geography: '',
+      theme: '',
+      lgr_phase: '',
     });
     setPreviewMode(false);
     setError('');
@@ -135,6 +142,9 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
         author: editingArticle.author || null,
         category: editingArticle.category || null,
         region: editingArticle.region || null,
+        geography: editingArticle.geography || null,
+        theme: editingArticle.theme || null,
+        lgr_phase: editingArticle.lgr_phase || null,
       };
 
       if (editingArticle.id) {
@@ -355,6 +365,7 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                   <p className="mt-3 text-xs text-neutral-500">
                     💡 <strong>Tip:</strong> Use the toolbar to format your content. You can add headings, bold/italic text, lists, links, images, and more. Images can be uploaded directly from your computer.
                   </p>
+                  <HeadingGuidelines htmlContent={editingArticle.body || ''} />
                 </div>
               </div>
 
@@ -501,6 +512,74 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                   />
                   <p className="mt-2 text-xs text-neutral-500">
                     Geographic region this article relates to
+                  </p>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-sm p-6">
+                  <label className="block text-sm font-medium text-neutral-700 mb-2">
+                    Geography
+                  </label>
+                  <select
+                    value={editingArticle.geography || ''}
+                    onChange={(e) => setEditingArticle({ ...editingArticle, geography: e.target.value || null })}
+                    className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-transparent outline-none text-sm"
+                  >
+                    <option value="">Select geography (optional)</option>
+                    <option value="National">National</option>
+                    <option value="Region">Region</option>
+                    <option value="Combined authority">Combined authority</option>
+                    <option value="County or unitary">County or unitary</option>
+                    <option value="Local area">Local area</option>
+                  </select>
+                  <p className="mt-2 text-xs text-neutral-500">
+                    Geographic focus level for SEO and content clustering
+                  </p>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-sm p-6">
+                  <label className="block text-sm font-medium text-neutral-700 mb-2">
+                    Theme
+                  </label>
+                  <select
+                    value={editingArticle.theme || ''}
+                    onChange={(e) => setEditingArticle({ ...editingArticle, theme: e.target.value || null })}
+                    className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-transparent outline-none text-sm"
+                  >
+                    <option value="">Select theme (optional)</option>
+                    <option value="Governance">Governance</option>
+                    <option value="Planning delivery">Planning delivery</option>
+                    <option value="Finance and resilience">Finance and resilience</option>
+                    <option value="Capacity and workforce">Capacity and workforce</option>
+                    <option value="Digital and data">Digital and data</option>
+                    <option value="Public trust and engagement">Public trust and engagement</option>
+                    <option value="Programme and transition">Programme and transition</option>
+                  </select>
+                  <p className="mt-2 text-xs text-neutral-500">
+                    Primary theme for topic clustering and internal linking
+                  </p>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-sm p-6">
+                  <label className="block text-sm font-medium text-neutral-700 mb-2">
+                    LGR Phase
+                  </label>
+                  <select
+                    value={editingArticle.lgr_phase || ''}
+                    onChange={(e) => setEditingArticle({ ...editingArticle, lgr_phase: e.target.value || null })}
+                    className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-transparent outline-none text-sm"
+                  >
+                    <option value="">Select LGR phase (optional)</option>
+                    <option value="Signals">Signals</option>
+                    <option value="Proposal">Proposal</option>
+                    <option value="Shadow">Shadow</option>
+                    <option value="Vesting prep">Vesting prep</option>
+                    <option value="Vesting">Vesting</option>
+                    <option value="First 100 days">First 100 days</option>
+                    <option value="Year one">Year one</option>
+                    <option value="Consolidation">Consolidation</option>
+                  </select>
+                  <p className="mt-2 text-xs text-neutral-500">
+                    Relevant phase of local government reorganisation
                   </p>
                 </div>
               </div>

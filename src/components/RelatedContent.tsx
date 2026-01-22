@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FileText, BookOpen, List, ArrowRight } from 'lucide-react';
+import { FileText, BookOpen, List, ArrowRight, MapPin, Tag } from 'lucide-react';
 import { ContentRelation, findAllRelatedContent } from '../lib/contentRelations';
 
 interface RelatedContentProps {
@@ -91,12 +91,24 @@ export default function RelatedContent({
     }
   };
 
+  const getRelevanceReason = (item: ContentRelation): string | null => {
+    const reasons: string[] = [];
+    if (geography && item.geography && item.geography.toLowerCase() === geography.toLowerCase()) {
+      reasons.push('Same geography');
+    }
+    if (theme && item.theme && item.theme.toLowerCase() === theme.toLowerCase()) {
+      reasons.push('Same theme');
+    }
+    return reasons.length > 0 ? reasons.join(', ') : null;
+  };
+
   return (
     <section className="mt-12 pt-8 border-t border-slate-200">
       <h2 className="text-2xl font-bold text-slate-900 mb-6">Related Content</h2>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {allItems.map((item) => {
           const Icon = getIcon(item.type);
+          const relevanceReason = getRelevanceReason(item);
           return (
             <Link
               key={`${item.type}-${item.id}`}
@@ -108,8 +120,22 @@ export default function RelatedContent({
                   <Icon size={20} className="text-teal-700" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-xs font-semibold text-teal-700 mb-1 uppercase tracking-wide">
-                    {item.type === 'article' ? 'Article' : item.type === 'material' ? 'Material' : 'Fact'}
+                  <div className="flex items-center gap-2 mb-1 flex-wrap">
+                    <div className="text-xs font-semibold text-teal-700 uppercase tracking-wide">
+                      {item.type === 'article' ? 'Article' : item.type === 'material' ? 'Material' : 'Fact'}
+                    </div>
+                    {item.geography && item.geography !== 'National' && (
+                      <div className="flex items-center gap-1 px-2 py-0.5 bg-blue-50 text-blue-700 rounded text-xs font-medium">
+                        <MapPin size={10} />
+                        {item.geography}
+                      </div>
+                    )}
+                    {item.theme && (
+                      <div className="flex items-center gap-1 px-2 py-0.5 bg-purple-50 text-purple-700 rounded text-xs font-medium">
+                        <Tag size={10} />
+                        {item.theme}
+                      </div>
+                    )}
                   </div>
                   <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-teal-700 transition-colors line-clamp-2">
                     {item.title}
@@ -117,6 +143,11 @@ export default function RelatedContent({
                   {(item.excerpt || item.description) && (
                     <p className="text-sm text-slate-600 line-clamp-2 mb-3">
                       {item.excerpt || item.description}
+                    </p>
+                  )}
+                  {relevanceReason && (
+                    <p className="text-xs text-slate-500 mb-2 italic">
+                      Related: {relevanceReason}
                     </p>
                   )}
                   <div className="flex items-center gap-2 text-teal-600 font-semibold text-sm group-hover:gap-3 transition-all">

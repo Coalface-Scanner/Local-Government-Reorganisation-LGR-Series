@@ -29,6 +29,11 @@ interface Article {
   created_at: string;
   updated_at: string;
   author: string | null;
+  category: string | null;
+  region: string | null;
+  geography: string | null;
+  theme: string | null;
+  lgr_phase: string | null;
 }
 
 interface ArticleViewProps {
@@ -117,16 +122,38 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
     );
   }
 
-  // Truncate title to ensure full title (with " | LGR Series") stays under 70 chars
+  // Enhance title with geography when available, ensuring it stays under 70 chars total
   const getTitle = () => {
     const maxTitleLength = 56; // 70 - 14 (" | LGR Series")
-    if (article.title.length > maxTitleLength) {
-      return article.title.substring(0, maxTitleLength - 3) + '...';
+    let title = article.title;
+    
+    // Add geography prefix if available and not already in title
+    if (article.geography && article.geography !== 'National') {
+      const geographyPrefix = `${article.geography}: `;
+      const geographyInTitle = title.toLowerCase().includes(article.geography.toLowerCase());
+      
+      if (!geographyInTitle && (geographyPrefix.length + title.length) <= maxTitleLength) {
+        title = geographyPrefix + title;
+      }
+    } else if (article.region && article.region !== 'National') {
+      // Fallback to region if geography not set
+      const regionPrefix = `${article.region}: `;
+      const regionInTitle = title.toLowerCase().includes(article.region.toLowerCase());
+      
+      if (!regionInTitle && (regionPrefix.length + title.length) <= maxTitleLength) {
+        title = regionPrefix + title;
+      }
     }
-    return article.title;
+    
+    // Truncate if still too long
+    if (title.length > maxTitleLength) {
+      title = title.substring(0, maxTitleLength - 3) + '...';
+    }
+    
+    return title;
   };
 
-  // Generate description from excerpt or body content (25-160 chars)
+  // Generate description from excerpt or body content, including geography context (25-160 chars)
   const getDescription = () => {
     let desc = '';
     
@@ -137,6 +164,32 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
       const textContent = article.body.replace(/<[^>]*>/g, '').trim();
       if (textContent.length >= 25) {
         desc = textContent;
+      }
+    }
+    
+    // Ensure description is between 25-160 chars and includes geography context
+    if (desc.length < 25) {
+      const geographyContext = article.geography && article.geography !== 'National' 
+        ? ` in ${article.geography}` 
+        : article.region && article.region !== 'National'
+        ? ` in ${article.region}`
+        : '';
+      
+      const phaseContext = article.lgr_phase ? ` during ${article.lgr_phase.toLowerCase()}` : '';
+      
+      desc = `Expert analysis on ${article.title}${geographyContext}${phaseContext}. Read insights on local government reorganisation and council reform.`;
+    } else {
+      // Add geography context to existing description if not present and space allows
+      if (article.geography && article.geography !== 'National') {
+        const geographyInDesc = desc.toLowerCase().includes(article.geography.toLowerCase());
+        if (!geographyInDesc && (desc.length + article.geography.length + 10) <= 160) {
+          desc = `${desc} Analysis focuses on ${article.geography}.`;
+        }
+      } else if (article.region && article.region !== 'National') {
+        const regionInDesc = desc.toLowerCase().includes(article.region.toLowerCase());
+        if (!regionInDesc && (desc.length + article.region.length + 10) <= 160) {
+          desc = `${desc} Analysis focuses on ${article.region}.`;
+        }
       }
     }
     
@@ -157,14 +210,21 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
       <MetaTags
         title={getTitle()}
         description={getDescription()}
-        keywords="local government, reorganisation, LGR, insights, article"
+        keywords={`local government, reorganisation, LGR, insights, article${article.geography ? `, ${article.geography}` : ''}${article.theme ? `, ${article.theme}` : ''}${article.region ? `, ${article.region}` : ''}`}
         ogType="article"
         ogImage={article.featured_image || undefined}
         article={{
           publishedTime: article.published_date || article.created_at,
           author: article.author || 'LGR Series Editorial Team',
-          section: 'Insights',
-          tags: ['LGR', 'Local Government', 'Reorganisation']
+          section: article.theme || article.category || 'Insights',
+          tags: [
+            'LGR',
+            'Local Government',
+            'Reorganisation',
+            ...(article.geography && article.geography !== 'National' ? [article.geography] : []),
+            ...(article.theme ? [article.theme] : []),
+            ...(article.lgr_phase ? [article.lgr_phase] : [])
+          ]
         }}
       />
       <ArticleStructuredData
@@ -175,6 +235,9 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
         updatedDate={article.updated_at}
         imageUrl={article.featured_image || undefined}
         slug={article.slug}
+        geography={article.geography}
+        region={article.region}
+        theme={article.theme}
       />
 
       <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-6">
@@ -333,6 +396,9 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
             <RelatedContent
               currentSlug={article.slug}
               contentType="article"
+              geography={article.geography}
+              theme={article.theme}
+              lgrPhase={article.lgr_phase}
               maxItems={6}
             />
           </div>

@@ -121,6 +121,15 @@ export default function FactDetail() {
   const getDescription = () => {
     const textContent = fact.content.replace(/<[^>]*>/g, '').trim();
     let desc = textContent.length > 0 ? textContent : `Key facts about ${fact.title} in local government reorganisation.`;
+    
+    // Add category context if available
+    if (fact.category && desc.length < 140) {
+      const categoryInDesc = desc.toLowerCase().includes(fact.category.toLowerCase());
+      if (!categoryInDesc) {
+        desc = `${desc} ${fact.category} insights on local government reorganisation.`;
+      }
+    }
+    
     if (desc.length < 25) {
       desc = `Key facts about ${fact.title} in local government reorganisation and council reform.`;
     }
@@ -131,9 +140,19 @@ export default function FactDetail() {
   };
 
   const getTitle = () => {
-    const title = `${fact.title} - Facts & Figures`;
+    // Include category in title if available and space allows
+    let title = fact.title;
+    if (fact.category) {
+      const categoryTitle = `${fact.category}: ${fact.title}`;
+      const maxTitleLength = 56; // 70 - 14 (" | LGR Series")
+      if (categoryTitle.length <= maxTitleLength) {
+        title = categoryTitle;
+      }
+    }
+    
+    const fullTitle = `${title} - Facts & Figures`;
     const maxTitleLength = 56; // 70 - 14 (" | LGR Series")
-    return title.length > maxTitleLength ? title.substring(0, maxTitleLength - 3) + '...' : title;
+    return fullTitle.length > maxTitleLength ? fullTitle.substring(0, maxTitleLength - 3) + '...' : fullTitle;
   };
 
   return (
