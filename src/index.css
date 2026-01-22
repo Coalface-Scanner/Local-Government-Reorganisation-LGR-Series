@@ -1,7 +1,45 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@theme {
+  --color-vibrant-green-50: #ecfdf5;
+  --color-vibrant-green-100: #d1fae5;
+  /* ... (all your custom colors from tailwind.config.js) */
+}@theme {
+  /* Vibrant Green */
+  --color-vibrant-green-50: #ecfdf5;
+  --color-vibrant-green-100: #d1fae5;
+  --color-vibrant-green-200: #a7f3d0;
+  --color-vibrant-green-300: #6ee7b7;
+  --color-vibrant-green-400: #34d399;
+  --color-vibrant-green-500: #10b981;
+  --color-vibrant-green-600: #059669;
+  --color-vibrant-green-700: #047857;
+  --color-vibrant-green-800: #065f46;
+  --color-vibrant-green-900: #064e3b;
 
+  /* Teal (overriding default) */
+  --color-teal-50: #f0fdfa;
+  --color-teal-100: #ccfbf1;
+  --color-teal-200: #99f6e4;
+  --color-teal-300: #5eead4;
+  --color-teal-400: #2dd4bf;
+  --color-teal-500: #14b8a6;
+  --color-teal-600: #0d9488;
+  --color-teal-700: #0f766e;
+  --color-teal-800: #115e59;
+  --color-teal-900: #134e4a;
+
+  /* Corporate Blue */
+  --color-corporate-blue-50: #eff6ff;
+  --color-corporate-blue-100: #dbeafe;
+  --color-corporate-blue-200: #bfdbfe;
+  --color-corporate-blue-300: #93c5fd;
+  --color-corporate-blue-400: #60a5fa;
+  --color-corporate-blue-500: #3b82f6;
+  --color-corporate-blue-600: #2563eb;
+  --color-corporate-blue-700: #1d4ed8;
+  --color-corporate-blue-800: #1e40af;
+  --color-corporate-blue-900: #1e3a8a;
+}
 @layer base {
   body {
     @apply text-gray-900;
