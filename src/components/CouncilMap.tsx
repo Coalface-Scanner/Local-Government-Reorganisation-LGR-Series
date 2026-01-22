@@ -29,6 +29,7 @@ export default function CouncilMap() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedCouncil, setSelectedCouncil] = useState<string | null>(null);
+  const [councilsByCountry, setCouncilsByCountry] = useState<Record<string, string[]>>({});
 
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return;
@@ -69,7 +70,15 @@ export default function CouncilMap() {
           sources.map(source => fetch(source.url).then(res => res.json()))
         );
 
+        const councilsByCountryTemp: Record<string, string[]> = {
+          'England': [],
+          'Scotland': [],
+          'Wales': [],
+          'Northern Ireland': []
+        };
+
         responses.forEach((data: GeoJSONData, index) => {
+          const country = sources[index].country;
           const countryColor = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'][index];
 
           L.geoJSON(data as GeoJSONData, {
@@ -85,6 +94,11 @@ export default function CouncilMap() {
                 props.LAD23NM || props.LAD13NM || props.LGD2014NAME || 'Unknown';
               const councilCode =
                 props.LAD23CD || props.LAD13CD || props.LGD2014CODE || '';
+
+              // Collect council names for crawlable text
+              if (councilName !== 'Unknown' && !councilsByCountryTemp[country].includes(councilName)) {
+                councilsByCountryTemp[country].push(councilName);
+              }
 
               if (layer instanceof L.Path) {
                 layer.on({
@@ -114,12 +128,18 @@ export default function CouncilMap() {
                 <div class="p-2">
                   <h3 class="font-bold text-lg">${councilName}</h3>
                   <p class="text-sm text-gray-600">${councilCode}</p>
-                  <p class="text-sm text-gray-500 mt-1">${sources[index].country}</p>
+                  <p class="text-sm text-gray-500 mt-1">${country}</p>
                 </div>
               `);
             },
           }).addTo(map);
         });
+
+        // Sort council names alphabetically
+        Object.keys(councilsByCountryTemp).forEach(country => {
+          councilsByCountryTemp[country].sort();
+        });
+        setCouncilsByCountry(councilsByCountryTemp);
 
         setLoading(false);
       } catch (_err) {
@@ -184,6 +204,41 @@ export default function CouncilMap() {
             <span>N. Ireland</span>
           </div>
         </div>
+      </div>
+
+      {/* Crawlable text content for SEO - hidden visually but accessible to search engines */}
+      <div className="sr-only" aria-hidden="false">
+        <h2>UK Local Authority Districts</h2>
+        <p>
+          This interactive map displays Local Authority Districts (LADs) across England, Scotland, Wales, and Northern Ireland. 
+          The map shows current council boundaries and can be used to explore geographic coverage of local government reorganisation 
+          proposals and unitary authority structures.
+        </p>
+        
+        {Object.keys(councilsByCountry).length > 0 && (
+          <>
+            {Object.entries(councilsByCountry).map(([country, councils]) => (
+              <div key={country} className="mt-4">
+                <h3>{country} Councils</h3>
+                <p>
+                  {country} has {councils.length} local authority districts. 
+                  {country === 'England' && ' Many areas are undergoing local government reorganisation to form new unitary authorities.'}
+                  {country === 'Scotland' && ' All councils are unitary authorities established in 1996.'}
+                  {country === 'Wales' && ' Councils provide all local government services including education, social care, and planning.'}
+                  {country === 'Northern Ireland' && ' Councils operate under a different structure from Great Britain.'}
+                </p>
+                <ul>
+                  {councils.slice(0, 50).map((council, index) => (
+                    <li key={index}>{council}</li>
+                  ))}
+                  {councils.length > 50 && (
+                    <li>... and {councils.length - 50} more councils</li>
+                  )}
+                </ul>
+              </div>
+            ))}
+          </>
+        )}
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import LastUpdated from '../components/LastUpdated';
 import CouncilProfilesPasswordProtection from '../components/CouncilProfilesPasswordProtection';
 import Breadcrumbs from '../components/Breadcrumbs';
 import LocalPlaceStructuredData from '../components/LocalPlaceStructuredData';
+import CouncilContentLinks from '../components/CouncilContentLinks';
 
 export default function CouncilProfileDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -401,6 +402,8 @@ export default function CouncilProfileDetail() {
           </div>
         </div>
       </div>
+
+      <CouncilContentLinks councilName={council.name.replace(' Council', '')} maxItems={6} />
 
       <FAQSection page="council-profile" />
       <LastUpdated />

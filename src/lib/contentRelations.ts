@@ -17,18 +17,18 @@ export interface ContentRelation {
  */
 export async function findRelatedArticles(
   currentSlug: string,
-  _theme?: string,
-  _geography?: string,
+  theme?: string,
+  geography?: string,
   limit: number = 4
 ): Promise<ContentRelation[]> {
   try {
     const query = supabase
       .from('articles')
-      .select('id, title, slug, excerpt, published_date')
+      .select('id, title, slug, excerpt, published_date, geography, theme, lgr_phase, region')
       .eq('status', 'published')
       .neq('slug', currentSlug)
       .order('published_date', { ascending: false })
-      .limit(limit * 2); // Get more than needed for filtering
+      .limit(limit * 3); // Get more than needed for filtering and scoring
 
     const { data, error } = await query;
 
@@ -39,15 +39,42 @@ export async function findRelatedArticles(
     // Score articles by relevance
     const scored = data.map(article => {
       let score = 0;
-      // Theme matching would require a theme field in articles table
-      // For now, we'll prioritize by recency
+      
+      // Geography matching (highest priority)
+      if (geography && article.geography) {
+        if (article.geography.toLowerCase() === geography.toLowerCase()) {
+          score += 10; // Exact match
+        } else if (article.geography.toLowerCase().includes(geography.toLowerCase()) || 
+                   geography.toLowerCase().includes(article.geography.toLowerCase())) {
+          score += 5; // Partial match
+        }
+      }
+      
+      // Region matching (secondary)
+      if (geography && article.region) {
+        if (article.region.toLowerCase() === geography.toLowerCase()) {
+          score += 8; // Exact region match
+        }
+      }
+      
+      // Theme matching
+      if (theme && article.theme) {
+        if (article.theme.toLowerCase() === theme.toLowerCase()) {
+          score += 6; // Exact theme match
+        }
+      }
+      
+      // Recency bonus (more recent = slightly higher score)
       score += 1;
+      
       return {
         id: article.id,
         title: article.title,
         slug: article.slug,
         type: 'article' as const,
         excerpt: article.excerpt || undefined,
+        geography: article.geography || undefined,
+        theme: article.theme || undefined,
         relevanceScore: score
       };
     });
@@ -86,12 +113,34 @@ export async function findRelatedMaterials(
       return [];
     }
 
-    // Score materials by relevance
+    // Score materials by relevance with improved weighting
     const scored = data.map(material => {
       let score = 0;
-      if (theme && material.theme === theme) score += 3;
-      if (geography && material.geography === geography) score += 2;
-      if (lgrPhase && material.lgr_phase === lgrPhase) score += 1;
+      
+      // Geography matching (highest priority)
+      if (geography && material.geography) {
+        if (material.geography.toLowerCase() === geography.toLowerCase()) {
+          score += 10; // Exact match
+        } else if (material.geography.toLowerCase().includes(geography.toLowerCase()) || 
+                   geography.toLowerCase().includes(material.geography.toLowerCase())) {
+          score += 5; // Partial match
+        }
+      }
+      
+      // Theme matching
+      if (theme && material.theme) {
+        if (material.theme.toLowerCase() === theme.toLowerCase()) {
+          score += 6; // Exact theme match
+        }
+      }
+      
+      // LGR phase matching
+      if (lgrPhase && material.lgr_phase) {
+        if (material.lgr_phase.toLowerCase() === lgrPhase.toLowerCase()) {
+          score += 4; // Exact phase match
+        }
+      }
+      
       // Base score for recency
       score += 1;
 

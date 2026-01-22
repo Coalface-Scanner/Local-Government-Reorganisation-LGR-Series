@@ -143,16 +143,30 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
     );
   }
 
-  // Truncate title to ensure full title (with " | LGR Series") stays under 70 chars
+  // Enhance title with geography when available, ensuring it stays under 70 chars total
   const getTitle = () => {
     const maxTitleLength = 56; // 70 - 14 (" | LGR Series")
-    if (material.title.length > maxTitleLength) {
-      return material.title.substring(0, maxTitleLength - 3) + '...';
+    let title = material.title;
+    
+    // Add geography prefix if available and not already in title
+    if (material.geography && material.geography !== 'National') {
+      const geographyPrefix = `${material.geography}: `;
+      const geographyInTitle = title.toLowerCase().includes(material.geography.toLowerCase());
+      
+      if (!geographyInTitle && (geographyPrefix.length + title.length) <= maxTitleLength) {
+        title = geographyPrefix + title;
+      }
     }
-    return material.title;
+    
+    // Truncate if still too long
+    if (title.length > maxTitleLength) {
+      title = title.substring(0, maxTitleLength - 3) + '...';
+    }
+    
+    return title;
   };
 
-  // Generate description from material description or content (25-160 chars)
+  // Generate description from material description or content, including geography context (25-160 chars)
   const getDescription = () => {
     let desc = '';
     
@@ -163,6 +177,26 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
       const textContent = material.content.replace(/<[^>]*>/g, '').trim();
       if (textContent.length >= 25) {
         desc = textContent;
+      }
+    }
+    
+    // Ensure description is between 25-160 chars and includes geography context
+    if (desc.length < 25) {
+      const geographyContext = material.geography && material.geography !== 'National' 
+        ? ` in ${material.geography}` 
+        : '';
+      
+      const phaseContext = material.lgr_phase ? ` during ${material.lgr_phase.toLowerCase()}` : '';
+      const themeContext = material.theme ? ` on ${material.theme.toLowerCase()}` : '';
+      
+      desc = `Research material on ${material.title}${geographyContext}${phaseContext}${themeContext}. Explore insights on local government reorganisation.`;
+    } else {
+      // Add geography context to existing description if not present and space allows
+      if (material.geography && material.geography !== 'National') {
+        const geographyInDesc = desc.toLowerCase().includes(material.geography.toLowerCase());
+        if (!geographyInDesc && (desc.length + material.geography.length + 10) <= 160) {
+          desc = `${desc} Material focuses on ${material.geography}.`;
+        }
       }
     }
     
@@ -201,6 +235,8 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
         updatedDate={material.updated_at}
         imageUrl={material.main_image_url || material.image_url || undefined}
         slug={material.slug}
+        geography={material.geography}
+        theme={material.theme}
       />
       <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-6">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -429,9 +465,9 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
         <RelatedContent
           currentSlug={material.slug}
           contentType="material"
-          theme={material.theme}
-          geography={material.geography}
-          lgrPhase={material.lgr_phase}
+          theme={material.theme ?? undefined}
+          geography={material.geography ?? undefined}
+          lgrPhase={material.lgr_phase ?? undefined}
           maxItems={6}
         />
         <div className="mt-8">

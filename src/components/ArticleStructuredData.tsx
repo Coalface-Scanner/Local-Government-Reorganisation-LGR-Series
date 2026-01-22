@@ -6,6 +6,9 @@ interface ArticleStructuredDataProps {
   updatedDate?: string;
   imageUrl?: string;
   slug: string;
+  geography?: string | null;
+  region?: string | null;
+  theme?: string | null;
 }
 
 export default function ArticleStructuredData({
@@ -15,13 +18,58 @@ export default function ArticleStructuredData({
   publishedDate,
   updatedDate,
   imageUrl,
-  slug
+  slug,
+  geography,
+  region,
+  theme
 }: ArticleStructuredDataProps) {
   const baseUrl = typeof window !== 'undefined' 
     ? window.location.origin 
     : 'https://localgovernmentreorganisation.co.uk';
   
-  const structuredData = {
+  // Build geographic coverage data
+  const spatialCoverage = geography && geography !== 'National' 
+    ? {
+        "@type": "Place",
+        "name": geography,
+        ...(region && region !== geography ? {
+          "containedInPlace": {
+            "@type": "AdministrativeArea",
+            "name": region
+          }
+        } : {})
+      }
+    : undefined;
+  
+  const about = geography && geography !== 'National'
+    ? [
+        {
+          "@type": "Place",
+          "name": geography,
+          ...(region && region !== geography ? {
+            "containedInPlace": {
+              "@type": "AdministrativeArea",
+              "name": region
+            }
+          } : {})
+        }
+      ]
+    : undefined;
+  
+  // Build keywords array with geography and theme
+  const keywords = [
+    "local government",
+    "reorganisation",
+    "LGR",
+    "council reform",
+    "devolution",
+    "unitary authorities",
+    ...(geography && geography !== 'National' ? [geography] : []),
+    ...(region && region !== geography ? [region] : []),
+    ...(theme ? [theme] : [])
+  ];
+  
+  const structuredData: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Article",
     "headline": title,
@@ -62,16 +110,19 @@ export default function ArticleStructuredData({
         "url": imageUrl
       }
     }),
-    "articleSection": "Local Government Reform",
-    "keywords": [
-      "local government",
-      "reorganisation",
-      "LGR",
-      "council reform",
-      "devolution",
-      "unitary authorities"
-    ]
+    "articleSection": theme || "Local Government Reform",
+    "keywords": keywords.join(", ")
   };
+  
+  // Add geographic coverage if available
+  if (spatialCoverage) {
+    structuredData.spatialCoverage = spatialCoverage;
+  }
+  
+  // Add about property if available
+  if (about) {
+    structuredData.about = about;
+  }
 
   return (
     <script
