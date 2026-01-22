@@ -118,7 +118,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
             </h1>
           </Link>
           <div className="text-xs sm:text-sm md:text-base lg:text-lg tracking-widest text-neutral-700 mt-0.5 font-medium text-center max-w-6xl mx-auto px-4">
-            <div className="whitespace-nowrap">Putting communities and councillors back at the heart of local decision making</div>
+            <div className="sm:whitespace-nowrap">Putting communities and councillors back at the heart of local decision making</div>
           </div>
         </div>
 
@@ -201,7 +201,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
           <button
             aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileMenuOpen}
-            className="flex items-center gap-2 w-full justify-center p-2 hover:bg-neutral-50 rounded transition-colors"
+            className="flex items-center gap-2 w-full justify-center p-3 hover:bg-neutral-50 rounded transition-colors min-h-[48px]"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}

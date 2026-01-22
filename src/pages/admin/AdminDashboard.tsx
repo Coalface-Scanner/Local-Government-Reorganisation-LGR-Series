@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { LogOut, Home, FileText, List, BookOpen, MessageSquare, Video, Layout, Bell, HelpCircle, Newspaper, Edit3 } from 'lucide-react';
+import { LogOut, Home, FileText, List, BookOpen, MessageSquare, Video, Layout, Bell, HelpCircle, Newspaper, Edit3, Menu, X } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import MaterialsEditor from './MaterialsEditor';
 import HomeContentEditor from './HomeContentEditor';
@@ -18,6 +18,7 @@ interface AdminDashboardProps {
 
 export default function AdminDashboard({ onNavigate }: AdminDashboardProps) {
   const [activeSection, setActiveSection] = useState('overview');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, signOut, loading } = useAuth();
 
   useEffect(() => {
@@ -110,13 +111,43 @@ export default function AdminDashboard({ onNavigate }: AdminDashboardProps) {
     }
   };
 
+  const handleMenuClick = (sectionId: string) => {
+    setActiveSection(sectionId);
+    setMobileMenuOpen(false);
+  };
+
   return (
     <div className="min-h-screen bg-slate-50">
+      {/* Mobile menu button */}
+      <div className="lg:hidden bg-slate-900 text-white p-4 flex items-center justify-between sticky top-0 z-40">
+        <h1 className="text-lg font-bold">CMS Admin</h1>
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="p-2 hover:bg-slate-800 rounded transition-colors min-h-[48px] min-w-[48px] flex items-center justify-center"
+          aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={mobileMenuOpen}
+        >
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+
+      {/* Mobile menu overlay */}
+      {mobileMenuOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
       <div className="flex">
-        <aside className="w-64 bg-slate-900 min-h-screen text-white p-6 fixed left-0 top-0">
+        <aside
+          className={`w-64 bg-slate-900 min-h-screen text-white p-6 fixed left-0 top-0 z-50 transform transition-transform duration-300 ease-in-out ${
+            mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+          } lg:translate-x-0`}
+        >
           <div className="mb-8">
             <h1 className="text-xl font-bold">CMS Admin</h1>
-            <p className="text-sm text-slate-400 mt-1">{user.email}</p>
+            <p className="text-sm text-slate-400 mt-1 break-words">{user.email}</p>
           </div>
 
           <nav className="space-y-2">
@@ -125,14 +156,14 @@ export default function AdminDashboard({ onNavigate }: AdminDashboardProps) {
               return (
                 <button
                   key={item.id}
-                  onClick={() => setActiveSection(item.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                  onClick={() => handleMenuClick(item.id)}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all min-h-[48px] ${
                     activeSection === item.id
                       ? 'bg-white text-slate-900'
                       : 'text-slate-300 hover:bg-slate-800'
                   }`}
                 >
-                  <Icon className="w-5 h-5" />
+                  <Icon className="w-5 h-5 shrink-0" />
                   <span className="font-medium">{item.label}</span>
                 </button>
               );
@@ -141,23 +172,29 @@ export default function AdminDashboard({ onNavigate }: AdminDashboardProps) {
 
           <div className="absolute bottom-6 left-6 right-6 space-y-2">
             <button
-              onClick={() => onNavigate('home')}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-800 transition-all"
+              onClick={() => {
+                onNavigate('home');
+                setMobileMenuOpen(false);
+              }}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-800 transition-all min-h-[48px]"
             >
-              <Home className="w-5 h-5" />
+              <Home className="w-5 h-5 shrink-0" />
               <span className="font-medium">View Website</span>
             </button>
             <button
-              onClick={handleSignOut}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-800 transition-all"
+              onClick={() => {
+                handleSignOut();
+                setMobileMenuOpen(false);
+              }}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-800 transition-all min-h-[48px]"
             >
-              <LogOut className="w-5 h-5" />
+              <LogOut className="w-5 h-5 shrink-0" />
               <span className="font-medium">Sign Out</span>
             </button>
           </div>
         </aside>
 
-        <main className="ml-64 flex-1 p-8">
+        <main className="lg:ml-64 flex-1 p-4 sm:p-6 lg:p-8 w-full">
           <div className="max-w-6xl mx-auto">
             {renderContent()}
           </div>

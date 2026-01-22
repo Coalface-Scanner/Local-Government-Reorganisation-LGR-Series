@@ -190,11 +190,11 @@ const TreeNode = ({ node, level = 0, onExpand, expandedNodes }: TreeNodeProps) =
   
   // Dynamic Styles
   const getCardStyles = (type: string, color?: string) => {
-    const base = "relative z-10 flex items-center p-4 rounded-xl transition-all duration-300 backdrop-blur-md border";
+    const base = "relative z-10 flex items-center p-3 sm:p-4 rounded-xl transition-all duration-300 backdrop-blur-md border";
     
     switch(type) {
       case 'root': 
-        return `${base} bg-slate-900/90 border-slate-700 text-white shadow-2xl min-w-[280px]`;
+        return `${base} bg-slate-900/90 border-slate-700 text-white shadow-2xl w-full sm:min-w-[280px] max-w-[280px] sm:max-w-none`;
       case 'category': {
         const colors: Record<string, string> = {
           blue: 'bg-blue-900/80 border-blue-500/30 text-blue-50 shadow-[0_0_15px_rgba(59,130,246,0.2)]',
@@ -202,20 +202,20 @@ const TreeNode = ({ node, level = 0, onExpand, expandedNodes }: TreeNodeProps) =
           green: 'bg-emerald-900/80 border-emerald-500/30 text-emerald-50 shadow-[0_0_15px_rgba(16,185,129,0.2)]',
           orange: 'bg-orange-900/80 border-orange-500/30 text-orange-50 shadow-[0_0_15px_rgba(249,115,22,0.2)]',
         };
-        return `${base} ${colors[color || ''] || 'bg-slate-800 border-slate-600'} min-w-[260px]`;
+        return `${base} ${colors[color || ''] || 'bg-slate-800 border-slate-600'} w-full sm:min-w-[260px] max-w-[260px] sm:max-w-none`;
       }
       case 'system': 
-        return `${base} bg-white/95 border-slate-200 text-slate-800 shadow-lg hover:shadow-xl hover:scale-[1.02] min-w-[240px]`;
+        return `${base} bg-white/95 border-slate-200 text-slate-800 shadow-lg hover:shadow-xl hover:scale-[1.02] w-full sm:min-w-[240px] max-w-[240px] sm:max-w-none`;
       case 'pro': 
-        return `${base} bg-green-50/90 border-green-200 text-green-900 py-2 px-3 text-sm min-w-[200px] hover:bg-green-100`;
+        return `${base} bg-green-50/90 border-green-200 text-green-900 py-2 px-3 text-sm w-full sm:min-w-[200px] max-w-[200px] sm:max-w-none hover:bg-green-100`;
       case 'con': 
-        return `${base} bg-red-50/90 border-red-200 text-red-900 py-2 px-3 text-sm min-w-[200px] hover:bg-red-100`;
+        return `${base} bg-red-50/90 border-red-200 text-red-900 py-2 px-3 text-sm w-full sm:min-w-[200px] max-w-[200px] sm:max-w-none hover:bg-red-100`;
       case 'issue': 
-        return `${base} bg-amber-50/90 border-amber-200 text-amber-900 py-2 px-3 text-sm min-w-[200px] hover:bg-amber-100`;
+        return `${base} bg-amber-50/90 border-amber-200 text-amber-900 py-2 px-3 text-sm w-full sm:min-w-[200px] max-w-[200px] sm:max-w-none hover:bg-amber-100`;
       case 'usage': 
-        return `${base} bg-blue-50/90 border-blue-200 text-blue-900 py-2 px-3 text-sm font-medium min-w-[200px]`;
+        return `${base} bg-blue-50/90 border-blue-200 text-blue-900 py-2 px-3 text-sm font-medium w-full sm:min-w-[200px] max-w-[200px] sm:max-w-none`;
       default: 
-        return `${base} bg-slate-50/90 border-slate-200 text-slate-600 py-2 px-3 text-sm min-w-[200px]`;
+        return `${base} bg-slate-50/90 border-slate-200 text-slate-600 py-2 px-3 text-sm w-full sm:min-w-[200px] max-w-[200px] sm:max-w-none`;
     }
   };
 
@@ -233,14 +233,14 @@ const TreeNode = ({ node, level = 0, onExpand, expandedNodes }: TreeNodeProps) =
   // const isLeaf = !hasChildren; // Removed unused variable
 
   return (
-    <div className="flex flex-row items-center animate-in fade-in zoom-in duration-300">
-      <div className="flex flex-col items-center">
+    <div className="flex flex-row items-center animate-in fade-in zoom-in duration-300 w-full sm:w-auto">
+      <div className="flex flex-col items-start sm:items-center w-full sm:w-auto">
         {/* Node Card */}
         <div 
           onClick={() => hasChildren && onExpand(node.id)}
           className={`
             ${getCardStyles(node.type, node.color)}
-            ${hasChildren ? 'cursor-pointer group' : ''}
+            ${hasChildren ? 'cursor-pointer group min-h-[48px]' : ''}
           `}
         >
           {/* Specific Logic for Root/Category Header rendering */}
@@ -287,18 +287,18 @@ const TreeNode = ({ node, level = 0, onExpand, expandedNodes }: TreeNodeProps) =
 
       {/* Children Tree Logic */}
       {hasChildren && isExpanded && (
-        <div className="flex flex-row">
+        <div className="flex flex-row w-full sm:w-auto mt-2 sm:mt-0">
            {/* Connector Elbow */}
-           <div className="w-12 h-auto flex flex-col relative">
+           <div className="w-8 sm:w-12 h-auto flex flex-col relative hidden sm:block">
               {/* Top half of the connector */}
               <div className="h-[50%] w-full border-b-2 border-slate-300/40 rounded-bl-3xl absolute top-0 left-0 translate-y-[1px]"></div>
            </div>
            
            {/* Children Stack */}
-           <div className="flex flex-col justify-center relative py-2">
+           <div className="flex flex-col justify-center relative py-2 w-full sm:w-auto">
              {/* The long vertical line connecting siblings */}
              {node.children && node.children.length > 1 && (
-                <div className="absolute left-0 top-6 bottom-6 w-px bg-slate-300/40 -translate-x-px"></div>
+                <div className="absolute left-0 top-6 bottom-6 w-px bg-slate-300/40 -translate-x-px hidden sm:block"></div>
              )}
 
              {node.children?.map((child, index) => {
@@ -306,20 +306,20 @@ const TreeNode = ({ node, level = 0, onExpand, expandedNodes }: TreeNodeProps) =
                const isLast = index === (node.children?.length || 0) - 1;
                
                return (
-                <div key={child.id} className="flex flex-row items-center py-3 pl-8 relative group/branch">
+                <div key={child.id} className="flex flex-row items-center py-2 sm:py-3 pl-0 sm:pl-8 relative group/branch w-full sm:w-auto">
                    {/* Horizontal connector to child */}
-                   <div className={`absolute left-0 top-1/2 w-8 h-[2px] bg-slate-300/40 -translate-y-1/2 transition-all duration-300 ${!isLast ? 'group-hover/branch:bg-indigo-400/50' : ''}`}></div>
+                   <div className={`absolute left-0 top-1/2 w-8 h-[2px] bg-slate-300/40 -translate-y-1/2 transition-all duration-300 hidden sm:block ${!isLast ? 'group-hover/branch:bg-indigo-400/50' : ''}`}></div>
                    
                    {/* Corner adjustments for top/bottom nodes to connect to the main vertical line cleanly */}
                    {node.children && node.children.length > 1 && (
                      <>
                        {/* If first child, hide line going up */}
-                       {isFirst && <div className="absolute left-0 top-0 h-1/2 w-px bg-slate-50 z-0"></div>} 
+                       {isFirst && <div className="absolute left-0 top-0 h-1/2 w-px bg-slate-50 z-0 hidden sm:block"></div>} 
                        {/* If last child, hide line going down */}
-                       {isLast && <div className="absolute left-0 bottom-0 h-1/2 w-px bg-slate-50 z-0"></div>}
+                       {isLast && <div className="absolute left-0 bottom-0 h-1/2 w-px bg-slate-50 z-0 hidden sm:block"></div>}
                        
                        {/* Add a curved corner for the connection point to vertical line */}
-                       <div className="absolute left-0 top-1/2 w-4 h-full border-l-2 border-slate-300/40 -translate-x-[2px] -translate-y-1/2 pointer-events-none"></div>
+                       <div className="absolute left-0 top-1/2 w-4 h-full border-l-2 border-slate-300/40 -translate-x-[2px] -translate-y-1/2 pointer-events-none hidden sm:block"></div>
                      </>
                    )}
 
@@ -426,18 +426,18 @@ export default function ElectoralSystemsMap() {
   };
 
   return (
-    <div className="relative h-[600px] w-full flex flex-col bg-slate-950 overflow-hidden font-sans text-slate-200 rounded-xl border border-slate-800">
+    <div className="relative h-[600px] sm:h-[700px] w-full flex flex-col bg-slate-950 overflow-hidden font-sans text-slate-200 rounded-xl border border-slate-800">
       {/* Floating Legend/Help */}
-      <div className="absolute bottom-6 left-6 z-20 flex flex-col gap-2 pointer-events-none">
-         <div className="bg-slate-900/90 backdrop-blur border border-slate-700 p-4 rounded-xl shadow-2xl">
+      <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 z-20 flex flex-col gap-2 pointer-events-none">
+         <div className="bg-slate-900/90 backdrop-blur border border-slate-700 p-3 sm:p-4 rounded-xl shadow-2xl">
             <div className="text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">Legend</div>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs text-slate-300">
-               <div className="flex items-center"><CheckCircle2 size={12} className="text-emerald-500 mr-2"/> Pros</div>
-               <div className="flex items-center"><XCircle size={12} className="text-rose-500 mr-2"/> Cons</div>
-               <div className="flex items-center"><Globe size={12} className="text-blue-500 mr-2"/> Usage</div>
-               <div className="flex items-center"><AlertTriangle size={12} className="text-amber-500 mr-2"/> Issues</div>
+            <div className="grid grid-cols-2 gap-x-3 sm:gap-x-4 gap-y-1 sm:gap-y-2 text-xs text-slate-300">
+               <div className="flex items-center"><CheckCircle2 size={12} className="text-emerald-500 mr-2 shrink-0"/> Pros</div>
+               <div className="flex items-center"><XCircle size={12} className="text-rose-500 mr-2 shrink-0"/> Cons</div>
+               <div className="flex items-center"><Globe size={12} className="text-blue-500 mr-2 shrink-0"/> Usage</div>
+               <div className="flex items-center"><AlertTriangle size={12} className="text-amber-500 mr-2 shrink-0"/> Issues</div>
                <div className="flex items-center col-span-2 mt-2 pt-2 border-t border-slate-800 text-slate-500">
-                  <Move size={12} className="mr-2"/> Drag or Scroll to Pan
+                  <Move size={12} className="mr-2 shrink-0"/> <span className="hidden sm:inline">Drag or Scroll to Pan</span><span className="sm:hidden">Swipe to Pan</span>
                </div>
             </div>
          </div>
@@ -446,7 +446,7 @@ export default function ElectoralSystemsMap() {
       {/* Canvas */}
       <div 
         ref={containerRef}
-        className={`flex-1 overflow-hidden relative canvas-bg ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+        className={`flex-1 overflow-auto sm:overflow-hidden relative canvas-bg ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
         onWheel={handleWheel}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
@@ -458,11 +458,11 @@ export default function ElectoralSystemsMap() {
         style={{
             backgroundImage: 'radial-gradient(rgba(99, 102, 241, 0.15) 1px, transparent 1px)',
             backgroundSize: '30px 30px',
-            touchAction: 'none'
+            touchAction: 'pan-x pan-y'
         }}
       >
         <div 
-          className="absolute top-0 left-0 transition-transform duration-100 ease-out origin-top-left p-24"
+          className="absolute top-0 left-0 transition-transform duration-100 ease-out origin-top-left p-8 sm:p-24 min-w-full sm:min-w-0"
           style={{
             transform: `translate(${position.x + 50}px, ${position.y + 50}px) scale(${scale})`
           }}
