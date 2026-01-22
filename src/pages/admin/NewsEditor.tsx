@@ -339,83 +339,89 @@ export default function NewsEditor() {
       )}
 
       <div className="bg-white rounded-lg shadow-lg border border-slate-200 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-slate-50 border-b border-slate-200">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  Order
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  Title
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  Date
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-slate-200">
-              {newsItems.map((item) => (
-                <tr key={item.id} className="hover:bg-slate-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
-                    {item.display_order}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-slate-900">
-                    <div className="font-medium">{item.title}</div>
-                    <div className="text-slate-500 text-xs">{item.slug}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
-                    {new Date(item.published_date).toLocaleDateString('en-GB')}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <button
-                      onClick={() => togglePublished(item.id, item.published)}
-                      className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${
-                        item.published
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-slate-100 text-slate-600'
-                      }`}
-                    >
-                      {item.published ? <Eye size={14} /> : <EyeOff size={14} />}
-                      {item.published ? 'Published' : 'Draft'}
-                    </button>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => startEdit(item)}
-                        className="text-slate-600 hover:text-slate-900"
-                      >
-                        <Edit size={18} />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(item.id)}
-                        className="text-red-600 hover:text-red-900"
-                        title="Delete"
-                        aria-label="Delete"
-                      >
-                        <Trash2 size={18} />
-                        <span className="sr-only">Delete</span>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-              {newsItems.length === 0 && (
+        <div className="overflow-x-auto -mx-4 sm:mx-0">
+          <div className="inline-block min-w-full align-middle">
+            <table className="min-w-full divide-y divide-slate-200">
+              <thead className="bg-slate-50 border-b border-slate-200">
                 <tr>
-                  <td colSpan={5} className="px-6 py-8 text-center text-slate-500">
-                    No news items yet. Click "Add News" to create one.
-                  </td>
+                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                    Order
+                  </th>
+                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                    Title
+                  </th>
+                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider hidden sm:table-cell">
+                    Date
+                  </th>
+                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                    Actions
+                  </th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="bg-white divide-y divide-slate-200">
+                {newsItems.map((item) => (
+                  <tr key={item.id} className="hover:bg-slate-50">
+                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                      {item.display_order}
+                    </td>
+                    <td className="px-3 sm:px-6 py-4 text-sm text-slate-900">
+                      <div className="font-medium">{item.title}</div>
+                      <div className="text-slate-500 text-xs sm:hidden mt-1">
+                        {new Date(item.published_date).toLocaleDateString('en-GB')}
+                      </div>
+                      <div className="text-slate-500 text-xs hidden sm:block">{item.slug}</div>
+                    </td>
+                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-slate-900 hidden sm:table-cell">
+                      {new Date(item.published_date).toLocaleDateString('en-GB')}
+                    </td>
+                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                      <button
+                        onClick={() => togglePublished(item.id, item.published)}
+                        className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold min-h-[32px] ${
+                          item.published
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-slate-100 text-slate-600'
+                        }`}
+                      >
+                        {item.published ? <Eye size={14} /> : <EyeOff size={14} />}
+                        <span className="hidden sm:inline">{item.published ? 'Published' : 'Draft'}</span>
+                      </button>
+                    </td>
+                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => startEdit(item)}
+                          className="text-slate-600 hover:text-slate-900 p-1 min-h-[32px] min-w-[32px] flex items-center justify-center"
+                          title="Edit"
+                          aria-label="Edit"
+                        >
+                          <Edit size={18} />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(item.id)}
+                          className="text-red-600 hover:text-red-900 p-1 min-h-[32px] min-w-[32px] flex items-center justify-center"
+                          title="Delete"
+                          aria-label="Delete"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+                {newsItems.length === 0 && (
+                  <tr>
+                    <td colSpan={5} className="px-6 py-8 text-center text-slate-500">
+                      No news items yet. Click "Add News" to create one.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

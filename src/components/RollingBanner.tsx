@@ -59,7 +59,7 @@ export default function RollingBanner({ onNavigate }: RollingBannerProps) {
             <button
               key={`${material.id}-${index}`}
               onClick={() => onNavigate('article', material.slug)}
-              className="group flex-shrink-0 mx-4 px-6 py-3 bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700 hover:border-cyan-500/50 rounded-xl transition-all duration-300 flex items-center gap-4 min-w-[300px]"
+              className="group flex-shrink-0 mx-2 sm:mx-4 px-4 sm:px-6 py-3 bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700 hover:border-cyan-500/50 rounded-xl transition-all duration-300 flex items-center gap-3 sm:gap-4 min-w-[250px] sm:min-w-[300px] min-h-[48px]"
             >
               <div className="flex-1 text-left">
                 <div className="text-xs text-cyan-400 font-semibold mb-1">{material.type}</div>
