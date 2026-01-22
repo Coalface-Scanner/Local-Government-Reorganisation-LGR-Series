@@ -36,6 +36,7 @@ export default function FAQsEditor() {
 
   useEffect(() => {
     fetchFAQs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedPage]);
 
   async function fetchFAQs() {

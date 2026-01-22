@@ -43,13 +43,14 @@ export default function JourneyMap({ onNavigate: _onNavigate }: JourneyMapProps)
 
     observerRef.current = observer;
 
-    revealRefs.current.forEach(el => {
+    const currentRefs = revealRefs.current;
+    currentRefs.forEach(el => {
       if (el) observer.observe(el);
     });
 
     return () => {
       if (observerRef.current) {
-        revealRefs.current.forEach(el => {
+        currentRefs.forEach(el => {
           if (el) observerRef.current?.unobserve(el);
         });
       }

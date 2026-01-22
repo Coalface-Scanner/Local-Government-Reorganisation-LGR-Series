@@ -29,6 +29,7 @@ export default function ArticleQAEditor({ articleSlug, onClose }: ArticleQAEdito
 
   useEffect(() => {
     fetchQAs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [articleSlug]);
 
   const fetchQAs = async () => {
