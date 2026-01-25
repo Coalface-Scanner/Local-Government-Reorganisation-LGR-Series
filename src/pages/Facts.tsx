@@ -27,7 +27,7 @@ const serviceCards: ServiceCard[] = [
     description: 'Implementation timeline for local government reorganisation proposals across England, including final proposals, decisions, shadow councils, and go-live dates.',
     icon: Calendar,
     color: 'from-blue-500 to-cyan-600',
-    route: '/facts/timescales'
+    route: '/lgr-journey-2026'
   },
   {
     id: 'councils',
@@ -71,12 +71,12 @@ const serviceCards: ServiceCard[] = [
     route: '/facts/further-reading'
   },
   {
-    id: 'forecast-2026-27',
-    title: 'Forecast 2026-27',
-    description: 'Interactive journey map visualizing the LGR forecast for 2026-27, navigating the key milestones, decisions, and transitions in local government reorganisation.',
+    id: 'lgr-journey-2026',
+    title: 'LGR Journey 2026',
+    description: 'Interactive journey map visualizing the LGR journey for 2026, navigating the key milestones, decisions, and transitions in local government reorganisation.',
     icon: Route,
     color: 'from-indigo-500 to-purple-600',
-    route: '/forecast-2026-27'
+    route: '/lgr-journey-2026'
   },
   {
     id: 'councilopedia',

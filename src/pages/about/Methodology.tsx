@@ -30,7 +30,7 @@ export default function Methodology({ onNavigate: _onNavigate }: MethodologyProp
               </span>
             </h1>
             <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              Our systematic approach to analyzing planning authority governance, decision-making patterns, and institutional behaviour.
+              Our systematic approach to analysing planning authority governance, decision-making patterns, and institutional behaviour.
             </p>
           </div>
         </div>

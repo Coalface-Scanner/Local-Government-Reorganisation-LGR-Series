@@ -113,7 +113,7 @@ export default function ContentRelationships({
 
   const addRelationship = async (targetId: string, targetType: 'articles' | 'materials' | 'news') => {
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('content_relationships')
         .insert({
           source_type: sourceType,

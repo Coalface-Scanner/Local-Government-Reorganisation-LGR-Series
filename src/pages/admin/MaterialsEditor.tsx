@@ -463,23 +463,6 @@ export default function MaterialsEditor() {
               </label>
               <select
                 value={formData.theme || ''}
-<<<<<<< Current (Your changes)
-                onChange={(e) => setFormData({ ...formData, theme: e.target.value || null })}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500"
-                required={!!(formData.content_type && formData.content_type !== 'FAQ' && formData.content_type !== 'Other' && formData.status === 'published')}
-              >
-                <option value="">Select core theme</option>
-                <option value="Local Government">Local Government</option>
-                <option value="Democracy">Democracy</option>
-                <option value="Public Design">Public Design</option>
-                <option value="Governance">Governance</option>
-                <option value="Planning delivery">Planning delivery</option>
-                <option value="Finance and resilience">Finance and resilience</option>
-                <option value="Capacity and workforce">Capacity and workforce</option>
-                <option value="Digital and data">Digital and data</option>
-                <option value="Public trust and engagement">Public trust and engagement</option>
-                <option value="Programme and transition">Programme and transition</option>
-=======
                 onChange={(e) => {
                   // #region agent log
                   const options = Array.from(e.target.options).map(o => ({value: o.value, text: o.text}));
@@ -502,7 +485,6 @@ export default function MaterialsEditor() {
                 <option value="Local Government">Governance and Reform</option>
                 <option value="Democratic Legitimacy">Democratic Legitimacy</option>
                 <option value="Statecraft and System Design">Statecraft and System Design</option>
->>>>>>> Incoming (Background Agent changes)
               </select>
               {formData.content_type && formData.content_type !== 'FAQ' && formData.content_type !== 'Other' && !formData.theme && (
                 <p className="mt-1 text-xs text-amber-600">

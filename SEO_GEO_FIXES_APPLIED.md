@@ -80,7 +80,7 @@
 ## 📊 Verification Checklist
 
 After deployment, verify:
-- [ ] Google Search Console recognizes the sitemap
+- [ ] Google Search Console recognises the sitemap
 - [ ] Structured data validates in Google Rich Results Test
 - [ ] All pages have correct meta tags (use browser dev tools)
 - [ ] GEO tags are present (check page source)

@@ -15,7 +15,7 @@ export default function Coalface({ onNavigate: _onNavigate }: CoalfaceProps) {
     <div className="bg-academic-cream min-h-screen">
       <MetaTags
         title="About COALFACE - LGR Series"
-        description="Learn about COALFACE, the research and engagement practice behind the LGR Series, specializing in planning governance and institutional analysis."
+        description="Learn about COALFACE, the research and engagement practice behind the LGR Series, specialising in planning governance and institutional analysis."
         keywords="COALFACE, planning governance, research practice, Council Scanner, COALFACE Insights"
       />
       
@@ -83,8 +83,8 @@ export default function Coalface({ onNavigate: _onNavigate }: CoalfaceProps) {
                     </p>
                     <ul className="list-disc pl-6 space-y-2 mb-6">
                       <li>Understanding how governance structures affect planning outcomes</li>
-                      <li>Analyzing political behaviour and its impact on decision-making</li>
-                      <li>Examining institutional capacity and organizational effectiveness</li>
+                      <li>Analysing political behaviour and its impact on decision-making</li>
+                      <li>Examining institutional capacity and organisational effectiveness</li>
                       <li>Supporting evidence-based approaches to local government reform</li>
                     </ul>
 

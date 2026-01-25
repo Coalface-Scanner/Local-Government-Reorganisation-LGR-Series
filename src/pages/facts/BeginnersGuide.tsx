@@ -171,7 +171,7 @@ export default function BeginnersGuide() {
                         <Crown size={24} className="text-yellow-400" />
                         <h4 className="text-xl font-bold">Tier 1: The Crown</h4>
                       </div>
-                      <p className="text-slate-200">Supreme authority. Deals with national matters like foreign policy, defense, and overall economic policy.</p>
+                      <p className="text-slate-200">Supreme authority. Deals with national matters like foreign policy, defence, and overall economic policy.</p>
                     </div>
                     
                     <div className="bg-gradient-to-br from-purple-600 to-purple-800 rounded-xl p-6 text-white shadow-xl">

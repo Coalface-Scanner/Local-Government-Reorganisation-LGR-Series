@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Archive, RotateCcw, Trash2, Filter, Search, Calendar, FileText, Newspaper, Tag, TrendingDown } from 'lucide-react';
+import { Archive, RotateCcw, Trash2, Search, FileText, Newspaper, TrendingDown } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -33,7 +33,7 @@ export default function ArchiveManager() {
     bySource: {} as Record<string, number>,
     oldestArchive: null as string | null,
   });
-  const { user } = useAuth();
+  const { user: _user } = useAuth();
 
   useEffect(() => {
     fetchArchivedContent();

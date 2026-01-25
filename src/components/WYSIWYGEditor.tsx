@@ -131,7 +131,7 @@ export default function WYSIWYGEditor({ value, onChange, placeholder, className 
             // Only update if content actually differs significantly
             if (currentContent !== safeValue && safeValue.length > 0) {
               // Use setContents with HTML to avoid delta issues
-              const delta = editor.clipboard.convert({ html: safeValue });
+              const delta = editor.clipboard.convert(safeValue);
               editor.setContents(delta, 'silent');
             }
             setInternalValue(safeValue);

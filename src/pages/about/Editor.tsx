@@ -10,7 +10,7 @@ interface EditorProps {
   onNavigate: (page: string) => void;
 }
 
-export default function Editor({ onNavigate }: EditorProps) {
+export default function Editor({ onNavigate: _onNavigate }: EditorProps) {
   const { page: cmsPage, loading } = useAboutPage('editor');
   return (
     <div className="bg-academic-cream min-h-screen">

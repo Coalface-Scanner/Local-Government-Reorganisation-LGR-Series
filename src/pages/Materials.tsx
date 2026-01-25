@@ -26,9 +26,9 @@ interface Material {
   format: string;
   author: string;
   author_name: string;
-  image_url: string;
-  pdf_url: string;
-  external_url: string;
+  image_url: string | null;
+  pdf_url: string | null;
+  external_url: string | null;
   source?: 'materials' | 'articles' | 'news'; // Track where the material came from
 }
 

@@ -1,2 +1,3 @@
 /insights-article/* /insights/:splat 301
+/forecast-2026-27 /lgr-journey-2026 301
 /* /index.html 200

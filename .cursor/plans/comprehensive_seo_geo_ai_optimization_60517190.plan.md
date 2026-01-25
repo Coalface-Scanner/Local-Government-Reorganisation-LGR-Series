@@ -283,7 +283,7 @@ todos:
 - Original analysis
 - Clear, factual language
 - **GUARDRAIL**: When adding "Key Takeaways" and "Evidence" sections:
-- MUST summarize real content and sources from the article/material
+- MUST summarise real content and sources from the article/material
 - MUST NOT use generic AI-generated text
 - MUST NOT auto-generate fake citations or statistics
 - Only add these sections if the content actually contains takeaways/evidence

@@ -1,6 +1,6 @@
 # Site Improvements Implemented
 
-This document summarizes all the improvements that have been implemented to enhance the LGR Series website.
+This document summarises all the improvements that have been implemented to enhance the LGR Series website.
 
 ## ✅ Completed Improvements
 

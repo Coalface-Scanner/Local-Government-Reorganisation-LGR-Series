@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Plus, Edit2, Trash2, Eye, Save, X, LogOut, FileText, MessageSquare, Upload } from 'lucide-react';
+import { Plus, Edit2, Trash2, Eye, Save, X, LogOut, FileText, MessageSquare, Upload, Info } from 'lucide-react';
 import { useAdminAuth } from '../../contexts/AdminAuthContext';
 import { supabase } from '../../lib/supabase';
 import ArticleEditor from '../../components/ArticleEditor';
@@ -487,7 +487,7 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                         disabled={!editingArticle.theme || editingArticle.content_type === 'FAQ' || editingArticle.content_type === 'Other'}
                       />
                       <label htmlFor="featured-theme-toggle" className="text-sm font-medium text-neutral-700 cursor-pointer">
-                        Featured – Core Theme
+                        Feature Core Theme
                       </label>
                     </div>
                     {editingArticle.featured_theme && (
@@ -696,8 +696,45 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                 </div>
 
                 <div className="bg-white rounded-lg shadow-sm p-6">
-                  <label className="block text-sm font-medium text-neutral-700 mb-2">
+                  <label className="block text-sm font-medium text-neutral-700 mb-2 flex items-center gap-2">
                     Category
+                    <div className="relative group">
+                      <Info size={16} className="text-neutral-400 hover:text-teal-600 cursor-help transition-colors" />
+                      <div className="absolute left-full ml-2 top-0 w-96 max-w-[calc(100vw-2rem)] bg-neutral-900 text-white text-xs rounded-lg p-4 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none">
+                        <div className="space-y-3 max-h-[80vh] overflow-y-auto">
+                          <div className="font-semibold text-sm mb-2">Category field values for each core theme</div>
+                          <p className="text-neutral-300">The Category field is optional. The TopicHub component matches articles using either the Theme or Category field. Recommended values:</p>
+                          <div className="space-y-2">
+                            <div>
+                              <div className="font-semibold text-teal-300">1. Governance and Reform</div>
+                              <div className="pl-2 text-neutral-300">
+                                <div>Theme: <span className="text-white">Local Government</span> (required)</div>
+                                <div>Category: Leave empty, or use one of: <span className="text-white">Governance</span>, <span className="text-white">local government</span>, <span className="text-white">governance</span></div>
+                              </div>
+                            </div>
+                            <div>
+                              <div className="font-semibold text-teal-300">2. Democratic Legitimacy</div>
+                              <div className="pl-2 text-neutral-300">
+                                <div>Theme: <span className="text-white">Democratic Legitimacy</span> (required)</div>
+                                <div>Category: Leave empty, or use: <span className="text-white">Democratic legitimacy</span>, <span className="text-white">democratic legitimacy</span></div>
+                              </div>
+                            </div>
+                            <div>
+                              <div className="font-semibold text-teal-300">3. Statecraft and System Design</div>
+                              <div className="pl-2 text-neutral-300">
+                                <div>Theme: <span className="text-white">Statecraft and System Design</span> (required)</div>
+                                <div>Category: Leave empty, or use one of: <span className="text-white">Public Design</span>, <span className="text-white">public design</span>, <span className="text-white">Public Engagement</span>, <span className="text-white">Public</span>, <span className="text-white">public</span></div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="pt-2 border-t border-neutral-700">
+                            <div className="font-semibold text-sm mb-1">Best practice</div>
+                            <p className="text-neutral-300">Set the Theme field to the exact core theme name (Local Government, Democratic Legitimacy, or Statecraft and System Design). Leave Category empty unless you need an additional tag for filtering/organisation.</p>
+                          </div>
+                        </div>
+                        <div className="absolute right-full top-3 w-0 h-0 border-t-4 border-b-4 border-r-4 border-transparent border-r-neutral-900"></div>
+                      </div>
+                    </div>
                   </label>
                   <input
                     type="text"
@@ -764,20 +801,6 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                     }}
                     className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-transparent outline-none text-sm"
                     required={!!(editingArticle.content_type && editingArticle.content_type !== 'FAQ' && editingArticle.content_type !== 'Other' && editingArticle.status === 'published')}
-<<<<<<< Current (Your changes)
-                  >
-                    <option value="">Select core theme</option>
-                    <option value="Local Government">Local Government</option>
-                    <option value="Democracy">Democracy</option>
-                    <option value="Public Design">Public Design</option>
-                    <option value="Governance">Governance</option>
-                    <option value="Planning delivery">Planning delivery</option>
-                    <option value="Finance and resilience">Finance and resilience</option>
-                    <option value="Capacity and workforce">Capacity and workforce</option>
-                    <option value="Digital and data">Digital and data</option>
-                    <option value="Public trust and engagement">Public trust and engagement</option>
-                    <option value="Programme and transition">Programme and transition</option>
-=======
                     ref={(selectEl) => {
                       // #region agent log
                       if (selectEl) {
@@ -792,8 +815,8 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                           invalidInitialOptions.reverse().forEach(opt => opt.remove());
                         }
                         const observer = new MutationObserver((mutations) => {
-                          const currentOptions = Array.from(selectEl.options).map(o => ({value: o.value, text: o.text}));
-                          fetch('http://127.0.0.1:7242/ingest/88a481fd-d50d-4443-a40c-d5f5149aa669',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AdminArticles.tsx:mutation-observer',message:'Theme dropdown DOM mutated - options changed by extension',data:{optionCount:currentOptions.length,options:currentOptions,mutations:mutations.map(m => ({type:m.type,addedNodes:m.addedNodes.length,removedNodes:m.removedNodes.length}))},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+                          const currentOptionsForLog = Array.from(selectEl.options).map(o => ({value: o.value, text: o.text}));
+                          fetch('http://127.0.0.1:7242/ingest/88a481fd-d50d-4443-a40c-d5f5149aa669',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AdminArticles.tsx:mutation-observer',message:'Theme dropdown DOM mutated - options changed by extension',data:{optionCount:currentOptionsForLog.length,options:currentOptionsForLog,mutations:mutations.map(m => ({type:m.type,addedNodes:m.addedNodes.length,removedNodes:m.removedNodes.length}))},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
                           // Remove extension-added options (keep only our 3 valid options)
                           const validValues = ['', 'Local Government', 'Democratic Legitimacy', 'Statecraft and System Design'];
                           const currentOptions = Array.from(selectEl.options);
@@ -815,7 +838,6 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                     <option value="Local Government">Governance and Reform</option>
                     <option value="Democratic Legitimacy">Democratic Legitimacy</option>
                     <option value="Statecraft and System Design">Statecraft and System Design</option>
->>>>>>> Incoming (Background Agent changes)
                   </select>
                   <p className="mt-2 text-xs text-neutral-500">
                     Required for published content (except FAQ and Other). Primary theme for topic clustering.

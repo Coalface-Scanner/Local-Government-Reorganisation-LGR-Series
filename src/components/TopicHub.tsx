@@ -15,6 +15,7 @@ interface Article {
   featured_image: string | null;
   published_date: string | null;
   featured: boolean;
+  featured_theme?: boolean;
 }
 
 interface TopicHubProps {
@@ -101,9 +102,9 @@ export default function TopicHub({
         // Try featured articles first - check theme OR category field
         const { data: featuredData, error: featuredError } = await supabase
           .from('articles')
-          .select('id, title, slug, excerpt, featured_image, published_date, featured, theme, category')
+          .select('id, title, slug, excerpt, featured_image, published_date, featured, featured_theme, theme, category')
           .eq('status', 'published')
-          .eq('featured', true)
+          .eq('featured_theme', true)
           .or(allConditions)
           .order('published_date', { ascending: false })
           .limit(1)
@@ -122,7 +123,7 @@ export default function TopicHub({
           // If no featured article, get the most recent one
           const { data: recentData, error: recentError } = await supabase
             .from('articles')
-            .select('id, title, slug, excerpt, featured_image, published_date, featured, theme, category')
+            .select('id, title, slug, excerpt, featured_image, published_date, featured, featured_theme, theme, category')
             .eq('status', 'published')
             .or(allConditions)
             .order('published_date', { ascending: false })
@@ -148,7 +149,7 @@ export default function TopicHub({
         // Fetch related articles (excluding pillar if it exists)
         const { data: articlesData, error: articlesError } = await supabase
           .from('articles')
-          .select('id, title, slug, excerpt, featured_image, published_date, featured, theme, category')
+          .select('id, title, slug, excerpt, featured_image, published_date, featured, featured_theme, theme, category')
           .eq('status', 'published')
           .or(allConditions)
           .order('published_date', { ascending: false })
@@ -190,13 +191,14 @@ export default function TopicHub({
       {/* Hero Section */}
       <section className="relative bg-academic-warm py-12 lg:py-16 overflow-hidden">
         {banner && (
+          // Inline styles necessary for dynamic CSS custom properties (banner image URL and position vary by theme)
           <div
-            className="absolute inset-0 bg-cover opacity-30"
+            className="absolute inset-0 bg-cover opacity-30 topic-banner-bg"
             style={{
-              backgroundImage: `url(${banner.src})`,
-              backgroundPosition: banner.position,
-            }}
-            aria-hidden
+              '--banner-image': `url(${banner.src})`,
+              '--banner-position': banner.position,
+            } as React.CSSProperties & { '--banner-image': string; '--banner-position': string }}
+            aria-hidden="true"
           />
         )}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -286,7 +288,7 @@ export default function TopicHub({
               <div className={`p-8 md:p-10 flex flex-col justify-center ${pillarArticle.featured_image ? 'md:col-span-2' : 'md:col-span-5'}`}>
                 <div className="text-academic-xs font-display font-bold tracking-wider text-teal-600 mb-2">
                   {pillarArticle.published_date && formatDate(pillarArticle.published_date)}
-                  {pillarArticle.featured && ' • FEATURED'}
+                  {pillarArticle.featured_theme && ' • FEATURED'}
                 </div>
                 <h3 className="text-academic-2xl md:text-academic-3xl font-display font-bold text-academic-charcoal mb-4 group-hover:text-teal-500 transition-colors leading-tight">
                   {pillarArticle.title}

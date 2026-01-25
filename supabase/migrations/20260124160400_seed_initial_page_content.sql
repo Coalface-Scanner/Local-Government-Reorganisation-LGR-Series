@@ -174,8 +174,8 @@ VALUES
 </p>
 <ul class="list-disc pl-6 space-y-2 mb-6">
   <li>Understanding how governance structures affect planning outcomes</li>
-  <li>Analyzing political behaviour and its impact on decision-making</li>
-  <li>Examining institutional capacity and organizational effectiveness</li>
+  <li>Analysing political behaviour and its impact on decision-making</li>
+  <li>Examining institutional capacity and organisational effectiveness</li>
   <li>Supporting evidence-based approaches to local government reform</li>
 </ul>
 <div class="bg-teal-50 border-l-4 border-teal-700 p-6 mt-8">

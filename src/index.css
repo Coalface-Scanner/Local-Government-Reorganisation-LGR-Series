@@ -1392,6 +1392,12 @@ html {
   }
 }
 
+/* Topic Hub Banner Background - Uses CSS custom properties for dynamic values */
+.topic-banner-bg {
+  background-image: var(--banner-image);
+  background-position: var(--banner-position);
+}
+
 /* Print Styles */
 /* Accessibility: Focus styles */
 *:focus-visible {

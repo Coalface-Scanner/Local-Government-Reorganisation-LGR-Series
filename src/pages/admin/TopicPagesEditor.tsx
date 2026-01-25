@@ -114,10 +114,11 @@ export default function TopicPagesEditor() {
             {editingId === page.id ? (
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label htmlFor={`theme-slug-${page.id}`} className="block text-sm font-medium text-slate-700 mb-2">
                     Theme Slug
                   </label>
                   <input
+                    id={`theme-slug-${page.id}`}
                     type="text"
                     value={formData.theme_slug}
                     disabled
@@ -125,10 +126,11 @@ export default function TopicPagesEditor() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label htmlFor={`display-name-${page.id}`} className="block text-sm font-medium text-slate-700 mb-2">
                     Display Name
                   </label>
                   <input
+                    id={`display-name-${page.id}`}
                     type="text"
                     value={formData.display_name}
                     onChange={(e) => setFormData({ ...formData, display_name: e.target.value })}
@@ -136,10 +138,11 @@ export default function TopicPagesEditor() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label htmlFor={`description-${page.id}`} className="block text-sm font-medium text-slate-700 mb-2">
                     Description
                   </label>
                   <textarea
+                    id={`description-${page.id}`}
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     rows={3}
@@ -147,10 +150,11 @@ export default function TopicPagesEditor() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label htmlFor={`key-question-${page.id}`} className="block text-sm font-medium text-slate-700 mb-2">
                     Key Question
                   </label>
                   <textarea
+                    id={`key-question-${page.id}`}
                     value={formData.key_question}
                     onChange={(e) => setFormData({ ...formData, key_question: e.target.value })}
                     rows={2}
@@ -158,10 +162,11 @@ export default function TopicPagesEditor() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label htmlFor={`secondary-questions-${page.id}`} className="block text-sm font-medium text-slate-700 mb-2">
                     Secondary Questions (one per line)
                   </label>
                   <textarea
+                    id={`secondary-questions-${page.id}`}
                     value={formData.secondary_questions.join('\n')}
                     onChange={(e) => setFormData({
                       ...formData,
@@ -184,6 +189,7 @@ export default function TopicPagesEditor() {
                           checked={formData.related_themes.includes(theme.value)}
                           onChange={() => toggleRelatedTheme(theme.value)}
                           className="w-4 h-4 text-teal-600 border-slate-300 rounded focus:ring-teal-500"
+                          aria-label={`Include ${theme.label} as related theme`}
                         />
                         <span className="text-sm text-slate-700">{theme.label}</span>
                       </label>
@@ -237,6 +243,8 @@ export default function TopicPagesEditor() {
                 <button
                   onClick={() => startEdit(page)}
                   className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+                  aria-label="Edit topic page"
+                  title="Edit topic page"
                 >
                   <Edit className="w-5 h-5" />
                 </button>

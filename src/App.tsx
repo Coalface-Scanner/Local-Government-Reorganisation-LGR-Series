@@ -161,7 +161,7 @@ function AppContent() {
             <Route path="/facts/councilopedia" element={<Councilopedia />} />
             <Route path="/facts/councilopedia/beginners-guide" element={<BeginnersGuide />} />
             <Route path="/facts/:slug" element={<FactDetail />} />
-            <Route path="/forecast-2026-27" element={<PageWrapper>{(nav) => <JourneyMap onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/lgr-journey-2026" element={<PageWrapper>{(nav) => <JourneyMap onNavigate={nav} />}</PageWrapper>} />
             <Route path="/sitemap.xml" element={<Sitemap />} />
             <Route path="/lessons" element={<PageWrapper>{(nav) => <Lessons onNavigate={nav} />}</PageWrapper>} />
             <Route path="/reasons" element={<PageWrapper>{(nav) => <Reasons onNavigate={nav} />}</PageWrapper>} />

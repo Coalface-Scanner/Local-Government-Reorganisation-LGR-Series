@@ -30,7 +30,6 @@ interface ComingSoonTopic {
 
 export default function Lessons({ onNavigate }: LessonsProps) {
   const [lessons, setLessons] = useState<Lesson[]>([]);
-  const [loading, setLoading] = useState(true);
   const [relatedArticles, setRelatedArticles] = useState<any[]>([]);
 
   const navItems = [
@@ -82,8 +81,6 @@ export default function Lessons({ onNavigate }: LessonsProps) {
       }
     } catch (err) {
       console.error('Error fetching lessons:', err);
-    } finally {
-      setLoading(false);
     }
   };
 

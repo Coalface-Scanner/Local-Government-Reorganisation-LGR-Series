@@ -265,19 +265,19 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
                 </h4>
                 <div className="space-y-3">
                   <button
-                    onClick={() => onNavigate('lessons')}
+                    onClick={() => _onNavigate('lessons')}
                     className="w-full text-left px-4 py-3 bg-academic-neutral-50 hover:bg-teal-50 border border-academic-neutral-300 hover:border-teal-700 transition-all text-sm font-bold text-academic-neutral-700 hover:text-teal-700 academic-button-secondary"
                   >
                     View the Lessons →
                   </button>
                   <button
-                    onClick={() => onNavigate('facts')}
+                    onClick={() => _onNavigate('facts')}
                     className="w-full text-left px-4 py-3 bg-academic-neutral-50 hover:bg-teal-50 border border-academic-neutral-300 hover:border-teal-700 transition-all text-sm font-bold text-academic-neutral-700 hover:text-teal-700 academic-button-secondary"
                   >
                     View the Facts & Data →
                   </button>
                   <button
-                    onClick={() => onNavigate('surrey')}
+                    onClick={() => _onNavigate('surrey')}
                     className="w-full text-left px-4 py-3 bg-academic-neutral-50 hover:bg-teal-50 border border-academic-neutral-300 hover:border-teal-700 transition-all text-sm font-bold text-academic-neutral-700 hover:text-teal-700 academic-button-secondary"
                   >
                     Surrey Analysis →

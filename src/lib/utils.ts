@@ -91,10 +91,7 @@ export function getThemeSlug(theme: string | null | undefined): string {
     'Local Government': 'governance-and-reform',
     'Governance': 'governance-and-reform',
     'Democracy': 'democracy',
-<<<<<<< Current (Your changes)
-=======
     'Democratic Legitimacy': 'democratic-legitimacy',
->>>>>>> Incoming (Background Agent changes)
     'Democratic legitimacy': 'democratic-legitimacy',
   };
   

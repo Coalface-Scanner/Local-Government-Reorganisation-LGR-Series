@@ -599,7 +599,7 @@ export default function Home({ onNavigate }: HomeProps) {
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                onNavigate('forecast-2026-27');
+                onNavigate('lgr-journey-2026');
               }}
               className="academic-button academic-button-primary w-full min-h-[40px] flex items-center justify-center text-xs py-2 px-4"
             >
