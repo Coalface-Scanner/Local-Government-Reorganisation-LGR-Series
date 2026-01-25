@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Search as SearchIcon, Filter, MapPin, User, Tag, Calendar } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import MetaTags from '../components/MetaTags';
+import { trackSearch } from '../utils/analytics';
 
 interface SearchResult {
   id: string;
@@ -14,14 +16,20 @@ interface SearchResult {
   date?: string;
   slug?: string;
   featured?: boolean;
+  score?: number; // For ranking
 }
 
 interface SearchProps {
   onNavigate: (page: string, slug?: string) => void;
 }
 
+const SEARCH_HISTORY_KEY = 'lgr_search_history';
+const MAX_HISTORY_ITEMS = 10;
+
 export default function Search({ onNavigate }: SearchProps) {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchParams] = useSearchParams();
+  const initialQuery = searchParams.get('q') || '';
+  const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -32,13 +40,43 @@ export default function Search({ onNavigate }: SearchProps) {
     author: 'all',
   });
   const [showFilters, setShowFilters] = useState(false);
+  const [searchHistory, setSearchHistory] = useState<string[]>([]);
 
   const [availableRegions, setAvailableRegions] = useState<string[]>([]);
   const [availableCategories, setAvailableCategories] = useState<string[]>([]);
   const [availableAuthors, setAvailableAuthors] = useState<string[]>([]);
 
+  const loadSearchHistory = () => {
+    try {
+      const stored = localStorage.getItem(SEARCH_HISTORY_KEY);
+      if (stored) {
+        const history = JSON.parse(stored);
+        setSearchHistory(Array.isArray(history) ? history : []);
+      }
+    } catch (err) {
+      console.error('Error loading search history:', err);
+    }
+  };
+
+  const saveToHistory = (query: string) => {
+    if (!query.trim()) return;
+    try {
+      const current = searchHistory.filter(q => q !== query);
+      const updated = [query, ...current].slice(0, MAX_HISTORY_ITEMS);
+      setSearchHistory(updated);
+      localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(updated));
+    } catch (err) {
+      console.error('Error saving search history:', err);
+    }
+  };
+
   useEffect(() => {
     loadFilterOptions();
+    loadSearchHistory();
+    // If there's a query param, perform search on mount
+    if (initialQuery) {
+      performSearch();
+    }
   }, []);
 
   const loadFilterOptions = async () => {
@@ -211,13 +249,65 @@ export default function Search({ onNavigate }: SearchProps) {
         }
       }
 
-      allResults.sort((a, b) => {
+      // Improved ranking algorithm
+      const rankedResults = allResults.map(result => {
+        let score = 0;
+        const queryLower = sanitizedQuery.toLowerCase();
+        const titleLower = result.title.toLowerCase();
+        const excerptLower = result.excerpt.toLowerCase();
+
+        // Title matches score higher
+        if (titleLower.includes(queryLower)) {
+          score += 10;
+          if (titleLower.startsWith(queryLower)) {
+            score += 5; // Exact start match scores even higher
+          }
+        }
+
+        // Exact title match scores highest
+        if (titleLower === queryLower) {
+          score += 20;
+        }
+
+        // Excerpt matches score lower
+        if (excerptLower.includes(queryLower)) {
+          score += 3;
+        }
+
+        // Featured articles get a boost
+        if (result.featured) {
+          score += 5;
+        }
+
+        // Recent articles get a small boost
+        if (result.date) {
+          const daysSincePublished = (Date.now() - new Date(result.date).getTime()) / (1000 * 60 * 60 * 24);
+          if (daysSincePublished < 30) {
+            score += 2;
+          }
+        }
+
+        return { ...result, score };
+      });
+
+      // Sort by score (highest first), then by date
+      rankedResults.sort((a, b) => {
+        if (b.score !== a.score) {
+          return b.score - a.score;
+        }
         const dateA = new Date(a.date || '').getTime();
         const dateB = new Date(b.date || '').getTime();
         return dateB - dateA;
       });
 
-      setResults(allResults);
+      // Save to search history if query exists
+      if (sanitizedQuery) {
+        saveToHistory(sanitizedQuery);
+        // Track search
+        trackSearch(sanitizedQuery, rankedResults.length);
+      }
+
+      setResults(rankedResults);
     } catch (_err: unknown) {
       setError('Failed to perform search. Please try again.');
       setResults([]);
@@ -227,12 +317,10 @@ export default function Search({ onNavigate }: SearchProps) {
   }, [searchQuery, filters]);
 
   useEffect(() => {
-    loadFilterOptions();
-  }, []);
-
-  useEffect(() => {
-    performSearch();
-  }, [performSearch]);
+    if (searchQuery.trim() || initialQuery) {
+      performSearch();
+    }
+  }, [performSearch, initialQuery]);
 
   const getTypeLabel = (type: string) => {
     const labels: Record<string, string> = {

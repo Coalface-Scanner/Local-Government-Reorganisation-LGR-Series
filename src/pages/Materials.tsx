@@ -4,6 +4,9 @@ import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
 import CollectionPageStructuredData from '../components/CollectionPageStructuredData';
+import OptimizedImage from '../components/OptimizedImage';
+import ErrorDisplay from '../components/ErrorDisplay';
+import ContentTypeTag from '../components/ContentTypeTag';
 import { Search, Filter, ArrowUpDown, FileText, Download, ExternalLink } from 'lucide-react';
 
 interface Material {
@@ -15,6 +18,7 @@ interface Material {
   read_count: number;
   editors_pick: boolean;
   type: string;
+  content_type: string | null;
   geography: string;
   theme: string;
   audience: string[];
@@ -25,6 +29,7 @@ interface Material {
   image_url: string;
   pdf_url: string;
   external_url: string;
+  source?: 'materials' | 'articles' | 'news'; // Track where the material came from
 }
 
 interface MaterialsProps {
@@ -114,6 +119,7 @@ export default function Materials({ onNavigate }: MaterialsProps) {
   const [sortBy, setSortBy] = useState('newest');
   const [showFilters, setShowFilters] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [error, setError] = useState<string | null>(null);
   const itemsPerPage = 20;
 
   const [selectedType, setSelectedType] = useState<string[]>([]);
@@ -125,22 +131,107 @@ export default function Materials({ onNavigate }: MaterialsProps) {
   const [selectedAuthor, setSelectedAuthor] = useState<string[]>([]);
 
   useEffect(() => {
-    fetchMaterials();
+    fetchAllMaterials();
   }, []);
 
-  const fetchMaterials = async () => {
-    const { data, error } = await supabase
-      .from('materials')
-      .select('*')
-      .order('published_date', { ascending: false });
+  const fetchAllMaterials = async () => {
+    try {
+      // Fetch from materials table
+      const { data: materialsData } = await supabase
+        .from('materials')
+        .select('*')
+        .order('published_date', { ascending: false });
 
-    if (error) {
-      // Silently fail - materials will show empty state
-      return;
-    }
+      // Fetch published articles from articles table
+      const { data: articlesData } = await supabase
+        .from('articles')
+        .select('*')
+        .eq('status', 'published')
+        .order('published_date', { ascending: false });
 
-    if (data) {
-      setMaterials(data);
+      // Fetch published news from news table
+      const { data: newsData } = await supabase
+        .from('news')
+        .select('*')
+        .eq('published', true)
+        .order('published_date', { ascending: false });
+
+      const allMaterials: Material[] = [];
+
+      // Add materials as-is
+      if (materialsData) {
+        allMaterials.push(...materialsData.map(m => ({
+          ...m,
+          source: 'materials' as const
+        })));
+      }
+
+      // Transform articles to material format
+      if (articlesData) {
+        const articleMaterials: Material[] = articlesData.map(article => ({
+          id: article.id,
+          title: article.title,
+          slug: article.slug,
+          description: article.excerpt || null,
+          published_date: article.published_date || article.created_at,
+          read_count: 0, // Articles don't have read_count in the articles table
+          editors_pick: article.featured || false,
+          type: 'Insight', // Default type for articles
+          content_type: article.content_type || 'Article',
+          geography: article.region || 'National',
+          theme: 'Governance', // Default theme
+          audience: [],
+          lgr_phase: '',
+          format: 'Article',
+          author: article.author || 'Coalface editorial',
+          author_name: article.author || 'Coalface editorial',
+          image_url: article.featured_image || null,
+          pdf_url: null,
+          external_url: null,
+          source: 'articles' as const
+        }));
+        allMaterials.push(...articleMaterials);
+      }
+
+      // Transform news to material format
+      if (newsData) {
+        const newsMaterials: Material[] = newsData.map(news => ({
+          id: news.id,
+          title: news.title,
+          slug: news.slug,
+          description: news.excerpt || null,
+          published_date: news.published_date,
+          read_count: 0, // News doesn't have read_count
+          editors_pick: false,
+          type: 'Commentary', // Default type for news
+          content_type: 'News Update',
+          geography: 'National', // Default geography
+          theme: 'Public trust and engagement', // Default theme
+          audience: [],
+          lgr_phase: '',
+          format: 'Article',
+          author: 'Coalface editorial',
+          author_name: 'Coalface editorial',
+          image_url: null,
+          pdf_url: null,
+          external_url: null,
+          source: 'news' as const
+        }));
+        allMaterials.push(...newsMaterials);
+      }
+
+      // Sort all materials by published_date (newest first)
+      allMaterials.sort((a, b) => {
+        const dateA = new Date(a.published_date).getTime();
+        const dateB = new Date(b.published_date).getTime();
+        return dateB - dateA;
+      });
+
+      setMaterials(allMaterials);
+      setError(null);
+    } catch (error) {
+      console.error('Error fetching materials:', error);
+      setError('Failed to load materials. Please try refreshing the page.');
     }
   };
 
@@ -203,9 +294,6 @@ export default function Materials({ onNavigate }: MaterialsProps) {
     setFilteredMaterials(filtered);
   }, [materials, searchQuery, sortBy, selectedType, selectedGeography, selectedTheme, selectedAudience, selectedPhase, selectedFormat, selectedAuthor]);
 
-  useEffect(() => {
-    fetchMaterials();
-  }, []);
 
   useEffect(() => {
     applyFiltersAndSort();
@@ -252,7 +340,7 @@ export default function Materials({ onNavigate }: MaterialsProps) {
   };
 
   return (
-    <div id="main-content" className="min-h-screen bg-neutral-50">
+    <div id="main-content" className="min-h-screen bg-academic-cream">
       <MetaTags
         title="Research Library - LGR Materials & Resources"
         description="Browse articles, research papers, factsheets, and interviews on local government reorganisation. Comprehensive resource library for practitioners and policymakers."
@@ -269,22 +357,27 @@ export default function Materials({ onNavigate }: MaterialsProps) {
           description: material.description || undefined
         }))}
       />
-      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border-l-4 border-teal-700 pl-6 mb-3">
-            <div className="text-xs font-bold tracking-widest text-teal-700 mb-1.5">
-              RESEARCH LIBRARY
-            </div>
+      <div className="relative bg-academic-warm py-8 overflow-hidden">
+        {/* Colored gradient overlay */}
+        <div 
+          className="absolute inset-0 opacity-60 z-0"
+          style={{
+            background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.4) 0%, rgba(6, 182, 212, 0.5) 50%, rgba(14, 165, 233, 0.4) 100%)'
+          }}
+        />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+          <div className="academic-section-header mb-6">
+            <div className="academic-section-label">RESEARCH LIBRARY</div>
+            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
+              Materials{' '}
+              <span className="text-teal-700 font-serif italic">
+                Library
+              </span>
+            </h1>
+            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
+              Search and explore all research, insights, case studies, and resources from the LGR Series
+            </p>
           </div>
-          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-3">
-            Materials{' '}
-            <span className="text-teal-700 font-serif italic">
-              Library
-            </span>
-          </h1>
-          <p className="text-xl text-neutral-600 leading-relaxed max-w-3xl">
-            Search and explore all research, insights, case studies, and resources from the LGR Series
-          </p>
         </div>
       </div>
 
@@ -292,13 +385,13 @@ export default function Materials({ onNavigate }: MaterialsProps) {
         <div className="flex flex-col lg:flex-row gap-8">
           <div className={`lg:w-80 ${showFilters ? 'block' : 'hidden lg:block'}`}>
             <div className="sticky top-24 space-y-6">
-              <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-bold text-slate-900 text-lg">Filters</h3>
+              <div className="academic-card p-8">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="font-display font-bold text-academic-charcoal text-academic-lg">Filters</h3>
                   {activeFilterCount > 0 && (
                     <button
                       onClick={clearAllFilters}
-                      className="text-sm text-cyan-600 hover:text-cyan-700 font-medium"
+                      className="text-academic-sm text-teal-700 hover:text-teal-800 font-display font-medium"
                     >
                       Clear all
                     </button>
@@ -367,26 +460,28 @@ export default function Materials({ onNavigate }: MaterialsProps) {
           </div>
 
           <div className="flex-1">
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200 mb-6">
+            <div className="academic-card p-8 mb-8">
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex-1 relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-academic-neutral-400" size={20} />
                   <input
                     type="text"
                     placeholder="Search materials..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     aria-label="Search materials"
-                    className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                    className="w-full pl-12 pr-4 py-3 border border-academic-neutral-300 focus:ring-2 focus:ring-teal-700 focus:border-teal-700 bg-white font-serif"
+                    style={{ borderRadius: '2px' }}
                   />
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex gap-3">
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
                     aria-label="Sort materials"
-                    className="px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent bg-white"
+                    className="px-4 py-3 border border-academic-neutral-300 focus:ring-2 focus:ring-teal-700 focus:border-teal-700 bg-white font-display"
+                    style={{ borderRadius: '2px' }}
                   >
                     {SORT_OPTIONS.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -397,11 +492,12 @@ export default function Materials({ onNavigate }: MaterialsProps) {
 
                   <button
                     onClick={() => setShowFilters(!showFilters)}
-                    className="lg:hidden px-4 py-3 bg-slate-100 border border-slate-300 rounded-lg hover:bg-slate-200 transition-colors flex items-center gap-2"
+                    className="lg:hidden px-4 py-3 bg-academic-warm border border-academic-neutral-300 hover:bg-academic-neutral-200 transition-colors flex items-center gap-2"
+                    style={{ borderRadius: '2px' }}
                   >
                     <Filter size={20} />
                     {activeFilterCount > 0 && (
-                      <span className="bg-cyan-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                      <span className="bg-teal-700 text-white text-academic-xs font-display font-bold w-5 h-5 flex items-center justify-center" style={{ borderRadius: '2px' }}>
                         {activeFilterCount}
                       </span>
                     )}
@@ -410,87 +506,129 @@ export default function Materials({ onNavigate }: MaterialsProps) {
               </div>
             </div>
 
-            <div className="mb-4 text-sm text-slate-600">
+            {error && (
+              <div className="mb-6">
+                <ErrorDisplay
+                  title="Unable to Load Materials"
+                  message={error}
+                  onRetry={fetchAllMaterials}
+                />
+              </div>
+            )}
+
+            <div className="mb-6 text-academic-sm text-academic-neutral-600 font-serif">
               Showing {filteredMaterials.length === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, filteredMaterials.length)} of {filteredMaterials.length} {filteredMaterials.length === 1 ? 'result' : 'results'}
             </div>
 
-            {filteredMaterials.length === 0 ? (
-              <div className="bg-white rounded-xl p-12 shadow-lg border border-slate-200 text-center">
-                <FileText className="mx-auto mb-4 text-slate-400" size={48} />
-                <h3 className="text-xl font-bold text-slate-900 mb-2">No materials found</h3>
-                <p className="text-slate-600 mb-4">Try adjusting your search or filters</p>
+            {!error && filteredMaterials.length === 0 ? (
+              <div className="academic-card p-12 text-center">
+                <FileText className="mx-auto mb-6 text-academic-neutral-300" size={48} />
+                <h3 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-3">No materials found</h3>
+                <p className="text-academic-base text-academic-neutral-600 mb-6 font-serif">Try adjusting your search or filters</p>
                 <button
                   onClick={clearAllFilters}
-                  className="px-6 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors"
+                  className="academic-button academic-button-primary"
                 >
                   Clear all filters
                 </button>
               </div>
             ) : (
               <>
-                <div className="space-y-6">
+                <div className="space-y-8">
                   {paginatedMaterials.map((material) => (
                   <div
                     key={material.id}
-                    className="bg-white rounded-xl p-6 shadow-lg border border-slate-200 hover:border-cyan-300 transition-all duration-300 group"
+                    className="academic-card p-8 hover:border-teal-700 transition-all duration-300 group"
                   >
                     <div className="flex flex-col md:flex-row gap-6">
                       {material.image_url && (
-                        <img
-                          src={material.image_url}
-                          alt={material.title}
-                          loading="lazy"
-                          className="w-full md:w-48 h-32 object-cover rounded-lg"
-                          width={192}
-                          height={128}
-                        />
+                        <div className="w-full md:w-48 overflow-hidden">
+                          <OptimizedImage
+                            src={material.image_url}
+                            alt={material.title}
+                            variant="thumbnail"
+                            loading="lazy"
+                          />
+                        </div>
                       )}
                       <div className="flex-1">
-                        <div className="flex flex-wrap gap-2 mb-3">
-                          <span className="px-3 py-1 bg-cyan-100 text-cyan-800 text-xs font-semibold rounded-full">
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {material.source && (
+                            <span className={`px-3 py-1 text-academic-xs font-display font-semibold ${
+                              material.source === 'articles' 
+                                ? 'bg-blue-50 text-blue-800' 
+                                : material.source === 'news'
+                                ? 'bg-purple-50 text-purple-800'
+                                : 'bg-teal-50 text-teal-800'
+                            }`} style={{ borderRadius: '2px' }}>
+                              {material.source === 'articles' ? 'Article' : material.source === 'news' ? 'News' : 'Material'}
+                            </span>
+                          )}
+                          {material.content_type && (
+                            <ContentTypeTag contentType={material.content_type} />
+                          )}
+                          <span className="px-3 py-1 bg-teal-50 text-teal-800 text-academic-xs font-display font-semibold" style={{ borderRadius: '2px' }}>
                             {material.type}
                           </span>
-                          <span className="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-semibold rounded-full">
+                          <span className="px-3 py-1 bg-academic-neutral-100 text-academic-neutral-700 text-academic-xs font-display font-semibold" style={{ borderRadius: '2px' }}>
                             {material.format}
                           </span>
-                          <span className="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-semibold rounded-full">
+                          <span className="px-3 py-1 bg-academic-neutral-100 text-academic-neutral-700 text-academic-xs font-display font-semibold" style={{ borderRadius: '2px' }}>
                             {new Date(material.published_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                           </span>
                           {material.editors_pick && (
-                            <span className="px-3 py-1 bg-amber-100 text-amber-800 text-xs font-semibold rounded-full">
+                            <span className="px-3 py-1 bg-amber-50 text-amber-800 text-academic-xs font-display font-semibold" style={{ borderRadius: '2px' }}>
                               Editor's Pick
                             </span>
                           )}
                         </div>
 
-                        <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-cyan-600 transition-colors">
+                        <h3 className="text-academic-xl font-display font-bold text-academic-charcoal mb-3 group-hover:text-teal-700 transition-colors">
                           {material.title}
                         </h3>
 
                         {material.description && (
-                          <p className="text-slate-600 mb-3 line-clamp-2">{material.description}</p>
+                          <p className="text-academic-base text-academic-neutral-700 mb-4 line-clamp-2 font-serif leading-relaxed">{material.description}</p>
                         )}
 
-                        <div className="flex flex-wrap items-center gap-4 text-sm text-slate-500 mb-4">
+                        <div className="flex flex-wrap items-center gap-4 text-academic-sm text-academic-neutral-600 mb-6 font-serif">
                           {material.author_name && <span>{material.author_name}</span>}
                           <span>{new Date(material.published_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                           {material.read_count > 0 && <span>{material.read_count} reads</span>}
                         </div>
 
-                        <div className="flex flex-wrap gap-2">
-                          <button
-                            onClick={() => onNavigate('article', material.slug)}
-                            aria-label={`Read more about ${material.title}`}
-                            className="px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors flex items-center gap-2"
-                          >
-                            Read more
-                          </button>
+                        <div className="flex flex-wrap gap-3">
+                          {material.source === 'articles' ? (
+                            <a
+                              href={`/insights/${material.slug}`}
+                              aria-label={`Read more about ${material.title}`}
+                              className="academic-button academic-button-primary flex items-center gap-2"
+                            >
+                              Read more
+                            </a>
+                          ) : material.source === 'news' ? (
+                            <a
+                              href={`/news#${material.slug}`}
+                              aria-label={`Read more about ${material.title}`}
+                              className="academic-button academic-button-primary flex items-center gap-2"
+                            >
+                              Read more
+                            </a>
+                          ) : (
+                            <button
+                              onClick={() => onNavigate('article', material.slug)}
+                              aria-label={`Read more about ${material.title}`}
+                              className="academic-button academic-button-primary flex items-center gap-2"
+                            >
+                              Read more
+                            </button>
+                          )}
                           {material.pdf_url && (
                             <a
                               href={material.pdf_url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors flex items-center gap-2"
+                              className="academic-button academic-button-secondary flex items-center gap-2"
                             >
                               <Download size={16} />
                               PDF
@@ -501,7 +639,7 @@ export default function Materials({ onNavigate }: MaterialsProps) {
                               href={material.external_url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors flex items-center gap-2"
+                              className="academic-button academic-button-secondary flex items-center gap-2"
                             >
                               <ExternalLink size={16} />
                               External Link
@@ -519,7 +657,7 @@ export default function Materials({ onNavigate }: MaterialsProps) {
                     <button
                       onClick={() => goToPage(currentPage - 1)}
                       disabled={currentPage === 1}
-                      className="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="academic-button academic-button-secondary disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Previous
                     </button>
@@ -541,12 +679,12 @@ export default function Materials({ onNavigate }: MaterialsProps) {
                           <button
                             key={pageNum}
                             onClick={() => goToPage(pageNum)}
-                            className={`px-4 py-2 border rounded-lg transition-colors ${
-                              currentPage === pageNum
-                                ? 'bg-cyan-600 text-white border-cyan-600'
-                                : 'border-slate-300 hover:bg-slate-50'
-                            }`}
-                          >
+                    className={`w-10 h-10 font-display font-semibold transition-colors rounded-xl ${
+                        currentPage === pageNum
+                          ? 'bg-teal-700 text-white'
+                          : 'border border-academic-neutral-300 hover:bg-academic-warm text-academic-charcoal'
+                      }`}
+                    >
                             {pageNum}
                           </button>
                         );
@@ -556,7 +694,7 @@ export default function Materials({ onNavigate }: MaterialsProps) {
                     <button
                       onClick={() => goToPage(currentPage + 1)}
                       disabled={currentPage === totalPages}
-                      className="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="academic-button academic-button-secondary disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Next
                     </button>
@@ -589,25 +727,26 @@ function FilterSection({ title, options, selected, onChange, toggleFilter }: Fil
   const [expanded, setExpanded] = useState(true);
 
   return (
-    <div className="border-b border-slate-200 pb-4">
+    <div className="border-b border-academic-neutral-300 pb-4">
       <button
         onClick={() => setExpanded(!expanded)}
         className="flex items-center justify-between w-full mb-3"
       >
-        <span className="font-semibold text-slate-900">{title}</span>
-        <ArrowUpDown size={16} className={`text-slate-400 transition-transform ${expanded ? 'rotate-180' : ''}`} />
+        <span className="font-display font-semibold text-academic-charcoal">{title}</span>
+        <ArrowUpDown size={16} className={`text-academic-neutral-400 transition-transform ${expanded ? 'rotate-180' : ''}`} />
       </button>
       {expanded && (
         <div className="space-y-2 max-h-64 overflow-y-auto">
           {options.map((option) => (
-            <label key={option} className="flex items-center gap-2 cursor-pointer hover:bg-slate-50 p-2 rounded">
+            <label key={option} className="flex items-center gap-2 cursor-pointer hover:bg-academic-warm p-2" style={{ borderRadius: '2px' }}>
               <input
                 type="checkbox"
                 checked={selected.includes(option)}
                 onChange={() => toggleFilter(option, selected, onChange)}
-                className="w-4 h-4 text-cyan-600 border-slate-300 rounded focus:ring-cyan-500"
+                className="w-4 h-4 text-teal-700 border-academic-neutral-300 focus:ring-teal-700"
+                style={{ borderRadius: '2px' }}
               />
-              <span className="text-sm text-slate-700">{option}</span>
+              <span className="text-academic-sm text-academic-neutral-700 font-serif">{option}</span>
             </label>
           ))}
         </div>

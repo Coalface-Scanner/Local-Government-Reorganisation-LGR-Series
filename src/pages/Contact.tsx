@@ -1,141 +1,258 @@
-import { Mail, Send } from 'lucide-react';
+import { Mail, Send, MessageSquare, FileText, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import SubscriptionForm from '../components/SubscriptionForm';
+import ContactForm from '../components/ContactForm';
 import MetaTags from '../components/MetaTags';
+import { usePageContent } from '../hooks/usePageContent';
 
 interface ContactProps {
   onNavigate: (page: string) => void;
 }
 
 export default function Contact({ onNavigate }: ContactProps) {
+  const { getSection } = usePageContent('contact');
+
+  // Get CMS content with fallbacks
+  const heroLabel = getSection('hero_label');
+  const heroTitle = getSection('hero_title');
+  const heroDescription = getSection('hero_description');
+  const formTitle = getSection('form_title');
+  const formDescription = getSection('form_description');
+  const cardEditorialTitle = getSection('card_editorial_title');
+  const cardEditorialDescription = getSection('card_editorial_description');
+  const cardEditorialEmail = getSection('card_editorial_email');
+  const cardSubscribeTitle = getSection('card_subscribe_title');
+  const cardSubscribeDescription = getSection('card_subscribe_description');
+  const cardSubscribeLink = getSection('card_subscribe_link');
   return (
-    <div className="bg-neutral-50 min-h-screen">
+    <div className="bg-academic-cream min-h-screen">
       <MetaTags
         title="Contact - Editorial Team & Inquiries"
         description="Get in touch with the LGR Series editorial team. For editorial inquiries, research questions, contributions, or newsletter subscriptions."
         keywords="LGR contact, editorial inquiries, research questions, contribute to LGR series, newsletter subscription"
       />
-      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8 overflow-hidden">
+      <div className="relative bg-academic-warm py-8 overflow-hidden">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border-l-4 border-teal-700 pl-6 mb-4">
-            <div className="text-xs font-bold tracking-widest text-teal-700 mb-1">
-              GET IN TOUCH
-            </div>
+          <div className="academic-section-header mb-6">
+            <div className="academic-section-label">{heroLabel?.content || 'GET IN TOUCH'}</div>
+            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
+              {heroTitle?.title || 'Contact'}{' '}
+              <span className="text-teal-700 font-serif italic">
+                {heroTitle?.content || 'the Series'}
+              </span>
+            </h1>
+            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
+              {heroDescription?.content || "Have questions about the research, want to contribute insights, or need to discuss specific reorganisation challenges? We're here to help."}
+            </p>
           </div>
-
-          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-3">
-            Contact{' '}
-            <span className="text-teal-700 font-serif italic">
-              the Series
-            </span>
-          </h1>
-
-          <p className="text-xl text-neutral-600 leading-relaxed max-w-3xl">
-            Have questions about the research, want to contribute insights, or need to discuss
-            specific reorganisation challenges? We're here to help.
-          </p>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-white border-2 border-neutral-200 p-8">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-teal-700 rounded-full flex items-center justify-center">
-                    <Mail size={24} className="text-white" />
+            {/* Contact Form */}
+            <section className="academic-card p-8">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 bg-gradient-to-br from-teal-700 to-teal-800 rounded-lg flex items-center justify-center">
+                  <Send size={28} className="text-white" />
+                </div>
+                <div>
+                  <h2 className="text-academic-2xl font-display font-black text-academic-charcoal">
+                    {formTitle?.title || formTitle?.content || 'Send Us a Message'}
+                  </h2>
+                  <p className="text-academic-sm text-academic-neutral-600 font-serif mt-1">
+                    {formDescription?.content || "Fill out the form below and we'll get back to you"}
+                  </p>
+                </div>
+              </div>
+              <ContactForm />
+            </section>
+
+            {/* Contact Cards */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="academic-card p-8 hover:border-teal-700 transition-all duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-14 h-14 bg-gradient-to-br from-teal-700 to-teal-800 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110">
+                    <Mail size={28} className="text-white" />
                   </div>
-                  <h2 className="text-2xl font-black text-neutral-900">
-                    Editorial Team
+                  <h2 className="text-academic-2xl font-display font-black text-academic-charcoal">
+                    {cardEditorialTitle?.title || cardEditorialTitle?.content || 'Editorial Team'}
                   </h2>
                 </div>
-                <p className="text-neutral-700 mb-4">
-                  For editorial inquiries, research questions, or to contribute case studies:
+                <p className="text-academic-base text-academic-neutral-700 mb-6 font-serif leading-relaxed">
+                  {cardEditorialDescription?.content || 'For editorial inquiries, research questions, or to contribute case studies:'}
                 </p>
                 <a
-                  href="mailto:insights@coalface.co.uk"
-                  className="text-teal-700 font-bold hover:text-teal-900 transition-colors"
+                  href={`mailto:${cardEditorialEmail?.content || 'editor@localgovernmentreorganisation.co.uk'}`}
+                  className="inline-flex items-center gap-2 text-teal-700 font-display font-bold hover:text-teal-800 transition-colors text-academic-base"
                 >
-                  insights@coalface.co.uk
+                  {cardEditorialEmail?.content || 'editor@localgovernmentreorganisation.co.uk'}
+                  <ArrowRight size={16} />
                 </a>
               </div>
 
-              <div className="bg-white border-2 border-neutral-200 p-8">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-teal-700 rounded-full flex items-center justify-center">
-                    <Send size={24} className="text-white" />
+              <div className="academic-card p-8 hover:border-teal-700 transition-all duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-14 h-14 bg-gradient-to-br from-teal-700 to-teal-800 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110">
+                    <Send size={28} className="text-white" />
                   </div>
-                  <h2 className="text-2xl font-black text-neutral-900">
-                    Subscribe
+                  <h2 className="text-academic-2xl font-display font-black text-academic-charcoal">
+                    {cardSubscribeTitle?.title || cardSubscribeTitle?.content || 'Subscribe'}
                   </h2>
                 </div>
-                <p className="text-neutral-700 mb-4">
-                  Receive new insights as they're published, plus access to case material and the 100 Day Playbook:
+                <p className="text-academic-base text-academic-neutral-700 mb-6 font-serif leading-relaxed">
+                  {cardSubscribeDescription?.content || "Receive new insights as they're published, plus access to case material and the 100 Day Playbook:"}
                 </p>
                 <button
                   onClick={() => onNavigate('subscribe')}
-                  className="text-teal-700 font-bold hover:text-teal-900 transition-colors"
+                  className="inline-flex items-center gap-2 text-teal-700 font-display font-bold hover:text-teal-800 transition-colors text-academic-base"
                 >
-                  Subscribe to The Dispatch →
+                  {cardSubscribeLink?.content || 'Subscribe to The Dispatch'}
+                  <ArrowRight size={16} />
                 </button>
               </div>
             </div>
 
-            <div className="bg-neutral-900 text-white p-8">
-              <h2 className="text-2xl font-black mb-4">About COALFACE Insights</h2>
-              <p className="text-neutral-300 leading-relaxed mb-4">
+            {/* Quick Links */}
+            <section className="academic-card p-8">
+              <h2 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-6">
+                Quick Links
+              </h2>
+              <div className="grid md:grid-cols-2 gap-6">
+                <Link
+                  to="/about/contribute"
+                  className="group flex items-start gap-4 p-4 bg-teal-50 hover:bg-teal-100 rounded-lg transition-colors"
+                >
+                  <div className="flex-shrink-0 w-10 h-10 bg-teal-700 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <MessageSquare size={20} className="text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-academic-lg font-display font-bold text-academic-charcoal mb-1 group-hover:text-teal-700 transition-colors">
+                      Contribute
+                    </h3>
+                    <p className="text-academic-sm text-academic-neutral-700 font-serif">
+                      Share your experience or suggest topics
+                    </p>
+                  </div>
+                </Link>
+
+                <Link
+                  to="/about/methodology"
+                  className="group flex items-start gap-4 p-4 bg-teal-50 hover:bg-teal-100 rounded-lg transition-colors"
+                >
+                  <div className="flex-shrink-0 w-10 h-10 bg-teal-700 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <FileText size={20} className="text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-academic-lg font-display font-bold text-academic-charcoal mb-1 group-hover:text-teal-700 transition-colors">
+                      Methodology
+                    </h3>
+                    <p className="text-academic-sm text-academic-neutral-700 font-serif">
+                      Learn about our research approach
+                    </p>
+                  </div>
+                </Link>
+              </div>
+            </section>
+
+            {/* About COALFACE */}
+            <section className="academic-card p-8 bg-teal-900 text-white border-0">
+              <h2 className="text-academic-2xl font-display font-black mb-4 text-white">
+                About COALFACE Insights
+              </h2>
+              <p className="text-academic-base text-white/90 leading-relaxed mb-6 font-serif">
                 COALFACE Insights produces research-driven analysis on local government, planning, and
                 place-making. Our work combines data from the COALFACE Council Scanner™ with evidence
                 from real reorganisations to support better decision-making.
               </p>
-              <button
-                onClick={() => onNavigate('about')}
-                className="text-teal-400 font-bold hover:text-teal-300 transition-colors"
+              <Link
+                to="/about/coalface"
+                className="inline-flex items-center gap-2 text-teal-300 font-display font-bold hover:text-teal-200 transition-colors text-academic-base"
               >
-                Learn more about our methodology →
-              </button>
-            </div>
+                Learn more about COALFACE
+                <ArrowRight size={16} />
+              </Link>
+            </section>
           </div>
 
-          <div className="lg:col-span-1">
+          <aside className="lg:col-span-1">
             <div className="sticky top-24 space-y-6">
-              <div className="bg-teal-800 text-white p-6">
-                <h3 className="text-xl font-black mb-3">
+              <div className="bg-white p-6 border border-academic-neutral-300 rounded-sm shadow-sm">
+                <h3 className="text-academic-xl font-display font-black text-academic-charcoal mb-3">
                   The Dispatch
                 </h3>
-                <p className="text-sm text-white mb-4">
+                <p className="text-academic-sm text-academic-neutral-700 mb-4 font-serif">
                   Get the LGR Series directly in your inbox. No fluff, just deep analysis.
                 </p>
                 <SubscriptionForm variant="compact" />
               </div>
 
-              <div className="border-2 border-neutral-900 bg-white p-6">
-                <h4 className="font-black text-neutral-900 mb-4 text-sm tracking-wider border-b-2 border-neutral-200 pb-3">
+              <div className="academic-card p-6">
+                <h4 className="font-display font-bold text-academic-charcoal mb-4 text-sm tracking-wider border-b-2 border-academic-neutral-300 pb-3">
                   RELATED CONTENT
                 </h4>
                 <div className="space-y-3">
                   <button
                     onClick={() => onNavigate('insights')}
-                    className="w-full text-left px-4 py-3 bg-neutral-50 hover:bg-teal-50 border border-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-neutral-700 hover:text-teal-700"
+                    className="w-full text-left px-4 py-3 bg-academic-neutral-50 hover:bg-teal-50 border border-academic-neutral-300 hover:border-teal-700 transition-all text-sm font-bold text-academic-neutral-700 hover:text-teal-700 academic-button-secondary"
                   >
                     View Insights & Analysis →
                   </button>
                   <button
                     onClick={() => onNavigate('facts')}
-                    className="w-full text-left px-4 py-3 bg-neutral-50 hover:bg-teal-50 border border-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-neutral-700 hover:text-teal-700"
+                    className="w-full text-left px-4 py-3 bg-academic-neutral-50 hover:bg-teal-50 border border-academic-neutral-300 hover:border-teal-700 transition-all text-sm font-bold text-academic-neutral-700 hover:text-teal-700 academic-button-secondary"
                   >
                     View the Facts & Data →
                   </button>
                   <button
                     onClick={() => onNavigate('lessons')}
-                    className="w-full text-left px-4 py-3 bg-neutral-50 hover:bg-teal-50 border border-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-neutral-700 hover:text-teal-700"
+                    className="w-full text-left px-4 py-3 bg-academic-neutral-50 hover:bg-teal-50 border border-academic-neutral-300 hover:border-teal-700 transition-all text-sm font-bold text-academic-neutral-700 hover:text-teal-700 academic-button-secondary"
                   >
                     Lessons from Reorganisation →
                   </button>
                 </div>
               </div>
+
+              <div className="academic-card p-6">
+                <h4 className="font-display font-bold text-academic-charcoal mb-4 text-sm tracking-wider border-b-2 border-academic-neutral-300 pb-3">
+                  ABOUT SECTIONS
+                </h4>
+                <nav className="space-y-2">
+                  <Link
+                    to="/about"
+                    className="block px-3 py-2 text-academic-sm text-academic-neutral-700 hover:bg-teal-50 hover:text-teal-700 transition-colors rounded"
+                  >
+                    Overview
+                  </Link>
+                  <Link
+                    to="/about/editor"
+                    className="block px-3 py-2 text-academic-sm text-academic-neutral-700 hover:bg-teal-50 hover:text-teal-700 transition-colors rounded"
+                  >
+                    Editor's Letter
+                  </Link>
+                  <Link
+                    to="/about/methodology"
+                    className="block px-3 py-2 text-academic-sm text-academic-neutral-700 hover:bg-teal-50 hover:text-teal-700 transition-colors rounded"
+                  >
+                    Methodology
+                  </Link>
+                  <Link
+                    to="/about/contribute"
+                    className="block px-3 py-2 text-academic-sm text-academic-neutral-700 hover:bg-teal-50 hover:text-teal-700 transition-colors rounded"
+                  >
+                    Contribute
+                  </Link>
+                  <Link
+                    to="/about/coalface"
+                    className="block px-3 py-2 text-academic-sm text-academic-neutral-700 hover:bg-teal-50 hover:text-teal-700 transition-colors rounded"
+                  >
+                    About COALFACE
+                  </Link>
+                </nav>
+              </div>
             </div>
-          </div>
+          </aside>
         </div>
       </div>
     </div>

@@ -6,6 +6,8 @@ interface MetaTagsProps {
   keywords?: string;
   ogType?: string;
   ogImage?: string;
+  noindex?: boolean;
+  canonical?: string;
   article?: {
     publishedTime?: string;
     modifiedTime?: string;
@@ -21,6 +23,8 @@ export default function MetaTags({
   keywords,
   ogType = 'website',
   ogImage = '/lgr_banner.png',
+  noindex = false,
+  canonical,
   article
 }: MetaTagsProps) {
   const fullTitle = `${title} | LGR Series`;
@@ -48,7 +52,7 @@ export default function MetaTags({
     return url.toString();
   };
   
-  const canonicalUrl = getCanonicalUrl();
+  const canonicalUrl = canonical || getCanonicalUrl();
 
   useEffect(() => {
     document.title = fullTitle;
@@ -80,6 +84,13 @@ export default function MetaTags({
 
     if (keywords) {
       metaTags.push({ name: 'keywords', content: keywords });
+    }
+
+    // Add robots meta tag
+    if (noindex) {
+      metaTags.push({ name: 'robots', content: 'noindex, nofollow' });
+    } else {
+      metaTags.push({ name: 'robots', content: 'index, follow' });
     }
 
     if (article) {
@@ -136,7 +147,7 @@ export default function MetaTags({
         }
       });
     };
-  }, [fullTitle, description, keywords, ogType, ogImage, canonicalUrl, article]);
+  }, [fullTitle, description, keywords, ogType, ogImage, canonicalUrl, article, noindex]);
 
   return null;
 }

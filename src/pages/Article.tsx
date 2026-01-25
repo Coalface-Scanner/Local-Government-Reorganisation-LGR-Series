@@ -11,8 +11,10 @@ import ReadingProgress from '../components/ReadingProgress';
 import ErrorDisplay from '../components/ErrorDisplay';
 import Breadcrumbs from '../components/Breadcrumbs';
 import RelatedContent from '../components/RelatedContent';
+import SeeAlsoSection from '../components/SeeAlsoSection';
+import PrintButton from '../components/PrintButton';
 import { ArrowLeft, Download, ExternalLink, Calendar, User, Eye } from 'lucide-react';
-import { retryWithBackoff } from '../lib/utils';
+import { retryWithBackoff, getThemeDisplayName } from '../lib/utils';
 
 interface Material {
   id: string;
@@ -108,10 +110,10 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex items-center justify-center">
+      <div className="min-h-screen bg-academic-cream flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-600 mb-4"></div>
-          <p className="text-slate-600">Loading article...</p>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-teal-700 mb-4"></div>
+          <p className="text-academic-neutral-600 font-serif">Loading article...</p>
         </div>
       </div>
     );
@@ -119,21 +121,21 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
 
   if (notFound || !material) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      <div className="min-h-screen bg-academic-cream">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <button
             onClick={() => onNavigate('materials')}
-            className="flex items-center gap-2 text-cyan-600 hover:text-cyan-700 font-medium mb-8 group"
+            className="flex items-center gap-2 text-teal-700 hover:text-teal-800 font-display font-medium mb-8 group"
           >
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
             Back to Materials
           </button>
-          <div className="bg-white rounded-2xl p-12 shadow-lg border border-slate-200 text-center">
-            <h1 className="text-3xl font-bold text-slate-900 mb-4">Article Not Found</h1>
-            <p className="text-slate-600 mb-6">The article you're looking for doesn't exist or has been removed.</p>
+          <div className="academic-card p-12 text-center">
+            <h1 className="text-academic-3xl font-display font-bold text-academic-charcoal mb-4">Article Not Found</h1>
+            <p className="text-academic-neutral-600 mb-6 font-serif">The article you're looking for doesn't exist or has been removed.</p>
             <button
               onClick={() => onNavigate('materials')}
-              className="px-6 py-3 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors"
+              className="academic-button academic-button-primary"
             >
               Browse All Materials
             </button>
@@ -212,7 +214,7 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+    <div className="min-h-screen bg-academic-cream">
       <ReadingProgress />
       <MetaTags
         title={getTitle()}
@@ -238,44 +240,44 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
         geography={material.geography}
         theme={material.theme}
       />
-      <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-6">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="bg-academic-charcoal text-academic-neutral-200 py-12">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <Breadcrumbs 
             items={[
               { label: 'Materials', path: '/materials' },
               { label: material.title }
             ]}
-            className="mb-6 text-slate-300"
+            className="mb-8 text-academic-neutral-400"
           />
           <button
             onClick={() => onNavigate('materials')}
-            className="flex items-center gap-2 text-slate-300 hover:text-white font-medium mb-6 group"
+            className="flex items-center gap-2 text-academic-neutral-400 hover:text-white font-display font-medium mb-8 group"
             aria-label="Back to Materials"
           >
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" aria-hidden="true" />
             Back to Materials
           </button>
 
-          <div className="flex flex-wrap gap-2 mb-4">
-            <span className="px-3 py-1 bg-cyan-600/30 border border-cyan-400 text-cyan-200 text-xs font-semibold rounded-full">
+          <div className="flex flex-wrap gap-2 mb-6">
+            <span className="px-3 py-1 bg-teal-700/30 border border-teal-500 text-teal-200 text-academic-xs font-display font-semibold" style={{ borderRadius: '2px' }}>
               {material.type}
             </span>
-            <span className="px-3 py-1 bg-white/10 border border-white/30 text-white text-xs font-semibold rounded-full">
+            <span className="px-3 py-1 bg-white/10 border border-white/30 text-white text-academic-xs font-display font-semibold" style={{ borderRadius: '2px' }}>
               {material.format}
             </span>
             {material.editors_pick && (
-              <span className="px-3 py-1 bg-amber-500/30 border border-amber-400 text-amber-200 text-xs font-semibold rounded-full">
+              <span className="px-3 py-1 bg-amber-500/30 border border-amber-400 text-amber-200 text-academic-xs font-display font-semibold" style={{ borderRadius: '2px' }}>
                 Editor's Pick
               </span>
             )}
           </div>
 
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">{material.title}</h1>
+          <h1 className="text-academic-4xl md:text-academic-5xl lg:text-academic-6xl font-display font-bold mb-6 leading-tight text-white">{material.title}</h1>
           {material.description && (
-            <p className="text-xl text-slate-300 mb-6 leading-relaxed">{material.description}</p>
+            <p className="text-academic-xl text-academic-neutral-300 mb-8 leading-relaxed font-serif">{material.description}</p>
           )}
 
-          <div className="flex flex-wrap items-center gap-6 text-sm text-slate-300">
+          <div className="flex flex-wrap items-center gap-6 text-academic-sm text-academic-neutral-400 font-serif">
             {material.author_name && (
               <div className="flex items-center gap-2">
                 <User size={16} aria-hidden="true" />
@@ -307,37 +309,22 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
         )}
 
         {(material.main_image_url || material.image_url) && (
-          <OptimizedImage
-            src={material.main_image_url || material.image_url}
-            alt={material.title}
-            className="w-full h-64 md:h-96 object-cover rounded-2xl shadow-lg mb-8"
-            priority={false}
-          />
+          <div className="mb-16">
+            <OptimizedImage
+              src={material.main_image_url || material.image_url}
+              alt={material.title}
+              variant="hero"
+              className="w-full"
+              priority={false}
+            />
+          </div>
         )}
 
-        <div className="grid lg:grid-cols-4 gap-8">
+        <div className="grid lg:grid-cols-4 gap-12">
           <div className="lg:col-span-3">
-            <div className="bg-white rounded-2xl p-4 sm:p-8 md:p-12 shadow-lg border-2 border-slate-200 mb-8">
+            <div className="academic-card p-8 md:p-12 mb-12">
               {(material.rich_content || material.content) ? (
-                <div className="prose prose-sm sm:prose-base lg:prose-lg max-w-none print:prose-sm
-              prose-headings:font-bold prose-headings:text-neutral-900 prose-headings:tracking-tight
-              prose-h2:text-2xl sm:prose-h2:text-3xl prose-h2:mt-10 prose-h2:mb-6 prose-h2:border-b prose-h2:border-slate-200 prose-h2:pb-3
-              prose-h3:text-xl sm:prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
-              prose-h4:text-lg sm:prose-h4:text-xl prose-h4:mt-6 prose-h4:mb-3
-              prose-p:text-slate-700 prose-p:leading-relaxed prose-p:mb-4
-              prose-strong:text-neutral-900 prose-strong:font-bold
-              prose-a:text-teal-700 prose-a:font-semibold prose-a:no-underline hover:prose-a:underline
-              prose-blockquote:border-l-4 prose-blockquote:border-teal-700 prose-blockquote:pl-4 sm:prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-slate-700 prose-blockquote:text-base sm:prose-blockquote:text-lg
-              prose-hr:border-slate-300 prose-hr:my-8
-              prose-ul:list-disc prose-ul:ml-4 sm:prose-ul:ml-6 prose-ul:space-y-2
-              prose-ol:list-decimal prose-ol:ml-4 sm:prose-ol:ml-6 prose-ol:space-y-2
-              prose-li:text-slate-700
-              prose-img:rounded-lg prose-img:shadow-md prose-img:my-6
-              prose-table:w-full prose-table:text-sm prose-table:border-collapse
-              prose-thead:bg-slate-100 prose-thead:border-b-2 prose-thead:border-slate-300
-              prose-th:p-2 sm:prose-th:p-3 prose-th:text-left prose-th:font-bold prose-th:text-slate-900
-              prose-td:p-2 sm:prose-td:p-3 prose-td:border-b prose-td:border-slate-200 prose-td:text-slate-700
-              [&_table]:block [&_table]:overflow-x-auto [&_table]:whitespace-nowrap sm:[&_table]:whitespace-normal">
+                <div className="academic-prose max-w-none">
                   <div dangerouslySetInnerHTML={{ __html: material.rich_content || material.content }} />
                 </div>
               ) : (
@@ -350,7 +337,7 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
                       href={material.pdf_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors font-semibold"
+                      className="academic-button academic-button-primary inline-flex items-center gap-2"
                     >
                       <Download size={20} aria-hidden="true" />
                       Download Document
@@ -362,28 +349,28 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
               {material.additional_images && material.additional_images.length > 0 && (
                 <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
                   {material.additional_images.map((img, index) => (
-                    <div key={index} className="space-y-2">
-                      <OptimizedImage
-                        src={img.url}
-                        alt={img.caption || `Image ${index + 1}`}
-                        className="w-full rounded-lg shadow-md"
-                        priority={false}
-                      />
-                      {img.caption && (
-                        <p className="text-sm text-slate-600 italic text-center">{img.caption}</p>
-                      )}
-                    </div>
+                    <OptimizedImage
+                      key={index}
+                      src={img.url}
+                      alt={img.caption || `Image ${index + 1}`}
+                      variant="article"
+                      caption={img.caption}
+                      priority={false}
+                    />
                   ))}
                 </div>
               )}
             </div>
 
             <div className="mb-8 print:hidden">
-              <ShareButtons
-                title={material.title}
-                description={material.description}
-                url={`${window.location.origin}${window.location.pathname}`}
-              />
+              <div className="flex flex-wrap items-center gap-4 mb-6">
+                <ShareButtons
+                  title={material.title}
+                  description={material.description}
+                  url={`${window.location.origin}${window.location.pathname}`}
+                />
+                <PrintButton variant="outline" />
+              </div>
             </div>
           </div>
 
@@ -395,15 +382,15 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
         </div>
 
         {(material.pdf_url || material.external_url) && (
-          <div className="bg-slate-50 rounded-2xl p-6 border border-slate-200 mb-8">
-            <h3 className="font-bold text-slate-900 mb-4">Additional Resources</h3>
+          <div className="bg-academic-warm academic-card p-8 mb-10">
+            <h3 className="font-display font-bold text-academic-charcoal mb-5 text-academic-lg">Additional Resources</h3>
             <div className="flex flex-wrap gap-3">
               {material.pdf_url && (
                 <a
                   href={material.pdf_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-lg hover:border-cyan-500 hover:bg-cyan-50 transition-colors text-slate-700 hover:text-cyan-700"
+                  className="academic-button academic-button-secondary flex items-center gap-2"
                 >
                   <Download size={16} />
                   Download PDF
@@ -414,7 +401,7 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
                   href={material.external_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-lg hover:border-cyan-500 hover:bg-cyan-50 transition-colors text-slate-700 hover:text-cyan-700"
+                  className="academic-button academic-button-secondary flex items-center gap-2"
                 >
                   <ExternalLink size={16} />
                   External Link
@@ -424,43 +411,57 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
           </div>
         )}
 
-        <div className="mb-8">
-          <ShareButtons
-            title={material.title}
-            description={material.description}
-            url={`${window.location.origin}${window.location.pathname}`}
-          />
+        <div className="mb-10 print:hidden">
+          <div className="flex flex-wrap items-center gap-4 mb-6">
+            <ShareButtons
+              title={material.title}
+              description={material.description}
+              url={`${window.location.origin}${window.location.pathname}`}
+            />
+            <PrintButton variant="outline" />
+          </div>
         </div>
 
-        <div className="bg-slate-50 rounded-2xl p-6 border border-slate-200">
-          <h3 className="font-bold text-slate-900 mb-4">Article Information</h3>
-          <div className="grid md:grid-cols-2 gap-4 text-sm">
+        <div className="bg-academic-warm academic-card p-8">
+          <h3 className="font-display font-bold text-academic-charcoal mb-6 text-academic-lg">Article Information</h3>
+          <div className="grid md:grid-cols-2 gap-5 text-academic-base font-serif">
             {material.theme && (
               <div>
-                <span className="text-slate-600">Theme:</span>
-                <span className="ml-2 font-medium text-slate-900">{material.theme}</span>
+                <span className="text-academic-neutral-600">Theme:</span>
+                <span className="ml-2 font-medium text-academic-charcoal">{getThemeDisplayName(material.theme)}</span>
               </div>
             )}
             {material.geography && (
               <div>
-                <span className="text-slate-600">Geography:</span>
-                <span className="ml-2 font-medium text-slate-900">{material.geography}</span>
+                <span className="text-academic-neutral-600">Geography:</span>
+                <span className="ml-2 font-medium text-academic-charcoal">{material.geography}</span>
               </div>
             )}
             {material.lgr_phase && (
               <div>
-                <span className="text-slate-600">LGR Phase:</span>
-                <span className="ml-2 font-medium text-slate-900">{material.lgr_phase}</span>
+                <span className="text-academic-neutral-600">LGR Phase:</span>
+                <span className="ml-2 font-medium text-academic-charcoal">{material.lgr_phase}</span>
               </div>
             )}
             {material.audience && material.audience.length > 0 && (
               <div>
-                <span className="text-slate-600">Audience:</span>
-                <span className="ml-2 font-medium text-slate-900">{material.audience.join(', ')}</span>
+                <span className="text-academic-neutral-600">Audience:</span>
+                <span className="ml-2 font-medium text-academic-charcoal">{material.audience.join(', ')}</span>
               </div>
             )}
           </div>
         </div>
+
+        <SeeAlsoSection
+          currentSlug={material.slug}
+          contentType="material"
+          theme={material.theme ?? undefined}
+          geography={material.geography ?? undefined}
+          lgrPhase={material.lgr_phase ?? undefined}
+          currentContent={material.rich_content || material.content || undefined}
+          currentExcerpt={material.description ?? undefined}
+          maxItems={4}
+        />
 
         <RelatedContent
           currentSlug={material.slug}
@@ -468,6 +469,8 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
           theme={material.theme ?? undefined}
           geography={material.geography ?? undefined}
           lgrPhase={material.lgr_phase ?? undefined}
+          currentContent={material.rich_content || material.content || undefined}
+          currentExcerpt={material.description ?? undefined}
           maxItems={6}
         />
         <div className="mt-8">

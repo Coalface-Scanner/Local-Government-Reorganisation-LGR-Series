@@ -19,7 +19,11 @@ export default function TableOfContents({ content, className = '' }: TableOfCont
 
     // Add IDs to actual DOM headings after render
     const addIdsToHeadings = () => {
-      const articleElement = document.querySelector('article.prose');
+      // Try multiple selectors to find the article element
+      const articleElement = document.querySelector('article#article-content') ||
+                             document.querySelector('article.academic-prose') || 
+                             document.querySelector('article.prose') ||
+                             document.querySelector('article');
       if (!articleElement) {
         // Retry if DOM not ready yet
         setTimeout(addIdsToHeadings, 100);
@@ -31,8 +35,10 @@ export default function TableOfContents({ content, className = '' }: TableOfCont
         const heading = headings.find(
           h => h.textContent?.trim() === text && !h.id
         );
-        if (heading) {
+        if (heading && heading instanceof HTMLElement) {
           heading.id = id;
+          // Add scroll-margin-top for better scroll positioning
+          heading.style.scrollMarginTop = '80px';
         }
       });
     };
@@ -94,7 +100,14 @@ export default function TableOfContents({ content, className = '' }: TableOfCont
                 e.preventDefault();
                 const element = document.getElementById(id);
                 if (element) {
-                  element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  const headerOffset = 80;
+                  const elementPosition = element.getBoundingClientRect().top;
+                  const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                  
+                  window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                  });
                   // Update URL without scrolling
                   window.history.pushState(null, '', `#${id}`);
                 }

@@ -45,34 +45,39 @@ export default function Surrey({ onNavigate }: SurreyProps) {
         ]}
         url="/surrey"
       />
-      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8 overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border-l-4 border-teal-700 pl-6 mb-3">
-            <div className="text-xs font-bold tracking-widest text-teal-700 mb-1.5">
-              CASE STUDY
-            </div>
+      <div className="relative bg-academic-warm py-8 overflow-hidden">
+        {/* Colored gradient overlay */}
+        <div 
+          className="absolute inset-0 opacity-60 z-0"
+          style={{
+            background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.4) 0%, rgba(6, 182, 212, 0.5) 50%, rgba(14, 165, 233, 0.4) 100%)'
+          }}
+        />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+          <div className="academic-section-header mb-6">
+            <div className="academic-section-label">CASE STUDY</div>
+            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
+              Surrey:{' '}
+              <span className="text-teal-700 font-serif italic">
+                Lessons & Warnings
+              </span>
+            </h1>
+            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
+              Primary risks for Surrey based on evidence from elsewhere, with actionable guidance for the first 100 days
+            </p>
           </div>
-          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-3">
-            Surrey:{' '}
-            <span className="text-teal-700 font-serif italic">
-              Lessons & Warnings
-            </span>
-          </h1>
-          <p className="text-xl text-neutral-600 leading-relaxed max-w-3xl">
-            Primary risks for Surrey based on evidence from elsewhere, with actionable guidance for the first 100 days
-          </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-10">
-            <div id="playbook" className="bg-white rounded-2xl p-8 shadow-lg border border-slate-200">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">The First 100 Days Playbook</h2>
-              <p className="text-lg text-slate-600 mb-8">A blueprint for getting LGR right in Surrey</p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="grid lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-8">
+            <div id="playbook" className="bg-white rounded-2xl p-6 shadow-lg border border-slate-200">
+              <h2 className="text-3xl font-bold text-slate-900 mb-4">The First 100 Days Playbook</h2>
+              <p className="text-lg text-slate-600 mb-6">A blueprint for getting LGR right in Surrey</p>
 
               <div className="prose max-w-none">
-                <div className="bg-gradient-to-r from-amber-50 to-amber-100/50 rounded-xl p-6 border-l-4 border-amber-500 mb-8">
+                <div className="bg-gradient-to-r from-amber-50 to-amber-100/50 rounded-xl p-5 border-l-4 border-amber-500 mb-6">
                   <h3 className="text-xl font-bold text-slate-900 mb-3 flex items-center gap-2">
                     <Clock className="text-amber-600" size={24} />
                     Why the First 100 Days Matter
@@ -85,9 +90,9 @@ export default function Surrey({ onNavigate }: SurreyProps) {
                   </p>
                 </div>
 
-                <h3 id="disciplines" className="text-2xl font-bold text-slate-900 mb-6">The Five Disciplines That Define Success</h3>
+                <h3 id="disciplines" className="text-2xl font-bold text-slate-900 mb-4">The Five Disciplines That Define Success</h3>
 
-                <div className="space-y-6 mb-10">
+                <div className="space-y-5 mb-8">
                   {[
                     {
                       icon: Users,
@@ -140,8 +145,8 @@ export default function Surrey({ onNavigate }: SurreyProps) {
             </div>
 
             <div id="timeline" className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-8 text-white shadow-xl">
-              <h3 className="text-2xl font-bold mb-6">The First 100 Days: Essential Actions</h3>
-              <div className="grid md:grid-cols-3 gap-8">
+              <h3 className="text-2xl font-bold mb-4">The First 100 Days: Essential Actions</h3>
+              <div className="grid md:grid-cols-3 gap-6">
                 {[
                   {
                     period: 'Weeks 1–4',
@@ -231,10 +236,10 @@ export default function Surrey({ onNavigate }: SurreyProps) {
           </div>
 
           <div className="lg:col-span-1">
-            <div className="sticky top-24 space-y-6">
+            <div className="sticky top-24 space-y-5">
               <PageNavigation items={navItems} />
-              <div className="bg-teal-800 text-white p-6">
-                <h3 className="text-xl font-black mb-3">
+              <div className="bg-teal-800 text-white p-5">
+                <h3 className="text-xl font-black text-white mb-3">
                   The Dispatch
                 </h3>
                 <p className="text-sm text-white mb-4">
@@ -243,11 +248,11 @@ export default function Surrey({ onNavigate }: SurreyProps) {
                 <SubscriptionForm variant="compact" />
               </div>
 
-              <div className="border-2 border-neutral-900 bg-white p-6">
-                <h4 className="font-black text-neutral-900 mb-4 text-sm tracking-wider border-b-2 border-neutral-200 pb-3">
+              <div className="border-2 border-neutral-900 bg-white p-5">
+                <h4 className="font-black text-neutral-900 mb-3 text-sm tracking-wider border-b-2 border-neutral-200 pb-2">
                   RELATED CONTENT
                 </h4>
-                <div className="space-y-3">
+                <div className="space-y-2.5">
                   <button
                     onClick={() => onNavigate('surrey/election-simulator')}
                     className="w-full text-left px-4 py-3 bg-neutral-50 hover:bg-teal-50 border border-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-neutral-700 hover:text-teal-700"

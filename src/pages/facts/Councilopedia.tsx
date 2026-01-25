@@ -1,7 +1,7 @@
 import MetaTags from '../../components/MetaTags';
 import LastUpdated from '../../components/LastUpdated';
 import FAQSection from '../../components/FAQSection';
-import { ArrowLeft, ArrowRight, GraduationCap, FileText, Users, Building2, TrendingUp, HelpCircle, type LucideIcon } from 'lucide-react';
+import { ArrowLeft, ArrowRight, GraduationCap, type LucideIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface ServiceCard {
@@ -22,52 +22,12 @@ const serviceCards: ServiceCard[] = [
     icon: GraduationCap,
     color: 'from-blue-500 to-cyan-600',
     route: '/facts/councilopedia/beginners-guide'
-  },
-  {
-    id: 'placeholder-1',
-    title: 'Placeholder 1',
-    description: 'This is a placeholder service card for future content.',
-    icon: FileText,
-    color: 'from-emerald-500 to-teal-600',
-    disabled: true
-  },
-  {
-    id: 'placeholder-2',
-    title: 'Placeholder 2',
-    description: 'This is a placeholder service card for future content.',
-    icon: Users,
-    color: 'from-purple-500 to-indigo-600',
-    disabled: true
-  },
-  {
-    id: 'placeholder-3',
-    title: 'Placeholder 3',
-    description: 'This is a placeholder service card for future content.',
-    icon: Building2,
-    color: 'from-amber-500 to-orange-600',
-    disabled: true
-  },
-  {
-    id: 'placeholder-4',
-    title: 'Placeholder 4',
-    description: 'This is a placeholder service card for future content.',
-    icon: TrendingUp,
-    color: 'from-rose-500 to-pink-600',
-    disabled: true
-  },
-  {
-    id: 'placeholder-5',
-    title: 'Placeholder 5',
-    description: 'This is a placeholder service card for future content.',
-    icon: HelpCircle,
-    color: 'from-slate-500 to-slate-700',
-    disabled: true
   }
 ];
 
 export default function Councilopedia() {
   const navigate = useNavigate();
-  const activeServiceCards = serviceCards.filter((card) => !card.disabled);
+  const activeServiceCards = serviceCards;
 
   return (
     <div className="min-h-screen bg-neutral-50">

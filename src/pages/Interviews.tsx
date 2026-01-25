@@ -4,6 +4,8 @@ import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
 import PageNavigation from '../components/PageNavigation';
+import ErrorDisplay from '../components/ErrorDisplay';
+import LoadingSkeleton from '../components/LoadingSkeleton';
 import { Mic, Calendar, Users, FileText, Headphones, ExternalLink, Video } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
@@ -29,24 +31,37 @@ interface Interview {
 export default function Interviews({ onNavigate }: InterviewsProps) {
   const [interviews, setInterviews] = useState<Interview[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const navItems = [
     { id: 'interviews', label: 'Interviews', icon: <Mic size={16} /> }
   ];
 
-  useEffect(() => {
-    const fetchInterviews = async () => {
-      const { data, error} = await supabase
+  const fetchInterviews = async () => {
+    try {
+      setError(null);
+      const { data, error: fetchError } = await supabase
         .from('interviews')
         .select('*')
         .order('order_index');
 
-      if (!error && data) {
-        setInterviews(data);
+      if (fetchError) {
+        throw fetchError;
       }
-      setLoading(false);
-    };
 
+      if (data) {
+        // Filter out "coming_soon" status interviews
+        setInterviews(data.filter(item => item.status !== 'coming_soon'));
+      }
+    } catch (err) {
+      console.error('Error fetching interviews:', err);
+      setError('Failed to load interviews. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchInterviews();
   }, []);
 
@@ -85,7 +100,7 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="mb-12 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-2xl p-8 border border-cyan-200">
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -106,11 +121,25 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
           </div>
         </div>
 
-        <div id="interviews" className="grid lg:grid-cols-3 gap-8 mb-16">
+        <div id="interviews" className="grid lg:grid-cols-3 gap-6 mb-12">
           {loading ? (
-            <div className="col-span-3 text-center py-6 text-slate-600">Loading interviews...</div>
+            <div className="col-span-3">
+              <LoadingSkeleton variant="article" count={3} />
+            </div>
+          ) : error ? (
+            <div className="col-span-3">
+              <ErrorDisplay
+                title="Unable to Load Interviews"
+                message={error}
+                onRetry={fetchInterviews}
+              />
+            </div>
           ) : interviews.length === 0 ? (
-            <div className="col-span-3 text-center py-6 text-slate-600">No interviews available yet.</div>
+            <div className="col-span-3 text-center py-12 academic-card">
+              <Mic className="mx-auto mb-4 text-academic-neutral-300" size={48} />
+              <h3 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-3">No interviews available yet</h3>
+              <p className="text-academic-neutral-600 font-serif">Check back soon for new interviews</p>
+            </div>
           ) : (
             interviews.map((interview) => (
               <div key={interview.id} className="bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-200 hover:shadow-2xl transition-all duration-300 group">
@@ -227,7 +256,7 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
           )}
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
             <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-8 text-white">
               <h3 className="text-2xl font-bold mb-4">What to Expect</h3>
@@ -273,7 +302,7 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
             <div className="sticky top-24 space-y-6">
               <PageNavigation items={navItems} />
               <div className="bg-teal-800 text-white p-6">
-                <h3 className="text-xl font-black mb-3">
+                <h3 className="text-xl font-black text-white mb-3">
                   The Dispatch
                 </h3>
                 <p className="text-sm text-white mb-4">

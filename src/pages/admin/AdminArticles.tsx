@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Plus, Edit2, Trash2, Eye, Save, X, LogOut, FileText, MessageSquare } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Plus, Edit2, Trash2, Eye, Save, X, LogOut, FileText, MessageSquare, Upload } from 'lucide-react';
 import { useAdminAuth } from '../../contexts/AdminAuthContext';
 import { supabase } from '../../lib/supabase';
 import ArticleEditor from '../../components/ArticleEditor';
@@ -16,6 +16,9 @@ interface Article {
   status: 'draft' | 'published';
   published_date: string | null;
   featured: boolean;
+  content_type: string | null;
+  featured_theme: boolean;
+  featured_site: boolean;
   author: string | null;
   category: string | null;
   region: string | null;
@@ -38,6 +41,8 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [managingQA, setManagingQA] = useState<string | null>(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { logout, isAuthenticated } = useAdminAuth();
 
   useEffect(() => {
@@ -82,6 +87,9 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
       featured_image: '',
       status: 'draft',
       featured: false,
+      content_type: 'Article',
+      featured_theme: false,
+      featured_site: false,
       author: '',
       category: '',
       region: '',
@@ -94,7 +102,13 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
   };
 
   const handleEdit = (article: Article) => {
-    setEditingArticle(article);
+    // Ensure content_type has a default value if missing
+    setEditingArticle({
+      ...article,
+      content_type: article.content_type || 'Article',
+      featured_theme: article.featured_theme ?? false,
+      featured_site: article.featured_site ?? false,
+    });
     setPreviewMode(false);
     setError('');
   };
@@ -126,11 +140,31 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
       return;
     }
 
+    // Content type is required
+    // Ensure content_type has a default if somehow missing
+    if (!editingArticle.content_type) {
+      // Set default to 'Article' if missing
+      editingArticle.content_type = 'Article';
+    }
+
+    // Validate theme requirement: required for published content (except FAQ and Other)
+    // Allow drafts without theme, but require it when publishing
+    if (status === 'published') {
+      if (editingArticle.content_type !== 'FAQ' && editingArticle.content_type !== 'Other') {
+        if (!editingArticle.theme?.trim()) {
+          setError('Theme is required for published content (except FAQ and Other). Please select a core theme.');
+          return;
+        }
+      }
+    }
+
     setSaving(true);
     setError('');
 
     try {
-      const articleData = {
+      // Build articleData with only fields that exist in the articles table
+      // Some fields like geography and lgr_phase may not exist in all articles tables
+      const articleData: Record<string, unknown> = {
         title: editingArticle.title,
         slug: editingArticle.slug,
         excerpt: editingArticle.excerpt || null,
@@ -139,13 +173,18 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
         status,
         published_date: editingArticle.published_date || null, // Will be set in save logic if needed
         featured: editingArticle.featured || false,
+        content_type: editingArticle.content_type,
+        featured_theme: editingArticle.featured_theme || false,
+        featured_site: editingArticle.featured_site || false,
         author: editingArticle.author || null,
         category: editingArticle.category || null,
         region: editingArticle.region || null,
-        geography: editingArticle.geography || null,
         theme: editingArticle.theme || null,
-        lgr_phase: editingArticle.lgr_phase || null,
       };
+
+      // Only include optional fields if they exist in the table schema
+      // These fields may not exist in all articles tables - they're primarily for materials
+      // If you need these fields, ensure the migrations that add them have been run
 
       if (editingArticle.id) {
         // For existing articles, preserve published_date if it exists
@@ -171,7 +210,10 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
           .from('articles')
           .update(articleData)
           .eq('id', editingArticle.id);
-        if (error) throw error;
+        if (error) {
+          console.error('Update error:', error);
+          throw error;
+        }
       } else {
         // For new articles, set published_date if publishing
         if (status === 'published' && !articleData.published_date) {
@@ -179,18 +221,53 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
         }
         
         const { error } = await supabase.from('articles').insert([articleData]);
-        if (error) throw error;
+        if (error) {
+          console.error('Insert error:', error);
+          throw error;
+        }
       }
 
       await fetchArticles();
       setEditingArticle(null);
       setPreviewMode(false);
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : String(err);
-      if (errorMessage.includes('duplicate key')) {
+      console.error('Save error:', err);
+      
+      // Extract error message from Supabase error object
+      let errorMessage = 'Unknown error';
+      if (err && typeof err === 'object') {
+        // Supabase errors have a 'message' property
+        if ('message' in err && typeof err.message === 'string') {
+          errorMessage = err.message;
+        } else if ('details' in err && typeof err.details === 'string') {
+          errorMessage = err.details;
+        } else if ('hint' in err && typeof err.hint === 'string') {
+          errorMessage = err.hint;
+        } else if ('code' in err) {
+          errorMessage = `Error code: ${err.code}`;
+        }
+      } else if (err instanceof Error) {
+        errorMessage = err.message;
+      } else if (typeof err === 'string') {
+        errorMessage = err;
+      }
+      
+      // Provide more specific error messages
+      const lowerMessage = errorMessage.toLowerCase();
+      if (lowerMessage.includes('duplicate key') || lowerMessage.includes('unique constraint') || lowerMessage.includes('violates unique constraint')) {
         setError('An article with this slug already exists. Please use a different slug.');
+      } else if (lowerMessage.includes('content_type') || lowerMessage.includes('content type')) {
+        setError('Invalid content type. Please select a valid content type from the dropdown.');
+      } else if (lowerMessage.includes('theme') && (lowerMessage.includes('required') || lowerMessage.includes('constraint'))) {
+        setError('Theme is required for published content (except FAQ and Other). Please select a core theme.');
+      } else if (lowerMessage.includes('check constraint') || lowerMessage.includes('violates check constraint')) {
+        setError('One or more fields have invalid values. Please check your input and try again.');
+      } else if (lowerMessage.includes('permission') || lowerMessage.includes('policy') || lowerMessage.includes('row-level security')) {
+        setError('Permission denied. Please check your authentication and try again.');
+      } else if (lowerMessage.includes('null value') || lowerMessage.includes('not null')) {
+        setError('A required field is missing. Please fill in all required fields.');
       } else {
-        setError('Failed to save article. Please try again.');
+        setError(`Failed to save article: ${errorMessage}. Please check the console for details.`);
       }
     } finally {
       setSaving(false);
@@ -391,13 +468,55 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                         className="w-4 h-4 text-teal-600 border-neutral-300 rounded focus:ring-2 focus:ring-teal-700"
                       />
                       <label htmlFor="featured-toggle" className="text-sm font-medium text-neutral-700 cursor-pointer">
-                        Feature Article
+                        Feature Article (Legacy)
                       </label>
                     </div>
                     {editingArticle.featured && (
                       <div className="flex items-center gap-2 px-3 py-2 bg-amber-50 border border-amber-200 rounded-lg">
                         <span className="text-xs font-bold text-amber-800 uppercase tracking-wide">Exclusive</span>
                         <span className="text-xs text-amber-700">badge will display</span>
+                      </div>
+                    )}
+                    <div className="flex items-center gap-2 pt-2 border-t border-neutral-200">
+                      <input
+                        type="checkbox"
+                        id="featured-theme-toggle"
+                        checked={editingArticle.featured_theme || false}
+                        onChange={(e) => setEditingArticle({ ...editingArticle, featured_theme: e.target.checked })}
+                        className="w-4 h-4 text-teal-600 border-neutral-300 rounded focus:ring-2 focus:ring-teal-700"
+                        disabled={!editingArticle.theme || editingArticle.content_type === 'FAQ' || editingArticle.content_type === 'Other'}
+                      />
+                      <label htmlFor="featured-theme-toggle" className="text-sm font-medium text-neutral-700 cursor-pointer">
+                        Featured – Core Theme
+                      </label>
+                    </div>
+                    {editingArticle.featured_theme && (
+                      <div className="flex items-center gap-2 px-3 py-2 bg-teal-50 border border-teal-200 rounded-lg">
+                        <span className="text-xs font-bold text-teal-800 uppercase tracking-wide">Featured</span>
+                        <span className="text-xs text-teal-700">Will replace current featured item in this theme</span>
+                      </div>
+                    )}
+                    {(!editingArticle.theme || editingArticle.content_type === 'FAQ' || editingArticle.content_type === 'Other') && (
+                      <p className="text-xs text-neutral-500">
+                        Theme must be set to feature within a core theme
+                      </p>
+                    )}
+                    <div className="flex items-center gap-2 pt-2 border-t border-neutral-200">
+                      <input
+                        type="checkbox"
+                        id="featured-site-toggle"
+                        checked={editingArticle.featured_site || false}
+                        onChange={(e) => setEditingArticle({ ...editingArticle, featured_site: e.target.checked })}
+                        className="w-4 h-4 text-teal-600 border-neutral-300 rounded focus:ring-2 focus:ring-teal-700"
+                      />
+                      <label htmlFor="featured-site-toggle" className="text-sm font-medium text-neutral-700 cursor-pointer">
+                        Featured Site Material
+                      </label>
+                    </div>
+                    {editingArticle.featured_site && (
+                      <div className="flex items-center gap-2 px-3 py-2 bg-purple-50 border border-purple-200 rounded-lg">
+                        <span className="text-xs font-bold text-purple-800 uppercase tracking-wide">Site Featured</span>
+                        <span className="text-xs text-purple-700">Will replace current featured material on front page</span>
                       </div>
                     )}
                   </div>
@@ -443,27 +562,120 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
 
                 <div className="bg-white rounded-lg shadow-sm p-6">
                   <label className="block text-sm font-medium text-neutral-700 mb-2">
+                    Content Type *
+                  </label>
+                  <select
+                    value={editingArticle.content_type || 'Article'}
+                    onChange={(e) => setEditingArticle({ ...editingArticle, content_type: e.target.value })}
+                    className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-transparent outline-none text-sm"
+                    required
+                  >
+                    <option value="News Update">News Update</option>
+                    <option value="Interview">Interview</option>
+                    <option value="Article">Article</option>
+                    <option value="Research">Research</option>
+                    <option value="Lesson">Lesson</option>
+                    <option value="FAQ">FAQ</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <p className="mt-2 text-xs text-neutral-500">
+                    Required field. Determines how content is classified and displayed.
+                  </p>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-sm p-6">
+                  <label className="block text-sm font-medium text-neutral-700 mb-2">
                     Featured Image
                   </label>
-                  <input
-                    type="url"
-                    value={editingArticle.featured_image || ''}
-                    onChange={(e) => setEditingArticle({ ...editingArticle, featured_image: e.target.value })}
-                    className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-transparent outline-none text-sm"
-                    placeholder="https://example.com/image.jpg"
-                  />
-                  {editingArticle.featured_image && (
-                    <img
-                      src={editingArticle.featured_image}
-                      alt="Featured"
-                      className="mt-4 w-full h-32 object-cover rounded-lg"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                      }}
+                  <div className="space-y-3">
+                    <input
+                      type="url"
+                      value={editingArticle.featured_image || ''}
+                      onChange={(e) => setEditingArticle({ ...editingArticle, featured_image: e.target.value })}
+                      className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-transparent outline-none text-sm"
+                      placeholder="https://example.com/image.jpg"
                     />
+                    <div className="text-center text-sm text-neutral-500">or</div>
+                    <div className="flex flex-col gap-2">
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (!file) return;
+
+                          if (file.size > 5 * 1024 * 1024) {
+                            setError('Image size must be less than 5MB');
+                            return;
+                          }
+
+                          const fileExt = file.name.split('.').pop();
+                          const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+                          const filePath = fileName;
+
+                          try {
+                            setError(''); // Clear any previous errors
+                            setUploadingImage(true);
+                            const { error: uploadError } = await supabase.storage
+                              .from('article-images')
+                              .upload(filePath, file);
+
+                            if (uploadError) throw uploadError;
+
+                            const { data } = supabase.storage
+                              .from('article-images')
+                              .getPublicUrl(filePath);
+
+                            setEditingArticle({ ...editingArticle, featured_image: data.publicUrl });
+                          } catch (err) {
+                            console.error('Upload error:', err);
+                            setError('Failed to upload image. Please try again.');
+                          } finally {
+                            setUploadingImage(false);
+                            // Reset the input so the same file can be selected again if needed
+                            if (fileInputRef.current) {
+                              fileInputRef.current.value = '';
+                            }
+                          }
+                        }}
+                        className="hidden"
+                        id="featured-image-upload"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          fileInputRef.current?.click();
+                        }}
+                        disabled={uploadingImage}
+                        className="flex items-center justify-center gap-2 w-full px-4 py-2 border border-neutral-300 rounded-lg bg-neutral-50 hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-center text-sm text-neutral-700 transition-colors"
+                      >
+                        <Upload size={16} />
+                        {uploadingImage ? 'Uploading...' : 'Choose Image File'}
+                      </button>
+                    </div>
+                  </div>
+                  {editingArticle.featured_image && (
+                    <div className="mt-4">
+                      <img
+                        src={editingArticle.featured_image}
+                        alt="Featured"
+                        className="w-full h-32 object-cover rounded-lg border border-neutral-200"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setEditingArticle({ ...editingArticle, featured_image: '' })}
+                        className="mt-2 text-xs text-red-600 hover:text-red-800"
+                      >
+                        Remove image
+                      </button>
+                    </div>
                   )}
                   <p className="mt-2 text-xs text-neutral-500">
-                    Enter the full URL of the featured image
+                    Upload an image or enter a URL. Images are uploaded to Supabase storage (max 5MB).
                   </p>
                 </div>
 
@@ -538,14 +750,26 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
 
                 <div className="bg-white rounded-lg shadow-sm p-6">
                   <label className="block text-sm font-medium text-neutral-700 mb-2">
-                    Theme
+                    Core Theme {editingArticle.content_type && editingArticle.content_type !== 'FAQ' && editingArticle.content_type !== 'Other' && editingArticle.status === 'published' && <span className="text-red-600">*</span>}
                   </label>
                   <select
+                    id="core-theme-select-admin-articles"
                     value={editingArticle.theme || ''}
-                    onChange={(e) => setEditingArticle({ ...editingArticle, theme: e.target.value || null })}
+                    onChange={(e) => {
+                      // #region agent log
+                      const options = Array.from(e.target.options).map(o => ({value: o.value, text: o.text}));
+                      fetch('http://127.0.0.1:7242/ingest/88a481fd-d50d-4443-a40c-d5f5149aa669',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AdminArticles.tsx:757',message:'Theme dropdown onChange - options count',data:{selectedValue:e.target.value,optionCount:options.length,allOptions:options},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+                      // #endregion
+                      setEditingArticle({ ...editingArticle, theme: e.target.value || null });
+                    }}
                     className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-transparent outline-none text-sm"
+                    required={!!(editingArticle.content_type && editingArticle.content_type !== 'FAQ' && editingArticle.content_type !== 'Other' && editingArticle.status === 'published')}
+<<<<<<< Current (Your changes)
                   >
-                    <option value="">Select theme (optional)</option>
+                    <option value="">Select core theme</option>
+                    <option value="Local Government">Local Government</option>
+                    <option value="Democracy">Democracy</option>
+                    <option value="Public Design">Public Design</option>
                     <option value="Governance">Governance</option>
                     <option value="Planning delivery">Planning delivery</option>
                     <option value="Finance and resilience">Finance and resilience</option>
@@ -553,10 +777,54 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                     <option value="Digital and data">Digital and data</option>
                     <option value="Public trust and engagement">Public trust and engagement</option>
                     <option value="Programme and transition">Programme and transition</option>
+=======
+                    ref={(selectEl) => {
+                      // #region agent log
+                      if (selectEl) {
+                        const options = Array.from(selectEl.options).map(o => ({value: o.value, text: o.text}));
+                        fetch('http://127.0.0.1:7242/ingest/88a481fd-d50d-4443-a40c-d5f5149aa669',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AdminArticles.tsx:select-ref',message:'Theme dropdown rendered - options count',data:{optionCount:options.length,options:options},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+                        // Monitor for external modifications (browser extensions adding options)
+                        // Immediately clean up any extension-added options
+                        const validValues = ['', 'Local Government', 'Democratic Legitimacy', 'Statecraft and System Design'];
+                        const initialOptions = Array.from(selectEl.options);
+                        const invalidInitialOptions = initialOptions.filter(opt => !validValues.includes(opt.value));
+                        if (invalidInitialOptions.length > 0) {
+                          invalidInitialOptions.reverse().forEach(opt => opt.remove());
+                        }
+                        const observer = new MutationObserver((mutations) => {
+                          const currentOptions = Array.from(selectEl.options).map(o => ({value: o.value, text: o.text}));
+                          fetch('http://127.0.0.1:7242/ingest/88a481fd-d50d-4443-a40c-d5f5149aa669',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AdminArticles.tsx:mutation-observer',message:'Theme dropdown DOM mutated - options changed by extension',data:{optionCount:currentOptions.length,options:currentOptions,mutations:mutations.map(m => ({type:m.type,addedNodes:m.addedNodes.length,removedNodes:m.removedNodes.length}))},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+                          // Remove extension-added options (keep only our 3 valid options)
+                          const validValues = ['', 'Local Government', 'Democratic Legitimacy', 'Statecraft and System Design'];
+                          const currentOptions = Array.from(selectEl.options);
+                          const invalidOptions = currentOptions.filter(opt => !validValues.includes(opt.value));
+                          if (invalidOptions.length > 0) {
+                            // Extension added options - remove them (remove in reverse to avoid index shifting)
+                            invalidOptions.reverse().forEach(opt => {
+                              opt.remove();
+                            });
+                          }
+                        });
+                        observer.observe(selectEl, { childList: true, subtree: true });
+                        (selectEl as any)._mutationObserver = observer;
+                      }
+                      // #endregion
+                    }}
+                  >
+                    <option value="">Select core theme</option>
+                    <option value="Local Government">Governance and Reform</option>
+                    <option value="Democratic Legitimacy">Democratic Legitimacy</option>
+                    <option value="Statecraft and System Design">Statecraft and System Design</option>
+>>>>>>> Incoming (Background Agent changes)
                   </select>
                   <p className="mt-2 text-xs text-neutral-500">
-                    Primary theme for topic clustering and internal linking
+                    Required for published content (except FAQ and Other). Primary theme for topic clustering.
                   </p>
+                  {editingArticle.content_type && editingArticle.content_type !== 'FAQ' && editingArticle.content_type !== 'Other' && !editingArticle.theme && (
+                    <p className="mt-1 text-xs text-amber-600">
+                      ⚠️ Theme is required when publishing this content type
+                    </p>
+                  )}
                 </div>
 
                 <div className="bg-white rounded-lg shadow-sm p-6">
@@ -654,7 +922,7 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
               <div key={article.id} className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
+                    <div className="flex items-center gap-3 mb-2 flex-wrap">
                       <h3 className="text-xl font-bold text-neutral-900">{article.title}</h3>
                       <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                         article.status === 'published'
@@ -663,6 +931,21 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                       }`}>
                         {article.status}
                       </span>
+                      {article.content_type && (
+                        <span className="px-2 py-1 rounded text-xs font-medium bg-teal-50 text-teal-700 border border-teal-200">
+                          {article.content_type}
+                        </span>
+                      )}
+                      {article.featured_site && (
+                        <span className="px-2 py-1 rounded text-xs font-medium bg-purple-50 text-purple-700 border border-purple-200">
+                          Site Featured
+                        </span>
+                      )}
+                      {article.featured_theme && (
+                        <span className="px-2 py-1 rounded text-xs font-medium bg-teal-50 text-teal-700 border border-teal-200">
+                          Theme Featured
+                        </span>
+                      )}
                     </div>
                     {article.excerpt && (
                       <p className="text-neutral-600 mb-3">{article.excerpt}</p>

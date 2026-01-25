@@ -23,6 +23,7 @@ const SurreyElectionSimulator = lazy(() => import('./pages/SurreyElectionSimulat
 const SurreyHub = lazy(() => import('./pages/SurreyHub'));
 const Article = lazy(() => import('./pages/Article'));
 const Insights = lazy(() => import('./pages/Insights'));
+const Reports = lazy(() => import('./pages/insights/Reports'));
 const Councils = lazy(() => import('./pages/Councils'));
 const Subscribe = lazy(() => import('./pages/Subscribe'));
 const Unsubscribe = lazy(() => import('./pages/Unsubscribe'));
@@ -34,6 +35,8 @@ const FactDetail = lazy(() => import('./pages/FactDetail'));
 const CouncilProfiles = lazy(() => import('./pages/CouncilProfiles'));
 const CouncilProfileDetail = lazy(() => import('./pages/CouncilProfileDetail'));
 const JourneyMap = lazy(() => import('./pages/JourneyMap'));
+const Sitemap = lazy(() => import('./pages/Sitemap'));
+const Topics = lazy(() => import('./pages/Topics'));
 
 // Admin pages - lazy loaded (less frequently accessed)
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
@@ -51,13 +54,27 @@ const FurtherReading = lazy(() => import('./pages/facts/FurtherReading'));
 const Councilopedia = lazy(() => import('./pages/facts/Councilopedia'));
 const BeginnersGuide = lazy(() => import('./pages/facts/BeginnersGuide'));
 
+// About sub-pages - lazy loaded
+const About = lazy(() => import('./pages/about/About'));
+const AboutEditor = lazy(() => import('./pages/about/Editor'));
+const AboutMethodology = lazy(() => import('./pages/about/Methodology'));
+const AboutContribute = lazy(() => import('./pages/about/Contribute'));
+const AboutCoalface = lazy(() => import('./pages/about/Coalface'));
+
+// Topic pages - lazy loaded
+const LocalGovernment = lazy(() => import('./pages/topics/LocalGovernment'));
+const Democracy = lazy(() => import('./pages/topics/Democracy'));
+const GovernanceAndReform = lazy(() => import('./pages/topics/GovernanceAndReform'));
+const DemocraticLegitimacy = lazy(() => import('./pages/topics/DemocraticLegitimacy'));
+const StatecraftAndSystemDesign = lazy(() => import('./pages/topics/StatecraftAndSystemDesign'));
+
 // Loading component for Suspense
 function PageLoader() {
   return (
-    <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
+    <div className="min-h-screen bg-academic-cream flex items-center justify-center">
       <div className="text-center">
-        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mb-4"></div>
-        <p className="text-slate-600">Loading...</p>
+        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-teal-700 mb-4"></div>
+        <p className="text-academic-neutral-600 font-serif">Loading...</p>
       </div>
     </div>
   );
@@ -124,7 +141,7 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 flex flex-col">
+    <div className="min-h-screen bg-academic-cream flex flex-col">
       <SkipLink />
       <KeyboardShortcuts />
       <Navigation onNavigate={handleNavigate} currentPage={getCurrentPage()} />
@@ -145,9 +162,14 @@ function AppContent() {
             <Route path="/facts/councilopedia/beginners-guide" element={<BeginnersGuide />} />
             <Route path="/facts/:slug" element={<FactDetail />} />
             <Route path="/forecast-2026-27" element={<PageWrapper>{(nav) => <JourneyMap onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/sitemap.xml" element={<Sitemap />} />
             <Route path="/lessons" element={<PageWrapper>{(nav) => <Lessons onNavigate={nav} />}</PageWrapper>} />
             <Route path="/reasons" element={<PageWrapper>{(nav) => <Reasons onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/about" element={<PageWrapper>{(nav) => <Reasons onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/about" element={<PageWrapper>{(nav) => <About onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/about/editor" element={<PageWrapper>{(nav) => <AboutEditor onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/about/methodology" element={<PageWrapper>{(nav) => <AboutMethodology onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/about/contribute" element={<PageWrapper>{(nav) => <AboutContribute onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/about/coalface" element={<PageWrapper>{(nav) => <AboutCoalface onNavigate={nav} />}</PageWrapper>} />
             <Route path="/interviews" element={<PageWrapper>{(nav) => <Interviews onNavigate={nav} />}</PageWrapper>} />
             <Route path="/surrey" element={<PageWrapper>{(nav) => <Surrey onNavigate={nav} />}</PageWrapper>} />
             <Route path="/surrey/election-tracker" element={<PageWrapper>{(nav) => <SurreyElectionTracker onNavigate={nav} />}</PageWrapper>} />
@@ -163,7 +185,14 @@ function AppContent() {
             <Route path="/news" element={<News />} />
             <Route path="/article/:slug" element={<ArticleWrapper />} />
             <Route path="/insights" element={<PageWrapper>{(nav) => <Insights onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/insights/reports" element={<PageWrapper>{(nav) => <Reports onNavigate={nav} />}</PageWrapper>} />
             <Route path="/insights/:slug" element={<ArticleViewWrapper />} />
+            <Route path="/topics" element={<PageWrapper>{(nav) => <Topics onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/topics/local-government" element={<PageWrapper>{(nav) => <LocalGovernment onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/topics/democracy" element={<PageWrapper>{(nav) => <Democracy onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/topics/governance-and-reform" element={<PageWrapper>{(nav) => <GovernanceAndReform onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/topics/democratic-legitimacy" element={<PageWrapper>{(nav) => <DemocraticLegitimacy onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/topics/statecraft-and-system-design" element={<PageWrapper>{(nav) => <StatecraftAndSystemDesign onNavigate={nav} />}</PageWrapper>} />
             <Route path="/admin/login" element={<PageWrapper>{(nav) => <AdminLogin onNavigate={nav} />}</PageWrapper>} />
             <Route path="/admin/dashboard" element={<PageWrapper>{(nav) => <AdminDashboard onNavigate={nav} />}</PageWrapper>} />
             <Route path="/admin/articles/login" element={<PageWrapper>{(nav) => <AdminArticleLogin onNavigate={nav} />}</PageWrapper>} />

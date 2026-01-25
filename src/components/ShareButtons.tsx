@@ -1,4 +1,5 @@
 import { Mail, Facebook, Linkedin, Twitter, Link2, MessageCircle } from 'lucide-react';
+import { trackShare } from '../utils/analytics';
 
 interface ShareButtonsProps {
   title: string;
@@ -26,10 +27,15 @@ export default function ShareButtons({ title, description, url }: ShareButtonsPr
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(url);
+      trackShare('copy', url);
       alert('Link copied to clipboard!');
     } catch (_err) {
       alert('Failed to copy link. Please try again.');
     }
+  };
+
+  const handleShare = (platform: string) => {
+    trackShare(platform, url);
   };
 
   const shareButtons = [
@@ -91,10 +97,11 @@ export default function ShareButtons({ title, description, url }: ShareButtonsPr
               <button
                 key={button.name}
                 onClick={copyToClipboard}
-                className={`flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-lg transition-colors text-slate-700 ${button.color}`}
+                className={`flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-lg transition-colors text-slate-700 ${button.color} focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2`}
                 title={button.name}
+                aria-label={`${button.name} - ${title}`}
               >
-                <Icon size={18} />
+                <Icon size={18} aria-hidden="true" />
                 <span className="text-sm font-medium">{button.name}</span>
               </button>
             );
@@ -106,10 +113,12 @@ export default function ShareButtons({ title, description, url }: ShareButtonsPr
               href={button.href}
               target="_blank"
               rel="noopener noreferrer"
-              className={`flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-lg transition-colors text-slate-700 ${button.color}`}
+              onClick={() => handleShare(button.name.toLowerCase())}
+              className={`flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-lg transition-colors text-slate-700 ${button.color} focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2`}
               title={`Share on ${button.name}`}
+              aria-label={`Share on ${button.name}: ${title}`}
             >
-              <Icon size={18} />
+              <Icon size={18} aria-hidden="true" />
               <span className="text-sm font-medium">{button.name}</span>
             </a>
           );

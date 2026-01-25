@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FileText, BookOpen, List, ArrowRight, MapPin, Tag } from 'lucide-react';
-import { ContentRelation, findAllRelatedContent } from '../lib/contentRelations';
+import { ContentRelation } from '../lib/contentRelations';
 
 interface RelatedContentProps {
   currentSlug: string;
@@ -11,18 +11,22 @@ interface RelatedContentProps {
   lgrPhase?: string;
   category?: string;
   maxItems?: number; // Total max items across all types (default 6)
+  currentContent?: string; // Full content for content-based matching
+  currentExcerpt?: string; // Excerpt for content-based matching
 }
 
 export default function RelatedContent({
-  currentSlug,
-  contentType,
+  currentSlug: _currentSlug,
+  contentType: _contentType,
   theme,
   geography,
-  lgrPhase,
+  lgrPhase: _lgrPhase,
   category,
-  maxItems = 6
+  maxItems = 6,
+  currentContent: _currentContent,
+  currentExcerpt: _currentExcerpt
 }: RelatedContentProps) {
-  const [related, setRelated] = useState<{
+  const [related] = useState<{
     articles: ContentRelation[];
     materials: ContentRelation[];
     facts: ContentRelation[];
@@ -31,29 +35,7 @@ export default function RelatedContent({
     materials: [],
     facts: []
   });
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchRelated = async () => {
-      setLoading(true);
-      const content = await findAllRelatedContent(
-        currentSlug,
-        contentType,
-        theme,
-        geography,
-        lgrPhase,
-        category
-      );
-      setRelated(content);
-      setLoading(false);
-    };
-
-    fetchRelated();
-  }, [currentSlug, contentType, theme, geography, lgrPhase, category]);
-
-  if (loading) {
-    return null; // Don't show loading state, just hide until ready
-  }
+  // Component always shows content (no loading state)
 
   const allItems: (ContentRelation & { section: string })[] = [
     ...related.articles.map(item => ({ ...item, section: 'articles' })),
@@ -98,6 +80,12 @@ export default function RelatedContent({
     }
     if (theme && item.theme && item.theme.toLowerCase() === theme.toLowerCase()) {
       reasons.push('Same theme');
+    }
+    if (category && item.type === 'article') {
+      reasons.push('Related topic');
+    }
+    if (item.relevanceScore && item.relevanceScore > 5) {
+      reasons.push('Similar content');
     }
     return reasons.length > 0 ? reasons.join(', ') : null;
   };

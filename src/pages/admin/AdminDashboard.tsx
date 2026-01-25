@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { LogOut, Home, FileText, List, BookOpen, MessageSquare, Video, Layout, Bell, HelpCircle, Newspaper, Edit3, Menu, X } from 'lucide-react';
+import { LogOut, Home, FileText, List, BookOpen, MessageSquare, Video, Layout, Bell, HelpCircle, Newspaper, Edit3, Menu, X, Settings, Globe, Tag, Archive } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import MaterialsEditor from './MaterialsEditor';
 import HomeContentEditor from './HomeContentEditor';
@@ -11,6 +11,13 @@ import SiteUpdatesEditor from './SiteUpdatesEditor';
 import FAQsEditor from './FAQsEditor';
 import NewsEditor from './NewsEditor';
 import AdminArticles from './AdminArticles';
+import FooterEditor from './FooterEditor';
+import PageContentEditor from './PageContentEditor';
+import TopicPagesEditor from './TopicPagesEditor';
+import AboutPagesEditor from './AboutPagesEditor';
+import ContactPageEditor from './ContactPageEditor';
+import SubscribePageEditor from './SubscribePageEditor';
+import ArchiveManager from './ArchiveManager';
 
 interface AdminDashboardProps {
   onNavigate: (page: string) => void;
@@ -56,6 +63,13 @@ export default function AdminDashboard({ onNavigate }: AdminDashboardProps) {
     { id: 'lessons', label: 'Lessons', icon: BookOpen },
     { id: 'reasons', label: 'Reasons', icon: MessageSquare },
     { id: 'interviews', label: 'Interviews', icon: Video },
+    { id: 'archive', label: 'Archive', icon: Archive },
+    { id: 'footer', label: 'Footer', icon: Settings },
+    { id: 'page-content', label: 'Page Content', icon: Globe },
+    { id: 'topics', label: 'Topic Pages', icon: Tag },
+    { id: 'about', label: 'About Pages', icon: BookOpen },
+    { id: 'contact', label: 'Contact Page', icon: MessageSquare },
+    { id: 'subscribe', label: 'Subscribe Page', icon: Bell },
   ];
 
   const renderContent = () => {
@@ -106,6 +120,20 @@ export default function AdminDashboard({ onNavigate }: AdminDashboardProps) {
         return <ReasonsEditor />;
       case 'interviews':
         return <InterviewsEditor />;
+      case 'archive':
+        return <ArchiveManager />;
+      case 'footer':
+        return <FooterEditor />;
+      case 'page-content':
+        return <PageContentEditor />;
+      case 'topics':
+        return <TopicPagesEditor />;
+      case 'about':
+        return <AboutPagesEditor />;
+      case 'contact':
+        return <ContactPageEditor />;
+      case 'subscribe':
+        return <SubscribePageEditor />;
       default:
         return null;
     }

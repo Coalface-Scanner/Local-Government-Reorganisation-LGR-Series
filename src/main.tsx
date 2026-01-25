@@ -4,37 +4,22 @@ import App from './App.tsx';
 import './index.css';
 import { AdminAuthProvider } from './contexts/AdminAuthContext';
 
-// URGENT: Disable service worker completely
-if ('serviceWorker' in navigator) {
-  // Run immediately, don't wait
-  (function() {
-    // Unregister all service workers
-    navigator.serviceWorker.getRegistrations().then((registrations) => {
-      registrations.forEach((registration) => {
-        registration.unregister().catch(() => {});
-      });
-    });
-    
-    // Clear all caches
-    if ('caches' in window) {
-      caches.keys().then((cacheNames) => {
-        cacheNames.forEach((cacheName) => {
-          caches.delete(cacheName).catch(() => {});
-        });
-      });
-    }
-    
-    // Stop any active service worker
-    if (navigator.serviceWorker.controller) {
-      navigator.serviceWorker.controller.postMessage({ type: 'SKIP_WAITING' });
-      // Force unregister
-      navigator.serviceWorker.getRegistration().then((registration) => {
-        if (registration) {
-          registration.unregister().catch(() => {});
+// Register service worker for offline support (production only)
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then((registration) => {
+        if (import.meta.env.DEV) {
+          console.log('Service Worker registered:', registration);
+        }
+      })
+      .catch((error) => {
+        if (import.meta.env.DEV) {
+          console.error('Service Worker registration failed:', error);
         }
       });
-    }
-  })();
+  });
 }
 
 createRoot(document.getElementById('root')!).render(

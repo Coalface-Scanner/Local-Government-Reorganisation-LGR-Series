@@ -92,7 +92,7 @@ export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-academic-cream">
       <MetaTags
         title="Facts & Figures - LGR Reorganisation Data"
         description="Key statistics, data, and facts about local government reorganisation in England. Explore timelines, councils involved, methodology, and sources."
@@ -110,27 +110,32 @@ export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
         }))}
       />
       
-      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border-l-4 border-teal-700 pl-6 mb-3">
-            <div className="text-xs font-bold tracking-widest text-teal-700 mb-1.5">
-              EVIDENCE-BASED ANALYSIS
-            </div>
+      <div className="relative bg-academic-warm py-8 overflow-hidden">
+        {/* Colored gradient overlay */}
+        <div 
+          className="absolute inset-0 opacity-60 z-0"
+          style={{
+            background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.4) 0%, rgba(6, 182, 212, 0.5) 50%, rgba(14, 165, 233, 0.4) 100%)'
+          }}
+        />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+          <div className="academic-section-header mb-6">
+            <div className="academic-section-label">EVIDENCE-BASED ANALYSIS</div>
+            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
+              Facts &{' '}
+              <span className="text-teal-700 font-serif italic">
+                Data
+              </span>
+            </h1>
+            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
+              Comprehensive evidence-based analysis of local government reorganisation in England. Explore timelines, councils, key facts, methodology, sources, and additional resources.
+            </p>
           </div>
-          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-3">
-            Facts &{' '}
-            <span className="text-teal-700 font-serif italic">
-              Data
-            </span>
-          </h1>
-          <p className="text-xl text-neutral-600 leading-relaxed max-w-3xl">
-            Comprehensive evidence-based analysis of local government reorganisation in England. Explore timelines, councils, key facts, methodology, sources, and additional resources.
-          </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {serviceCards.map((card) => {
             const Icon = card.icon;
             const isDisabled = card.disabled;
@@ -138,27 +143,27 @@ export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
               <div
                 key={card.id}
                 onClick={isDisabled ? undefined : () => navigate(card.route)}
-                className={`group rounded-2xl overflow-hidden shadow-lg border-2 transition-all duration-300 text-left h-full flex flex-col ${
+                className={`group academic-card overflow-hidden transition-all duration-300 text-left h-full flex flex-col ${
                   isDisabled
-                    ? 'bg-slate-100 border-slate-300 cursor-not-allowed opacity-60'
-                    : 'bg-white border-slate-200 hover:border-teal-400 hover:shadow-2xl cursor-pointer'
+                    ? 'bg-academic-warm border-academic-neutral-300 cursor-not-allowed opacity-60'
+                    : 'cursor-pointer hover:border-teal-700'
                 }`}
               >
-                <div className={`bg-gradient-to-br ${card.color} p-8 text-white ${isDisabled ? 'opacity-50' : ''}`}>
-                  <div className={`w-16 h-16 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center mb-4 transition-transform ${isDisabled ? '' : 'group-hover:scale-110'}`}>
+                <div className={`bg-teal-700 p-10 text-white ${isDisabled ? 'opacity-50' : ''}`}>
+                  <div className={`w-16 h-16 bg-white/20 flex items-center justify-center mb-5 transition-transform ${isDisabled ? '' : 'group-hover:scale-110'}`}>
                     <Icon className="text-white" size={32} />
                   </div>
-                  <h2 className="text-2xl font-bold leading-tight">{card.title}</h2>
+                  <h2 className="text-academic-2xl font-display font-bold text-white leading-tight">{card.title}</h2>
                   {isDisabled && (
-                    <p className="text-sm text-white/80 mt-2 italic">Coming soon</p>
+                    <p className="text-academic-sm text-white/80 mt-3 italic font-serif">Coming soon</p>
                   )}
                 </div>
-                <div className="p-6 flex-1 flex flex-col">
-                  <p className={`leading-relaxed mb-4 flex-1 ${isDisabled ? 'text-slate-500' : 'text-slate-600'}`}>
+                <div className="p-8 flex-1 flex flex-col">
+                  <p className={`leading-relaxed mb-5 flex-1 font-serif text-academic-base ${isDisabled ? 'text-academic-neutral-500' : 'text-academic-neutral-700'}`}>
                     {card.description}
                   </p>
                   {!isDisabled && (
-                    <div className="flex items-center gap-2 text-teal-600 font-semibold group-hover:gap-3 transition-all">
+                    <div className="flex items-center gap-2 text-teal-700 font-display font-semibold group-hover:gap-3 transition-all">
                       <span>Explore</span>
                       <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                     </div>
@@ -170,11 +175,11 @@ export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
                     </div>
 
         <div className="max-w-2xl mx-auto">
-          <div className="bg-teal-800 text-white p-6">
-            <h3 className="text-xl font-black mb-3">
+          <div className="bg-teal-800 text-white p-8">
+            <h3 className="text-academic-xl font-display font-bold text-white mb-4">
               The Dispatch
             </h3>
-            <p className="text-sm text-white mb-4">
+            <p className="text-academic-sm text-white mb-5 font-serif">
               Get the LGR Series directly in your inbox. No fluff, just deep analysis.
             </p>
             <SubscriptionForm variant="compact" />

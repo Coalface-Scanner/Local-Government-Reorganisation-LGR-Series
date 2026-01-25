@@ -47,33 +47,31 @@ export default function SurreyElectionTracker({ onNavigate: _onNavigate }: Surre
       />
 
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8 overflow-hidden">
+      <div className="relative bg-academic-warm py-8 overflow-hidden">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <button
             onClick={() => navigate('/surrey')}
-            className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-3 group"
+            className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-4 group"
           >
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
             Back to Surrey
           </button>
-          <div className="border-l-4 border-teal-700 pl-6 mb-3">
-            <div className="text-xs font-bold tracking-widest text-teal-700 mb-1.5">
-              SURREY LGR
-            </div>
+          <div className="academic-section-header mb-6">
+            <div className="academic-section-label">SURREY LGR</div>
+            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
+              Election{' '}
+              <span className="text-teal-700 font-serif italic">Tracker</span>
+            </h1>
+            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
+              Interactive tools for modelling Surrey's local government reorganisation. Explore aggregate totals, simulate election outcomes, and review reference data for East and West Surrey unitary authorities.
+            </p>
           </div>
-          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-3">
-            Election{' '}
-            <span className="text-teal-700 font-serif italic">Tracker</span>
-          </h1>
-          <p className="text-xl text-neutral-600 leading-relaxed max-w-3xl">
-            Interactive tools for modelling Surrey's local government reorganisation. Explore aggregate totals, simulate election outcomes, and review reference data for East and West Surrey unitary authorities.
-          </p>
         </div>
       </div>
 
       {/* Service Cards */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {serviceCards.map((card) => {
             const Icon = card.icon;
             const isMainCard = card.id === 'simulator';

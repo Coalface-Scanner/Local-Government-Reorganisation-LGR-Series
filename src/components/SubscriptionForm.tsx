@@ -1,14 +1,24 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabase';
+import { trackSubscription } from '../utils/analytics';
 
 interface SubscriptionFormProps {
   variant?: 'default' | 'compact';
+  defaultTopics?: string[];
 }
 
-export default function SubscriptionForm({ variant = 'default' }: SubscriptionFormProps) {
+const AVAILABLE_TOPICS = [
+  { value: 'local-government', label: 'Local Government' },
+  { value: 'democracy', label: 'Democracy' },
+  { value: 'statecraft-and-system-design', label: 'Statecraft and System Design' },
+];
+
+export default function SubscriptionForm({ variant = 'default', defaultTopics = [] }: SubscriptionFormProps) {
   const [email, setEmail] = useState('');
+  const [selectedTopics, setSelectedTopics] = useState<string[]>(defaultTopics);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [showTopics, setShowTopics] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,12 +61,24 @@ export default function SubscriptionForm({ variant = 'default' }: SubscriptionFo
         }
       } else {
         // Insert new subscription - add .select() to verify it worked
+        const subscriptionData: { email: string; active: boolean; topic_preferences?: string[] } = {
+          email,
+          active: true,
+        };
+        
+        // Add topic preferences if any are selected
+        if (selectedTopics.length > 0) {
+          subscriptionData.topic_preferences = selectedTopics;
+        }
+        
         const { data: insertData, error: insertError } = await supabase
           .from('subscriptions')
-          .insert([{ email, active: true }])
+          .insert([subscriptionData])
           .select(); // This returns the inserted row so we can verify
 
-        if (insertError) {
+        if (!insertError) {
+          trackSubscription(email, selectedTopics);
+        } else {
           console.error('Error inserting subscription:', insertError);
           console.error('Error details:', {
             message: insertError.message,
@@ -97,21 +119,21 @@ export default function SubscriptionForm({ variant = 'default' }: SubscriptionFo
   const isCompact = variant === 'compact';
 
   return (
-    <div className={isCompact ? '' : 'bg-gradient-to-br from-white to-slate-50/50 rounded-2xl shadow-xl border border-slate-200/60 p-10 backdrop-blur-sm'}>
+    <div className={isCompact ? 'text-white' : 'bg-gradient-to-br from-white to-slate-50/50 rounded-2xl shadow-xl border border-slate-200/60 p-10 backdrop-blur-sm'}>
       {!isCompact && (
         <>
           <div className="inline-flex items-center gap-2 mb-4">
-            <div className="w-1 h-6 bg-gradient-to-b from-teal-600 to-cyan-600 rounded-full"></div>
+            <div className="w-1 h-6 bg-gradient-to-b from-teal-500 via-cyan-500 to-sky-500 rounded-full"></div>
             <h3 className="text-2xl font-black text-slate-900 tracking-tight">Get the Series</h3>
           </div>
-          <p className="text-base text-white mb-8 leading-relaxed">
-            New insights as they're published. <span className="font-semibold text-white">Free</span> — no spam.
+          <p className="text-base text-slate-700 mb-8 leading-relaxed font-serif">
+            New insights as they're published. <span className="font-semibold text-slate-900">Free</span> — no spam.
           </p>
         </>
       )}
       {isCompact && (
-        <p className="text-sm text-white mb-4 leading-relaxed">
-          New insights as they're published. <span className="font-semibold text-white">Free</span> — no spam.
+        <p className="text-base mb-4 leading-relaxed font-serif font-semibold text-white">
+          New insights as they're published. <span className="font-bold text-white">Free</span> — no spam.
         </p>
       )}
 
@@ -127,13 +149,56 @@ export default function SubscriptionForm({ variant = 'default' }: SubscriptionFo
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email address"
             required
-            className="w-full px-5 py-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500 outline-none transition-all bg-white shadow-sm group-hover:border-slate-300 text-slate-900 placeholder:text-slate-400"
+            className={`w-full px-5 py-4 border-2 rounded-xl focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500 outline-none transition-all shadow-sm ${
+              isCompact 
+                ? 'border-white/30 bg-white text-slate-900 placeholder:text-slate-500 group-hover:border-white/50' 
+                : 'border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 group-hover:border-slate-300'
+            }`}
           />
         </div>
+        
+        {/* Topic Preferences - Light and optional */}
+        {!isCompact && (
+          <div className="space-y-2">
+            <button
+              type="button"
+              onClick={() => setShowTopics(!showTopics)}
+              className="text-sm text-slate-600 hover:text-slate-900 transition-colors"
+            >
+              {showTopics ? 'Hide' : 'Show'} topic preferences (optional)
+            </button>
+            {showTopics && (
+              <div className="space-y-2 pt-2 border-t border-slate-200">
+                {AVAILABLE_TOPICS.map((topic) => (
+                  <label key={topic.value} className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={selectedTopics.includes(topic.value)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectedTopics([...selectedTopics, topic.value]);
+                        } else {
+                          setSelectedTopics(selectedTopics.filter(t => t !== topic.value));
+                        }
+                      }}
+                      className="w-4 h-4 text-teal-600 border-slate-300 rounded focus:ring-teal-500"
+                    />
+                    <span className="text-sm text-slate-700">{topic.label}</span>
+                  </label>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+        
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-gradient-to-r from-teal-700 to-cyan-600 text-white py-4 px-6 rounded-xl font-bold tracking-wide hover:shadow-xl hover:shadow-teal-500/25 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98] text-sm uppercase letterspacing-wider min-h-[52px] flex items-center justify-center"
+          className={`w-full py-4 px-6 rounded-xl font-bold tracking-wide transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98] text-sm uppercase letterspacing-wider min-h-[52px] flex items-center justify-center ${
+            isCompact
+              ? 'bg-teal-700 text-white hover:bg-teal-800 hover:shadow-lg'
+              : 'bg-gradient-to-r from-teal-700 to-cyan-600 text-white hover:shadow-xl hover:shadow-teal-500/25'
+          }`}
         >
           {loading ? 'Subscribing...' : 'Subscribe Now'}
         </button>

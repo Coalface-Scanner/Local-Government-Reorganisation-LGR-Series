@@ -1,9 +1,5 @@
 @import "tailwindcss";
 @theme {
-  --color-vibrant-green-50: #ecfdf5;
-  --color-vibrant-green-100: #d1fae5;
-  /* ... (all your custom colors from tailwind.config.js) */
-}@theme {
   /* Vibrant Green */
   --color-vibrant-green-50: #ecfdf5;
   --color-vibrant-green-100: #d1fae5;
@@ -16,7 +12,7 @@
   --color-vibrant-green-800: #065f46;
   --color-vibrant-green-900: #064e3b;
 
-  /* Teal (overriding default) */
+  /* Vibrant Teal/Turquoise Palette - Engaging and modern */
   --color-teal-50: #f0fdfa;
   --color-teal-100: #ccfbf1;
   --color-teal-200: #99f6e4;
@@ -27,6 +23,51 @@
   --color-teal-700: #0f766e;
   --color-teal-800: #115e59;
   --color-teal-900: #134e4a;
+  
+  /* Bright Cyan/Turquoise Accents */
+  --color-cyan-50: #ecfeff;
+  --color-cyan-100: #cffafe;
+  --color-cyan-200: #a5f3fc;
+  --color-cyan-300: #67e8f9;
+  --color-cyan-400: #22d3ee;
+  --color-cyan-500: #06b6d4;
+  --color-cyan-600: #0891b2;
+  --color-cyan-700: #0e7490;
+  --color-cyan-800: #155e75;
+  --color-cyan-900: #164e63;
+  
+  /* Sky Blue - Bright and engaging */
+  --color-sky-50: #f0f9ff;
+  --color-sky-100: #e0f2fe;
+  --color-sky-200: #bae6fd;
+  --color-sky-300: #7dd3fc;
+  --color-sky-400: #38bdf8;
+  --color-sky-500: #0ea5e9;
+  --color-sky-600: #0284c7;
+  --color-sky-700: #0369a1;
+  --color-sky-800: #075985;
+  --color-sky-900: #0c4a6e;
+  
+  /* Emerald Green - Light and fresh */
+  --color-emerald-50: #ecfdf5;
+  --color-emerald-100: #d1fae5;
+  --color-emerald-200: #a7f3d0;
+  --color-emerald-300: #6ee7b7;
+  --color-emerald-400: #34d399;
+  --color-emerald-500: #10b981;
+  --color-emerald-600: #059669;
+  --color-emerald-700: #047857;
+  --color-emerald-800: #065f46;
+  --color-emerald-900: #064e3b;
+  
+  /* LGR Primary Colors - Vibrant Blue/Teal/Turquoise */
+  --color-lgr-primary: #0d9488; /* Vibrant teal */
+  --color-lgr-primary-dark: #0f766e;
+  --color-lgr-primary-light: #2dd4bf;
+  --color-lgr-accent: #06b6d4; /* Bright cyan */
+  --color-lgr-accent-light: #22d3ee; /* Light turquoise */
+  --color-lgr-blue: #0ea5e9; /* Sky blue */
+  --color-lgr-green: #10b981; /* Emerald green */
 
   /* Corporate Blue */
   --color-corporate-blue-50: #eff6ff;
@@ -39,10 +80,142 @@
   --color-corporate-blue-700: #1d4ed8;
   --color-corporate-blue-800: #1e40af;
   --color-corporate-blue-900: #1e3a8a;
+
+  /* Academic Color Palette */
+  --color-academic-cream: #faf8f5;
+  --color-academic-warm: #f5f3f0;
+  --color-academic-stone: #e8e6e1;
+  --color-academic-charcoal: #2c2a26;
+  --color-academic-earth: #6b6459;
+  --color-academic-sage: #8b9a8a;
+  --color-academic-slate: #5a6c5d;
+
+  /* Academic Neutral Scale */
+  --color-academic-neutral-50: #faf9f7;
+  --color-academic-neutral-100: #f4f2ef;
+  --color-academic-neutral-200: #e8e5df;
+  --color-academic-neutral-300: #d6d1c7;
+  --color-academic-neutral-400: #b8b0a3;
+  --color-academic-neutral-500: #9a9080;
+  --color-academic-neutral-600: #7d7364;
+  --color-academic-neutral-700: #665d51;
+  --color-academic-neutral-800: #534c42;
+  --color-academic-neutral-900: #454037;
+
+  /* Academic Blue Scale */
+  --color-academic-blue-50: #f5f7f9;
+  --color-academic-blue-100: #e3e8ed;
+  --color-academic-blue-200: #c7d1db;
+  --color-academic-blue-300: #a3b4c4;
+  --color-academic-blue-400: #7a92a8;
+  --color-academic-blue-500: #5d7489;
+  --color-academic-blue-600: #4a5d70;
+  --color-academic-blue-700: #3e4d5c;
+  --color-academic-blue-800: #36414d;
+  --color-academic-blue-900: #2f3842;
+
+  /* LGR Logo Red - Inspired by HighRed Logo */
+  --color-lgr-red-50: #fef2f2;
+  --color-lgr-red-100: #fee2e2;
+  --color-lgr-red-200: #fecaca;
+  --color-lgr-red-300: #fca5a5;
+  --color-lgr-red-400: #f87171;
+  --color-lgr-red-500: #ef4444;
+  --color-lgr-red-600: #dc2626;
+  --color-lgr-red-700: #b91c1c;
+  --color-lgr-red-800: #991b1b;
+  --color-lgr-red-900: #7f1d1d;
+
+  /* LGR Logo Accent Colors - Rich, sophisticated reds */
+  --color-lgr-primary: #c41e3a; /* Deep red from logo */
+  --color-lgr-primary-dark: #9a1629;
+  --color-lgr-primary-light: #e63950;
+  --color-lgr-secondary: #8b1538; /* Darker red accent */
+  --color-lgr-accent: #ff4757; /* Bright red for highlights */
+
+  /* Font Families - Tailwind v4 syntax */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: 'Crimson Pro', Georgia, serif;
+  --font-display: 'Inter', system-ui, sans-serif;
 }
 @layer base {
   body {
-    @apply text-gray-900;
+    @apply text-academic-neutral-900 font-serif;
+    font-size: 1rem;
+    line-height: 1.75;
+    letter-spacing: 0.01em;
+    background-color: #faf9f7;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-bold text-academic-charcoal;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  
+  @media (min-width: 768px) {
+    h1 {
+      font-size: 2.5rem;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+    }
+  }
+  
+  h2 {
+    font-size: 1.75rem;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+  
+  @media (min-width: 768px) {
+    h2 {
+      font-size: 2rem;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+    }
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+  }
+  
+  @media (min-width: 768px) {
+    h3 {
+      font-size: 1.75rem;
+      line-height: 1.4;
+      letter-spacing: -0.02em;
+    }
+  }
+  
+  h4 {
+    font-size: 1.25rem;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+  }
+  
+  @media (min-width: 768px) {
+    h4 {
+      font-size: 1.5rem;
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+    }
+  }
+  
+  p {
+    @apply font-serif;
+    font-size: 1rem;
+    line-height: 1.75;
+    letter-spacing: 0.01em;
+  }
+  
+  a {
+    @apply text-teal-700 hover:text-teal-800 transition-colors;
   }
 }
 
@@ -422,4 +595,1014 @@
 .chat-messages::-webkit-scrollbar-thumb {
   background: #334155;
   border-radius: 3px;
+}
+
+/* Academic Design System Styles */
+
+/* Image Styling */
+.academic-hero-image {
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.academic-article-image {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 2rem 0;
+}
+
+.academic-image-caption {
+  @apply text-academic-neutral-600 italic mt-2 text-center;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Hero image with overlay for text readability */
+.academic-hero-container {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  min-height: 500px;
+}
+
+.academic-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4));
+  z-index: 1;
+}
+
+/* Prose Styling for Articles */
+.academic-prose {
+  @apply font-serif leading-relaxed;
+  font-size: 1rem;
+  line-height: 1.85;
+  letter-spacing: 0.01em;
+  max-width: 65ch;
+  color: #4a4a42;
+}
+
+/* Mobile responsiveness for prose */
+@media (max-width: 768px) {
+  .academic-prose {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+  
+  .academic-prose h2 {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .academic-prose h3 {
+    font-size: 1.25rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .academic-prose h4 {
+    font-size: 1.125rem;
+  }
+  
+  .academic-prose p {
+    margin-bottom: 1.25rem;
+  }
+}
+
+.academic-prose p {
+  @apply mb-6;
+  font-family: 'Crimson Pro', serif;
+  line-height: 1.85;
+  font-size: 1rem;
+  color: #4a4a42;
+}
+
+.academic-prose h1 {
+  @apply mt-12 mb-8 font-display font-black text-academic-charcoal;
+  font-size: 2rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.academic-prose h2 {
+  @apply mt-12 mb-6 font-display font-bold text-academic-charcoal;
+  font-size: 1.75rem;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  scroll-margin-top: 80px;
+}
+
+.academic-prose h3 {
+  @apply mt-8 mb-4 font-display font-semibold text-academic-charcoal;
+  font-size: 1.5rem;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  scroll-margin-top: 80px;
+}
+
+.academic-prose h4 {
+  @apply mt-6 mb-3 font-display font-semibold text-academic-charcoal;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  scroll-margin-top: 80px;
+}
+
+.academic-prose blockquote {
+  @apply border-l-4 pl-6 my-8 italic;
+  border-left-color: var(--color-teal-500);
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: #5a5a52;
+  font-family: 'Crimson Pro', serif;
+  background: linear-gradient(to right, rgba(20, 184, 166, 0.05), transparent);
+  padding-right: 1rem;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+@media (max-width: 768px) {
+  .academic-prose blockquote {
+    font-size: 1rem;
+    padding-left: 1rem;
+    padding-right: 0.75rem;
+  }
+}
+
+.academic-prose ul,
+.academic-prose ol {
+  @apply my-6 pl-6;
+}
+
+.academic-prose li {
+  @apply mb-3;
+  line-height: 1.85;
+  color: #4a4a42;
+  font-family: 'Crimson Pro', serif;
+}
+
+.academic-prose a {
+  color: #0f766e;
+  text-decoration: underline;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.academic-prose a:hover {
+  color: #0d9488;
+  text-decoration-thickness: 2px;
+}
+
+/* Internal link styling */
+.academic-prose a.internal-link,
+.internal-link {
+  color: #0f766e;
+  text-decoration: underline;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.academic-prose a.internal-link:hover,
+.internal-link:hover {
+  color: #0d9488;
+  text-decoration-thickness: 2px;
+  border-bottom-color: #0d9488;
+}
+
+.academic-prose strong {
+  color: #2c2a26;
+  font-weight: 600;
+}
+
+.academic-prose em {
+  font-style: italic;
+}
+
+.academic-prose img {
+  max-width: 100%;
+  height: auto;
+  margin: 3rem 0;
+}
+
+.academic-prose hr {
+  border: none;
+  border-top: 1px solid #d6d1c7;
+  margin: 3rem 0;
+}
+
+.academic-prose code {
+  background-color: #f4f2ef;
+  padding: 0.125rem 0.375rem;
+  border-radius: 2px;
+  font-size: 0.875em;
+  font-family: 'Courier New', monospace;
+  color: #2c2a26;
+}
+
+.academic-prose pre {
+  background-color: #2c2a26;
+  color: #faf9f7;
+  padding: 1.5rem;
+  border-radius: 2px;
+  overflow-x: auto;
+  margin: 2rem 0;
+}
+
+.academic-prose pre code {
+  background-color: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+.academic-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+}
+
+.academic-prose th {
+  @apply border border-academic-neutral-300 bg-academic-neutral-100 px-4 py-3 text-left font-display font-bold text-academic-charcoal;
+}
+
+.academic-prose td {
+  @apply border border-academic-neutral-300 px-4 py-3 text-academic-neutral-700;
+}
+
+/* Card Styling - Academic */
+.academic-card {
+  @apply bg-white border border-academic-neutral-300;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.academic-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(20, 184, 166, 0.4), rgba(6, 182, 212, 0.4), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.academic-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(20, 184, 166, 0.15);
+  transform: translateY(-2px);
+  border-color: rgba(20, 184, 166, 0.3);
+}
+
+.academic-card:hover::before {
+  opacity: 1;
+}
+
+/* Button Styling - Academic */
+.academic-button {
+  @apply font-display font-semibold px-6 py-3;
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.academic-button-primary {
+  @apply bg-gradient-to-r from-teal-700 to-teal-600 text-white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.academic-button-primary:hover {
+  @apply from-teal-800 to-teal-700;
+  box-shadow: 0 20px 25px -5px rgba(34, 197, 94, 0.25), 0 8px 10px -6px rgba(34, 197, 94, 0.25);
+  transform: translateY(-1px) scale(1.02);
+}
+
+.academic-button-primary:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.academic-button-primary:focus-visible {
+  outline: 2px solid rgba(20, 184, 166, 0.6);
+  outline-offset: 2px;
+}
+
+.academic-button-secondary {
+  @apply bg-academic-neutral-100 text-academic-charcoal border border-academic-neutral-300 hover:bg-academic-neutral-200;
+  border-radius: 0.75rem;
+}
+
+/* Additional academic button variants */
+.academic-button-outline {
+  @apply bg-transparent text-teal-600 border-2 border-teal-500 hover:bg-gradient-to-r hover:from-teal-500 hover:via-cyan-500 hover:to-sky-500 hover:text-white;
+  border-radius: 0.75rem;
+}
+
+/* Section Headers */
+.academic-section-header {
+  @apply border-l-4 pl-6 mb-6;
+  border-left-color: var(--color-teal-500);
+  position: relative;
+}
+
+.academic-section-header::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, rgba(20, 184, 166, 0.4), rgba(6, 182, 212, 0.2));
+  opacity: 0.6;
+}
+
+.academic-section-label {
+  @apply font-display font-bold tracking-widest uppercase mb-1;
+  color: var(--color-teal-600);
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+  position: relative;
+  display: inline-block;
+}
+
+.academic-section-label::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--color-teal-500), var(--color-cyan-500));
+  transition: width 0.3s ease;
+}
+
+.academic-section-header:hover .academic-section-label::after {
+  width: 100%;
+}
+
+/* Background Colors */
+.bg-academic-cream {
+  background-color: #faf8f5;
+}
+
+.bg-academic-warm {
+  background-color: #f5f3f0;
+}
+
+/* Enhanced Visual Effects */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 1000px 100%;
+}
+
+/* Image hover effects */
+.image-zoom-effect {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.image-zoom-effect:hover {
+  transform: scale(1.05);
+}
+
+/* Gradient overlays */
+.gradient-overlay {
+  position: relative;
+}
+
+.gradient-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  pointer-events: none;
+}
+
+/* Decorative elements */
+.decorative-accent {
+  position: relative;
+}
+
+.decorative-accent::before {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: linear-gradient(180deg, rgba(20, 184, 166, 0.4), rgba(6, 182, 212, 0.2));
+  border-radius: 2px;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced focus states */
+*:focus-visible {
+  outline: 2px solid rgba(42, 112, 99, 0.5);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Subtle background patterns */
+.bg-pattern-dots {
+  background-image: radial-gradient(circle, rgba(20, 184, 166, 0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.bg-pattern-grid {
+  background-image: 
+    linear-gradient(rgba(20, 184, 166, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(6, 182, 212, 0.05) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+/* LGR Logo Blue/Teal Color Utilities - Use these classes throughout the site */
+.bg-lgr-blue {
+  background-color: var(--color-lgr-blue);
+}
+
+.bg-lgr-blue-dark {
+  background-color: var(--color-lgr-blue-dark);
+}
+
+.bg-lgr-blue-light {
+  background-color: var(--color-lgr-blue-light);
+}
+
+.text-lgr-blue {
+  color: var(--color-lgr-blue);
+}
+
+.text-lgr-blue-dark {
+  color: var(--color-lgr-blue-dark);
+}
+
+.text-lgr-blue-light {
+  color: var(--color-lgr-blue-light);
+}
+
+.border-lgr-blue {
+  border-color: var(--color-lgr-blue);
+}
+
+.hover\:bg-lgr-blue-dark:hover {
+  background-color: var(--color-lgr-blue-dark);
+}
+
+.hover\:text-lgr-blue:hover {
+  color: var(--color-lgr-blue);
+}
+
+.hover\:border-lgr-blue:hover {
+  border-color: var(--color-lgr-blue);
+}
+
+/* Vibrant Teal/Cyan/Sky gradients for visual interest */
+.bg-gradient-teal {
+  background: linear-gradient(135deg, var(--color-teal-500), var(--color-cyan-500), var(--color-sky-500));
+}
+
+.bg-gradient-teal-light {
+  background: linear-gradient(135deg, var(--color-teal-400), var(--color-cyan-400), var(--color-sky-400));
+}
+
+.bg-gradient-teal-dark {
+  background: linear-gradient(135deg, var(--color-teal-600), var(--color-cyan-600), var(--color-sky-600));
+}
+
+.bg-gradient-cyan-sky {
+  background: linear-gradient(135deg, var(--color-cyan-500), var(--color-sky-500));
+}
+
+.bg-gradient-teal-emerald {
+  background: linear-gradient(135deg, var(--color-teal-500), var(--color-emerald-500));
+}
+
+/* Editorial Layout Classes */
+
+.editorial-layout {
+  max-width: 65ch;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+@media (min-width: 768px) {
+  .editorial-layout {
+    padding: 3rem 2rem;
+  }
+}
+
+/* Standfirst - Large introductory paragraph */
+.standfirst-wrapper {
+  background: linear-gradient(to right, var(--color-teal-50), var(--color-teal-100));
+  border-left: 4px solid var(--color-teal-600);
+  padding: 1.5rem 2rem;
+  margin: 1.5rem 0 2rem;
+  border-radius: 4px;
+}
+
+.standfirst-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-teal-700);
+  font-family: 'Inter', system-ui, sans-serif;
+  margin-bottom: 0.75rem;
+}
+
+.standfirst {
+  font-size: 1.25rem;
+  line-height: 1.85;
+  color: var(--color-academic-charcoal);
+  font-family: 'Crimson Pro', serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+@media (min-width: 768px) {
+  .standfirst-wrapper {
+    padding: 2rem 2.5rem;
+    margin: 2rem 0 2.5rem;
+  }
+  
+  .standfirst {
+    font-size: 1.375rem;
+  }
+}
+
+/* Pull Quote */
+.pull-quote {
+  margin: 3rem 0;
+  padding: 2rem 0;
+  border-left: 4px solid var(--color-teal-500);
+  padding-left: 2rem;
+  position: relative;
+}
+
+.pull-quote-content {
+  font-size: 1.5rem;
+  line-height: 1.7;
+  font-style: italic;
+  color: var(--color-academic-charcoal);
+  font-family: 'Crimson Pro', serif;
+  margin: 0;
+  font-weight: 400;
+}
+
+@media (min-width: 768px) {
+  .pull-quote-content {
+    font-size: 1.75rem;
+  }
+}
+
+.pull-quote-attribution {
+  display: block;
+  margin-top: 1rem;
+  font-size: 0.9375rem;
+  font-style: normal;
+  color: var(--color-academic-neutral-600);
+  font-family: 'Inter', sans-serif;
+}
+
+.pull-quote-attribution::before {
+  content: '— ';
+}
+
+/* Key Finding Call-out */
+.key-finding {
+  background: linear-gradient(to right, rgba(20, 184, 166, 0.08), rgba(20, 184, 166, 0.03));
+  border-left: 4px solid var(--color-teal-600);
+  padding: 1.5rem 2rem;
+  margin: 2.5rem 0;
+  border-radius: 2px;
+}
+
+.key-finding-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-academic-charcoal);
+  margin: 0 0 1rem;
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.key-finding-content {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--color-academic-neutral-700);
+  font-family: 'Crimson Pro', serif;
+}
+
+.key-finding-content p {
+  margin: 0;
+}
+
+.key-finding-content p + p {
+  margin-top: 1rem;
+}
+
+/* Evidence/Methods Section */
+.evidence-section {
+  margin: 3rem 0;
+  padding: 2rem;
+  background: var(--color-academic-neutral-50);
+  border-top: 2px solid var(--color-academic-neutral-300);
+  border-bottom: 2px solid var(--color-academic-neutral-300);
+}
+
+.evidence-section h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-academic-charcoal);
+  margin: 0 0 1.5rem;
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.evidence-section p,
+.evidence-section ul,
+.evidence-section ol {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: var(--color-academic-neutral-700);
+  font-family: 'Crimson Pro', serif;
+}
+
+.evidence-section ul,
+.evidence-section ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+/* Author Bio */
+.author-bio {
+  display: flex;
+  gap: 1.5rem;
+  margin: 3rem 0;
+  padding: 2rem;
+  background: var(--color-academic-warm);
+  border-top: 1px solid var(--color-academic-neutral-300);
+  border-bottom: 1px solid var(--color-academic-neutral-300);
+}
+
+.author-bio-image {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.author-bio-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.author-bio-content {
+  flex: 1;
+}
+
+.author-bio-name {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-academic-charcoal);
+  margin: 0 0 0.5rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.author-bio-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.author-bio-affiliation,
+.author-bio-credentials {
+  font-size: 0.875rem;
+  color: var(--color-academic-neutral-600);
+  font-family: 'Inter', sans-serif;
+}
+
+.author-bio-text {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: var(--color-academic-neutral-700);
+  font-family: 'Crimson Pro', serif;
+  margin: 0;
+}
+
+/* Follow Topic Button */
+.follow-topic-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background: transparent;
+  border: 1px solid var(--color-teal-600);
+  color: var(--color-teal-600);
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.follow-topic-button:hover {
+  background: var(--color-teal-50);
+  border-color: var(--color-teal-700);
+  color: var(--color-teal-700);
+}
+
+.follow-topic-button.following {
+  background: var(--color-teal-600);
+  color: white;
+  border-color: var(--color-teal-600);
+}
+
+.follow-topic-button.following:hover {
+  background: var(--color-teal-700);
+  border-color: var(--color-teal-700);
+}
+
+/* Editorial Heading Utility */
+.editorial-heading {
+  font-family: 'Crimson Pro', serif;
+  font-weight: 700;
+  color: var(--color-academic-charcoal);
+}
+
+/* Refined Typography - Increased line-height for body */
+@layer base {
+  body {
+    line-height: 1.85;
+  }
+  
+  .academic-prose p {
+    line-height: 1.85;
+  }
+}
+
+/* Print Styles */
+/* Accessibility: Focus styles */
+*:focus-visible {
+  outline: 2px solid #14b8a6;
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid #14b8a6;
+  outline-offset: 2px;
+}
+
+/* Skip link styles */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.sr-only:focus {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: auto;
+  height: auto;
+  padding: 1rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+  background-color: #0f766e;
+  color: white;
+  font-weight: bold;
+  border-radius: 0.5rem;
+}
+
+@media print {
+  @page {
+    margin: 2cm;
+    size: A4;
+  }
+
+  * {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Hide navigation, footer, and non-essential elements */
+  nav,
+  footer,
+  .no-print,
+  button:not(.print-button),
+  .academic-button,
+  .share-buttons,
+  .subscription-form,
+  .related-content,
+  .faq-section,
+  .page-navigation,
+  .back-to-top,
+  .cookie-banner,
+  .skip-link {
+    display: none !important;
+  }
+
+  /* Typography */
+  body {
+    font-size: 12pt;
+    line-height: 1.6;
+    color: #000;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+    color: #000;
+    font-weight: 700;
+  }
+
+  h1 {
+    font-size: 24pt;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+  }
+
+  h2 {
+    font-size: 18pt;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+
+  h3 {
+    font-size: 14pt;
+    margin-top: 1em;
+    margin-bottom: 0.4em;
+  }
+
+  p {
+    orphans: 3;
+    widows: 3;
+    margin-bottom: 1em;
+  }
+
+  /* Links */
+  a {
+    color: #000;
+    text-decoration: underline;
+  }
+
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 10pt;
+    color: #666;
+  }
+
+  a[href^="#"]:after,
+  a[href^="javascript:"]:after {
+    content: "";
+  }
+
+  /* Images */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+    page-break-inside: avoid;
+  }
+
+  /* Tables */
+  table {
+    border-collapse: collapse;
+    page-break-inside: avoid;
+  }
+
+  th, td {
+    border: 1px solid #000;
+    padding: 0.5em;
+  }
+
+  /* Lists */
+  ul, ol {
+    page-break-inside: avoid;
+  }
+
+  li {
+    page-break-inside: avoid;
+  }
+
+  /* Article content */
+  article {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .academic-card {
+    border: 1px solid #ccc;
+    padding: 1em;
+    margin-bottom: 1em;
+    page-break-inside: avoid;
+  }
+
+  /* Page breaks */
+  .page-break-before {
+    page-break-before: always;
+  }
+
+  .page-break-after {
+    page-break-after: always;
+  }
+
+  .no-page-break {
+    page-break-inside: avoid;
+  }
+
+  /* Header and footer for print */
+  @page {
+    @top-center {
+      content: "LGR Series";
+      font-size: 10pt;
+      color: #666;
+    }
+    @bottom-center {
+      content: "Page " counter(page) " of " counter(pages);
+      font-size: 10pt;
+      color: #666;
+    }
+  }
+
+  /* Print URL and date */
+  .print-footer {
+    margin-top: 2em;
+    padding-top: 1em;
+    border-top: 1px solid #ccc;
+    font-size: 10pt;
+    color: #666;
+  }
+
+  .print-footer::before {
+    content: "Source: " attr(data-url) " | Printed: " attr(data-date);
+  }
 }

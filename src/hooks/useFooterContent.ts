@@ -1,0 +1,58 @@
+import { useState, useEffect } from 'react';
+import { supabase } from '../lib/supabase';
+
+interface FooterContentItem {
+  id: string;
+  section: string;
+  content: string;
+  link_text: string | null;
+  link_url: string | null;
+  order_index: number;
+}
+
+interface UseFooterContentResult {
+  content: FooterContentItem[];
+  loading: boolean;
+  error: string | null;
+  getSection: (section: string) => FooterContentItem | undefined;
+}
+
+export function useFooterContent(): UseFooterContentResult {
+  const [content, setContent] = useState<FooterContentItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const { data, error: fetchError } = await supabase
+          .from('footer_content')
+          .select('*')
+          .order('order_index');
+
+        if (fetchError) {
+          throw fetchError;
+        }
+
+        setContent(data || []);
+      } catch (err) {
+        console.error('Error fetching footer content:', err);
+        setError(err instanceof Error ? err.message : 'Failed to fetch footer content');
+        setContent([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchContent();
+  }, []);
+
+  const getSection = (section: string): FooterContentItem | undefined => {
+    return content.find(item => item.section === section);
+  };
+
+  return { content, loading, error, getSection };
+}

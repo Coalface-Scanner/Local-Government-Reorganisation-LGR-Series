@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Save, X, Image as ImageIcon } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Plus, Edit, Trash2, Save, X, Image as ImageIcon, Upload } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { updateSiteTimestamp } from '../../lib/updateTimestamp';
 import WYSIWYGEditor from '../../components/WYSIWYGEditor';
@@ -11,6 +11,10 @@ interface Material {
   content: string | null;
   rich_content: string | null;
   type: string;
+  content_type: string | null;
+  featured_theme: boolean;
+  featured_site: boolean;
+  theme: string | null;
   main_image_url: string | null;
   additional_images: Array<{ url: string; caption?: string }>;
   slug: string;
@@ -32,6 +36,10 @@ export default function MaterialsEditor() {
     content: '',
     rich_content: '',
     type: 'Insight',
+    content_type: 'Article',
+    featured_theme: false,
+    featured_site: false,
+    theme: null as string | null,
     format: 'Article',
     main_image_url: '',
     additional_images: [] as Array<{ url: string; caption?: string }>,
@@ -42,36 +50,63 @@ export default function MaterialsEditor() {
   const [newImageUrl, setNewImageUrl] = useState('');
   const [newImageCaption, setNewImageCaption] = useState('');
   const [newTag, setNewTag] = useState('');
+  const [uploadingMainImage, setUploadingMainImage] = useState(false);
+  const [uploadingAdditionalImage, setUploadingAdditionalImage] = useState(false);
+  const mainImageFileInputRef = useRef<HTMLInputElement>(null);
+  const additionalImageFileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchMaterials();
   }, []);
 
   const fetchMaterials = async () => {
-    const { data, error } = await supabase
-      .from('materials')
-      .select('*')
-      .order('published_date', { ascending: false });
+    try {
+      const { data, error } = await supabase
+        .from('materials')
+        .select('*')
+        .order('published_date', { ascending: false });
 
-    if (error) {
-      alert('Error loading materials: ' + error.message);
-    } else if (data) {
-      const parsedData = data.map(material => ({
-        ...material,
-        additional_images: typeof material.additional_images === 'string'
-          ? JSON.parse(material.additional_images || '[]')
-          : (Array.isArray(material.additional_images) ? material.additional_images : [])
-      }));
-      setMaterials(parsedData);
+      if (error) {
+        console.error('Error loading materials:', error);
+        alert('Error loading materials: ' + error.message);
+        setMaterials([]);
+      } else {
+        if (data) {
+          const parsedData = data.map(material => ({
+            ...material,
+            additional_images: typeof material.additional_images === 'string'
+              ? JSON.parse(material.additional_images || '[]')
+              : (Array.isArray(material.additional_images) ? material.additional_images : [])
+          }));
+          setMaterials(parsedData);
+        } else {
+          setMaterials([]);
+        }
+      }
+    } catch (err) {
+      console.error('Unexpected error fetching materials:', err);
+      alert('Unexpected error loading materials. Please refresh the page.');
+      setMaterials([]);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const handleCreate = async () => {
+    // Validate theme requirement for published materials
+    if (formData.status === 'published' && formData.content_type !== 'FAQ' && formData.content_type !== 'Other' && !formData.theme) {
+      alert('Theme is required for published materials (except FAQ and Other)');
+      return;
+    }
+
     const dataToInsert = {
       ...formData,
       slug: formData.slug || formData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
       additional_images: formData.additional_images,
+      content_type: formData.content_type || 'Article',
+      featured_theme: formData.featured_theme || false,
+      featured_site: formData.featured_site || false,
+      theme: formData.theme || null,
     };
 
     const { error } = await supabase
@@ -89,9 +124,19 @@ export default function MaterialsEditor() {
   };
 
   const handleUpdate = async (id: string) => {
+    // Validate theme requirement for published materials
+    if (formData.status === 'published' && formData.content_type !== 'FAQ' && formData.content_type !== 'Other' && !formData.theme) {
+      alert('Theme is required for published materials (except FAQ and Other)');
+      return;
+    }
+
     const dataToUpdate = {
       ...formData,
       additional_images: formData.additional_images,
+      content_type: formData.content_type || 'Article',
+      featured_theme: formData.featured_theme || false,
+      featured_site: formData.featured_site || false,
+      theme: formData.theme || null,
     };
 
     const { error } = await supabase
@@ -142,6 +187,10 @@ export default function MaterialsEditor() {
       content: material.content || '',
       rich_content: material.rich_content || '',
       type: material.type,
+      content_type: material.content_type || 'Article',
+      featured_theme: material.featured_theme || false,
+      featured_site: material.featured_site || false,
+      theme: material.theme || null,
       format: material.format,
       main_image_url: material.main_image_url || '',
       additional_images: parsedImages,
@@ -161,6 +210,10 @@ export default function MaterialsEditor() {
       content: '',
       rich_content: '',
       type: 'Insight',
+      content_type: 'Article',
+      featured_theme: false,
+      featured_site: false,
+      theme: null,
       format: 'Article',
       main_image_url: '',
       additional_images: [],
@@ -173,11 +226,90 @@ export default function MaterialsEditor() {
     setNewTag('');
   };
 
-  const addAdditionalImage = () => {
-    if (!newImageUrl) return;
+  const handleMainImageUpload = async (file: File) => {
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image size must be less than 5MB');
+      return;
+    }
+
+    const fileExt = file.name.split('.').pop();
+    const fileName = `materials/${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+    const filePath = fileName;
+
+    try {
+      setUploadingMainImage(true);
+      const { error: uploadError } = await supabase.storage
+        .from('article-images')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage
+        .from('article-images')
+        .getPublicUrl(filePath);
+
+      setFormData({ ...formData, main_image_url: data.publicUrl });
+    } catch (err) {
+      console.error('Upload error:', err);
+      alert('Failed to upload image. Please try again.');
+    } finally {
+      setUploadingMainImage(false);
+      if (mainImageFileInputRef.current) {
+        mainImageFileInputRef.current.value = '';
+      }
+    }
+  };
+
+  const handleAdditionalImageUpload = async (file: File) => {
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image size must be less than 5MB');
+      return;
+    }
+
+    const fileExt = file.name.split('.').pop();
+    const fileName = `materials/${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+    const filePath = fileName;
+
+    try {
+      setUploadingAdditionalImage(true);
+      const { error: uploadError } = await supabase.storage
+        .from('article-images')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage
+        .from('article-images')
+        .getPublicUrl(filePath);
+
+      setFormData({
+        ...formData,
+        additional_images: [...formData.additional_images, { url: data.publicUrl, caption: newImageCaption.trim() || undefined }],
+      });
+      setNewImageCaption('');
+    } catch (err) {
+      console.error('Upload error:', err);
+      alert('Failed to upload image. Please try again.');
+    } finally {
+      setUploadingAdditionalImage(false);
+      if (additionalImageFileInputRef.current) {
+        additionalImageFileInputRef.current.value = '';
+      }
+    }
+  };
+
+  const addAdditionalImage = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    if (!newImageUrl || !newImageUrl.trim()) {
+      alert('Please enter an image URL or upload an image');
+      return;
+    }
     setFormData({
       ...formData,
-      additional_images: [...formData.additional_images, { url: newImageUrl, caption: newImageCaption }],
+      additional_images: [...formData.additional_images, { url: newImageUrl.trim(), caption: newImageCaption.trim() || undefined }],
     });
     setNewImageUrl('');
     setNewImageCaption('');
@@ -306,6 +438,107 @@ export default function MaterialsEditor() {
                 <option value="draft">Draft</option>
               </select>
             </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Content Type *</label>
+              <select
+                value={formData.content_type}
+                onChange={(e) => setFormData({ ...formData, content_type: e.target.value })}
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500"
+                required
+              >
+                <option value="News Update">News Update</option>
+                <option value="Interview">Interview</option>
+                <option value="Article">Article</option>
+                <option value="Research">Research</option>
+                <option value="Lesson">Lesson</option>
+                <option value="FAQ">FAQ</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Core Theme {formData.content_type && formData.content_type !== 'FAQ' && formData.content_type !== 'Other' && formData.status === 'published' && <span className="text-red-600">*</span>}
+              </label>
+              <select
+                value={formData.theme || ''}
+<<<<<<< Current (Your changes)
+                onChange={(e) => setFormData({ ...formData, theme: e.target.value || null })}
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500"
+                required={!!(formData.content_type && formData.content_type !== 'FAQ' && formData.content_type !== 'Other' && formData.status === 'published')}
+              >
+                <option value="">Select core theme</option>
+                <option value="Local Government">Local Government</option>
+                <option value="Democracy">Democracy</option>
+                <option value="Public Design">Public Design</option>
+                <option value="Governance">Governance</option>
+                <option value="Planning delivery">Planning delivery</option>
+                <option value="Finance and resilience">Finance and resilience</option>
+                <option value="Capacity and workforce">Capacity and workforce</option>
+                <option value="Digital and data">Digital and data</option>
+                <option value="Public trust and engagement">Public trust and engagement</option>
+                <option value="Programme and transition">Programme and transition</option>
+=======
+                onChange={(e) => {
+                  // #region agent log
+                  const options = Array.from(e.target.options).map(o => ({value: o.value, text: o.text}));
+                  fetch('http://127.0.0.1:7242/ingest/88a481fd-d50d-4443-a40c-d5f5149aa669',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'MaterialsEditor.tsx:466',message:'Theme dropdown onChange - options count',data:{selectedValue:e.target.value,optionCount:options.length,allOptions:options},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+                  // #endregion
+                  setFormData({ ...formData, theme: e.target.value || null });
+                }}
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500"
+                required={!!(formData.content_type && formData.content_type !== 'FAQ' && formData.content_type !== 'Other' && formData.status === 'published')}
+                ref={(selectEl) => {
+                  // #region agent log
+                  if (selectEl) {
+                    const options = Array.from(selectEl.options).map(o => ({value: o.value, text: o.text}));
+                    fetch('http://127.0.0.1:7242/ingest/88a481fd-d50d-4443-a40c-d5f5149aa669',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'MaterialsEditor.tsx:select-ref',message:'Theme dropdown rendered - options count',data:{optionCount:options.length,options:options},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+                  }
+                  // #endregion
+                }}
+              >
+                <option value="">Select core theme</option>
+                <option value="Local Government">Governance and Reform</option>
+                <option value="Democratic Legitimacy">Democratic Legitimacy</option>
+                <option value="Statecraft and System Design">Statecraft and System Design</option>
+>>>>>>> Incoming (Background Agent changes)
+              </select>
+              {formData.content_type && formData.content_type !== 'FAQ' && formData.content_type !== 'Other' && !formData.theme && (
+                <p className="mt-1 text-xs text-amber-600">
+                  ⚠️ Theme is required when publishing this content type
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="flex items-center gap-2 p-4 bg-slate-50 rounded-lg">
+              <input
+                type="checkbox"
+                id="featured-theme-materials"
+                checked={formData.featured_theme}
+                onChange={(e) => setFormData({ ...formData, featured_theme: e.target.checked })}
+                disabled={!formData.theme || formData.content_type === 'FAQ' || formData.content_type === 'Other'}
+                className="w-4 h-4 text-teal-600 border-slate-300 rounded focus:ring-2 focus:ring-teal-500"
+              />
+              <label htmlFor="featured-theme-materials" className="text-sm font-medium text-slate-700 cursor-pointer">
+                Featured – Core Theme
+              </label>
+            </div>
+
+            <div className="flex items-center gap-2 p-4 bg-slate-50 rounded-lg">
+              <input
+                type="checkbox"
+                id="featured-site-materials"
+                checked={formData.featured_site}
+                onChange={(e) => setFormData({ ...formData, featured_site: e.target.checked })}
+                className="w-4 h-4 text-teal-600 border-slate-300 rounded focus:ring-2 focus:ring-teal-500"
+              />
+              <label htmlFor="featured-site-materials" className="text-sm font-medium text-slate-700 cursor-pointer">
+                Featured Site Material
+              </label>
+            </div>
           </div>
 
           <div>
@@ -357,17 +590,54 @@ export default function MaterialsEditor() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">Main Image URL</label>
-            <input
-              type="text"
-              value={formData.main_image_url}
-              onChange={(e) => setFormData({ ...formData, main_image_url: e.target.value })}
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500"
-              placeholder="URL to the main featured image"
-            />
-            {formData.main_image_url && (
-              <img src={formData.main_image_url} alt="Preview" className="mt-2 max-w-xs rounded-lg border" />
-            )}
+            <label className="block text-sm font-medium text-slate-700 mb-2">Main Image</label>
+            <div className="space-y-3">
+              <input
+                ref={mainImageFileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  await handleMainImageUpload(file);
+                }}
+                className="hidden"
+                id="main-image-upload"
+              />
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => mainImageFileInputRef.current?.click()}
+                  disabled={uploadingMainImage}
+                  className="flex items-center justify-center gap-2 px-4 py-2 border border-slate-300 rounded-lg bg-slate-50 hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                >
+                  <Upload size={16} />
+                  {uploadingMainImage ? 'Uploading...' : 'Upload Image'}
+                </button>
+                <input
+                  type="text"
+                  value={formData.main_image_url}
+                  onChange={(e) => setFormData({ ...formData, main_image_url: e.target.value })}
+                  className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500"
+                  placeholder="Or enter image URL"
+                />
+              </div>
+              {formData.main_image_url && (
+                <div className="mt-2">
+                  <img src={formData.main_image_url} alt="Preview" className="max-w-xs rounded-lg border" />
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, main_image_url: '' })}
+                    className="mt-2 text-xs text-red-600 hover:text-red-800"
+                  >
+                    Remove image
+                  </button>
+                </div>
+              )}
+              <p className="text-xs text-slate-500">
+                Upload an image or enter a URL. Images are uploaded to Supabase storage (max 5MB).
+              </p>
+            </div>
           </div>
 
           <div>
@@ -390,30 +660,69 @@ export default function MaterialsEditor() {
                 </div>
               ))}
 
-              <div className="grid md:grid-cols-2 gap-3">
+              <div className="space-y-3">
                 <input
-                  type="text"
-                  value={newImageUrl}
-                  onChange={(e) => setNewImageUrl(e.target.value)}
-                  placeholder="Image URL"
-                  className="px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500"
+                  ref={additionalImageFileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    await handleAdditionalImageUpload(file);
+                  }}
+                  className="hidden"
+                  id="additional-image-upload"
                 />
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => additionalImageFileInputRef.current?.click()}
+                    disabled={uploadingAdditionalImage}
+                    className="flex items-center justify-center gap-2 px-4 py-2 border border-slate-300 rounded-lg bg-slate-50 hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                  >
+                    <Upload size={16} />
+                    {uploadingAdditionalImage ? 'Uploading...' : 'Upload Image'}
+                  </button>
+                  <input
+                    type="text"
+                    value={newImageUrl}
+                    onChange={(e) => setNewImageUrl(e.target.value)}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        addAdditionalImage();
+                      }
+                    }}
+                    placeholder="Or enter image URL"
+                    className="flex-1 px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500"
+                  />
+                </div>
                 <input
                   type="text"
                   value={newImageCaption}
                   onChange={(e) => setNewImageCaption(e.target.value)}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      addAdditionalImage();
+                    }
+                  }}
                   placeholder="Caption (optional)"
-                  className="px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500"
                 />
+                <button
+                  type="button"
+                  onClick={(e) => addAdditionalImage(e)}
+                  disabled={!newImageUrl.trim()}
+                  className="flex items-center gap-2 px-4 py-2 bg-teal-100 text-teal-700 rounded-lg hover:bg-teal-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                >
+                  <ImageIcon size={18} />
+                  Add Image from URL
+                </button>
+                <p className="text-xs text-slate-500">
+                  Upload an image or enter a URL. Images are uploaded to Supabase storage (max 5MB).
+                </p>
               </div>
-              <button
-                type="button"
-                onClick={addAdditionalImage}
-                className="flex items-center gap-2 px-4 py-2 bg-teal-100 text-teal-700 rounded-lg hover:bg-teal-200 transition-colors"
-              >
-                <ImageIcon size={18} />
-                Add Image
-              </button>
             </div>
           </div>
 
@@ -449,42 +758,96 @@ export default function MaterialsEditor() {
         </div>
       )}
 
-      <div className="space-y-4">
-        {materials.map((material) => (
-          <div key={material.id} className="bg-white p-6 rounded-xl border border-slate-200 hover:border-slate-300 transition-all">
-            <div className="flex justify-between items-start">
-              <div className="flex-1">
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">{material.title}</h3>
-                <p className="text-slate-600 mb-3">{material.description}</p>
-                <div className="flex gap-4 text-sm text-slate-500">
-                  <span className="bg-slate-100 px-3 py-1 rounded-full">{material.type}</span>
-                  <span className="bg-slate-100 px-3 py-1 rounded-full">{material.format}</span>
-                  <span>{material.published_date}</span>
+      {loading ? (
+        <div className="text-center py-12 text-slate-500">
+          Loading materials...
+        </div>
+      ) : (
+        <>
+          <div className="mb-4 text-sm text-slate-600">
+            Showing {materials.length} material{materials.length !== 1 ? 's' : ''}
+          </div>
+          
+          <div className="space-y-4">
+            {materials.map((material) => (
+              <div key={material.id} className="bg-white p-6 rounded-xl border border-slate-200 hover:border-slate-300 transition-all">
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="text-xl font-semibold text-slate-900">{material.title}</h3>
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        material.status === 'published'
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-yellow-100 text-yellow-800'
+                      }`}>
+                        {material.status || 'published'}
+                      </span>
+                      {material.content_type && (
+                        <span className="px-2 py-1 rounded text-xs font-medium bg-teal-50 text-teal-700 border border-teal-200">
+                          {material.content_type}
+                        </span>
+                      )}
+                      {material.featured_site && (
+                        <span className="px-2 py-1 rounded text-xs font-medium bg-purple-50 text-purple-700 border border-purple-200">
+                          Site Featured
+                        </span>
+                      )}
+                      {material.featured_theme && (
+                        <span className="px-2 py-1 rounded text-xs font-medium bg-teal-50 text-teal-700 border border-teal-200">
+                          Theme Featured
+                        </span>
+                      )}
+                    </div>
+                    {material.description && (
+                      <p className="text-slate-600 mb-3 line-clamp-2">{material.description}</p>
+                    )}
+                    <div className="flex flex-wrap gap-2 text-sm text-slate-500">
+                      <span className="bg-slate-100 px-3 py-1 rounded-full">{material.type}</span>
+                      <span className="bg-slate-100 px-3 py-1 rounded-full">{material.format}</span>
+                      {material.theme && (
+                        <span className="bg-slate-100 px-3 py-1 rounded-full">{material.theme}</span>
+                      )}
+                      <span>{new Date(material.published_date).toLocaleDateString('en-GB')}</span>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 ml-4">
+                    <button
+                      onClick={() => startEdit(material)}
+                      className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+                      title="Edit material"
+                    >
+                      <Edit className="w-5 h-5" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(material.id)}
+                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      title="Delete material"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
               </div>
-              <div className="flex gap-2 ml-4">
-                <button
-                  onClick={() => startEdit(material)}
-                  className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
-                >
-                  <Edit className="w-5 h-5" />
-                </button>
-                <button
-                  onClick={() => handleDelete(material.id)}
-                  className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                >
-                  <Trash2 className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
 
-      {materials.length === 0 && (
-        <div className="text-center py-12 text-slate-500">
-          No materials yet. Click "Add Material" to create one.
-        </div>
+          {materials.length === 0 && !loading && (
+            <div className="text-center py-12 text-slate-500">
+              <p className="mb-4">No materials found.</p>
+              <button
+                onClick={() => {
+                  setIsCreating(true);
+                  setEditingId(null);
+                  resetForm();
+                }}
+                className="inline-flex items-center gap-2 bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors"
+              >
+                <Plus className="w-5 h-5" />
+                Create Your First Material
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

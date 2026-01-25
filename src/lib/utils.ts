@@ -63,6 +63,45 @@ export function generateSlug(text: string): string {
 }
 
 /**
+ * Map theme values from database to display names
+ */
+export function getThemeDisplayName(theme: string | null | undefined): string {
+  if (!theme) return '';
+  
+  const themeMap: Record<string, string> = {
+    'Public Design': 'Statecraft and System Design',
+    'public design': 'Statecraft and System Design',
+    'Public Engagement': 'Statecraft and System Design',
+    'Public': 'Statecraft and System Design',
+    'public': 'Statecraft and System Design',
+  };
+  
+  return themeMap[theme] || theme;
+}
+
+/**
+ * Map theme display name to slug for routing
+ */
+export function getThemeSlug(theme: string | null | undefined): string {
+  if (!theme) return '';
+  
+  const displayName = getThemeDisplayName(theme);
+  const slugMap: Record<string, string> = {
+    'Statecraft and System Design': 'statecraft-and-system-design',
+    'Local Government': 'governance-and-reform',
+    'Governance': 'governance-and-reform',
+    'Democracy': 'democracy',
+<<<<<<< Current (Your changes)
+=======
+    'Democratic Legitimacy': 'democratic-legitimacy',
+>>>>>>> Incoming (Background Agent changes)
+    'Democratic legitimacy': 'democratic-legitimacy',
+  };
+  
+  return slugMap[displayName] || generateSlug(displayName);
+}
+
+/**
  * Format date for display
  */
 export function formatDate(dateString: string | null): string {

@@ -21,6 +21,7 @@ export default function NewsEditor() {
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [editorInstanceId] = useState(() => `news-editor-${Date.now()}`);
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
@@ -140,7 +141,7 @@ export default function NewsEditor() {
       title: item.title,
       slug: item.slug,
       published_date: item.published_date,
-      content: item.content,
+      content: item.content || '',
       embed_code: item.embed_code || '',
       excerpt: item.excerpt || '',
       published: item.published,
@@ -268,8 +269,16 @@ export default function NewsEditor() {
                 Content *
               </label>
               <WYSIWYGEditor
-                value={formData.content}
-                onChange={(value) => setFormData({ ...formData, content: value })}
+                key={editorInstanceId}
+                value={formData.content || ''}
+                onChange={(value) => {
+                  // Filter out error messages that might have been inserted
+                  if (value && (value.includes("Cannot read properties") || value.includes("reading 'delta'"))) {
+                    return; // Don't update with error content
+                  }
+                  setFormData({ ...formData, content: value || '' });
+                }}
+                placeholder="Enter news content here..."
               />
             </div>
 

@@ -31,28 +31,33 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
         description="Learn about the LGR Series methodology, editorial approach, and purpose. Discover how we examine local government reorganisation through evidence-based analysis."
         keywords="LGR series, local government reorganisation methodology, council reform research, editorial approach, COALFACE insights"
       />
-      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border-l-4 border-teal-700 pl-6 mb-3">
-            <div className="text-xs font-bold tracking-widest text-teal-700 mb-1.5">
-              ABOUT
-            </div>
+      <div className="relative bg-academic-warm py-8 overflow-hidden">
+        {/* Colored gradient overlay */}
+        <div 
+          className="absolute inset-0 opacity-60 z-0"
+          style={{
+            background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.4) 0%, rgba(6, 182, 212, 0.5) 50%, rgba(14, 165, 233, 0.4) 100%)'
+          }}
+        />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+          <div className="academic-section-header mb-6">
+            <div className="academic-section-label">ABOUT</div>
+            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
+              About the{' '}
+              <span className="text-teal-700 font-serif italic">
+                LGR Series
+              </span>
+            </h1>
+            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
+              Editorial approach, methodology, and how to contribute
+            </p>
           </div>
-          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-3">
-            About the{' '}
-            <span className="text-teal-700 font-serif italic">
-              LGR Series
-            </span>
-          </h1>
-          <p className="text-xl text-neutral-600 leading-relaxed max-w-3xl">
-            Editorial approach, methodology, and how to contribute
-          </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="grid lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-6">
             <div id="editor">
               <button
                 onClick={() => toggleSection('editor')}
@@ -70,49 +75,49 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
             {openSection === 'editor' && (
               <div className="bg-white rounded-xl p-8 shadow-lg border border-slate-200 space-y-6">
                 <div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-4">Editor's Letter</h3>
-                  <p className="text-lg font-semibold text-cyan-700 mb-6 leading-relaxed">
+                  <h3 className="text-xl font-bold text-slate-900 mb-3">Editor's Letter</h3>
+                  <p className="text-lg font-semibold text-cyan-700 mb-4 leading-relaxed">
                     A golden opportunity for meaningful change, or a governance stress test for public trust and planning?
                   </p>
 
                   <div className="prose max-w-none">
-                    <p className="text-slate-700 leading-relaxed mb-6 italic">
+                    <p className="text-slate-700 leading-relaxed mb-4 italic">
                       Personal thoughts and reflections as we begin to launch the LGR Series, exploring the intricacies of the most far reaching restructuring of English local government in a generation.
                     </p>
 
-                    <p className="text-slate-700 leading-relaxed mb-6">
+                    <p className="text-slate-700 leading-relaxed mb-4">
                       <span className="font-semibold">Local Government Reorganisation: Decisions, Power and Place</span> examines a programme that will reshape not only how planning authorities operate, but how the wider local government system functions around them. Driven by the Government's ambition to deliver 1.5 million new homes, reorganisation will influence governance, capacity, accountability and delivery across the whole development cycle.
                     </p>
 
-                    <p className="text-slate-700 leading-relaxed mb-6">
+                    <p className="text-slate-700 leading-relaxed mb-4">
                       These reforms cut across governance, finance, digital systems, service integration and political leadership. They will affect how place shaping priorities are set, how statutory services interact, and how capacity is deployed across planning, regeneration, infrastructure and democratic oversight. In practice, LGR will help determine how quickly, consistently and transparently councils can make decisions, and how confidently partners can invest behind them.
                     </p>
 
-                    <p className="text-slate-700 leading-relaxed mb-6">
+                    <p className="text-slate-700 leading-relaxed mb-4">
                       There is substantial potential here. Done well, reorganisation could create clearer lines of accountability, more coherent decision pathways, stronger governance controls, and more resilient operating models. It could also create the conditions for faster, more predictable planning, by improving consistency, reducing duplication, and strengthening the capability available to plan making and decision taking.
                     </p>
 
-                    <p className="text-slate-700 leading-relaxed mb-6">
+                    <p className="text-slate-700 leading-relaxed mb-4">
                       Our intent in publishing this Series is firmly supportive. We want to help authorities, developers and practitioners understand the issues early, so they can capitalise on the opportunity rather than be hindered by it. We will focus on what is practical, what is measurable, and what can be acted on within real world political and organisational constraints.
                     </p>
 
-                    <p className="text-slate-700 leading-relaxed mb-6">
+                    <p className="text-slate-700 leading-relaxed mb-4">
                       Recent history shows, however, how easily the opposite can occur. Dorset and Northumberland provide instructive case studies where governance disruption, legacy systems, political instability and uneven organisational capacity contributed to slower decisions, reduced transparency and increased risk across the development ecosystem. Those experiences offer lessons on what happens when reorganisation collides with fragile governance arrangements, or insufficient preparation.
                     </p>
 
-                    <p className="text-slate-700 leading-relaxed mb-6">
+                    <p className="text-slate-700 leading-relaxed mb-4">
                       To keep the analysis grounded, the Series uses Surrey as a primary test case, examining how reorganisation may reconfigure planning committees, officer delegations, governance controls, digital infrastructure and political accountability. From this, we draw out what planners, developers, officers, councillors and programme leaders need to understand now, before formal transition decisions set the direction of travel.
                     </p>
 
-                    <p className="text-slate-700 leading-relaxed mb-6">
+                    <p className="text-slate-700 leading-relaxed mb-4">
                       Across the Series we return to a core question. Will LGR create a simpler, faster and more effective environment for planning and delivery, or will new structures, inherited systems and political flux introduce fresh complexity?
                     </p>
 
-                    <p className="text-slate-700 leading-relaxed mb-6">
+                    <p className="text-slate-700 leading-relaxed mb-4">
                       Our objective is to equip the sector to make the former a reality. Thank you to everyone who has already contributed, and to those who will take part as the Series develops. I hope you find it useful, insightful and pragmatic, and I welcome suggestions for topics, case studies and contributors.
                     </p>
 
-                    <div className="mt-12 mb-8">
+                    <div className="mt-8 mb-6">
                       <img
                         src="/signature_-_rowan_cole.png"
                         alt="Rowan Cole Signature"
@@ -122,16 +127,16 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
                       <p className="text-slate-600">LGR Series</p>
                     </div>
 
-                    <div className="mt-12 pt-8 border-t border-slate-200">
-                      <div className="flex flex-col md:flex-row gap-8 items-start">
+                    <div className="mt-8 pt-6 border-t border-slate-200">
+                      <div className="flex flex-col md:flex-row gap-6 items-start">
                         <img
                           src="/rowan-cole-coalface-engagement-director-headshot-folded-arms.jpg"
                           alt="Rowan Cole, Engagement Director at Coalface"
                           className="w-48 h-48 rounded-xl object-cover shadow-lg"
                         />
                         <div className="flex-1">
-                          <h3 className="text-xl font-bold text-slate-900 mb-3">About the Editor</h3>
-                          <p className="text-slate-700 leading-relaxed mb-4">
+                          <h3 className="text-xl font-bold text-slate-900 mb-2">About the Editor</h3>
+                          <p className="text-slate-700 leading-relaxed mb-3">
                             Rowan Cole is Engagement Director at COALFACE, where he leads research and analysis on local government governance, planning performance, and democratic accountability. His work focuses on how institutional structures and political conditions shape development outcomes across England.
                           </p>
                           <p className="text-slate-700 leading-relaxed">
@@ -177,15 +182,15 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
               </div>
             </button>
             {openSection === 'methodology' && (
-              <div className="bg-white rounded-xl p-8 shadow-lg border border-slate-200 space-y-6">
+              <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200 space-y-5">
                 <div className="prose max-w-none">
-                  <h3 className="text-xl font-bold text-slate-900 mb-4">Research Approach</h3>
-                  <p className="text-slate-700 leading-relaxed mb-6">
+                  <h3 className="text-xl font-bold text-slate-900 mb-3">Research Approach</h3>
+                  <p className="text-slate-700 leading-relaxed mb-4">
                     The LGR Series is built on COALFACE's Council Scanner™ methodology, which provides systematic analysis of planning authority governance, decision-making patterns, and institutional behaviour across England.
                   </p>
 
-                  <h4 className="text-lg font-semibold text-slate-900 mb-3">Core Data Sources</h4>
-                  <ul className="list-disc pl-6 space-y-2 text-slate-700 mb-6">
+                  <h4 className="text-lg font-semibold text-slate-900 mb-2">Core Data Sources</h4>
+                  <ul className="list-disc pl-6 space-y-1.5 text-slate-700 mb-3">
                     <li>Planning committee meeting records and voting patterns</li>
                     <li>Officer delegation schemes and decision-making authority</li>
                     <li>Council constitutional documents and governance frameworks</li>
@@ -194,8 +199,8 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
                     <li>Performance data on application processing and outcomes</li>
                   </ul>
 
-                  <h4 className="text-lg font-semibold text-slate-900 mb-3">Analytical Framework</h4>
-                  <p className="text-slate-700 leading-relaxed mb-4">
+                  <h4 className="text-lg font-semibold text-slate-900 mb-2">Analytical Framework</h4>
+                  <p className="text-slate-700 leading-relaxed mb-3">
                     Our analysis examines how governance structures, political conditions, and institutional capacity interact to shape planning outcomes. We focus on:
                   </p>
                   <ul className="list-disc pl-6 space-y-2 text-slate-700 mb-6">
@@ -273,8 +278,8 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
                     To discuss contributions or suggest topics, please contact:
                   </p>
                   <p className="text-slate-900 font-medium">
-                    <a href="mailto:info@coalfaceengagement.co.uk" className="text-cyan-600 hover:text-cyan-700">
-                      info@coalfaceengagement.co.uk
+                    <a href="mailto:LGR@coalfaceengagement.co.uk" className="text-cyan-600 hover:text-cyan-700">
+                      LGR@coalfaceengagement.co.uk
                     </a>
                   </p>
                 </div>
@@ -341,7 +346,7 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
             <div className="sticky top-24 space-y-6">
               <PageNavigation items={navItems} />
               <div className="bg-teal-800 text-white p-6">
-                <h3 className="text-xl font-black mb-3">
+                <h3 className="text-xl font-black text-white mb-3">
                   The Dispatch
                 </h3>
                 <p className="text-sm text-white mb-4">
