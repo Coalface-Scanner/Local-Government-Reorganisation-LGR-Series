@@ -237,7 +237,7 @@ export default function TopicHub({
               {keyQuestion && (
                 <div className="bg-teal-50/80 border-l-4 border-teal-600 shadow-md rounded-r-lg pl-6 pr-8 py-6 ring-1 ring-teal-200/60 h-full flex flex-col justify-center">
                   <div className="academic-section-label mb-3 text-teal-700">Primary question</div>
-                  <p className="text-academic-3xl md:text-academic-4xl lg:text-academic-5xl text-academic-charcoal font-serif italic font-medium leading-tight">
+                  <p className="text-[1.75rem] md:text-[2.1875rem] lg:text-[2.625rem] text-academic-charcoal font-serif italic font-medium leading-tight">
                     {keyQuestion}
                   </p>
                 </div>

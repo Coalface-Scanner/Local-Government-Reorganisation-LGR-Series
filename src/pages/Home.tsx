@@ -1036,9 +1036,12 @@ export default function Home({ onNavigate }: HomeProps) {
                 <div className="w-full">
                   <div className="relative aspect-video rounded-xl overflow-hidden">
                     <iframe
+                      width="560"
+                      height="315"
                       className="absolute inset-0 w-full h-full"
-                      src="https://www.youtube.com/embed/ryOhO6_rA8A?si=898pGIhVVWfTAasE"
+                      src="https://www.youtube.com/embed/ryOhO6_rA8A?si=0FI6dafNUGWNRmxx"
                       title="YouTube video player"
+                      frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       referrerPolicy="strict-origin-when-cross-origin"
                       allowFullScreen
