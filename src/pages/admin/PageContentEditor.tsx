@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Plus, Edit, Trash2, Save, X } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { updateSiteTimestamp } from '../../lib/updateTimestamp';
@@ -10,7 +10,7 @@ interface PageContent {
   section_key: string;
   title: string | null;
   content: string;
-  metadata: Record<string, any>;
+  metadata: Record<string, unknown>;
   order_index: number;
 }
 
@@ -30,15 +30,11 @@ export default function PageContentEditor() {
     section_key: '',
     title: '',
     content: '',
-    metadata: {} as Record<string, any>,
+    metadata: {} as Record<string, unknown>,
     order_index: 0,
   });
 
-  useEffect(() => {
-    fetchContent();
-  }, [selectedPage]);
-
-  const fetchContent = async () => {
+  const fetchContent = useCallback(async () => {
     const { data, error } = await supabase
       .from('page_content')
       .select('*')
@@ -49,7 +45,11 @@ export default function PageContentEditor() {
       setContent(data);
     }
     setLoading(false);
-  };
+  }, [selectedPage]);
+
+  useEffect(() => {
+    fetchContent();
+  }, [fetchContent]);
 
   const handleCreate = async () => {
     const { error } = await supabase

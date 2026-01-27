@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Archive, RotateCcw, Trash2, Search, FileText, Newspaper, TrendingDown } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
@@ -39,9 +39,36 @@ export default function ArchiveManager() {
     fetchArchivedContent();
   }, []);
 
+  const calculateStats = useCallback(() => {
+    const stats = {
+      total: archivedItems.length,
+      byType: {} as Record<string, number>,
+      bySource: {} as Record<string, number>,
+      oldestArchive: null as string | null,
+    };
+
+    archivedItems.forEach(item => {
+      // Count by content type
+      const type = item.content_type || 'Uncategorized';
+      stats.byType[type] = (stats.byType[type] || 0) + 1;
+
+      // Count by source
+      stats.bySource[item.source] = (stats.bySource[item.source] || 0) + 1;
+
+      // Find oldest archive date
+      if (item.archived_at) {
+        if (!stats.oldestArchive || item.archived_at < stats.oldestArchive) {
+          stats.oldestArchive = item.archived_at;
+        }
+      }
+    });
+
+    setStats(stats);
+  }, [archivedItems]);
+
   useEffect(() => {
     calculateStats();
-  }, [archivedItems]);
+  }, [calculateStats]);
 
   const fetchArchivedContent = async () => {
     setLoading(true);
@@ -88,32 +115,6 @@ export default function ArchiveManager() {
     }
   };
 
-  const calculateStats = () => {
-    const stats = {
-      total: archivedItems.length,
-      byType: {} as Record<string, number>,
-      bySource: {} as Record<string, number>,
-      oldestArchive: null as string | null,
-    };
-
-    archivedItems.forEach(item => {
-      // Count by content type
-      const type = item.content_type || 'Uncategorized';
-      stats.byType[type] = (stats.byType[type] || 0) + 1;
-
-      // Count by source
-      stats.bySource[item.source] = (stats.bySource[item.source] || 0) + 1;
-
-      // Find oldest archive date
-      if (item.archived_at) {
-        if (!stats.oldestArchive || item.archived_at < stats.oldestArchive) {
-          stats.oldestArchive = item.archived_at;
-        }
-      }
-    });
-
-    setStats(stats);
-  };
 
   const filteredItems = archivedItems.filter(item => {
     // Search filter

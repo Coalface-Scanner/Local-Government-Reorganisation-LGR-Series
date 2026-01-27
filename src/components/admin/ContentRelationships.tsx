@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link, Plus, X, Search } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 
@@ -43,9 +43,9 @@ export default function ContentRelationships({
       fetchRelationships();
       fetchAvailableContent();
     }
-  }, [sourceId, sourceType]);
+  }, [sourceId, sourceType, fetchRelationships, fetchAvailableContent]);
 
-  const fetchRelationships = async () => {
+  const fetchRelationships = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('content_relationships')
@@ -61,9 +61,9 @@ export default function ContentRelationships({
     } catch (err) {
       console.error('Error fetching relationships:', err);
     }
-  };
+  }, [sourceType, sourceId, onRelationshipsChange]);
 
-  const fetchAvailableContent = async () => {
+  const fetchAvailableContent = useCallback(async () => {
     try {
       const allContent: ContentItem[] = [];
 
@@ -109,7 +109,7 @@ export default function ContentRelationships({
     } catch (err) {
       console.error('Error fetching available content:', err);
     }
-  };
+  }, [sourceId, sourceType]);
 
   const addRelationship = async (targetId: string, targetType: 'articles' | 'materials' | 'news') => {
     try {
@@ -130,9 +130,10 @@ export default function ContentRelationships({
       await fetchRelationships();
       setShowAddDialog(false);
       setSearchQuery('');
-    } catch (err: any) {
-      if (err.code !== '23505') { // Ignore duplicate key errors
-        alert('Failed to add relationship: ' + err.message);
+    } catch (err) {
+      const error = err as { code?: string; message?: string };
+      if (error.code !== '23505') { // Ignore duplicate key errors
+        alert('Failed to add relationship: ' + (error.message || 'Unknown error'));
       }
     }
   };
@@ -146,7 +147,7 @@ export default function ContentRelationships({
 
       if (error) throw error;
       await fetchRelationships();
-    } catch (err) {
+    } catch (_err) {
       alert('Failed to remove relationship');
     }
   };
@@ -236,7 +237,7 @@ export default function ContentRelationships({
                 <label className="block text-sm font-medium text-slate-700 mb-2">Relationship Type</label>
                 <select
                   value={selectedRelationshipType}
-                  onChange={(e) => setSelectedRelationshipType(e.target.value as any)}
+                  onChange={(e) => setSelectedRelationshipType(e.target.value as 'related' | 'see_also' | 'parent' | 'child' | 'depends_on')}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500"
                 >
                   <option value="related">Related</option>
@@ -251,7 +252,7 @@ export default function ContentRelationships({
                 <label className="block text-sm font-medium text-slate-700 mb-2">Content Type</label>
                 <select
                   value={selectedTargetType}
-                  onChange={(e) => setSelectedTargetType(e.target.value as any)}
+                  onChange={(e) => setSelectedTargetType(e.target.value as 'articles' | 'materials' | 'news')}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500"
                 >
                   <option value="articles">Articles</option>
