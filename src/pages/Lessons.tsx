@@ -28,9 +28,18 @@ interface ComingSoonTopic {
   theme: string;
 }
 
+interface RelatedArticle {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  theme: string | null;
+  category: string | null;
+}
+
 export default function Lessons({ onNavigate }: LessonsProps) {
   const [lessons, setLessons] = useState<Lesson[]>([]);
-  const [relatedArticles, setRelatedArticles] = useState<any[]>([]);
+  const [relatedArticles, setRelatedArticles] = useState<RelatedArticle[]>([]);
 
   const navItems = [
     { id: 'insights', label: 'Key Insights', icon: <BookOpen size={16} /> },

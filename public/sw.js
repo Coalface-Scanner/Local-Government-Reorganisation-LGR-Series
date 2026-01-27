@@ -1,15 +1,9 @@
 // Service Worker for LGR Series
 // Provides offline support and caching
 
-<<<<<<< Current (Your changes)
-const CACHE_NAME = 'lgr-series-v1';
-const STATIC_CACHE_NAME = 'lgr-static-v1';
-const DYNAMIC_CACHE_NAME = 'lgr-dynamic-v1';
-=======
 const CACHE_NAME = 'lgr-series-v2';
 const STATIC_CACHE_NAME = 'lgr-static-v2';
 const DYNAMIC_CACHE_NAME = 'lgr-dynamic-v2';
->>>>>>> Incoming (Background Agent changes)
 
 // Assets to cache on install
 const STATIC_ASSETS = [

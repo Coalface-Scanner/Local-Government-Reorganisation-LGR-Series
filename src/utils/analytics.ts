@@ -8,15 +8,19 @@ interface AnalyticsEvent {
   value?: number;
 }
 
+interface WindowWithGtag extends Window {
+  gtag?: (command: string, targetId: string, config?: Record<string, unknown>) => void;
+}
+
 // Check if Google Analytics is available
 const isGAAvailable = (): boolean => {
-  return typeof window !== 'undefined' && typeof (window as any).gtag === 'function';
+  return typeof window !== 'undefined' && typeof (window as WindowWithGtag).gtag === 'function';
 };
 
 // Track page view
 export const trackPageView = (path: string, title?: string): void => {
   if (isGAAvailable()) {
-    (window as any).gtag('config', 'G-1CQR5MEY37', {
+    (window as WindowWithGtag).gtag?.('config', 'G-1CQR5MEY37', {
       page_path: path,
       page_title: title,
     });
@@ -31,7 +35,7 @@ export const trackPageView = (path: string, title?: string): void => {
 // Track custom event
 export const trackEvent = (event: AnalyticsEvent): void => {
   if (isGAAvailable()) {
-    (window as any).gtag('event', event.action, {
+    (window as WindowWithGtag).gtag?.('event', event.action, {
       event_category: event.category,
       event_label: event.label,
       value: event.value,
