@@ -48,6 +48,7 @@ const AdminArticles = lazy(() => import('./pages/admin/AdminArticles'));
 const Timescales = lazy(() => import('./pages/facts/Timescales'));
 const CouncilsInvolved = lazy(() => import('./pages/facts/CouncilsInvolved'));
 const KeyFacts = lazy(() => import('./pages/facts/KeyFacts'));
+const QuestionsAndAnswers = lazy(() => import('./pages/facts/QuestionsAndAnswers'));
 const Methodology = lazy(() => import('./pages/facts/Methodology'));
 const Sources = lazy(() => import('./pages/facts/Sources'));
 const FurtherReading = lazy(() => import('./pages/facts/FurtherReading'));
@@ -155,6 +156,7 @@ function AppContent() {
             <Route path="/facts/timescales" element={<Timescales />} />
             <Route path="/facts/councils-involved" element={<CouncilsInvolved />} />
             <Route path="/facts/key-facts" element={<KeyFacts />} />
+            <Route path="/facts/questions-and-answers" element={<QuestionsAndAnswers />} />
             <Route path="/facts/methodology" element={<Methodology />} />
             <Route path="/facts/sources" element={<Sources />} />
             <Route path="/facts/further-reading" element={<FurtherReading />} />

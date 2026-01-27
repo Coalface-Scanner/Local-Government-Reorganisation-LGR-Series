@@ -3,7 +3,7 @@ import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import SubscriptionForm from '../components/SubscriptionForm';
 import CollectionPageStructuredData from '../components/CollectionPageStructuredData';
-import { Calendar, MapPin, List, CheckCircle, FileText, BookOpen, ArrowRight, Route, type LucideIcon } from 'lucide-react';
+import { Calendar, MapPin, HelpCircle, CheckCircle, FileText, BookOpen, ArrowRight, Route, type LucideIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface FactsProps {
@@ -38,13 +38,12 @@ const serviceCards: ServiceCard[] = [
     route: '/facts/councils-involved'
   },
   {
-    id: 'key-facts',
-    title: 'Key Facts',
-    description: 'Evidence-based analysis of local government reorganisation outcomes, including workforce impact, financial performance, service delivery, and democratic representation.',
-    icon: List,
+    id: 'questions-and-answers',
+    title: 'Questions & Answers',
+    description: 'Comprehensive FAQ covering all aspects of Local Government Reorganisation, including timelines, processes, finance, governance, and service impacts.',
+    icon: HelpCircle,
     color: 'from-purple-500 to-indigo-600',
-    route: '/facts/key-facts',
-    disabled: true
+    route: '/facts/questions-and-answers'
   },
   {
     id: 'methodology',
