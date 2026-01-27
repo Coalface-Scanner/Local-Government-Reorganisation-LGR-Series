@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 
-export function useRetry<T extends (...args: any[]) => Promise<any>>(
+export function useRetry<T extends (...args: unknown[]) => Promise<unknown>>(
   fn: T,
   maxRetries = 3,
   delay = 1000

@@ -829,7 +829,7 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                           }
                         });
                         observer.observe(selectEl, { childList: true, subtree: true });
-                        (selectEl as any)._mutationObserver = observer;
+                        (selectEl as HTMLSelectElement & { _mutationObserver?: MutationObserver })._mutationObserver = observer;
                       }
                       // #endregion
                     }}

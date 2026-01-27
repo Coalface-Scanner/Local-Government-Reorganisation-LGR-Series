@@ -58,17 +58,17 @@ export default function Search({ onNavigate }: SearchProps) {
     }
   };
 
-  const saveToHistory = (query: string) => {
+  const saveToHistory = useCallback((query: string) => {
     if (!query.trim()) return;
     try {
       const current = searchHistory.filter(q => q !== query);
       const updated = [query, ...current].slice(0, MAX_HISTORY_ITEMS);
       setSearchHistory(updated);
       localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(updated));
-    } catch (err) {
-      console.error('Error saving search history:', err);
+    } catch (_err) {
+      // Ignore localStorage errors
     }
-  };
+  }, [searchHistory]);
 
   useEffect(() => {
     loadFilterOptions();
@@ -77,6 +77,7 @@ export default function Search({ onNavigate }: SearchProps) {
     if (initialQuery) {
       performSearch();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadFilterOptions = async () => {
@@ -314,13 +315,13 @@ export default function Search({ onNavigate }: SearchProps) {
     } finally {
       setLoading(false);
     }
-  }, [searchQuery, filters]);
+  }, [searchQuery, filters, saveToHistory]);
 
   useEffect(() => {
     if (searchQuery.trim() || initialQuery) {
       performSearch();
     }
-  }, [performSearch, initialQuery]);
+  }, [performSearch, initialQuery, searchQuery]);
 
   const getTypeLabel = (type: string) => {
     const labels: Record<string, string> = {

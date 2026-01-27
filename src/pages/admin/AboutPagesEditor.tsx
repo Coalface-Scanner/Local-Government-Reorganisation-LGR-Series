@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Save } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { updateSiteTimestamp } from '../../lib/updateTimestamp';
@@ -32,9 +32,24 @@ export default function AboutPagesEditor() {
     sections: {} as Record<string, unknown>,
   });
 
+  const fetchPages = useCallback(async () => {
+    const { data, error } = await supabase
+      .from('about_pages')
+      .select('*')
+      .order('page_slug');
+
+    if (!error && data) {
+      setPages(data);
+      if (data.length > 0 && !selectedPage) {
+        setSelectedPage(data[0].page_slug);
+      }
+    }
+    setLoading(false);
+  }, [selectedPage]);
+
   useEffect(() => {
     fetchPages();
-  }, []);
+  }, [fetchPages]);
 
   useEffect(() => {
     if (selectedPage && pages.length > 0) {
@@ -49,21 +64,6 @@ export default function AboutPagesEditor() {
       }
     }
   }, [selectedPage, pages]);
-
-  const fetchPages = async () => {
-    const { data, error } = await supabase
-      .from('about_pages')
-      .select('*')
-      .order('page_slug');
-
-    if (!error && data) {
-      setPages(data);
-      if (data.length > 0 && !selectedPage) {
-        setSelectedPage(data[0].page_slug);
-      }
-    }
-    setLoading(false);
-  };
 
   const handleUpdate = async (id: string) => {
     if (!id) {

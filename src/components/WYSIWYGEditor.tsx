@@ -91,7 +91,7 @@ export default function WYSIWYGEditor({ value, onChange, placeholder, className 
           const editor = quillRef.current.getEditor();
           editor.root.setAttribute('spellcheck', 'true');
           setIsQuillReady(true);
-        } catch (error) {
+        } catch (_error) {
           // Silently handle initialization errors
         }
       }
@@ -102,7 +102,7 @@ export default function WYSIWYGEditor({ value, onChange, placeholder, className 
       clearTimeout(initTimer);
       window.removeEventListener('error', errorHandler);
     };
-  }, [shouldRenderQuill]);
+  }, [shouldRenderQuill, quillError]);
   
   // Sync external value to internal value only when Quill is ready and value prop changes
   useEffect(() => {
@@ -138,7 +138,7 @@ export default function WYSIWYGEditor({ value, onChange, placeholder, className 
           } else {
             setInternalValue(safeValue);
           }
-        } catch (error) {
+        } catch (_error) {
           // Fallback to value prop update
           setInternalValue(safeValue);
         }
@@ -509,7 +509,7 @@ export default function WYSIWYGEditor({ value, onChange, placeholder, className 
                       }
                       setInternalValue(safeNewValue);
                       onChange(safeNewValue);
-                    } catch (error) {
+                    } catch (_error) {
                       // Silently handle onChange errors
                     }
                   }}
@@ -520,7 +520,7 @@ export default function WYSIWYGEditor({ value, onChange, placeholder, className 
                   bounds="self"
                 />
               );
-            } catch (error) {
+            } catch (_error) {
               // Trigger remount on error
               setQuillError(true);
               setTimeout(() => {
