@@ -295,8 +295,8 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
               Cookie Policy
             </a>
             <span className="text-academic-neutral-500">|</span>
-            <a href="https://coalfaceengagement.co.uk/accessibility" target="_blank" rel="noopener noreferrer" className="text-academic-neutral-300 hover:text-teal-400 transition-colors px-3 py-2 min-h-[48px] inline-flex items-center">
-              AI Statement
+            <a href="https://coalface.netlify.app/ai-statement" target="_blank" rel="noopener noreferrer" className="text-academic-neutral-300 hover:text-teal-400 transition-colors px-3 py-2 min-h-[48px] inline-flex items-center">
+              AI Governance
             </a>
             <span className="text-academic-neutral-500">|</span>
             <Link to="/unsubscribe" className="text-academic-neutral-300 hover:text-teal-400 transition-colors px-3 py-2 min-h-[48px] inline-flex items-center">
