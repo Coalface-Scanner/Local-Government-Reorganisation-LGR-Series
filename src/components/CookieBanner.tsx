@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Cookie, X, Settings } from 'lucide-react';
 
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
 const COOKIE_CONSENT_KEY = 'lgr-cookie-consent';
 
 export default function CookieBanner() {
@@ -22,9 +28,9 @@ export default function CookieBanner() {
     script.src = 'https://www.googletagmanager.com/gtag/js?id=G-1CQR5MEY37';
     document.head.appendChild(script);
     script.onload = function() {
-      if (typeof (window as any).gtag === 'function') {
-        (window as any).gtag('js', new Date());
-        (window as any).gtag('config', 'G-1CQR5MEY37');
+      if (typeof window.gtag === 'function') {
+        window.gtag('js', new Date());
+        window.gtag('config', 'G-1CQR5MEY37');
       }
     };
   };

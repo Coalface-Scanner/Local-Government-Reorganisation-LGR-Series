@@ -128,8 +128,6 @@ export default function LGRGlossary() {
     term.definition.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const currentDate = new Date().toISOString().split('T')[0];
-
   return (
     <div className="min-h-screen bg-academic-cream">
       <MetaTags

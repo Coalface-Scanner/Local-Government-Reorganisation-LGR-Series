@@ -1,32 +1,19 @@
 import { useEffect, useState, lazy, Suspense } from 'react';
-import { ArrowRight, BarChart3, MapPin, Quote, Download, FileText, BookOpen, Clock, Target, Route, TrendingUp, Mail, Building2, Vote, Palette, HelpCircle, Calendar, Users, CheckCircle2, Sparkles, Headphones } from 'lucide-react';
+import { ArrowRight, MapPin, Quote, FileText, BookOpen, Mail, Building2, Vote, Palette, HelpCircle, Calendar, Users, CheckCircle2, Sparkles, Headphones } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
 import OrganizationStructuredData from '../components/OrganizationStructuredData';
 import WebSiteStructuredData from '../components/WebSiteStructuredData';
 import InBriefSection from '../components/InBriefSection';
 import ThemeChip from '../components/ThemeChip';
 import { supabase } from '../lib/supabase';
-import ErrorDisplay from '../components/ErrorDisplay';
 import OptimizedImage from '../components/OptimizedImage';
 import LoadingSkeleton from '../components/LoadingSkeleton';
-import ContentTypeTag from '../components/ContentTypeTag';
 
 // Lazy load heavy components
 const SubscriptionForm = lazy(() => import('../components/SubscriptionForm'));
-const FAQSection = lazy(() => import('../components/FAQSection'));
 
 interface HomeProps {
   onNavigate: (page: string, slug?: string) => void;
-}
-
-interface SiteUpdate {
-  id: string;
-  title: string;
-  description: string | null;
-  update_type: string;
-  created_at: string;
-  link_page: string | null;
-  link_slug: string | null;
 }
 
 interface Article {
@@ -51,61 +38,16 @@ interface ThemeData {
   pillarArticle: Article | null;
 }
 
-interface Interview {
-  id: string;
-  name: string;
-  title: string;
-  organization: string | null;
-  description: string;
-  image_url: string | null;
-  video_url: string | null;
-  audio_url: string | null;
-  status: string;
-}
-
 export default function Home({ onNavigate }: HomeProps) {
-  const [recentUpdates, setRecentUpdates] = useState<SiteUpdate[]>([]);
-  const [featuredArticle, setFeaturedArticle] = useState<Article | null>(null);
   const [recentArticles, setRecentArticles] = useState<Article[]>([]);
   const [loadingArticles, setLoadingArticles] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [themes, setThemes] = useState<ThemeData[]>([]);
   const [loadingThemes, setLoadingThemes] = useState(true);
   const [editorsPicks, setEditorsPicks] = useState<Article[]>([]);
 
   useEffect(() => {
-    const fetchRecentUpdates = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('site_updates')
-          .select('id, title, description, update_type, created_at, link_page, link_slug')
-          .order('created_at', { ascending: false })
-          .limit(5);
-
-        if (error) {
-          console.error('Error fetching site updates:', error);
-          // Site updates are not critical, so we continue without them
-          return;
-        }
-
-        if (data) {
-          // Remove duplicates based on title and created_at
-          const uniqueUpdates = data.filter((update, index, self) =>
-            index === self.findIndex((u) => 
-              u.title === update.title && 
-              u.created_at === update.created_at
-            )
-          );
-          setRecentUpdates(uniqueUpdates);
-        }
-      } catch (err) {
-        console.error('Unexpected error fetching updates:', err);
-      }
-    };
-
     const fetchArticles = async () => {
       setLoadingArticles(true);
-      setError(null);
       
       try {
         // Fetch featured site material (featured_site takes priority over featured)
@@ -134,8 +76,6 @@ export default function Home({ onNavigate }: HomeProps) {
 
         if (featuredError) {
           console.error('Error fetching featured material:', featuredError);
-        } else if (finalFeaturedData) {
-          setFeaturedArticle(finalFeaturedData);
         }
 
         // Fetch recent articles (excluding featured one)
@@ -162,11 +102,9 @@ export default function Home({ onNavigate }: HomeProps) {
         } else if (recentError) {
           // Only show error if we have no data
           console.error('Error fetching recent articles:', recentError);
-          setError('Unable to load articles. Please refresh the page.');
         }
       } catch (err) {
         console.error('Unexpected error fetching articles:', err);
-        setError('Unable to load content. Please refresh the page.');
       } finally {
         setLoadingArticles(false);
       }
@@ -289,30 +227,8 @@ export default function Home({ onNavigate }: HomeProps) {
     };
 
     // Run queries in parallel for faster loading
-    Promise.all([fetchRecentUpdates(), fetchArticles(), fetchThemes()]);
+    Promise.all([fetchArticles(), fetchThemes()]);
   }, []);
-
-  const formatTimeAgo = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-
-    if (diffInHours < 1) return 'Just now';
-    if (diffInHours < 24) return `${diffInHours}h ago`;
-    const diffInDays = Math.floor(diffInHours / 24);
-    if (diffInDays < 7) return `${diffInDays}d ago`;
-    return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-  };
-
-  const formatArticleDate = (dateString: string | null) => {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-GB', { 
-      day: 'numeric', 
-      month: 'long', 
-      year: 'numeric' 
-    }).toUpperCase();
-  };
 
   const scrollToThemes = () => {
     const themesSection = document.getElementById('themes');

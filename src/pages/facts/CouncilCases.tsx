@@ -2,8 +2,8 @@ import MetaTags from '../../components/MetaTags';
 import LastUpdated from '../../components/LastUpdated';
 import CollectionPageStructuredData from '../../components/CollectionPageStructuredData';
 import { 
-  ArrowLeft, MapPin, Building2, Calendar, FileText, ExternalLink,
-  ChevronRight, CheckCircle2
+  ArrowLeft, MapPin, Building2, Calendar, FileText,
+  ChevronRight
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
