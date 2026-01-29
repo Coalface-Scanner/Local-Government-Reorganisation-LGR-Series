@@ -207,6 +207,38 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
           </div>
         </div>
 
+        {/* Spotify Video Embed */}
+        <div className="mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-6 text-center">
+            Latest Episode of LGR: Maps, Mayhem & The Lame Ducks
+          </h2>
+          <div className="flex justify-center">
+            <div className="w-full max-w-2xl">
+              <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                <iframe
+                  data-testid="embed-iframe"
+                  style={{
+                    borderRadius: '12px',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%'
+                  }}
+                  src="https://open.spotify.com/embed/episode/0pjXWahul3yCzOQU941lQ3/video?utm_source=generator"
+                  width="100%"
+                  height="100%"
+                  frameBorder="0"
+                  allowFullScreen
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"
+                  title="Latest Episode of LGR: Maps, Mayhem & The Lame Ducks"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div id="interviews" className="grid lg:grid-cols-3 gap-6 mb-12">
           {loading ? (
             <div className="col-span-3">
