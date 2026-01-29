@@ -29,8 +29,12 @@ interface Interview {
   order_index: number;
 }
 
-// RSS Feed URL for podcast episodes
-const RSS_FEED_URL = 'https://anchor.fm/s/10d7de5ac/podcast/rss';
+// RSS Feed URL - use Netlify Edge Function proxy to avoid CORS issues
+// In production, use the edge function. In development, fallback to direct URL
+// (Note: Direct URL may have CORS issues - use Netlify Dev for full functionality)
+const RSS_FEED_URL = import.meta.env.PROD 
+  ? '/rss-proxy' 
+  : 'https://anchor.fm/s/10d7de5ac/podcast/rss';
 
 export default function Interviews({ onNavigate }: InterviewsProps) {
   const [interviews, setInterviews] = useState<Interview[]>([]);

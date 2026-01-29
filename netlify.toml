@@ -31,6 +31,10 @@
 # [context.branch-deploy]
 #   command = "npm run build"
 
+# Edge Functions configuration
+# Edge functions in netlify/edge-functions/ are automatically discovered
+# The function rss-proxy.ts will be available at /rss-proxy
+
 # Plugin configuration (optional - if you're using Netlify plugins)
 # Examples:
 # [[plugins]]
