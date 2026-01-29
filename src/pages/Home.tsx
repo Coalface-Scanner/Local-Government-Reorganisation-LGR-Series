@@ -230,13 +230,6 @@ export default function Home({ onNavigate }: HomeProps) {
     Promise.all([fetchArticles(), fetchThemes()]);
   }, []);
 
-  const scrollToThemes = () => {
-    const themesSection = document.getElementById('themes');
-    if (themesSection) {
-      themesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
   const getThemeForArticle = (article: Article): string | null => {
     if (article.theme) {
       const themeLower = article.theme.toLowerCase().trim();
@@ -260,6 +253,16 @@ export default function Home({ onNavigate }: HomeProps) {
       }
     }
     return null;
+  };
+
+  const getTopicSlugForTheme = (themeName: string | null): string | null => {
+    if (!themeName) return null;
+    const themeMap: Record<string, string> = {
+      'Governance and Reform': '/topics/governance-and-reform',
+      'Democratic Legitimacy': '/topics/democratic-legitimacy',
+      'Statecraft and System Design': '/topics/statecraft-and-system-design',
+    };
+    return themeMap[themeName] || null;
   };
 
   return (
@@ -301,7 +304,7 @@ export default function Home({ onNavigate }: HomeProps) {
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <button
-                onClick={scrollToThemes}
+                onClick={() => onNavigate('topics')}
                 className="academic-button academic-button-primary group flex items-center justify-center gap-2 text-sm py-3 px-6 hover:scale-105 hover:shadow-lg transition-all duration-300"
               >
                 Explore the LGR Topics
@@ -647,8 +650,12 @@ export default function Home({ onNavigate }: HomeProps) {
                       </p>
                     )}
                     {articleTheme && (
-                      <div className="mb-3">
-                        <ThemeChip theme={articleTheme} variant="secondary" />
+                      <div className="mb-3" onClick={(e) => e.stopPropagation()}>
+                        <ThemeChip 
+                          theme={articleTheme} 
+                          variant="secondary" 
+                          href={getTopicSlugForTheme(articleTheme) || undefined}
+                        />
                       </div>
                     )}
                     <div className="text-academic-xs font-display font-semibold text-teal-600">

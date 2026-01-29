@@ -18,6 +18,7 @@ import {
   ArrowDown,
   Menu,
   ArrowUp,
+  ArrowRight,
   Info,
   BookOpen
 } from 'lucide-react';
@@ -138,8 +139,8 @@ export default function JourneyMap({ onNavigate: _onNavigate }: JourneyMapProps)
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Breadcrumbs
             items={[
-              { label: 'Facts', path: '/facts' },
-              { label: 'LGR Journey 2026' }
+              { label: 'LGR Hub', path: '/' },
+              { label: 'Roadmap' }
             ]}
             className="mb-6"
           />
@@ -185,10 +186,10 @@ export default function JourneyMap({ onNavigate: _onNavigate }: JourneyMapProps)
               <span>Jump to Zone</span>
             </button>
             <Link
-              to="/facts"
+              to="/"
               className="text-sm text-academic-neutral-600 hover:text-teal-700 transition-colors font-serif"
             >
-              ← Back to Facts
+              ← Back to LGR Hub
             </Link>
           </div>
           
@@ -573,6 +574,47 @@ export default function JourneyMap({ onNavigate: _onNavigate }: JourneyMapProps)
                   Explore more facts, guides, and interactive resources.
                 </p>
               </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Cross-Links Section */}
+        <section className="py-12 lg:py-16 bg-academic-warm border-t border-academic-neutral-300">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="academic-card p-8 bg-teal-50 border-l-4 border-teal-600">
+              <h2 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-6">
+                Explore Related Resources
+              </h2>
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  to="/"
+                  className="academic-button academic-button-outline inline-flex items-center gap-2"
+                >
+                  Back to LGR Hub
+                  <ArrowRight size={16} />
+                </Link>
+                <Link
+                  to="/topics/governance-and-reform"
+                  className="academic-button academic-button-outline inline-flex items-center gap-2"
+                >
+                  Governance and Reform
+                  <ArrowRight size={16} />
+                </Link>
+                <Link
+                  to="/topics/statecraft-and-system-design"
+                  className="academic-button academic-button-outline inline-flex items-center gap-2"
+                >
+                  Statecraft and System Design
+                  <ArrowRight size={16} />
+                </Link>
+                <Link
+                  to="/tools"
+                  className="academic-button academic-button-outline inline-flex items-center gap-2"
+                >
+                  View all Tools
+                  <ArrowRight size={16} />
+                </Link>
+              </div>
             </div>
           </div>
         </section>

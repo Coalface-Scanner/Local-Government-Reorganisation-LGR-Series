@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { ArrowRight, Building2, Vote, Palette } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
 import LoadingSkeleton from '../components/LoadingSkeleton';
+import Breadcrumbs from '../components/Breadcrumbs';
 import { supabase } from '../lib/supabase';
 
 interface TopicsProps {
@@ -171,6 +172,13 @@ export default function Topics({ onNavigate }: TopicsProps) {
           }}
         />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+          <Breadcrumbs
+            items={[
+              { label: 'LGR Hub', path: '/' },
+              { label: 'Topics' }
+            ]}
+            className="mb-6"
+          />
           <div className="academic-section-header mb-6">
             <div className="academic-section-label">EXPLORE BY THEME</div>
             <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
@@ -272,6 +280,31 @@ export default function Topics({ onNavigate }: TopicsProps) {
               </p>
             </div>
           )}
+        </section>
+
+        {/* Navigation Links */}
+        <section className="mb-12">
+          <div className="academic-card p-8 bg-teal-50 border-l-4 border-teal-600">
+            <h2 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-6">
+              Explore More
+            </h2>
+            <div className="flex flex-wrap gap-4">
+              <button
+                onClick={() => onNavigate('')}
+                className="academic-button academic-button-outline inline-flex items-center gap-2"
+              >
+                Back to LGR Hub
+                <ArrowRight size={16} />
+              </button>
+              <button
+                onClick={() => onNavigate('tools')}
+                className="academic-button academic-button-outline inline-flex items-center gap-2"
+              >
+                View all Tools
+                <ArrowRight size={16} />
+              </button>
+            </div>
+          </div>
         </section>
       </div>
     </div>

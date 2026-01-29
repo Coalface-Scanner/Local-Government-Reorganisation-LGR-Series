@@ -37,6 +37,7 @@ const CouncilProfileDetail = lazy(() => import('./pages/CouncilProfileDetail'));
 const JourneyMap = lazy(() => import('./pages/JourneyMap'));
 const Sitemap = lazy(() => import('./pages/Sitemap'));
 const Topics = lazy(() => import('./pages/Topics'));
+const Tools = lazy(() => import('./pages/Tools'));
 
 // Admin pages - lazy loaded (less frequently accessed)
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
@@ -204,6 +205,7 @@ function AppContent() {
             <Route path="/topics/governance-and-reform" element={<PageWrapper>{(nav) => <GovernanceAndReform onNavigate={nav} />}</PageWrapper>} />
             <Route path="/topics/democratic-legitimacy" element={<PageWrapper>{(nav) => <DemocraticLegitimacy onNavigate={nav} />}</PageWrapper>} />
             <Route path="/topics/statecraft-and-system-design" element={<PageWrapper>{(nav) => <StatecraftAndSystemDesign onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/tools" element={<PageWrapper>{(nav) => <Tools onNavigate={nav} />}</PageWrapper>} />
             <Route path="/admin/login" element={<PageWrapper>{(nav) => <AdminLogin onNavigate={nav} />}</PageWrapper>} />
             <Route path="/admin/dashboard" element={<PageWrapper>{(nav) => <AdminDashboard onNavigate={nav} />}</PageWrapper>} />
             <Route path="/admin/articles/login" element={<PageWrapper>{(nav) => <AdminArticleLogin onNavigate={nav} />}</PageWrapper>} />

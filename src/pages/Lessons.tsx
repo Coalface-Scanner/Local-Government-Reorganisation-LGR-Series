@@ -373,6 +373,45 @@ export default function Lessons({ onNavigate }: LessonsProps) {
 
       <FAQSection page="lessons" />
 
+      {/* Cross-Links Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="academic-card p-8 bg-teal-50 border-l-4 border-teal-700">
+          <h2 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-6">
+            Explore Related Resources
+          </h2>
+          <div className="flex flex-wrap gap-4">
+            <button
+              onClick={() => onNavigate('tools')}
+              className="academic-button academic-button-outline inline-flex items-center gap-2"
+            >
+              View all Tools
+              <ArrowRight size={16} />
+            </button>
+            <button
+              onClick={() => onNavigate('topics/governance-and-reform')}
+              className="academic-button academic-button-outline inline-flex items-center gap-2"
+            >
+              Governance and Reform
+              <ArrowRight size={16} />
+            </button>
+            <button
+              onClick={() => onNavigate('topics/statecraft-and-system-design')}
+              className="academic-button academic-button-outline inline-flex items-center gap-2"
+            >
+              Statecraft and System Design
+              <ArrowRight size={16} />
+            </button>
+            <button
+              onClick={() => onNavigate('')}
+              className="academic-button academic-button-outline inline-flex items-center gap-2"
+            >
+              Back to LGR Hub
+              <ArrowRight size={16} />
+            </button>
+          </div>
+        </div>
+      </div>
+
       <LastUpdated />
     </div>
   );
