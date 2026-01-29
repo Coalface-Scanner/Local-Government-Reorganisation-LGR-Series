@@ -8,7 +8,11 @@ export default function OrganizationStructuredData() {
     "@type": "Organization",
     "name": "LGR Series",
     "legalName": "Coalface Engagement Ltd",
-    "alternateName": "Local Government Reorganisation Series",
+    "alternateName": [
+      "Local Government Reorganisation Series",
+      "LGR Series by COALFACE",
+      "COALFACE"
+    ],
     "url": baseUrl,
     "logo": {
       "@type": "ImageObject",

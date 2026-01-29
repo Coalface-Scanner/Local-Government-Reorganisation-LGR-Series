@@ -12,14 +12,19 @@ export default function WebSiteStructuredData() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "LGR Series - Local Government Reorganisation & Council Reform",
-    "alternateName": "Local Government Reorganisation Series",
+    "name": "Local Government Reorganisation | LGR Series by COALFACE",
+    "alternateName": [
+      "Local Government Reorganisation Series",
+      "LGR Series",
+      "LGR Series by COALFACE"
+    ],
     "url": baseUrl,
     "description": "The leading resource on Local Government Reorganisation (LGR), council reform, and English devolution. Expert analysis, evidence-based research, and practical insights on local government reform across the UK.",
     "inLanguage": "en-GB",
     "publisher": {
       "@type": "Organization",
       "name": "LGR Series",
+      "alternateName": ["LGR Series by COALFACE", "COALFACE"],
       "legalName": "Coalface Engagement Ltd",
       "url": baseUrl,
       "logo": {

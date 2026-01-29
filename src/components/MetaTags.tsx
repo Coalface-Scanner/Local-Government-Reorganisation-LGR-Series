@@ -70,7 +70,7 @@ export default function MetaTags({
       { property: 'og:type', content: ogType },
       { property: 'og:url', content: canonicalUrl },
       { property: 'og:image', content: fullOgImage },
-      { property: 'og:site_name', content: 'LGR Series' },
+      { property: 'og:site_name', content: 'LGR Series by COALFACE' },
       { property: 'og:locale', content: 'en_GB' },
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:title', content: fullTitle },

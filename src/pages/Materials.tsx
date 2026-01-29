@@ -342,9 +342,9 @@ export default function Materials({ onNavigate }: MaterialsProps) {
   return (
     <div id="main-content" className="min-h-screen bg-academic-cream">
       <MetaTags
-        title="Research Library - LGR Materials & Resources"
-        description="Browse articles, research papers, factsheets, and interviews on local government reorganisation. Comprehensive resource library for practitioners and policymakers."
-        keywords="LGR research, council reform materials, reorganisation case studies, local government resources, unitary authority research"
+        title="LGR Series Materials & Resources"
+        description="Comprehensive library of articles, research papers, factsheets, and interviews from the Local Government Reorganisation (LGR) Series. Expert analysis on LGR governance, council reform, and unitary authorities."
+        keywords="LGR Series, Local Government Reorganisation materials, LGR research, council reform materials, reorganisation case studies, local government resources, unitary authority research, LGR governance"
       />
       <CollectionPageStructuredData
         name="Research Library - Materials & Resources"
@@ -369,13 +369,13 @@ export default function Materials({ onNavigate }: MaterialsProps) {
           <div className="academic-section-header mb-6">
             <div className="academic-section-label">RESEARCH LIBRARY</div>
             <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              Materials{' '}
+              Local Government Reorganisation (LGR) Series{' '}
               <span className="text-teal-700 font-serif italic">
-                Library
+                Materials
               </span>
             </h1>
             <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              Search and explore all research, insights, case studies, and resources from the LGR Series
+              Search and explore all research, insights, case studies, and resources from the LGR Series on local government reorganisation and LGR governance
             </p>
           </div>
         </div>

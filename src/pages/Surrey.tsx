@@ -4,6 +4,7 @@ import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
 import PageNavigation from '../components/PageNavigation';
 import LocalPlaceStructuredData from '../components/LocalPlaceStructuredData';
+import InBriefSection from '../components/InBriefSection';
 import { Target, Users, BarChart, Shield, Clock, BookOpen, Calendar, TrendingUp } from 'lucide-react';
 
 interface SurreyProps {
@@ -22,9 +23,9 @@ export default function Surrey({ onNavigate }: SurreyProps) {
   return (
     <div className="min-h-screen bg-neutral-50">
       <MetaTags
-        title="Surrey Focus - LGR Analysis & Transition Guide"
-        description="Detailed analysis of Surrey's local government reorganisation. Risks, opportunities, and practical guidance for the transition to East and West Surrey unitary authorities."
-        keywords="Surrey reorganisation, Surrey LGR, East Surrey council, West Surrey council, Surrey devolution, Surrey unitary"
+        title="Surrey LGR Timetable 2026 - Analysis & Transition Guide"
+        description="Detailed analysis of Surrey's local government reorganisation and LGR timetable 2026. Risks, opportunities, and practical guidance for the transition to East and West Surrey unitary authorities. Part of the LGR Series."
+        keywords="Surrey reorganisation, Surrey LGR, LGR timetable 2026, Surrey reorganisation elections, East Surrey council, West Surrey council, Surrey devolution, Surrey unitary, Local Government Reorganisation Surrey"
       />
       <LocalPlaceStructuredData
         name="Surrey"
@@ -70,6 +71,7 @@ export default function Surrey({ onNavigate }: SurreyProps) {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <InBriefSection content="Surrey is undergoing Local Government Reorganisation (LGR) to form East Surrey and West Surrey unitary authorities, with shadow elections scheduled for May 2026 and go-live in May 2027. This fast-tracked LGR timetable 2026 creates both opportunities and risks, particularly around planning decisions, councillor transitions, and governance during the transition period. Evidence from recent reorganisations suggests careful management of the first 100 days is critical for success." />
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-8">
             <div id="playbook" className="bg-white rounded-2xl p-6 shadow-lg border border-slate-200">

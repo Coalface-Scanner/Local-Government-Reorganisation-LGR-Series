@@ -14,6 +14,7 @@ import SeeAlsoSection from '../components/SeeAlsoSection';
 import ReadingProgress from '../components/ReadingProgress';
 import ErrorDisplay from '../components/ErrorDisplay';
 import Breadcrumbs from '../components/Breadcrumbs';
+import BreadcrumbStructuredData from '../components/BreadcrumbStructuredData';
 import Standfirst from '../components/Standfirst';
 import AuthorBio from '../components/AuthorBio';
 import PrintButton from '../components/PrintButton';
@@ -274,6 +275,13 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
 
       <div className="bg-gradient-to-r from-teal-700 via-teal-400 to-teal-100 text-white py-12">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <BreadcrumbStructuredData
+            items={[
+              { label: 'Home', path: '/' },
+              ...(article.theme ? [{ label: 'Topics', path: '/topics' }, { label: getThemeDisplayName(article.theme), path: `/topics/${getThemeSlug(article.theme)}` }] : [{ label: 'Insights', path: '/insights' }]),
+              { label: article.title }
+            ]}
+          />
           <Breadcrumbs 
             items={[
               { label: 'Home', path: '/' },

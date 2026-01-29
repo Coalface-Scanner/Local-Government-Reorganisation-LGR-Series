@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Download, CheckCircle2, AlertTriangle, Target, FileText, Loader2 } from 'lucide-react';
+import { Download, CheckCircle2, AlertTriangle, Target, FileText, Loader2, BookOpen } from 'lucide-react';
 import PageNavigation from '../components/PageNavigation';
 import SubscriptionForm from '../components/SubscriptionForm';
 import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
+import InBriefSection from '../components/InBriefSection';
 import { trackDownload } from '../utils/analytics';
 
 interface HundredDaysProps {
@@ -296,9 +297,9 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
   return (
     <div className="bg-neutral-50 min-h-screen">
       <MetaTags
-        title="The First 100 Days Playbook"
-        description="Strategic framework for managing the critical first 100 days of unitary transition. Evidence-based guidance on priorities, risks, and success factors."
-        keywords="unitary transition, first 100 days, LGR implementation, council transition plan, reorganisation playbook"
+        title="LGR Series: The First 100 Days Playbook"
+        description="Strategic framework for managing the critical first 100 days of Local Government Reorganisation (LGR) unitary transition. Evidence-based guidance on LGR governance, priorities, risks, and success factors from the LGR Series."
+        keywords="LGR Series, Local Government Reorganisation playbook, unitary transition, first 100 days, LGR implementation, LGR governance, council transition plan, reorganisation playbook"
       />
       <div className="relative bg-academic-warm py-8 overflow-hidden">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -320,6 +321,7 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <InBriefSection content="The first 100 days after vesting day are critical for new unitary authorities created through Local Government Reorganisation (LGR). This playbook draws on evidence from recent reorganisations to identify key priorities: establishing governance structures, managing service integration, addressing councillor transitions, and maintaining democratic legitimacy. Effective LGR governance during this period sets the foundation for long-term success." />
         <div className="flex flex-wrap gap-4 mb-6">
           <button
             onClick={handleDownloadPDF}
@@ -607,6 +609,30 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
       </aside>
 
       <FAQSection page="hundred-days" />
+
+      {/* Related Resources - LGR Hub Link */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="academic-card p-8 bg-teal-50 border-l-4 border-teal-700">
+          <div className="flex items-start gap-4">
+            <BookOpen className="text-teal-700 flex-shrink-0 mt-1" size={24} />
+            <div className="flex-1">
+              <h3 className="text-xl font-display font-bold text-academic-charcoal mb-2">
+                Learn More About Local Government Reorganisation
+              </h3>
+              <p className="text-academic-neutral-700 mb-4 font-serif">
+                Explore the <a href="/facts/what-is-lgr" className="text-teal-700 hover:text-teal-800 underline font-medium">LGR Series hub</a> for comprehensive guides on Local Government Reorganisation, LGR governance, and the LGR timetable 2026.
+              </p>
+              <a
+                href="/facts/what-is-lgr"
+                className="academic-button academic-button-primary inline-flex items-center gap-2"
+              >
+                <BookOpen size={18} />
+                What is LGR?
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
