@@ -69,12 +69,24 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
    */
   const fetchRSSFeed = async (): Promise<Interview[]> => {
     try {
-      const response = await fetch(RSS_FEED_URL);
+      const response = await fetch(RSS_FEED_URL, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/rss+xml, application/xml, text/xml, */*',
+        },
+        mode: 'cors',
+      });
+      
       if (!response.ok) {
-        throw new Error(`Failed to fetch RSS feed: ${response.statusText}`);
+        throw new Error(`Failed to fetch RSS feed: ${response.status} ${response.statusText}`);
       }
 
       const xmlText = await response.text();
+      
+      if (!xmlText || xmlText.trim().length === 0) {
+        throw new Error('RSS feed returned empty content');
+      }
+
       const rssData = parseRSSFeed(xmlText);
 
       // Transform RSS items to Interview format
@@ -86,7 +98,15 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
       return rssInterviews.sort((a, b) => b.order_index - a.order_index);
     } catch (err) {
       console.error('Error fetching RSS feed:', err);
-      throw err;
+      
+      // Provide more specific error messages
+      if (err instanceof TypeError && err.message.includes('fetch')) {
+        throw new Error('Network error: Unable to reach RSS feed. Please check your internet connection.');
+      } else if (err instanceof Error) {
+        throw err;
+      } else {
+        throw new Error('Unknown error occurred while fetching RSS feed');
+      }
     }
   };
 
@@ -98,18 +118,14 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
       const { data, error: fetchError } = await supabase
         .from('interviews')
         .select('*')
+        .eq('status', 'published')
         .order('order_index');
 
       if (fetchError) {
         throw fetchError;
       }
 
-      if (data) {
-        // Filter out "coming_soon" status interviews
-        return data.filter(item => item.status !== 'coming_soon');
-      }
-
-      return [];
+      return data || [];
     } catch (err) {
       console.error('Error fetching database interviews:', err);
       throw err;
@@ -125,8 +141,9 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
       setLoading(true);
 
       // Try database first
+      let dbInterviews: Interview[] = [];
       try {
-        const dbInterviews = await fetchDatabaseInterviews();
+        dbInterviews = await fetchDatabaseInterviews();
         if (dbInterviews.length > 0) {
           setInterviews(dbInterviews);
           setLoading(false);
@@ -134,13 +151,33 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
         }
       } catch (dbError) {
         console.warn('Database fetch failed, falling back to RSS feed:', dbError);
+        // Continue to RSS feed fallback
       }
 
-      // Fallback to RSS feed
-      const rssInterviews = await fetchRSSFeed();
-      setInterviews(rssInterviews);
+      // Fallback to RSS feed if database is empty or failed
+      try {
+        const rssInterviews = await fetchRSSFeed();
+        if (rssInterviews.length > 0) {
+          setInterviews(rssInterviews);
+        } else {
+          // Both sources returned empty - show empty state, not error
+          setInterviews([]);
+        }
+      } catch (rssError) {
+        console.error('RSS feed fetch failed:', rssError);
+        // If database also failed, show error. Otherwise, show empty state
+        if (dbInterviews.length === 0) {
+          const errorMessage = rssError instanceof Error 
+            ? rssError.message 
+            : 'Failed to load interviews. Please check your connection and try again.';
+          setError(errorMessage);
+        } else {
+          // Database worked but returned empty, RSS failed - just show empty state
+          setInterviews([]);
+        }
+      }
     } catch (err) {
-      console.error('Error fetching interviews:', err);
+      console.error('Unexpected error fetching interviews:', err);
       setError('Failed to load interviews. Please try again.');
     } finally {
       setLoading(false);
