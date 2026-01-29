@@ -165,7 +165,7 @@ export default function FAQsEditor() {
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-bold text-gray-900">Manage FAQs</h1>
             <a
-              href="/admin"
+              href="/admin/dashboard"
               className="text-blue-600 hover:text-blue-700 font-medium"
             >
               Back to Dashboard

@@ -129,6 +129,7 @@ export default function JourneyMap({ onNavigate: _onNavigate }: JourneyMapProps)
         title="LGR Journey 2026: The Journey Map"
         description="Interactive journey map visualization of Local Government Reorganisation during 2026 and early 2027. Navigate the key milestones, decisions, and transitions."
         keywords="LGR forecast, local government reorganisation 2026, LGR journey map, unitary authority timeline, shadow elections, structural changes orders"
+        canonical="https://localgovernmentreorganisation.co.uk/lgr-journey-2026"
       />
 
       {/* Hero Header */}

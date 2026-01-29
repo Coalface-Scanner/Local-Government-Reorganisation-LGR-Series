@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { LogIn } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 interface AdminLoginProps {
   onNavigate: (page: string) => void;
 }
 
 export default function AdminLogin({ onNavigate }: AdminLoginProps) {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -99,7 +101,7 @@ export default function AdminLogin({ onNavigate }: AdminLoginProps) {
 
           <div className="mt-6 text-center">
             <button
-              onClick={() => onNavigate('home')}
+              onClick={() => navigate('/')}
               className="text-sm text-slate-600 hover:text-slate-900 transition-colors"
             >
               Back to website

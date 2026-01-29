@@ -16,7 +16,7 @@ export function useRetry<T extends (...args: unknown[]) => Promise<unknown>>(
         try {
           setIsRetrying(attempt > 0);
           setRetryCount(attempt);
-          const result = await fn(...args);
+          const result = await fn(...args) as ReturnType<T>;
           setIsRetrying(false);
           setRetryCount(0);
           return result;

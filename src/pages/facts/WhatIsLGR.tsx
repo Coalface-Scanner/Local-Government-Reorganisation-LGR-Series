@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import MetaTags from '../../components/MetaTags';
 import LastUpdated from '../../components/LastUpdated';
 import FAQSection from '../../components/FAQSection';
@@ -6,7 +5,7 @@ import ArticleStructuredData from '../../components/ArticleStructuredData';
 import InBriefSection from '../../components/InBriefSection';
 import { 
   ArrowLeft, BookOpen, Calendar, MapPin, Building2, Users,
-  ChevronRight, Link as LinkIcon, Route, Target
+  ChevronRight, Target
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 

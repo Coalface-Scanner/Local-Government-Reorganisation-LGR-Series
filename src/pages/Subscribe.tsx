@@ -3,12 +3,14 @@ import LastUpdated from '../components/LastUpdated';
 import MetaTags from '../components/MetaTags';
 import { Mail, FileText, Bell, ArrowRight } from 'lucide-react';
 import { usePageContent } from '../hooks/usePageContent';
+import { useNavigate } from 'react-router-dom';
 
 interface SubscribeProps {
   onNavigate: (page: string) => void;
 }
 
 export default function Subscribe({ onNavigate }: SubscribeProps) {
+  const navigate = useNavigate();
   const { getSection } = usePageContent('subscribe');
 
   // Get CMS content with fallbacks
@@ -93,7 +95,7 @@ export default function Subscribe({ onNavigate }: SubscribeProps) {
 
               <div className="text-center border-t border-slate-200 pt-8">
                 <button
-                  onClick={() => onNavigate('home')}
+                  onClick={() => navigate('/')}
                   className="inline-flex items-center gap-2 text-teal-700 font-bold hover:gap-3 transition-all group hover:text-teal-800"
                 >
                   <ArrowRight className="rotate-180 group-hover:-translate-x-1 transition-transform" size={20} />

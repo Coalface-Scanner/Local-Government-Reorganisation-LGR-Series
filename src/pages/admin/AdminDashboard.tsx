@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { LogOut, Home, FileText, List, BookOpen, MessageSquare, Video, Layout, Bell, HelpCircle, Newspaper, Edit3, Menu, X, Settings, Globe, Tag, Archive } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import MaterialsEditor from './MaterialsEditor';
 import HomeContentEditor from './HomeContentEditor';
 import FactsEditor from './FactsEditor';
@@ -24,6 +25,7 @@ interface AdminDashboardProps {
 }
 
 export default function AdminDashboard({ onNavigate }: AdminDashboardProps) {
+  const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState('overview');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, signOut, loading } = useAuth();
@@ -36,7 +38,7 @@ export default function AdminDashboard({ onNavigate }: AdminDashboardProps) {
 
   const handleSignOut = async () => {
     await signOut();
-    onNavigate('home');
+    navigate('/');
   };
 
   if (loading) {
@@ -201,7 +203,7 @@ export default function AdminDashboard({ onNavigate }: AdminDashboardProps) {
           <div className="absolute bottom-6 left-6 right-6 space-y-2">
             <button
               onClick={() => {
-                onNavigate('home');
+                navigate('/');
                 setMobileMenuOpen(false);
               }}
               className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-800 transition-all min-h-[48px]"

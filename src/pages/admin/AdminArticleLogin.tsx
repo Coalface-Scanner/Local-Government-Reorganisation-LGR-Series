@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Lock } from 'lucide-react';
 import { useAdminAuth } from '../../contexts/AdminAuthContext';
+import { useNavigate } from 'react-router-dom';
 
 interface AdminArticleLoginProps {
   onNavigate: (page: string) => void;
 }
 
 export default function AdminArticleLogin({ onNavigate }: AdminArticleLoginProps) {
+  const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -86,7 +88,7 @@ export default function AdminArticleLogin({ onNavigate }: AdminArticleLoginProps
 
           <div className="mt-6 pt-6 border-t border-neutral-200">
             <button
-              onClick={() => onNavigate('home')}
+              onClick={() => navigate('/')}
               className="text-sm text-neutral-600 hover:text-neutral-900 transition-colors w-full text-center"
             >
               Return to Site
