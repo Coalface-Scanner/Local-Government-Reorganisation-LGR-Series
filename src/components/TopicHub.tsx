@@ -204,7 +204,8 @@ export default function TopicHub({
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Breadcrumbs
             items={[
-              { label: 'Topics', path: '/' },
+              { label: 'LGR Hub', path: '/' },
+              { label: 'Topics', path: '/topics' },
               { label: displayThemeName }
             ]}
             className="mb-6"
@@ -371,6 +372,40 @@ export default function TopicHub({
               </p>
             </div>
           )}
+        </div>
+      </section>
+
+      {/* Navigation Links */}
+      <section className="py-12 lg:py-16 bg-academic-warm border-t border-academic-neutral-300">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="academic-card p-8 bg-teal-50 border-l-4 border-teal-600">
+            <h2 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-6">
+              Explore More
+            </h2>
+            <div className="flex flex-wrap gap-4">
+              <button
+                onClick={() => onNavigate('topics')}
+                className="academic-button academic-button-outline inline-flex items-center gap-2"
+              >
+                Back to all topics
+                <ArrowRight size={16} />
+              </button>
+              <button
+                onClick={() => onNavigate('tools')}
+                className="academic-button academic-button-outline inline-flex items-center gap-2"
+              >
+                View all tools
+                <ArrowRight size={16} />
+              </button>
+              <button
+                onClick={() => onNavigate('')}
+                className="academic-button academic-button-outline inline-flex items-center gap-2"
+              >
+                Back to LGR Hub
+                <ArrowRight size={16} />
+              </button>
+            </div>
+          </div>
         </div>
       </section>
 

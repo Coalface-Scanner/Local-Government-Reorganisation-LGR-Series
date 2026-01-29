@@ -138,6 +138,17 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
           </div>
 
           <div>
+            <h3 className="text-white font-display font-bold text-academic-sm mb-4 tracking-wider">LGR HUB</h3>
+            <ul className="space-y-1.5 text-academic-xs">
+              <li>
+                <Link to="/" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
+                  LGR Hub Home
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
             <h3 className="text-white font-display font-bold text-academic-sm mb-4 tracking-wider">TOPICS</h3>
             <ul className="space-y-1.5 text-academic-xs">
               <li>
@@ -167,7 +178,7 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
                 </Link>
               </li>
               <li>
-                <Link to="/surrey/election-tracker/simulator" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
+                <Link to="/tools" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
                   Tools
                 </Link>
               </li>

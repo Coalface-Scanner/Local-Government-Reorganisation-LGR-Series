@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Download, CheckCircle2, AlertTriangle, Target, FileText, Loader2, BookOpen } from 'lucide-react';
+import { Download, CheckCircle2, AlertTriangle, Target, FileText, Loader2, ArrowRight } from 'lucide-react';
 import PageNavigation from '../components/PageNavigation';
 import SubscriptionForm from '../components/SubscriptionForm';
 import FAQSection from '../components/FAQSection';
@@ -610,26 +610,41 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
 
       <FAQSection page="hundred-days" />
 
-      {/* Related Resources - LGR Hub Link */}
+      {/* Related Resources - Cross-Links */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="academic-card p-8 bg-teal-50 border-l-4 border-teal-700">
-          <div className="flex items-start gap-4">
-            <BookOpen className="text-teal-700 flex-shrink-0 mt-1" size={24} />
-            <div className="flex-1">
-              <h3 className="text-xl font-display font-bold text-academic-charcoal mb-2">
-                Learn More About Local Government Reorganisation
-              </h3>
-              <p className="text-academic-neutral-700 mb-4 font-serif">
-                Explore the <a href="/facts/what-is-lgr" className="text-teal-700 hover:text-teal-800 underline font-medium">LGR Series hub</a> for comprehensive guides on Local Government Reorganisation, LGR governance, and the LGR timetable 2026.
-              </p>
-              <a
-                href="/facts/what-is-lgr"
-                className="academic-button academic-button-primary inline-flex items-center gap-2"
-              >
-                <BookOpen size={18} />
-                What is LGR?
-              </a>
-            </div>
+          <h2 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-6">
+            Explore Related Resources
+          </h2>
+          <div className="flex flex-wrap gap-4">
+            <button
+              onClick={() => onNavigate('topics/statecraft-and-system-design')}
+              className="academic-button academic-button-outline inline-flex items-center gap-2"
+            >
+              Statecraft and System Design
+              <ArrowRight size={16} />
+            </button>
+            <button
+              onClick={() => onNavigate('topics/governance-and-reform')}
+              className="academic-button academic-button-outline inline-flex items-center gap-2"
+            >
+              Governance and Reform
+              <ArrowRight size={16} />
+            </button>
+            <button
+              onClick={() => onNavigate('tools')}
+              className="academic-button academic-button-outline inline-flex items-center gap-2"
+            >
+              View all Tools
+              <ArrowRight size={16} />
+            </button>
+            <button
+              onClick={() => onNavigate('')}
+              className="academic-button academic-button-outline inline-flex items-center gap-2"
+            >
+              Back to LGR Hub
+              <ArrowRight size={16} />
+            </button>
           </div>
         </div>
       </div>

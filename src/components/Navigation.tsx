@@ -97,14 +97,17 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
 
 
   const navItems = [
-    { id: 'home', label: 'HOME', path: '/' },
-    { id: 'news', label: 'NEWS', path: '/news' },
+    { id: 'home', label: 'LGR HUB', path: '/' },
     { id: 'topics', label: 'TOPICS', path: '/topics' },
+    { id: 'roadmap', label: 'ROADMAP', path: '/lgr-journey-2026' },
+    { id: 'tools', label: 'TOOLS', path: '/tools' },
+    { id: 'podcast', label: 'PODCAST', path: '/interviews' },
+    { id: 'about', label: 'ABOUT', path: '/about' },
+    { id: 'news', label: 'NEWS', path: '/news' },
     { id: 'insights', label: 'INSIGHTS', path: '/insights' },
     { id: 'facts', label: 'FACTS & DATA', path: '/facts' },
     { id: 'lessons', label: 'LESSONS', path: '/lessons' },
     { id: 'surrey', label: 'FOCUS: SURREY', path: '/surrey' },
-    { id: 'about', label: 'ABOUT', path: '/about' },
   ];
 
   const handleNavClick = () => {
