@@ -2,7 +2,7 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Chart } from 'chart.js/auto';
 import MetaTags from '../components/MetaTags';
-import { X, Sparkles, CheckCircle2, BarChart3, Zap, BookOpen, MapPin, Share2, ArrowLeft } from 'lucide-react';
+import { X, Sparkles, CheckCircle2, BarChart3, Zap, BookOpen, MapPin, Share2, ArrowLeft, Link as LinkIcon } from 'lucide-react';
 import ShareButtons from '../components/ShareButtons';
 import './SurreyElectionSimulator.css';
 
@@ -1194,6 +1194,28 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
           </div>
         </section>
         )}
+
+        {/* Related Resources - LGR Hub Link */}
+        <div className="mt-12 p-8 bg-teal-50 rounded-lg border-l-4 border-teal-700">
+          <div className="flex items-start gap-4">
+            <LinkIcon className="text-teal-700 flex-shrink-0 mt-1" size={24} />
+            <div className="flex-1">
+              <h3 className="text-xl font-bold text-neutral-900 mb-2">
+                Learn More About Local Government Reorganisation
+              </h3>
+              <p className="text-neutral-600 mb-4">
+                Explore the <a href="/facts/what-is-lgr" className="text-teal-700 hover:text-teal-800 underline font-medium">LGR Series hub</a> for comprehensive guides on Local Government Reorganisation, LGR governance, and the LGR timetable 2026.
+              </p>
+              <button
+                onClick={() => navigate('/facts/what-is-lgr')}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-teal-700 hover:bg-teal-800 text-white font-semibold rounded-lg transition-colors"
+              >
+                <BookOpen size={18} />
+                What is LGR?
+              </button>
+            </div>
+          </div>
+        </div>
         </div>
       </main>
 

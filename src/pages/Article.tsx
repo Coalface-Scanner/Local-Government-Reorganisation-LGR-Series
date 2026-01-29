@@ -10,6 +10,7 @@ import TableOfContents from '../components/TableOfContents';
 import ReadingProgress from '../components/ReadingProgress';
 import ErrorDisplay from '../components/ErrorDisplay';
 import Breadcrumbs from '../components/Breadcrumbs';
+import BreadcrumbStructuredData from '../components/BreadcrumbStructuredData';
 import RelatedContent from '../components/RelatedContent';
 import SeeAlsoSection from '../components/SeeAlsoSection';
 import PrintButton from '../components/PrintButton';
@@ -242,6 +243,12 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
       />
       <div className="bg-academic-charcoal text-academic-neutral-200 py-12">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <BreadcrumbStructuredData
+            items={[
+              { label: 'Materials', path: '/materials' },
+              { label: material.title }
+            ]}
+          />
           <Breadcrumbs 
             items={[
               { label: 'Materials', path: '/materials' },

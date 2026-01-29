@@ -54,6 +54,10 @@ const Sources = lazy(() => import('./pages/facts/Sources'));
 const FurtherReading = lazy(() => import('./pages/facts/FurtherReading'));
 const Councilopedia = lazy(() => import('./pages/facts/Councilopedia'));
 const BeginnersGuide = lazy(() => import('./pages/facts/BeginnersGuide'));
+const WhatIsLGR = lazy(() => import('./pages/facts/WhatIsLGR'));
+const LGRGlossary = lazy(() => import('./pages/facts/LGRGlossary'));
+const LGRTimeline = lazy(() => import('./pages/facts/LGRTimeline'));
+const CouncilCases = lazy(() => import('./pages/facts/CouncilCases'));
 
 // About sub-pages - lazy loaded
 const About = lazy(() => import('./pages/about/About'));
@@ -162,6 +166,11 @@ function AppContent() {
             <Route path="/facts/further-reading" element={<FurtherReading />} />
             <Route path="/facts/councilopedia" element={<Councilopedia />} />
             <Route path="/facts/councilopedia/beginners-guide" element={<BeginnersGuide />} />
+            <Route path="/facts/what-is-lgr" element={<WhatIsLGR />} />
+            <Route path="/what-is-lgr" element={<WhatIsLGR />} />
+            <Route path="/facts/lgr-glossary" element={<LGRGlossary />} />
+            <Route path="/facts/lgr-timeline" element={<LGRTimeline />} />
+            <Route path="/facts/council-cases" element={<CouncilCases />} />
             <Route path="/facts/:slug" element={<FactDetail />} />
             <Route path="/lgr-journey-2026" element={<PageWrapper>{(nav) => <JourneyMap onNavigate={nav} />}</PageWrapper>} />
             <Route path="/sitemap.xml" element={<Sitemap />} />

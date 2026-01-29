@@ -6,7 +6,7 @@ import MetaTags from '../components/MetaTags';
 import PageNavigation from '../components/PageNavigation';
 import ErrorDisplay from '../components/ErrorDisplay';
 import LoadingSkeleton from '../components/LoadingSkeleton';
-import { Mic, Calendar, Users, FileText, Headphones, ExternalLink, Video } from 'lucide-react';
+import { Mic, Calendar, Users, FileText, Headphones, ExternalLink, Video, BookOpen } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 interface InterviewsProps {
@@ -68,9 +68,9 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
   return (
     <div className="min-h-screen bg-neutral-50">
       <MetaTags
-        title="Interviews - Council Leaders & Practitioners"
-        description="In-depth interviews with council leaders, officers, and practitioners on local government reorganisation. First-hand accounts and expert perspectives on reform."
-        keywords="LGR interviews, council leader interviews, local government insights, reorganisation experiences, practitioner perspectives"
+        title="LGR Governance Interviews - Council Leaders & Practitioners"
+        description="In-depth interviews with council leaders, officers, and practitioners on Local Government Reorganisation (LGR) and LGR governance. First-hand accounts and expert perspectives on local government reorganisation reform."
+        keywords="LGR interviews, LGR governance interviews, Local Government Reorganisation interviews, council leader interviews, local government insights, reorganisation experiences, practitioner perspectives, LGR Series interviews"
       />
       <div className="relative bg-gradient-to-b from-teal-50 to-white py-8 overflow-hidden">
         <div
@@ -89,13 +89,13 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
             </div>
           </div>
           <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-3">
-            Interviews{' '}
+            LGR Governance{' '}
             <span className="text-teal-700 font-serif italic">
-              Series
+              Interviews
             </span>
           </h1>
           <p className="text-xl text-neutral-600 leading-relaxed max-w-3xl">
-            In-depth conversations with leaders and practitioners who have experienced local government reorganisation firsthand
+            In-depth conversations with leaders and practitioners who have experienced Local Government Reorganisation (LGR) firsthand. Expert insights on LGR governance and council reform.
           </p>
         </div>
       </div>
@@ -342,6 +342,30 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
       </div>
 
       <FAQSection page="interviews" />
+
+      {/* Related Resources - LGR Hub Link */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="academic-card p-8 bg-teal-50 border-l-4 border-teal-700">
+          <div className="flex items-start gap-4">
+            <BookOpen className="text-teal-700 flex-shrink-0 mt-1" size={24} />
+            <div className="flex-1">
+              <h3 className="text-xl font-display font-bold text-academic-charcoal mb-2">
+                Learn More About Local Government Reorganisation
+              </h3>
+              <p className="text-academic-neutral-700 mb-4 font-serif">
+                Explore the <a href="/facts/what-is-lgr" className="text-teal-700 hover:text-teal-800 underline font-medium">LGR Series hub</a> for comprehensive guides on Local Government Reorganisation, LGR governance, and the LGR timetable 2026.
+              </p>
+              <a
+                href="/facts/what-is-lgr"
+                className="academic-button academic-button-primary inline-flex items-center gap-2"
+              >
+                <BookOpen size={18} />
+                What is LGR?
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <LastUpdated />
     </div>

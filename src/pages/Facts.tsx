@@ -22,6 +22,14 @@ interface ServiceCard {
 
 const serviceCards: ServiceCard[] = [
   {
+    id: 'what-is-lgr',
+    title: 'What is Local Government Reorganisation? (LGR)',
+    description: 'The definitive guide to Local Government Reorganisation (LGR). Learn what LGR is, how it works, LGR governance, and the LGR timetable 2026. Your hub for understanding local government reorganisation.',
+    icon: HelpCircle,
+    color: 'from-teal-600 to-cyan-700',
+    route: '/facts/what-is-lgr'
+  },
+  {
     id: 'timescales',
     title: 'Timescales',
     description: 'Implementation timeline for local government reorganisation proposals across England, including final proposals, decisions, shadow councils, and go-live dates.',
@@ -93,9 +101,9 @@ export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
   return (
     <div className="min-h-screen bg-academic-cream">
       <MetaTags
-        title="Facts & Figures - LGR Reorganisation Data"
-        description="Key statistics, data, and facts about local government reorganisation in England. Explore timelines, councils involved, methodology, and sources."
-        keywords="LGR facts, reorganisation data, unitary authority evidence, local government reorganisation analysis, LGR statistics"
+        title="Local Government Reorganisation Facts & Data - LGR Series"
+        description="Comprehensive facts, statistics, and data about Local Government Reorganisation (LGR) in England. Explore LGR timelines, councils involved, methodology, and sources from the LGR Series."
+        keywords="LGR facts, Local Government Reorganisation data, LGR Series facts, reorganisation data, unitary authority evidence, local government reorganisation analysis, LGR statistics, LGR timetable"
       />
       <CollectionPageStructuredData
         name="Facts & Figures"
@@ -121,13 +129,13 @@ export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
           <div className="academic-section-header mb-6">
             <div className="academic-section-label">EVIDENCE-BASED ANALYSIS</div>
             <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              Facts &{' '}
+              Local Government Reorganisation{' '}
               <span className="text-teal-700 font-serif italic">
-                Data
+                Facts & Data
               </span>
             </h1>
             <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              Comprehensive evidence-based analysis of local government reorganisation in England. Explore timelines, councils, key facts, methodology, sources, and additional resources.
+              Comprehensive evidence-based analysis of Local Government Reorganisation (LGR) in England. Explore LGR timelines, councils, key facts, methodology, sources, and additional resources from the LGR Series.
             </p>
           </div>
         </div>

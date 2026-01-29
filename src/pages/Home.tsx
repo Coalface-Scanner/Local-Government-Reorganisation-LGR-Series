@@ -3,6 +3,7 @@ import { ArrowRight, BarChart3, MapPin, Quote, Download, FileText, BookOpen, Clo
 import MetaTags from '../components/MetaTags';
 import OrganizationStructuredData from '../components/OrganizationStructuredData';
 import WebSiteStructuredData from '../components/WebSiteStructuredData';
+import InBriefSection from '../components/InBriefSection';
 import { supabase } from '../lib/supabase';
 import ErrorDisplay from '../components/ErrorDisplay';
 import OptimizedImage from '../components/OptimizedImage';
@@ -338,9 +339,9 @@ export default function Home({ onNavigate }: HomeProps) {
   return (
     <div className="bg-academic-cream">
       <MetaTags
-        title="LGR - Local Government Reorganisation & Reform"
-        description="Expert analysis on Local Government Reorganisation (LGR), council reform, and English devolution. Evidence-based research and practical insights."
-        keywords="LGR, Local Government Reorganisation, Local Government Reform, Council Reform, English Devolution, unitary authorities, council reorganisation, local government reform UK, local government reorganisation England, council restructuring, devolution England, local authority reorganisation"
+        title="Local Government Reorganisation (LGR) Series"
+        description="The definitive specialist source on Local Government Reorganisation (LGR) and LGR governance. Expert analysis, evidence-based research, and practical insights on local government reorganisation, LGR timetable 2026, and council reform across England."
+        keywords="LGR, Local Government Reorganisation, Local Government Reorganisation Series, LGR Series, LGR governance, LGR timetable 2026, council reform, English devolution, unitary authorities, council reorganisation, local government reform UK, local government reorganisation England, council restructuring, devolution England, local authority reorganisation"
       />
       <OrganizationStructuredData />
       <WebSiteStructuredData />

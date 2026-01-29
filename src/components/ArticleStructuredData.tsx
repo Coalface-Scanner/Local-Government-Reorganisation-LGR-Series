@@ -83,6 +83,7 @@ export default function ArticleStructuredData({
     "publisher": {
       "@type": "Organization",
       "name": "LGR Series",
+      "alternateName": ["LGR Series by COALFACE", "Local Government Reorganisation Series", "COALFACE"],
       "legalName": "Coalface Engagement Ltd",
       "foundingDate": "2019",
       "address": {
