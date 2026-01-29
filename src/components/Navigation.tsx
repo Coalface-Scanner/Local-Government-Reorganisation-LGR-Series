@@ -9,22 +9,28 @@ interface NavigationProps {
 
 export default function Navigation({ onNavigate: _onNavigate, currentPage }: NavigationProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [surreyDropdownOpen, setSurreyDropdownOpen] = useState(false);
-  const [insightsDropdownOpen, setInsightsDropdownOpen] = useState(false);
-  const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
+  const [lgrHubDropdownOpen, setLgrHubDropdownOpen] = useState(false);
   const [topicsDropdownOpen, setTopicsDropdownOpen] = useState(false);
-  const [surreyMobileExpanded, setSurreyMobileExpanded] = useState(false);
-  const [insightsMobileExpanded, setInsightsMobileExpanded] = useState(false);
-  const [aboutMobileExpanded, setAboutMobileExpanded] = useState(false);
+  const [insightsDropdownOpen, setInsightsDropdownOpen] = useState(false);
+  const [factsDropdownOpen, setFactsDropdownOpen] = useState(false);
+  const [surreyDropdownOpen, setSurreyDropdownOpen] = useState(false);
+  const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
+  const [lgrHubMobileExpanded, setLgrHubMobileExpanded] = useState(false);
   const [topicsMobileExpanded, setTopicsMobileExpanded] = useState(false);
+  const [insightsMobileExpanded, setInsightsMobileExpanded] = useState(false);
+  const [factsMobileExpanded, setFactsMobileExpanded] = useState(false);
+  const [surreyMobileExpanded, setSurreyMobileExpanded] = useState(false);
+  const [aboutMobileExpanded, setAboutMobileExpanded] = useState(false);
   const [currentDate, setCurrentDate] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearch, setShowSearch] = useState(false);
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
-  const surreyDropdownRef = useRef<HTMLDivElement>(null);
-  const insightsDropdownRef = useRef<HTMLDivElement>(null);
-  const aboutDropdownRef = useRef<HTMLDivElement>(null);
+  const lgrHubDropdownRef = useRef<HTMLDivElement>(null);
   const topicsDropdownRef = useRef<HTMLDivElement>(null);
+  const insightsDropdownRef = useRef<HTMLDivElement>(null);
+  const factsDropdownRef = useRef<HTMLDivElement>(null);
+  const surreyDropdownRef = useRef<HTMLDivElement>(null);
+  const aboutDropdownRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const localGovernmentRef = useRef<HTMLHeadingElement>(null);
   const reorganisationRef = useRef<HTMLHeadingElement>(null);
@@ -97,25 +103,23 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
 
 
   const navItems = [
-    { id: 'home', label: 'LGR HUB', path: '/' },
+    { id: 'lgr-hub', label: 'LGR HUB', path: '/lgr-hub' },
     { id: 'topics', label: 'TOPICS', path: '/topics' },
-    { id: 'roadmap', label: 'ROADMAP', path: '/lgr-journey-2026' },
-    { id: 'tools', label: 'TOOLS', path: '/tools' },
-    { id: 'podcast', label: 'PODCAST', path: '/interviews' },
-    { id: 'about', label: 'ABOUT', path: '/about' },
-    { id: 'news', label: 'NEWS', path: '/news' },
     { id: 'insights', label: 'INSIGHTS', path: '/insights' },
-    { id: 'facts', label: 'FACTS & DATA', path: '/facts' },
+    { id: 'facts', label: 'FACTS & DATA', path: '/facts-and-data' },
     { id: 'lessons', label: 'LESSONS', path: '/lessons' },
     { id: 'surrey', label: 'FOCUS: SURREY', path: '/surrey' },
+    { id: 'about', label: 'ABOUT', path: '/about' },
   ];
 
   const handleNavClick = () => {
     setMobileMenuOpen(false);
-    setSurreyMobileExpanded(false);
-    setInsightsMobileExpanded(false);
-    setAboutMobileExpanded(false);
+    setLgrHubMobileExpanded(false);
     setTopicsMobileExpanded(false);
+    setInsightsMobileExpanded(false);
+    setFactsMobileExpanded(false);
+    setSurreyMobileExpanded(false);
+    setAboutMobileExpanded(false);
     setShowSearch(false);
   };
 
@@ -154,37 +158,47 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (surreyDropdownRef.current && !surreyDropdownRef.current.contains(event.target as Node)) {
-        setSurreyDropdownOpen(false);
-      }
-      if (insightsDropdownRef.current && !insightsDropdownRef.current.contains(event.target as Node)) {
-        setInsightsDropdownOpen(false);
-      }
-      if (aboutDropdownRef.current && !aboutDropdownRef.current.contains(event.target as Node)) {
-        setAboutDropdownOpen(false);
+      if (lgrHubDropdownRef.current && !lgrHubDropdownRef.current.contains(event.target as Node)) {
+        setLgrHubDropdownOpen(false);
       }
       if (topicsDropdownRef.current && !topicsDropdownRef.current.contains(event.target as Node)) {
         setTopicsDropdownOpen(false);
       }
+      if (insightsDropdownRef.current && !insightsDropdownRef.current.contains(event.target as Node)) {
+        setInsightsDropdownOpen(false);
+      }
+      if (factsDropdownRef.current && !factsDropdownRef.current.contains(event.target as Node)) {
+        setFactsDropdownOpen(false);
+      }
+      if (surreyDropdownRef.current && !surreyDropdownRef.current.contains(event.target as Node)) {
+        setSurreyDropdownOpen(false);
+      }
+      if (aboutDropdownRef.current && !aboutDropdownRef.current.contains(event.target as Node)) {
+        setAboutDropdownOpen(false);
+      }
     };
 
-    if (surreyDropdownOpen || insightsDropdownOpen || aboutDropdownOpen || topicsDropdownOpen) {
+    if (lgrHubDropdownOpen || topicsDropdownOpen || insightsDropdownOpen || factsDropdownOpen || surreyDropdownOpen || aboutDropdownOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [surreyDropdownOpen, insightsDropdownOpen, aboutDropdownOpen, topicsDropdownOpen]);
+  }, [lgrHubDropdownOpen, topicsDropdownOpen, insightsDropdownOpen, factsDropdownOpen, surreyDropdownOpen, aboutDropdownOpen]);
 
-  // Check if current page is under surrey section
-  const isSurreySection = location.pathname.startsWith('/surrey');
-  // Check if current page is under insights section
-  const isInsightsSection = location.pathname.startsWith('/insights') || location.pathname.startsWith('/100days');
-  // Check if current page is under about section
-  const isAboutSection = location.pathname.startsWith('/about') || location.pathname.startsWith('/contact');
+  // Check if current page is under LGR Hub section
+  const isLGRHubSection = location.pathname.startsWith('/lgr-hub') || location.pathname.startsWith('/lgr-journey-2026') || location.pathname.startsWith('/roadmap') || location.pathname.startsWith('/tools') || location.pathname.startsWith('/interviews') || location.pathname.startsWith('/podcast') || location.pathname === '/';
   // Check if current page is under topics section
   const isTopicsSection = location.pathname.startsWith('/topics');
+  // Check if current page is under insights section
+  const isInsightsSection = location.pathname.startsWith('/insights') || location.pathname.startsWith('/100days') || location.pathname.startsWith('/news');
+  // Check if current page is under facts section (check /facts-and-data first to avoid matching /facts)
+  const isFactsSection = location.pathname.startsWith('/facts-and-data') || (location.pathname.startsWith('/facts') && !location.pathname.startsWith('/facts-and-data')) || location.pathname.startsWith('/materials') || location.pathname.startsWith('/councils');
+  // Check if current page is under surrey section
+  const isSurreySection = location.pathname.startsWith('/surrey');
+  // Check if current page is under about section
+  const isAboutSection = location.pathname.startsWith('/about') || location.pathname.startsWith('/contact');
 
   return (
     <nav 
@@ -281,6 +295,77 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
 
         <div ref={menuBarRef} className="hidden md:flex justify-center items-center space-x-0.5 flex-nowrap" style={{ paddingTop: 0, paddingBottom: '1px', margin: 0, marginTop: '-1px' }}>
           {navItems.map((item) => {
+            if (item.id === 'lgr-hub') {
+              return (
+                <div
+                  key={item.id}
+                  ref={lgrHubDropdownRef}
+                  className="relative"
+                  onMouseEnter={() => setLgrHubDropdownOpen(true)}
+                  onMouseLeave={() => setLgrHubDropdownOpen(false)}
+                >
+                  <Link
+                    to={item.path}
+                    className={`px-2 py-1.5 text-[0.625rem] font-display font-bold tracking-wider transition-all duration-200 min-h-[24px] flex items-center justify-center gap-0.5 whitespace-nowrap ${
+                      isLGRHubSection
+                        ? 'text-teal-600 border-b-2 border-teal-500'
+                        : 'text-academic-neutral-700 hover:text-academic-charcoal'
+                    }`}
+                  >
+                    {item.label}
+                    <ChevronDown 
+                      size={12} 
+                      className={`transition-transform duration-200 ${lgrHubDropdownOpen ? 'rotate-180' : ''}`}
+                    />
+                  </Link>
+                  
+                  {lgrHubDropdownOpen && (
+                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 bg-white/95 backdrop-blur-sm rounded-lg shadow-xl border border-neutral-200/50 py-2 min-w-[200px] z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                      <Link
+                        to="/lgr-hub"
+                        className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
+                          location.pathname === '/lgr-hub' || location.pathname === '/'
+                            ? 'text-teal-600 bg-teal-50'
+                            : 'text-academic-neutral-700 hover:bg-academic-warm'
+                        }`}
+                      >
+                        Overview
+                      </Link>
+                      <Link
+                        to="/roadmap"
+                        className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
+                          location.pathname.startsWith('/roadmap') || location.pathname.startsWith('/lgr-journey-2026')
+                            ? 'text-teal-600 bg-teal-50'
+                            : 'text-academic-neutral-700 hover:bg-academic-warm'
+                        }`}
+                      >
+                        Roadmap
+                      </Link>
+                      <Link
+                        to="/tools"
+                        className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
+                          location.pathname.startsWith('/tools')
+                            ? 'text-teal-600 bg-teal-50'
+                            : 'text-academic-neutral-700 hover:bg-academic-warm'
+                        }`}
+                      >
+                        Tools
+                      </Link>
+                      <Link
+                        to="/podcast"
+                        className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
+                          location.pathname.startsWith('/podcast') || location.pathname.startsWith('/interviews')
+                            ? 'text-teal-600 bg-teal-50'
+                            : 'text-academic-neutral-700 hover:bg-academic-warm'
+                        }`}
+                      >
+                        Podcast
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              );
+            }
             if (item.id === 'topics') {
               return (
                 <div
@@ -337,6 +422,17 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
                       >
                         Statecraft and System Design
                       </Link>
+                      <div className="border-t border-slate-100 my-1" />
+                      <Link
+                        to="/topics"
+                        className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
+                          location.pathname === '/topics'
+                            ? 'text-teal-600 bg-teal-50'
+                            : 'text-academic-neutral-700 hover:bg-academic-warm'
+                        }`}
+                      >
+                        By geography
+                      </Link>
                     </div>
                   )}
                 </div>
@@ -371,32 +467,103 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
                       <Link
                         to="/insights"
                         className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
-                          location.pathname === '/insights' && !location.pathname.startsWith('/insights/reports')
+                          location.pathname === '/insights' && !location.pathname.startsWith('/insights/reports') && !location.pathname.startsWith('/insights/')
                             ? 'text-teal-600 bg-teal-50'
                             : 'text-academic-neutral-700 hover:bg-academic-warm'
                         }`}
                       >
-                        Insights & Analysis
+                        All Insights
                       </Link>
                       <Link
-                        to="/insights/reports"
+                        to="/insights"
                         className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
-                          location.pathname === '/insights/reports'
+                          location.pathname.startsWith('/insights/') && !location.pathname.startsWith('/insights/reports')
                             ? 'text-teal-600 bg-teal-50'
                             : 'text-academic-neutral-700 hover:bg-academic-warm'
                         }`}
                       >
-                        Reports
+                        Articles
                       </Link>
                       <Link
-                        to="/100days"
+                        to="/news"
                         className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
-                          location.pathname.startsWith('/100days')
+                          location.pathname.startsWith('/news')
                             ? 'text-teal-600 bg-teal-50'
                             : 'text-academic-neutral-700 hover:bg-academic-warm'
                         }`}
                       >
-                        100 Days Playbook
+                        News
+                      </Link>
+                      <Link
+                        to="/podcast"
+                        className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
+                          location.pathname.startsWith('/podcast') || location.pathname.startsWith('/interviews')
+                            ? 'text-teal-600 bg-teal-50'
+                            : 'text-academic-neutral-700 hover:bg-academic-warm'
+                        }`}
+                      >
+                        Interviews
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              );
+            }
+            if (item.id === 'facts') {
+              return (
+                <div
+                  key={item.id}
+                  ref={factsDropdownRef}
+                  className="relative"
+                  onMouseEnter={() => setFactsDropdownOpen(true)}
+                  onMouseLeave={() => setFactsDropdownOpen(false)}
+                >
+                  <Link
+                    to={item.path}
+                    className={`px-2 py-1.5 text-[0.625rem] font-display font-bold tracking-wider transition-all duration-200 min-h-[24px] flex items-center justify-center gap-0.5 whitespace-nowrap ${
+                      isFactsSection
+                        ? 'text-teal-600 border-b-2 border-teal-500'
+                        : 'text-academic-neutral-700 hover:text-academic-charcoal'
+                    }`}
+                  >
+                    {item.label}
+                    <ChevronDown 
+                      size={12} 
+                      className={`transition-transform duration-200 ${factsDropdownOpen ? 'rotate-180' : ''}`}
+                    />
+                  </Link>
+                  
+                  {factsDropdownOpen && (
+                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 bg-white/95 backdrop-blur-sm rounded-lg shadow-xl border border-neutral-200/50 py-2 min-w-[240px] z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                      <Link
+                        to="/facts"
+                        className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
+                          location.pathname.startsWith('/facts') && !location.pathname.startsWith('/facts-and-data')
+                            ? 'text-teal-600 bg-teal-50'
+                            : 'text-academic-neutral-700 hover:bg-academic-warm'
+                        }`}
+                      >
+                        Key Facts
+                      </Link>
+                      <Link
+                        to="/materials"
+                        className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
+                          location.pathname.startsWith('/materials')
+                            ? 'text-teal-600 bg-teal-50'
+                            : 'text-academic-neutral-700 hover:bg-academic-warm'
+                        }`}
+                      >
+                        Materials & Datasets
+                      </Link>
+                      <Link
+                        to="/councils"
+                        className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
+                          location.pathname.startsWith('/councils')
+                            ? 'text-teal-600 bg-teal-50'
+                            : 'text-academic-neutral-700 hover:bg-academic-warm'
+                        }`}
+                      >
+                        Council Map & Profiles
                       </Link>
                     </div>
                   )}
@@ -437,7 +604,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
                             : 'text-academic-neutral-700 hover:bg-academic-warm'
                         }`}
                       >
-                        Focus: Surrey
+                        Overview
                       </Link>
                       <Link
                         to="/surrey/election-tracker"
@@ -448,6 +615,16 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
                         }`}
                       >
                         Election Tracker
+                      </Link>
+                      <Link
+                        to="/surrey/hub"
+                        className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
+                          location.pathname.startsWith('/surrey/hub')
+                            ? 'text-teal-600 bg-teal-50'
+                            : 'text-academic-neutral-700 hover:bg-academic-warm'
+                        }`}
+                      >
+                        Surrey Hub
                       </Link>
                     </div>
                   )}
@@ -488,47 +665,17 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
                             : 'text-academic-neutral-700 hover:bg-academic-warm'
                         }`}
                       >
-                        Overview
+                        About the LGR Series
                       </Link>
                       <Link
-                        to="/about/editor"
+                        to="/about/contributors"
                         className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
-                          location.pathname === '/about/editor'
+                          location.pathname === '/about/contributors'
                             ? 'text-teal-600 bg-teal-50'
                             : 'text-academic-neutral-700 hover:bg-academic-warm'
                         }`}
                       >
-                        Editor's Letter
-                      </Link>
-                      <Link
-                        to="/about/methodology"
-                        className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
-                          location.pathname === '/about/methodology'
-                            ? 'text-teal-600 bg-teal-50'
-                            : 'text-academic-neutral-700 hover:bg-academic-warm'
-                        }`}
-                      >
-                        Methodology
-                      </Link>
-                      <Link
-                        to="/about/contribute"
-                        className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
-                          location.pathname === '/about/contribute'
-                            ? 'text-teal-600 bg-teal-50'
-                            : 'text-academic-neutral-700 hover:bg-academic-warm'
-                        }`}
-                      >
-                        Contribute
-                      </Link>
-                      <Link
-                        to="/about/coalface"
-                        className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
-                          location.pathname === '/about/coalface'
-                            ? 'text-teal-600 bg-teal-50'
-                            : 'text-academic-neutral-700 hover:bg-academic-warm'
-                        }`}
-                      >
-                        About COALFACE
+                        Contributors
                       </Link>
                       <Link
                         to="/contact"
@@ -545,13 +692,14 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
                 </div>
               );
             }
+            // Lessons - no dropdown
             return (
               <Link
                 key={item.id}
                 to={item.path}
                 className={`px-2 py-1.5 text-[0.625rem] font-display font-bold tracking-wider transition-all duration-200 min-h-[24px] flex items-center justify-center whitespace-nowrap ${
-                  currentPage === item.id
-                    ? 'text-teal-700 border-b-2 border-teal-700'
+                  location.pathname.startsWith('/lessons')
+                    ? 'text-teal-600 border-b-2 border-teal-500'
                     : 'text-academic-neutral-700 hover:text-academic-charcoal'
                 }`}
               >
@@ -661,6 +809,74 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
           <div className="md:hidden pb-4 border-t border-neutral-200">
             <div className="flex flex-col">
               {navItems.map((item) => {
+                if (item.id === 'lgr-hub') {
+                  return (
+                    <div key={item.id}>
+                      <button
+                        onClick={() => setLgrHubMobileExpanded(!lgrHubMobileExpanded)}
+                        className={`w-full px-4 py-3 text-sm font-bold tracking-wider text-left border-b border-neutral-100 transition-colors flex items-center justify-between ${
+                          isLGRHubSection
+                            ? 'text-teal-600 bg-teal-50'
+                            : 'text-academic-neutral-700 hover:bg-academic-warm'
+                        }`}
+                      >
+                        {item.label}
+                        <ChevronDown 
+                          size={16} 
+                          className={`transition-transform duration-200 ${lgrHubMobileExpanded ? 'rotate-180' : ''}`}
+                        />
+                      </button>
+                      {lgrHubMobileExpanded && (
+                        <div className="bg-academic-warm border-b border-academic-neutral-200">
+                          <Link
+                            to="/lgr-hub"
+                            onClick={handleNavClick}
+                            className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
+                              location.pathname === '/lgr-hub' || location.pathname === '/'
+                                ? 'text-teal-700 bg-teal-100'
+                                : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
+                            }`}
+                          >
+                            Overview
+                          </Link>
+                          <Link
+                            to="/roadmap"
+                            onClick={handleNavClick}
+                            className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
+                              location.pathname.startsWith('/roadmap') || location.pathname.startsWith('/lgr-journey-2026')
+                                ? 'text-teal-700 bg-teal-100'
+                                : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
+                            }`}
+                          >
+                            Roadmap
+                          </Link>
+                          <Link
+                            to="/tools"
+                            onClick={handleNavClick}
+                            className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
+                              location.pathname.startsWith('/tools')
+                                ? 'text-teal-700 bg-teal-100'
+                                : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
+                            }`}
+                          >
+                            Tools
+                          </Link>
+                          <Link
+                            to="/podcast"
+                            onClick={handleNavClick}
+                            className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
+                              location.pathname.startsWith('/podcast') || location.pathname.startsWith('/interviews')
+                                ? 'text-teal-700 bg-teal-100'
+                                : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
+                            }`}
+                          >
+                            Podcast
+                          </Link>
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
                 if (item.id === 'topics') {
                   return (
                     <div key={item.id}>
@@ -713,6 +929,18 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
                           >
                             Statecraft and System Design
                           </Link>
+                          <div className="border-t border-academic-neutral-300 my-1" />
+                          <Link
+                            to="/topics"
+                            onClick={handleNavClick}
+                            className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
+                              location.pathname === '/topics'
+                                ? 'text-teal-700 bg-teal-100'
+                                : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
+                            }`}
+                          >
+                            By geography
+                          </Link>
                         </div>
                       )}
                     </div>
@@ -741,34 +969,102 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
                             to="/insights"
                             onClick={handleNavClick}
                             className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
-                              location.pathname === '/insights' && !location.pathname.startsWith('/insights/reports')
+                              location.pathname === '/insights' && !location.pathname.startsWith('/insights/')
                                 ? 'text-teal-700 bg-teal-100'
                                 : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
                             }`}
                           >
-                            Insights & Analysis
+                            All Insights
                           </Link>
                           <Link
-                            to="/insights/reports"
+                            to="/insights"
                             onClick={handleNavClick}
                             className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
-                              location.pathname === '/insights/reports'
+                              location.pathname.startsWith('/insights/') && !location.pathname.startsWith('/insights/reports')
                                 ? 'text-teal-700 bg-teal-100'
                                 : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
                             }`}
                           >
-                            Reports
+                            Articles
                           </Link>
                           <Link
-                            to="/100days"
+                            to="/news"
                             onClick={handleNavClick}
                             className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
-                              location.pathname.startsWith('/100days')
+                              location.pathname.startsWith('/news')
                                 ? 'text-teal-700 bg-teal-100'
                                 : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
                             }`}
                           >
-                            100 Days Playbook
+                            News
+                          </Link>
+                          <Link
+                            to="/podcast"
+                            onClick={handleNavClick}
+                            className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
+                              location.pathname.startsWith('/podcast') || location.pathname.startsWith('/interviews')
+                                ? 'text-teal-700 bg-teal-100'
+                                : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
+                            }`}
+                          >
+                            Interviews
+                          </Link>
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+                if (item.id === 'facts') {
+                  return (
+                    <div key={item.id}>
+                      <button
+                        onClick={() => setFactsMobileExpanded(!factsMobileExpanded)}
+                        className={`w-full px-4 py-3 text-sm font-bold tracking-wider text-left border-b border-neutral-100 transition-colors flex items-center justify-between ${
+                          isFactsSection
+                            ? 'text-teal-600 bg-teal-50'
+                            : 'text-academic-neutral-700 hover:bg-academic-warm'
+                        }`}
+                      >
+                        {item.label}
+                        <ChevronDown 
+                          size={16} 
+                          className={`transition-transform duration-200 ${factsMobileExpanded ? 'rotate-180' : ''}`}
+                        />
+                      </button>
+                      {factsMobileExpanded && (
+                        <div className="bg-academic-warm border-b border-academic-neutral-200">
+                          <Link
+                            to="/facts"
+                            onClick={handleNavClick}
+                            className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
+                              location.pathname.startsWith('/facts') && !location.pathname.startsWith('/facts-and-data')
+                                ? 'text-teal-700 bg-teal-100'
+                                : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
+                            }`}
+                          >
+                            Key Facts
+                          </Link>
+                          <Link
+                            to="/materials"
+                            onClick={handleNavClick}
+                            className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
+                              location.pathname.startsWith('/materials')
+                                ? 'text-teal-700 bg-teal-100'
+                                : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
+                            }`}
+                          >
+                            Materials & Datasets
+                          </Link>
+                          <Link
+                            to="/councils"
+                            onClick={handleNavClick}
+                            className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
+                              location.pathname.startsWith('/councils')
+                                ? 'text-teal-700 bg-teal-100'
+                                : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
+                            }`}
+                          >
+                            Council Map & Profiles
                           </Link>
                         </div>
                       )}
@@ -803,7 +1099,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
                                 : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
                             }`}
                           >
-                            Focus: Surrey
+                            Overview
                           </Link>
                           <Link
                             to="/surrey/election-tracker"
@@ -815,6 +1111,17 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
                             }`}
                           >
                             Election Tracker
+                          </Link>
+                          <Link
+                            to="/surrey/hub"
+                            onClick={handleNavClick}
+                            className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
+                              location.pathname.startsWith('/surrey/hub')
+                                ? 'text-teal-700 bg-teal-100'
+                                : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
+                            }`}
+                          >
+                            Surrey Hub
                           </Link>
                         </div>
                       )}
@@ -849,51 +1156,18 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
                                 : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
                             }`}
                           >
-                            Overview
+                            About the LGR Series
                           </Link>
                           <Link
-                            to="/about/editor"
+                            to="/about/contributors"
                             onClick={handleNavClick}
                             className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
-                              location.pathname === '/about/editor'
+                              location.pathname === '/about/contributors'
                                 ? 'text-teal-700 bg-teal-100'
                                 : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
                             }`}
                           >
-                            Editor's Letter
-                          </Link>
-                          <Link
-                            to="/about/methodology"
-                            onClick={handleNavClick}
-                            className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
-                              location.pathname === '/about/methodology'
-                                ? 'text-teal-700 bg-teal-100'
-                                : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
-                            }`}
-                          >
-                            Methodology
-                          </Link>
-                          <Link
-                            to="/about/contribute"
-                            onClick={handleNavClick}
-                            className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
-                              location.pathname === '/about/contribute'
-                                ? 'text-teal-700 bg-teal-100'
-                                : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
-                            }`}
-                          >
-                            Contribute
-                          </Link>
-                          <Link
-                            to="/about/coalface"
-                            onClick={handleNavClick}
-                            className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
-                              location.pathname === '/about/coalface'
-                                ? 'text-teal-700 bg-teal-100'
-                                : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
-                            }`}
-                          >
-                            About COALFACE
+                            Contributors
                           </Link>
                           <Link
                             to="/contact"
@@ -911,13 +1185,14 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
                     </div>
                   );
                 }
+                // Lessons - no dropdown
                 return (
                   <Link
                     key={item.id}
                     to={item.path}
                     onClick={handleNavClick}
                     className={`px-4 py-3 text-academic-sm font-display font-bold tracking-wider text-left border-b border-academic-neutral-200 transition-colors ${
-                      currentPage === item.id
+                      location.pathname.startsWith('/lessons')
                         ? 'text-teal-700 bg-teal-50'
                         : 'text-academic-neutral-700 hover:bg-academic-warm'
                     }`}
