@@ -38,13 +38,6 @@ export default function ContentRelationships({
   const [selectedTargetType, setSelectedTargetType] = useState<'articles' | 'materials' | 'news'>('articles');
   const [selectedRelationshipType, setSelectedRelationshipType] = useState<'related' | 'see_also' | 'parent' | 'child' | 'depends_on'>('related');
 
-  useEffect(() => {
-    if (sourceId) {
-      fetchRelationships();
-      fetchAvailableContent();
-    }
-  }, [sourceId, sourceType, fetchRelationships, fetchAvailableContent]);
-
   const fetchRelationships = useCallback(async () => {
     try {
       const { data, error } = await supabase
@@ -110,6 +103,13 @@ export default function ContentRelationships({
       console.error('Error fetching available content:', err);
     }
   }, [sourceId, sourceType]);
+
+  useEffect(() => {
+    if (sourceId) {
+      fetchRelationships();
+      fetchAvailableContent();
+    }
+  }, [sourceId, sourceType, fetchRelationships, fetchAvailableContent]);
 
   const addRelationship = async (targetId: string, targetType: 'articles' | 'materials' | 'news') => {
     try {

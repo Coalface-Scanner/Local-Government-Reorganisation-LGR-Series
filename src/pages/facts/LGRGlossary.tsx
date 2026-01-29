@@ -142,7 +142,8 @@ export default function LGRGlossary() {
         numberOfItems={glossaryTerms.length}
         items={glossaryTerms.map(term => ({
           name: term.term,
-          description: term.definition
+          description: term.definition,
+          url: term.relatedLink || `/facts/lgr-glossary#${term.term.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`
         }))}
       />
       

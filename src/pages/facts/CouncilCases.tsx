@@ -93,7 +93,8 @@ export default function CouncilCases() {
         numberOfItems={councilCases.length}
         items={councilCases.map(case_ => ({
           name: case_.name,
-          description: case_.description
+          description: case_.description,
+          url: case_.link || `/facts/council-cases#${case_.name.toLowerCase().replace(/\s+/g, '-')}`
         }))}
       />
       

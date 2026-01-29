@@ -9,7 +9,7 @@ interface AnalyticsEvent {
 }
 
 interface WindowWithGtag extends Window {
-  gtag?: (command: string, targetId: string, config?: Record<string, unknown>) => void;
+  gtag?: (...args: unknown[]) => void;
 }
 
 // Check if Google Analytics is available
