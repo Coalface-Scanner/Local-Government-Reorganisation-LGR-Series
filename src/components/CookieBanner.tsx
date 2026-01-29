@@ -12,6 +12,23 @@ export default function CookieBanner() {
     analytics: false,
   });
 
+  const loadGoogleAnalytics = () => {
+    // Check if script already loaded
+    if (document.querySelector('script[src*="googletagmanager.com/gtag/js"]')) {
+      return;
+    }
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-1CQR5MEY37';
+    document.head.appendChild(script);
+    script.onload = function() {
+      if (typeof (window as any).gtag === 'function') {
+        (window as any).gtag('js', new Date());
+        (window as any).gtag('config', 'G-1CQR5MEY37');
+      }
+    };
+  };
+
   useEffect(() => {
     const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
     if (!consent) {
@@ -27,6 +44,10 @@ export default function CookieBanner() {
       timestamp: new Date().toISOString(),
     };
     localStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify(allAccepted));
+    // Trigger storage event to notify analytics script
+    window.dispatchEvent(new Event('storage'));
+    // Load analytics since user accepted all
+    loadGoogleAnalytics();
     setShowBanner(false);
   };
 
@@ -47,6 +68,12 @@ export default function CookieBanner() {
       timestamp: new Date().toISOString(),
     };
     localStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify(saved));
+    // Trigger storage event to notify analytics script
+    window.dispatchEvent(new Event('storage'));
+    // Load analytics if consent given
+    if (saved.analytics) {
+      loadGoogleAnalytics();
+    }
     setShowBanner(false);
     setShowSettings(false);
   };

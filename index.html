@@ -1,12 +1,30 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) - Deferred for performance -->
+    <!-- Google tag (gtag.js) - Deferred for performance and respects cookie consent -->
     <script>
-      // Defer Google Analytics until after page load
+      // Initialize dataLayer
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      window.addEventListener('load', function() {
+      
+      // Check cookie consent before loading analytics
+      function checkConsentAndLoadAnalytics() {
+        const consent = localStorage.getItem('lgr-cookie-consent');
+        if (consent) {
+          try {
+            const consentData = JSON.parse(consent);
+            if (consentData.analytics === true) {
+              loadGoogleAnalytics();
+            }
+          } catch (e) {
+            // If consent data is invalid, don't load analytics
+            console.warn('Invalid consent data, analytics not loaded');
+          }
+        }
+        // If no consent, analytics will not load until user accepts
+      }
+      
+      function loadGoogleAnalytics() {
         var script = document.createElement('script');
         script.async = true;
         script.src = 'https://www.googletagmanager.com/gtag/js?id=G-1CQR5MEY37';
@@ -15,6 +33,16 @@
           gtag('js', new Date());
           gtag('config', 'G-1CQR5MEY37');
         };
+      }
+      
+      // Check consent on page load
+      window.addEventListener('load', checkConsentAndLoadAnalytics);
+      
+      // Listen for consent changes (when user accepts/rejects)
+      window.addEventListener('storage', function(e) {
+        if (e.key === 'lgr-cookie-consent') {
+          checkConsentAndLoadAnalytics();
+        }
       });
     </script>
     <meta charset="UTF-8" />

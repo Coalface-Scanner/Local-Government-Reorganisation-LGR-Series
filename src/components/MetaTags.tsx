@@ -27,7 +27,7 @@ export default function MetaTags({
   canonical,
   article
 }: MetaTagsProps) {
-  const fullTitle = `${title} | LGR Series`;
+  const fullTitle = `${title} | LGR Series by COALFACE`;
   
   // Build canonical URL - remove query params, ensure HTTPS, handle trailing slashes
   const getCanonicalUrl = (): string => {

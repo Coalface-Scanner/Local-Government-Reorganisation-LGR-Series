@@ -138,18 +138,8 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
           </div>
 
           <div>
-            <h3 className="text-white font-display font-bold text-academic-sm mb-4 tracking-wider">LGR SERIES</h3>
+            <h3 className="text-white font-display font-bold text-academic-sm mb-4 tracking-wider">TOPICS</h3>
             <ul className="space-y-1.5 text-academic-xs">
-              <li>
-                <Link to="/" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/insights" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
-                  Insights & Analysis
-                </Link>
-              </li>
               <li>
                 <Link to="/topics/governance-and-reform" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
                   Governance and Reform
@@ -165,24 +155,30 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
                   Statecraft and System Design
                 </Link>
               </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-white font-display font-bold text-academic-sm mb-4 tracking-wider">RESOURCES</h3>
+            <ul className="space-y-1.5 text-academic-xs">
               <li>
-                <Link to="/facts" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
-                  Facts & Data
+                <Link to="/lgr-journey-2026" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
+                  Roadmap
+                </Link>
+              </li>
+              <li>
+                <Link to="/surrey/election-tracker/simulator" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
+                  Tools
+                </Link>
+              </li>
+              <li>
+                <Link to="/interviews" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
+                  Podcast
                 </Link>
               </li>
               <li>
                 <Link to="/lessons" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
-                  Lessons
-                </Link>
-              </li>
-              <li>
-                <Link to="/100days" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
-                  100 Days
-                </Link>
-              </li>
-              <li>
-                <Link to="/materials" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
-                  Library
+                  Lessons Library
                 </Link>
               </li>
             </ul>
@@ -196,22 +192,7 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
             <ul className="space-y-1.5 text-academic-xs">
               <li>
                 <Link to="/about" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-1 font-serif">
-                  Overview
-                </Link>
-              </li>
-              <li>
-                <Link to="/about/editor" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-1 font-serif">
-                  Editor's Letter
-                </Link>
-              </li>
-              <li>
-                <Link to="/about/methodology" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-1 font-serif">
-                  Methodology
-                </Link>
-              </li>
-              <li>
-                <Link to="/about/contribute" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-1 font-serif">
-                  Contribute
+                  About the LGR Series
                 </Link>
               </li>
               <li>
@@ -219,39 +200,14 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
                   About COALFACE
                 </Link>
               </li>
+              <li>
+                <Link to="/contact" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-1 font-serif">
+                  Contact
+                </Link>
+              </li>
             </ul>
           </div>
 
-          <div>
-            <h3 className="text-white font-display font-bold text-academic-sm mb-4 tracking-wider">RESOURCES</h3>
-            <ul className="space-y-1.5 text-academic-xs">
-              <li>
-                <Link to="/surrey" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
-                  Focus: Surrey
-                </Link>
-              </li>
-              <li>
-                <Link to="/councils" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
-                  Councils Map
-                </Link>
-              </li>
-              <li>
-                <Link to="/interviews" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
-                  Interviews
-                </Link>
-              </li>
-              <li>
-                <Link to="/news" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
-                  News & Updates
-                </Link>
-              </li>
-              <li>
-                <Link to="/search" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
-                  Search Library
-                </Link>
-              </li>
-            </ul>
-          </div>
 
           <div>
             <h3 className="text-white font-display font-bold text-academic-sm mb-4 tracking-wider">CONTACT</h3>

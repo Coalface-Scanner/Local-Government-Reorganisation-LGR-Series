@@ -256,7 +256,7 @@ export default function Surrey({ onNavigate }: SurreyProps) {
                 </h4>
                 <div className="space-y-2.5">
                   <button
-                    onClick={() => onNavigate('surrey/election-simulator')}
+                    onClick={() => onNavigate('surrey/election-tracker/simulator')}
                     className="w-full text-left px-4 py-3 bg-neutral-50 hover:bg-teal-50 border border-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-neutral-700 hover:text-teal-700"
                   >
                     Election Simulator →

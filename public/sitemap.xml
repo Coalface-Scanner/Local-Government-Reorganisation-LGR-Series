@@ -168,6 +168,36 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://localgovernmentreorganisation.co.uk/lgr-journey-2026</loc>
+    <lastmod>2026-01-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://localgovernmentreorganisation.co.uk/topics</loc>
+    <lastmod>2026-01-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://localgovernmentreorganisation.co.uk/topics/governance-and-reform</loc>
+    <lastmod>2026-01-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://localgovernmentreorganisation.co.uk/topics/democratic-legitimacy</loc>
+    <lastmod>2026-01-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://localgovernmentreorganisation.co.uk/topics/statecraft-and-system-design</loc>
+    <lastmod>2026-01-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://localgovernmentreorganisation.co.uk/council-profiles/elmbridge</loc>
     <lastmod>2026-01-25</lastmod>
     <changefreq>monthly</changefreq>

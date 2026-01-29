@@ -5,6 +5,7 @@ import { supabase } from '../../lib/supabase';
 import ArticleEditor from '../../components/ArticleEditor';
 import ArticleQAEditor from './ArticleQAEditor';
 import HeadingGuidelines from '../../components/HeadingGuidelines';
+import { useNavigate } from 'react-router-dom';
 
 interface Article {
   id: string;
@@ -34,6 +35,7 @@ interface AdminArticlesProps {
 }
 
 export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
+  const navigate = useNavigate();
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingArticle, setEditingArticle] = useState<Partial<Article> | null>(null);
@@ -284,7 +286,7 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
 
   const handleLogout = () => {
     logout();
-    onNavigate('home');
+    navigate('/');
   };
 
   if (loading) {

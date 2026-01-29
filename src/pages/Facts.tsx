@@ -142,7 +142,7 @@ export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 items-stretch">
           {serviceCards.map((card) => {
             const Icon = card.icon;
             const isDisabled = card.disabled;
@@ -156,21 +156,31 @@ export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
                     : 'cursor-pointer hover:border-teal-700'
                 }`}
               >
-                <div className={`bg-teal-700 p-10 text-white ${isDisabled ? 'opacity-50' : ''}`}>
-                  <div className={`w-16 h-16 bg-white/20 flex items-center justify-center mb-5 transition-transform ${isDisabled ? '' : 'group-hover:scale-110'}`}>
-                    <Icon className="text-white" size={32} />
+                <div className={`bg-gradient-to-br ${card.color} p-6 md:p-8 text-white min-h-[180px] flex flex-col justify-between ${isDisabled ? 'opacity-50' : ''}`}>
+                  <div className={`w-12 h-12 md:w-14 md:h-14 bg-white/20 flex items-center justify-center mb-4 transition-transform rounded-lg flex-shrink-0 ${isDisabled ? '' : 'group-hover:scale-110'}`}>
+                    <Icon className="text-white" size={28} />
                   </div>
-                  <h2 className="text-academic-2xl font-display font-bold text-white leading-tight">{card.title}</h2>
-                  {isDisabled && (
-                    <p className="text-academic-sm text-white/80 mt-3 italic font-serif">Coming soon</p>
-                  )}
+                  <div className="flex-1 flex flex-col justify-end min-h-0">
+                    <h2 className="text-academic-lg md:text-academic-xl font-display font-bold text-white leading-tight overflow-hidden" style={{
+                      display: '-webkit-box',
+                      WebkitLineClamp: 3,
+                      WebkitBoxOrient: 'vertical'
+                    }}>{card.title}</h2>
+                    {isDisabled && (
+                      <p className="text-academic-sm text-white/80 mt-2 italic font-serif">Coming soon</p>
+                    )}
+                  </div>
                 </div>
-                <div className="p-8 flex-1 flex flex-col">
-                  <p className={`leading-relaxed mb-5 flex-1 font-serif text-academic-base ${isDisabled ? 'text-academic-neutral-500' : 'text-academic-neutral-700'}`}>
+                <div className="p-6 md:p-8 flex-1 flex flex-col min-h-0">
+                  <p className={`leading-relaxed mb-4 flex-1 font-serif text-academic-sm md:text-academic-base overflow-hidden ${isDisabled ? 'text-academic-neutral-500' : 'text-academic-neutral-700'}`} style={{
+                    display: '-webkit-box',
+                    WebkitLineClamp: 4,
+                    WebkitBoxOrient: 'vertical'
+                  }}>
                     {card.description}
                   </p>
                   {!isDisabled && (
-                    <div className="flex items-center gap-2 text-teal-700 font-display font-semibold group-hover:gap-3 transition-all">
+                    <div className="flex items-center gap-2 text-teal-700 font-display font-semibold group-hover:gap-3 transition-all mt-auto pt-2">
                       <span>Explore</span>
                       <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                     </div>
@@ -179,7 +189,7 @@ export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
               </div>
             );
           })}
-                    </div>
+        </div>
 
         <div className="max-w-2xl mx-auto">
           <div className="bg-teal-800 text-white p-8">
