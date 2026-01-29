@@ -8,6 +8,7 @@ import ErrorDisplay from '../components/ErrorDisplay';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 import { Mic, Calendar, Users, FileText, Headphones, ExternalLink, Video, BookOpen } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { parseRSSFeed, extractGuestName, generateIdFromString, type RSSItem } from '../lib/rssParser';
 
 interface InterviewsProps {
   onNavigate: (page: string) => void;
@@ -28,6 +29,9 @@ interface Interview {
   order_index: number;
 }
 
+// RSS Feed URL for podcast episodes
+const RSS_FEED_URL = 'https://anchor.fm/s/10d7de5ac/podcast/rss';
+
 export default function Interviews({ onNavigate }: InterviewsProps) {
   const [interviews, setInterviews] = useState<Interview[]>([]);
   const [loading, setLoading] = useState(true);
@@ -37,9 +41,60 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
     { id: 'interviews', label: 'Interviews', icon: <Mic size={16} /> }
   ];
 
-  const fetchInterviews = async () => {
+  /**
+   * Transform RSS item to Interview interface
+   */
+  const transformRSSItemToInterview = (item: RSSItem, index: number): Interview => {
+    const guestName = extractGuestName(item.title);
+    const pubDate = item.pubDate ? new Date(item.pubDate) : new Date();
+    
+    return {
+      id: generateIdFromString(item.guid || item.title),
+      name: guestName,
+      title: item.title,
+      organization: item.author || null,
+      description: item.description || '',
+      image_url: item.imageUrl || null,
+      video_url: null,
+      interview_type: 'voice_only',
+      audio_url: item.audioUrl || null,
+      transcript: null,
+      status: 'published',
+      order_index: -pubDate.getTime(), // Negative timestamp for descending order (newest first)
+    };
+  };
+
+  /**
+   * Fetch episodes from RSS feed
+   */
+  const fetchRSSFeed = async (): Promise<Interview[]> => {
     try {
-      setError(null);
+      const response = await fetch(RSS_FEED_URL);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch RSS feed: ${response.statusText}`);
+      }
+
+      const xmlText = await response.text();
+      const rssData = parseRSSFeed(xmlText);
+
+      // Transform RSS items to Interview format
+      const rssInterviews = rssData.items.map((item, index) =>
+        transformRSSItemToInterview(item, index)
+      );
+
+      // Sort by order_index (newest first)
+      return rssInterviews.sort((a, b) => b.order_index - a.order_index);
+    } catch (err) {
+      console.error('Error fetching RSS feed:', err);
+      throw err;
+    }
+  };
+
+  /**
+   * Fetch interviews from database
+   */
+  const fetchDatabaseInterviews = async (): Promise<Interview[]> => {
+    try {
       const { data, error: fetchError } = await supabase
         .from('interviews')
         .select('*')
@@ -51,8 +106,39 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
 
       if (data) {
         // Filter out "coming_soon" status interviews
-        setInterviews(data.filter(item => item.status !== 'coming_soon'));
+        return data.filter(item => item.status !== 'coming_soon');
       }
+
+      return [];
+    } catch (err) {
+      console.error('Error fetching database interviews:', err);
+      throw err;
+    }
+  };
+
+  /**
+   * Fetch interviews - try database first, fallback to RSS feed
+   */
+  const fetchInterviews = async () => {
+    try {
+      setError(null);
+      setLoading(true);
+
+      // Try database first
+      try {
+        const dbInterviews = await fetchDatabaseInterviews();
+        if (dbInterviews.length > 0) {
+          setInterviews(dbInterviews);
+          setLoading(false);
+          return;
+        }
+      } catch (dbError) {
+        console.warn('Database fetch failed, falling back to RSS feed:', dbError);
+      }
+
+      // Fallback to RSS feed
+      const rssInterviews = await fetchRSSFeed();
+      setInterviews(rssInterviews);
     } catch (err) {
       console.error('Error fetching interviews:', err);
       setError('Failed to load interviews. Please try again.');
