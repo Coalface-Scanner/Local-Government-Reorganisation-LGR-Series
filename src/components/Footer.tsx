@@ -141,8 +141,23 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
             <h3 className="text-white font-display font-bold text-academic-sm mb-4 tracking-wider">LGR HUB</h3>
             <ul className="space-y-1.5 text-academic-xs">
               <li>
-                <Link to="/" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
-                  LGR Hub Home
+                <Link to="/lgr-hub" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
+                  Overview
+                </Link>
+              </li>
+              <li>
+                <Link to="/roadmap" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
+                  Roadmap
+                </Link>
+              </li>
+              <li>
+                <Link to="/tools" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
+                  Tools
+                </Link>
+              </li>
+              <li>
+                <Link to="/podcast" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
+                  Podcast
                 </Link>
               </li>
             </ul>
@@ -173,23 +188,23 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
             <h3 className="text-white font-display font-bold text-academic-sm mb-4 tracking-wider">RESOURCES</h3>
             <ul className="space-y-1.5 text-academic-xs">
               <li>
-                <Link to="/lgr-journey-2026" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
-                  Roadmap
+                <Link to="/insights" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
+                  Insights
                 </Link>
               </li>
               <li>
-                <Link to="/tools" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
-                  Tools
-                </Link>
-              </li>
-              <li>
-                <Link to="/interviews" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
-                  Podcast
+                <Link to="/facts-and-data" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
+                  Facts & Data
                 </Link>
               </li>
               <li>
                 <Link to="/lessons" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
-                  Lessons Library
+                  Lessons
+                </Link>
+              </li>
+              <li>
+                <Link to="/surrey" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
+                  Focus: Surrey
                 </Link>
               </li>
             </ul>
@@ -207,8 +222,8 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
                 </Link>
               </li>
               <li>
-                <Link to="/about/coalface" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-1 font-serif">
-                  About COALFACE
+                <Link to="/about/contributors" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-1 font-serif">
+                  Contributors
                 </Link>
               </li>
               <li>

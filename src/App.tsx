@@ -38,6 +38,8 @@ const JourneyMap = lazy(() => import('./pages/JourneyMap'));
 const Sitemap = lazy(() => import('./pages/Sitemap'));
 const Topics = lazy(() => import('./pages/Topics'));
 const Tools = lazy(() => import('./pages/Tools'));
+const LGRHub = lazy(() => import('./pages/LGRHub'));
+const FactsAndData = lazy(() => import('./pages/FactsAndData'));
 
 // Admin pages - lazy loaded (less frequently accessed)
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
@@ -66,6 +68,10 @@ const AboutEditor = lazy(() => import('./pages/about/Editor'));
 const AboutMethodology = lazy(() => import('./pages/about/Methodology'));
 const AboutContribute = lazy(() => import('./pages/about/Contribute'));
 const AboutCoalface = lazy(() => import('./pages/about/Coalface'));
+const AboutContributors = lazy(() => import('./pages/about/Contributors'));
+
+// Editor pages - lazy loaded
+const RowanCole = lazy(() => import('./pages/editor/RowanCole'));
 
 // Topic pages - lazy loaded
 const LocalGovernment = lazy(() => import('./pages/topics/LocalGovernment'));
@@ -174,6 +180,9 @@ function AppContent() {
             <Route path="/facts/council-cases" element={<CouncilCases />} />
             <Route path="/facts/:slug" element={<FactDetail />} />
             <Route path="/lgr-journey-2026" element={<PageWrapper>{(nav) => <JourneyMap onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/roadmap" element={<PageWrapper>{(nav) => <JourneyMap onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/lgr-hub" element={<PageWrapper>{(nav) => <LGRHub onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/facts-and-data" element={<PageWrapper>{(nav) => <FactsAndData onNavigate={nav} />}</PageWrapper>} />
             <Route path="/sitemap.xml" element={<Sitemap />} />
             <Route path="/lessons" element={<PageWrapper>{(nav) => <Lessons onNavigate={nav} />}</PageWrapper>} />
             <Route path="/reasons" element={<PageWrapper>{(nav) => <Reasons onNavigate={nav} />}</PageWrapper>} />
@@ -182,7 +191,10 @@ function AppContent() {
             <Route path="/about/methodology" element={<PageWrapper>{(nav) => <AboutMethodology onNavigate={nav} />}</PageWrapper>} />
             <Route path="/about/contribute" element={<PageWrapper>{(nav) => <AboutContribute onNavigate={nav} />}</PageWrapper>} />
             <Route path="/about/coalface" element={<PageWrapper>{(nav) => <AboutCoalface onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/about/contributors" element={<PageWrapper>{(nav) => <AboutContributors onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/editor/rowan-cole" element={<PageWrapper>{(nav) => <RowanCole onNavigate={nav} />}</PageWrapper>} />
             <Route path="/interviews" element={<PageWrapper>{(nav) => <Interviews onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/podcast" element={<PageWrapper>{(nav) => <Interviews onNavigate={nav} />}</PageWrapper>} />
             <Route path="/surrey" element={<PageWrapper>{(nav) => <Surrey onNavigate={nav} />}</PageWrapper>} />
             <Route path="/surrey/election-tracker" element={<PageWrapper>{(nav) => <SurreyElectionTracker onNavigate={nav} />}</PageWrapper>} />
             <Route path="/surrey/election-tracker/simulator" element={<PageWrapper>{(nav) => <SurreyElectionSimulator onNavigate={nav} />}</PageWrapper>} />
