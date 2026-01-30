@@ -169,10 +169,10 @@ export default function Contribute({ onNavigate: _onNavigate }: ContributeProps)
                     Overview
                   </Link>
                   <Link
-                    to="/about/editor"
+                    to="/editor/rowan-cole"
                     className="block px-3 py-2 text-academic-sm text-academic-neutral-700 hover:bg-teal-50 hover:text-teal-700 transition-colors rounded"
                   >
-                    Editor's Letter
+                    Editor Profile
                   </Link>
                   <Link
                     to="/about/methodology"

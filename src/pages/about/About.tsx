@@ -24,7 +24,7 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
       title: "Editor's Letter & Editorial Team",
       icon: <User size={24} className="text-teal-700" />,
       description: 'Meet the editor and read the editorial letter introducing the LGR Series and its mission.',
-      link: '/about/editor',
+      link: '/editor/rowan-cole',
       linkText: 'Read the letter'
     },
     {

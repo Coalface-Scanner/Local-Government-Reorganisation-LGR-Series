@@ -502,7 +502,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
                             : 'text-academic-neutral-700 hover:bg-academic-warm'
                         }`}
                       >
-                        Interviews
+                        Podcast
                       </Link>
                     </div>
                   )}
@@ -1017,7 +1017,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
                                 : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
                             }`}
                           >
-                            Interviews
+                            Podcast
                           </Link>
                         </div>
                       )}

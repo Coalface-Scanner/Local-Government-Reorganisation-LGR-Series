@@ -64,7 +64,6 @@ const CouncilCases = lazy(() => import('./pages/facts/CouncilCases'));
 
 // About sub-pages - lazy loaded
 const About = lazy(() => import('./pages/about/About'));
-const AboutEditor = lazy(() => import('./pages/about/Editor'));
 const AboutMethodology = lazy(() => import('./pages/about/Methodology'));
 const AboutContribute = lazy(() => import('./pages/about/Contribute'));
 const AboutCoalface = lazy(() => import('./pages/about/Coalface'));
@@ -187,7 +186,6 @@ function AppContent() {
             <Route path="/lessons" element={<PageWrapper>{(nav) => <Lessons onNavigate={nav} />}</PageWrapper>} />
             <Route path="/reasons" element={<PageWrapper>{(nav) => <Reasons onNavigate={nav} />}</PageWrapper>} />
             <Route path="/about" element={<PageWrapper>{(nav) => <About onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/about/editor" element={<PageWrapper>{(nav) => <AboutEditor onNavigate={nav} />}</PageWrapper>} />
             <Route path="/about/methodology" element={<PageWrapper>{(nav) => <AboutMethodology onNavigate={nav} />}</PageWrapper>} />
             <Route path="/about/contribute" element={<PageWrapper>{(nav) => <AboutContribute onNavigate={nav} />}</PageWrapper>} />
             <Route path="/about/coalface" element={<PageWrapper>{(nav) => <AboutCoalface onNavigate={nav} />}</PageWrapper>} />

@@ -5,12 +5,15 @@ import SubscriptionForm from '../../components/SubscriptionForm';
 import OptimizedImage from '../../components/OptimizedImage';
 import LastUpdated from '../../components/LastUpdated';
 import Breadcrumbs from '../../components/Breadcrumbs';
+import { useAboutPage } from '../../hooks/useAboutPage';
 
 interface RowanColeProps {
   onNavigate: (page: string) => void;
 }
 
 export default function RowanCole({ onNavigate: _onNavigate }: RowanColeProps) {
+  const { page: cmsPage, loading } = useAboutPage('editor');
+  
   return (
     <div className="bg-academic-cream min-h-screen">
       <MetaTags
@@ -51,18 +54,18 @@ export default function RowanCole({ onNavigate: _onNavigate }: RowanColeProps) {
           <div className="lg:col-span-2 space-y-8">
             {/* Editor Profile */}
             <section className="academic-card p-8 md:p-10">
-              <div className="flex flex-col md:flex-row gap-6 items-start">
-                <div className="flex-shrink-0">
+              <div className="space-y-6">
+                <div className="w-full">
                   <OptimizedImage
                     src="/rowan-cole-editor-lgr-series.jpg"
                     alt="Rowan Cole, Editor of the LGR Series and LGR strategist specialising in public sector strategy and governance analysis"
                     variant="article"
-                    className="w-64 h-64 rounded-lg object-cover shadow-lg"
+                    className="w-full max-w-2xl mx-auto rounded-lg object-cover shadow-lg"
                   />
                 </div>
-                <div className="flex-1 academic-prose">
+                <div className="academic-prose max-w-4xl">
                   <p className="mb-4">
-                    Rowan Cole is Editor of the LGR Series and a specialist LGR strategist focused on public sector strategy and governance, democratic accountability, and the conditions that shape delivery outcomes across England.
+                    <span className="font-bold">Rowan Cole</span> is Editor of the LGR Series and a specialist LGR strategist focused on public sector strategy and governance, democratic accountability, and the conditions that shape delivery outcomes across England.
                   </p>
                   <p className="mb-4">
                     He provides evidence-based policy and governance analysis for local authority leaders and officers, supporting clearer decision making, stronger governance and accountability, and more resilient institutional performance during periods of structural change.
@@ -93,8 +96,14 @@ export default function RowanCole({ onNavigate: _onNavigate }: RowanColeProps) {
                       >
                         <img
                           src="https://orcid.org/sites/default/files/images/orcid_16x16.png"
-                          style={{ width: '16px', height: '16px', marginRight: '4px' }}
+                          width="16"
+                          height="16"
                           alt="ORCID iD icon"
+                          className="mr-1"
+                          onError={(e) => {
+                            // Fallback if image fails to load
+                            (e.target as HTMLImageElement).style.display = 'none';
+                          }}
                         />
                         https://orcid.org/0009-0008-1064-9037
                       </a>
@@ -107,10 +116,11 @@ export default function RowanCole({ onNavigate: _onNavigate }: RowanColeProps) {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 px-4 py-2 bg-teal-700 text-white font-semibold rounded-lg hover:bg-teal-800 transition-colors"
+                        style={{ color: '#ffffff' }}
                       >
-                        <Linkedin size={18} />
-                        LinkedIn
-                        <ExternalLink size={14} />
+                        <Linkedin size={18} style={{ color: '#ffffff' }} />
+                        <span style={{ color: '#ffffff' }}>LinkedIn</span>
+                        <ExternalLink size={14} style={{ color: '#ffffff' }} />
                       </a>
                     </div>
 
@@ -127,6 +137,72 @@ export default function RowanCole({ onNavigate: _onNavigate }: RowanColeProps) {
                       </a>
                     </div>
                   </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Editor's Letter */}
+            <section className="academic-card p-8 md:p-10">
+              <div className="academic-prose max-w-4xl">
+                <h2 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-4">
+                  Editor's Letter
+                </h2>
+                {loading ? (
+                  <div className="text-center py-8 text-academic-neutral-600">Loading...</div>
+                ) : cmsPage ? (
+                  <div dangerouslySetInnerHTML={{ __html: cmsPage.content }} />
+                ) : (
+                  <>
+                    <p className="text-academic-lg font-semibold text-teal-700 mb-6 leading-relaxed">
+                      A golden opportunity for meaningful change, or a governance stress test for public trust and planning?
+                    </p>
+
+                    <p className="mb-6 italic">
+                      Personal thoughts and reflections as we begin to launch the LGR Series, exploring the intricacies of the most far reaching restructuring of English local government in a generation.
+                    </p>
+
+                    <p className="mb-6">
+                      <span className="font-semibold">Local Government Reorganisation: Decisions, Power and Place</span> examines a programme that will reshape not only how planning authorities operate, but how the wider local government system functions around them. Driven by the Government's ambition to deliver 1.5 million new homes, reorganisation will influence governance, capacity, accountability and delivery across the whole development cycle.
+                    </p>
+
+                    <p className="mb-6">
+                      These reforms cut across governance, finance, digital systems, service integration and political leadership. They will affect how place shaping priorities are set, how statutory services interact, and how capacity is deployed across planning, regeneration, infrastructure and democratic oversight. In practice, LGR will help determine how quickly, consistently and transparently councils can make decisions, and how confidently partners can invest behind them.
+                    </p>
+
+                    <p className="mb-6">
+                      There is substantial potential here. Done well, reorganisation could create clearer lines of accountability, more coherent decision pathways, stronger governance controls, and more resilient operating models. It could also create the conditions for faster, more predictable planning, by improving consistency, reducing duplication, and strengthening the capability available to plan making and decision taking.
+                    </p>
+
+                    <p className="mb-6">
+                      Our intent in publishing this Series is firmly supportive. We want to help authorities, developers and practitioners understand the issues early, so they can capitalise on the opportunity rather than be hindered by it. We will focus on what is practical, what is measurable, and what can be acted on within real world political and organisational constraints.
+                    </p>
+
+                    <p className="mb-6">
+                      Recent history shows, however, how easily the opposite can occur. Dorset and Northumberland provide instructive case studies where governance disruption, legacy systems, political instability and uneven organisational capacity contributed to slower decisions, reduced transparency and increased risk across the development ecosystem. Those experiences offer lessons on what happens when reorganisation collides with fragile governance arrangements, or insufficient preparation.
+                    </p>
+
+                    <p className="mb-6">
+                      To keep the analysis grounded, the Series uses Surrey as a primary test case, examining how reorganisation may reconfigure planning committees, officer delegations, governance controls, digital infrastructure and political accountability. From this, we draw out what planners, developers, officers, councillors and programme leaders need to understand now, before formal transition decisions set the direction of travel.
+                    </p>
+
+                    <p className="mb-6">
+                      Across the Series we return to a core question. Will LGR create a simpler, faster and more effective environment for planning and delivery, or will new structures, inherited systems and political flux introduce fresh complexity?
+                    </p>
+
+                    <p className="mb-8">
+                      Our objective is to equip the sector to make the former a reality. Thank you to everyone who has already contributed, and to those who will take part as the Series develops. I hope you find it useful, insightful and pragmatic, and I welcome suggestions for topics, case studies and contributors.
+                    </p>
+                  </>
+                )}
+
+                <div className="mt-8 mb-6">
+                  <img
+                    src="/signature_-_rowan_cole.png"
+                    alt="Rowan Cole Signature"
+                    className="h-16 mb-2"
+                  />
+                  <p className="text-academic-charcoal font-semibold text-lg">Rowan Cole</p>
+                  <p className="text-academic-neutral-600">LGR Series</p>
                 </div>
               </div>
             </section>
@@ -165,12 +241,6 @@ export default function RowanCole({ onNavigate: _onNavigate }: RowanColeProps) {
                     className="block px-3 py-2 text-academic-sm text-academic-neutral-700 hover:bg-teal-50 hover:text-teal-700 transition-colors rounded"
                   >
                     Overview
-                  </Link>
-                  <Link
-                    to="/about/editor"
-                    className="block px-3 py-2 text-academic-sm text-academic-neutral-700 hover:bg-teal-50 hover:text-teal-700 transition-colors rounded"
-                  >
-                    Editor's Letter
                   </Link>
                   <Link
                     to="/editor/rowan-cole"

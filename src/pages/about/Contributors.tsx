@@ -1,5 +1,6 @@
 import MetaTags from '../../components/MetaTags';
 import LastUpdated from '../../components/LastUpdated';
+import OptimizedImage from '../../components/OptimizedImage';
 
 interface ContributorsProps {
   onNavigate: (page: string) => void;
@@ -62,6 +63,88 @@ export default function Contributors({ onNavigate: _onNavigate }: ContributorsPr
                 </p>
               </div>
             </section>
+
+            {/* COALFACE Section */}
+            <section className="academic-card p-8">
+              <div className="mb-6">
+                <OptimizedImage
+                  src="/Coalface_Logo_Coloured_Stacked..jpg"
+                  alt="COALFACE Logo"
+                  variant="article"
+                  className="max-w-xs"
+                />
+              </div>
+              <div className="academic-prose">
+                <p>
+                  COALFACE is an independent consultancy and insight practice specialising in local government, planning, governance and political decision making. Its contribution to the LGR Series draws on experience as an elected councillor, in advisory and officer roles within local authorities, and in supporting planning and regeneration programmes. COALFACE provides applied analysis focused on governance design, democratic legitimacy and delivery conditions in reorganised councils, with an emphasis on how decisions are made in practice rather than on formal structures alone.
+                </p>
+              </div>
+            </section>
+
+            {/* Insights Section */}
+            <section className="academic-card p-8">
+              <h2 className="text-academic-3xl font-display font-bold text-academic-charcoal mb-6">
+                Insights
+              </h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* Tim Oliver */}
+                <div className="flex flex-col">
+                  <OptimizedImage
+                    src="/Oliver_TNail_Article.png"
+                    alt="Tim Oliver"
+                    variant="article"
+                    className="w-full rounded-lg object-cover shadow-md mb-4"
+                  />
+                  <h3 className="text-academic-xl font-display font-bold text-academic-charcoal mb-1">
+                    Tim Oliver OBE
+                  </h3>
+                  <p className="text-academic-sm text-teal-700 font-semibold mb-2">
+                    Leader of Surrey County Council
+                  </p>
+                  <p className="text-academic-sm text-academic-neutral-700 leading-relaxed">
+                    National Chair of the County Councils Network and strong proponent of mayoral devolution, awarded OBE for services to local government in 2024.
+                  </p>
+                </div>
+
+                {/* Andrew Kelly */}
+                <div className="flex flex-col">
+                  <OptimizedImage
+                    src="/Kelly_TNail_Article.png"
+                    alt="Andrew Kelly"
+                    variant="article"
+                    className="w-full rounded-lg object-cover shadow-md mb-4"
+                  />
+                  <h3 className="text-academic-xl font-display font-bold text-academic-charcoal mb-1">
+                    Andrew Kelly
+                  </h3>
+                  <p className="text-academic-sm text-teal-700 font-semibold mb-2">
+                    Former Elmbridge Councillor and Cabinet Member
+                  </p>
+                  <p className="text-academic-sm text-academic-neutral-700 leading-relaxed">
+                    Examines how larger councils and reduced representation impact democratic engagement and local voice in reorganised authorities.
+                  </p>
+                </div>
+
+                {/* Robert Moran */}
+                <div className="flex flex-col">
+                  <OptimizedImage
+                    src="/Moran_TNail_Article.png"
+                    alt="Robert Moran"
+                    variant="article"
+                    className="w-full rounded-lg object-cover shadow-md mb-4"
+                  />
+                  <h3 className="text-academic-xl font-display font-bold text-academic-charcoal mb-1">
+                    Robert Moran
+                  </h3>
+                  <p className="text-academic-sm text-teal-700 font-semibold mb-2">
+                    Former Chief Executive, Elmbridge Borough Council
+                  </p>
+                  <p className="text-academic-sm text-academic-neutral-700 leading-relaxed">
+                    Senior local government leader with extensive experience of council governance and organisational leadership during periods of reform and transition.
+                  </p>
+                </div>
+              </div>
+            </section>
           </div>
 
           <aside className="lg:col-span-1">
@@ -78,10 +161,10 @@ export default function Contributors({ onNavigate: _onNavigate }: ContributorsPr
                     About the LGR Series →
                   </a>
                   <a
-                    href="/about/editor"
+                    href="/editor/rowan-cole"
                     className="block w-full text-left px-4 py-3 bg-academic-neutral-50 hover:bg-teal-50 border border-academic-neutral-300 hover:border-teal-700 transition-all text-sm font-bold text-academic-neutral-700 hover:text-teal-700"
                   >
-                    Editor's Letter →
+                    Editor Profile →
                   </a>
                   <a
                     href="/contact"
