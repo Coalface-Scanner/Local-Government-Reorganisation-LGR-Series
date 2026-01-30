@@ -668,6 +668,16 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
                         About the LGR Series
                       </Link>
                       <Link
+                        to="/editor/rowan-cole"
+                        className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
+                          location.pathname === '/editor/rowan-cole'
+                            ? 'text-teal-600 bg-teal-50'
+                            : 'text-academic-neutral-700 hover:bg-academic-warm'
+                        }`}
+                      >
+                        Editor Profile
+                      </Link>
+                      <Link
                         to="/about/contributors"
                         className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
                           location.pathname === '/about/contributors'
@@ -1157,6 +1167,17 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
                             }`}
                           >
                             About the LGR Series
+                          </Link>
+                          <Link
+                            to="/editor/rowan-cole"
+                            onClick={handleNavClick}
+                            className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
+                              location.pathname === '/editor/rowan-cole'
+                                ? 'text-teal-700 bg-teal-100'
+                                : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
+                            }`}
+                          >
+                            Editor Profile
                           </Link>
                           <Link
                             to="/about/contributors"

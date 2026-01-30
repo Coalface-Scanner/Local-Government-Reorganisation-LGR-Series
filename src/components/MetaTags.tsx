@@ -6,6 +6,8 @@ interface MetaTagsProps {
   keywords?: string;
   ogType?: string;
   ogImage?: string;
+  ogTitle?: string;
+  ogDescription?: string;
   noindex?: boolean;
   canonical?: string;
   article?: {
@@ -23,11 +25,15 @@ export default function MetaTags({
   keywords,
   ogType = 'website',
   ogImage = '/lgr_banner.png',
+  ogTitle,
+  ogDescription,
   noindex = false,
   canonical,
   article
 }: MetaTagsProps) {
   const fullTitle = `${title} | LGR Series by COALFACE`;
+  const finalOgTitle = ogTitle || fullTitle;
+  const finalOgDescription = ogDescription || description;
   
   // Build canonical URL - remove query params, ensure HTTPS, handle trailing slashes
   const getCanonicalUrl = (): string => {
@@ -65,16 +71,16 @@ export default function MetaTags({
 
     const metaTags: Array<{ name?: string; property?: string; content: string }> = [
       { name: 'description', content: description },
-      { property: 'og:title', content: fullTitle },
-      { property: 'og:description', content: description },
+      { property: 'og:title', content: finalOgTitle },
+      { property: 'og:description', content: finalOgDescription },
       { property: 'og:type', content: ogType },
       { property: 'og:url', content: canonicalUrl },
       { property: 'og:image', content: fullOgImage },
       { property: 'og:site_name', content: 'LGR Series by COALFACE' },
       { property: 'og:locale', content: 'en_GB' },
       { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: fullTitle },
-      { name: 'twitter:description', content: description },
+      { name: 'twitter:title', content: finalOgTitle },
+      { name: 'twitter:description', content: finalOgDescription },
       { name: 'twitter:image', content: fullOgImage },
       { name: 'geo.region', content: 'GB' },
       { name: 'geo.placename', content: 'United Kingdom' },
@@ -147,7 +153,7 @@ export default function MetaTags({
         }
       });
     };
-  }, [fullTitle, description, keywords, ogType, ogImage, canonicalUrl, article, noindex]);
+  }, [fullTitle, description, keywords, ogType, ogImage, canonicalUrl, article, noindex, finalOgTitle, finalOgDescription]);
 
   return null;
 }

@@ -1,4 +1,3 @@
-import { User } from 'lucide-react';
 import MetaTags from '../../components/MetaTags';
 import LastUpdated from '../../components/LastUpdated';
 
@@ -42,38 +41,6 @@ export default function Contributors({ onNavigate: _onNavigate }: ContributorsPr
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-            {/* Editor Section */}
-            <section className="academic-card p-8">
-              <div className="flex items-center gap-4 mb-6 pb-4 border-b border-academic-neutral-300">
-                <div className="w-12 h-12 bg-gradient-teal flex items-center justify-center flex-shrink-0">
-                  <User size={24} className="text-white" />
-                </div>
-                <h2 className="text-academic-sm font-display font-bold tracking-wider text-academic-charcoal">
-                  EDITOR
-                </h2>
-              </div>
-              
-              <div className="mt-8">
-                <div className="flex flex-col md:flex-row gap-6 items-start">
-                  <img
-                    src="/rowan-cole-coalface-engagement-director-headshot-folded-arms.jpg"
-                    alt="Rowan Cole, Engagement Director at Coalface"
-                    className="w-48 h-48 rounded-xl object-cover shadow-lg"
-                  />
-                  <div className="flex-1">
-                    <h3 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-2">Rowan Cole</h3>
-                    <p className="text-academic-base text-academic-neutral-600 mb-4 font-serif">Editor, LGR Series</p>
-                    <p className="text-academic-base text-academic-neutral-700 leading-relaxed mb-3 font-serif">
-                      Rowan Cole is Engagement Director at COALFACE, where he leads research and analysis on local government governance, planning performance, and democratic accountability. His work focuses on how institutional structures and political conditions shape development outcomes across England.
-                    </p>
-                    <p className="text-academic-base text-academic-neutral-700 leading-relaxed font-serif">
-                      The LGR Series draws on COALFACE's Council Scanner™ methodology, which examines planning committee behaviour, officer delegation patterns, decision-making consistency, and governance effectiveness across all English planning authorities.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
-
             {/* Contributors Section */}
             <section className="academic-card p-8">
               <h2 className="text-academic-3xl font-display font-bold text-academic-charcoal mb-6">

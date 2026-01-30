@@ -70,6 +70,9 @@ const AboutContribute = lazy(() => import('./pages/about/Contribute'));
 const AboutCoalface = lazy(() => import('./pages/about/Coalface'));
 const AboutContributors = lazy(() => import('./pages/about/Contributors'));
 
+// Editor pages - lazy loaded
+const RowanCole = lazy(() => import('./pages/editor/RowanCole'));
+
 // Topic pages - lazy loaded
 const LocalGovernment = lazy(() => import('./pages/topics/LocalGovernment'));
 const Democracy = lazy(() => import('./pages/topics/Democracy'));
@@ -189,6 +192,7 @@ function AppContent() {
             <Route path="/about/contribute" element={<PageWrapper>{(nav) => <AboutContribute onNavigate={nav} />}</PageWrapper>} />
             <Route path="/about/coalface" element={<PageWrapper>{(nav) => <AboutCoalface onNavigate={nav} />}</PageWrapper>} />
             <Route path="/about/contributors" element={<PageWrapper>{(nav) => <AboutContributors onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/editor/rowan-cole" element={<PageWrapper>{(nav) => <RowanCole onNavigate={nav} />}</PageWrapper>} />
             <Route path="/interviews" element={<PageWrapper>{(nav) => <Interviews onNavigate={nav} />}</PageWrapper>} />
             <Route path="/podcast" element={<PageWrapper>{(nav) => <Interviews onNavigate={nav} />}</PageWrapper>} />
             <Route path="/surrey" element={<PageWrapper>{(nav) => <Surrey onNavigate={nav} />}</PageWrapper>} />
