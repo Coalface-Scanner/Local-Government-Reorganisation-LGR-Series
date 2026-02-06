@@ -94,42 +94,47 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
                 alt="COALFACE Insights"
                 loading="lazy"
                 className="h-16 w-auto"
+                width={320}
+                height={64}
               />
             </a>
             <p className="text-academic-xs text-academic-neutral-300 leading-relaxed italic font-serif mb-4">
               {tagline?.content || 'Planning consultation and engagement shaped by political behaviour, governance conditions and planning system realities.'}
             </p>
             {/* Social Media Links */}
-            <div className="flex items-center gap-3 mb-4" role="list" aria-label="Social media links">
-              <a
-                href="https://twitter.com/coalfaceengage"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-8 h-8 flex items-center justify-center text-academic-neutral-400 hover:text-teal-400 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 rounded"
-                aria-label="Follow on Twitter"
-                role="listitem"
-              >
-                <Twitter size={18} aria-hidden="true" />
-              </a>
-              <a
-                href="https://www.linkedin.com/company/coalface-engagement"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-8 h-8 flex items-center justify-center text-academic-neutral-400 hover:text-teal-400 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 rounded"
-                aria-label="Follow on LinkedIn"
-                role="listitem"
-              >
-                <Linkedin size={18} aria-hidden="true" />
-              </a>
-              <a
-                href="mailto:editor@localgovernmentreorganisation.co.uk"
-                className="w-8 h-8 flex items-center justify-center text-academic-neutral-400 hover:text-teal-400 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 rounded"
-                aria-label="Email us at editor@localgovernmentreorganisation.co.uk"
-                role="listitem"
-              >
-                <Mail size={18} aria-hidden="true" />
-              </a>
-            </div>
+            <ul className="flex items-center gap-3 mb-4" aria-label="Social media links">
+              <li>
+                <a
+                  href="https://twitter.com/coalfaceengage"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 flex items-center justify-center text-academic-neutral-400 hover:text-teal-400 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 rounded"
+                  aria-label="Follow on Twitter"
+                >
+                  <Twitter size={18} aria-hidden="true" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.linkedin.com/company/coalface-engagement"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 flex items-center justify-center text-academic-neutral-400 hover:text-teal-400 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 rounded"
+                  aria-label="Follow on LinkedIn"
+                >
+                  <Linkedin size={18} aria-hidden="true" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href="mailto:editor@localgovernmentreorganisation.co.uk"
+                  className="w-8 h-8 flex items-center justify-center text-academic-neutral-400 hover:text-teal-400 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 rounded"
+                  aria-label="Email us at editor@localgovernmentreorganisation.co.uk"
+                >
+                  <Mail size={18} aria-hidden="true" />
+                </a>
+              </li>
+            </ul>
             {/* Newsletter Signup */}
             <div className="mt-4">
               <h4 className="text-academic-xs font-display font-bold text-white mb-2 uppercase tracking-wider">Newsletter</h4>
@@ -207,6 +212,11 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
                   Focus: Surrey
                 </Link>
               </li>
+              <li>
+                <Link to="/glossary" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
+                  Glossary
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -242,12 +252,12 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
               <p>Prebend House, 72 London Road</p>
               <p>Leicester, LE2 0QR</p>
               <p className="mt-2">
-                <a href="mailto:LGR@coalfaceengagement.co.uk" className="hover:text-teal-400 transition-colors flex items-center gap-1">
+                <a href="mailto:LGR@coalfaceengagement.co.uk" className="text-teal-400 hover:text-teal-300 transition-colors flex items-center gap-1 underline">
                   LGR@coalfaceengagement.co.uk
                 </a>
               </p>
               <p className="mt-2">
-                <a href="mailto:editor@localgovernmentreorganisation.co.uk" className="hover:text-teal-400 transition-colors flex items-center gap-1">
+                <a href="mailto:editor@localgovernmentreorganisation.co.uk" className="text-teal-400 hover:text-teal-300 transition-colors flex items-center gap-1 underline">
                   editor@localgovernmentreorganisation.co.uk
                 </a>
               </p>
@@ -307,6 +317,8 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
                 alt="COALFACE" 
                 className="h-8 w-auto"
                 loading="lazy"
+                width={200}
+                height={32}
               />
               <p className="text-academic-sm text-teal-400 font-display font-medium">
                 The LGR Series is an Insight Project by <a href="https://coalfaceengagement.co.uk" target="_blank" rel="noopener noreferrer" className="text-teal-300 hover:text-teal-200 transition-colors">COALFACE™</a>

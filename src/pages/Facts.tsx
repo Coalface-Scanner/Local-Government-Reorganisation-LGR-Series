@@ -92,6 +92,14 @@ const serviceCards: ServiceCard[] = [
     icon: BookOpen,
     color: 'from-violet-500 to-purple-600',
     route: '/facts/councilopedia'
+  },
+  {
+    id: 'glossary',
+    title: 'Glossary',
+    description: 'Comprehensive glossary of Local Government Reorganisation terms and definitions. Search and browse key LGR concepts, governance terms, and reorganisation terminology.',
+    icon: BookOpen,
+    color: 'from-teal-500 to-emerald-600',
+    route: '/glossary'
   }
 ];
 

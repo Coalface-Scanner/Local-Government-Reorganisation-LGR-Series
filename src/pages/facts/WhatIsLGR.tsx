@@ -16,7 +16,7 @@ export default function WhatIsLGR() {
     {
       title: 'LGR Glossary',
       description: 'Key terms and definitions for Local Government Reorganisation',
-      route: '/facts/lgr-glossary',
+      route: '/glossary',
       icon: BookOpen
     },
     {

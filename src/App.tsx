@@ -58,7 +58,6 @@ const FurtherReading = lazy(() => import('./pages/facts/FurtherReading'));
 const Councilopedia = lazy(() => import('./pages/facts/Councilopedia'));
 const BeginnersGuide = lazy(() => import('./pages/facts/BeginnersGuide'));
 const WhatIsLGR = lazy(() => import('./pages/facts/WhatIsLGR'));
-const LGRGlossary = lazy(() => import('./pages/facts/LGRGlossary'));
 const LGRTimeline = lazy(() => import('./pages/facts/LGRTimeline'));
 const CouncilCases = lazy(() => import('./pages/facts/CouncilCases'));
 
@@ -78,6 +77,10 @@ const Democracy = lazy(() => import('./pages/topics/Democracy'));
 const GovernanceAndReform = lazy(() => import('./pages/topics/GovernanceAndReform'));
 const DemocraticLegitimacy = lazy(() => import('./pages/topics/DemocraticLegitimacy'));
 const StatecraftAndSystemDesign = lazy(() => import('./pages/topics/StatecraftAndSystemDesign'));
+
+// Glossary pages - Next.js-style structure (lazy loaded)
+const Glossary = lazy(() => import('./app/glossary/page'));
+const GlossaryTerm = lazy(() => import('./app/glossary/[slug]/page'));
 
 // Loading component for Suspense
 function PageLoader() {
@@ -123,6 +126,14 @@ function ArticleViewWrapper() {
   };
 
   return <ArticleView slug={slug} onNavigate={handleNavigate} />;
+}
+
+function GlossaryWrapper() {
+  return <Glossary />;
+}
+
+function GlossaryTermWrapper() {
+  return <GlossaryTerm />;
 }
 
 function PageWrapper({ children }: { children: (onNavigate: (page: string, data?: unknown) => void) => JSX.Element }) {
@@ -174,7 +185,6 @@ function AppContent() {
             <Route path="/facts/councilopedia/beginners-guide" element={<BeginnersGuide />} />
             <Route path="/facts/what-is-lgr" element={<WhatIsLGR />} />
             <Route path="/what-is-lgr" element={<WhatIsLGR />} />
-            <Route path="/facts/lgr-glossary" element={<LGRGlossary />} />
             <Route path="/facts/lgr-timeline" element={<LGRTimeline />} />
             <Route path="/facts/council-cases" element={<CouncilCases />} />
             <Route path="/facts/:slug" element={<FactDetail />} />
@@ -216,6 +226,8 @@ function AppContent() {
             <Route path="/topics/democratic-legitimacy" element={<PageWrapper>{(nav) => <DemocraticLegitimacy onNavigate={nav} />}</PageWrapper>} />
             <Route path="/topics/statecraft-and-system-design" element={<PageWrapper>{(nav) => <StatecraftAndSystemDesign onNavigate={nav} />}</PageWrapper>} />
             <Route path="/tools" element={<PageWrapper>{(nav) => <Tools onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/glossary" element={<GlossaryWrapper />} />
+            <Route path="/glossary/:slug" element={<GlossaryTermWrapper />} />
             <Route path="/admin/login" element={<PageWrapper>{(nav) => <AdminLogin onNavigate={nav} />}</PageWrapper>} />
             <Route path="/admin/dashboard" element={<PageWrapper>{(nav) => <AdminDashboard onNavigate={nav} />}</PageWrapper>} />
             <Route path="/admin/articles/login" element={<PageWrapper>{(nav) => <AdminArticleLogin onNavigate={nav} />}</PageWrapper>} />

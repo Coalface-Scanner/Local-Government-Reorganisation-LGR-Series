@@ -159,7 +159,7 @@ export default function LGRTimeline() {
             </button>
 
             <button
-              onClick={() => navigate('/facts/lgr-glossary')}
+              onClick={() => navigate('/glossary')}
               className="academic-card p-6 text-left hover:shadow-lg transition-shadow group"
             >
               <div className="flex items-start gap-4">

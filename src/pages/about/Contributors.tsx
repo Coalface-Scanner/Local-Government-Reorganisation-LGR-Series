@@ -143,6 +143,25 @@ export default function Contributors({ onNavigate: _onNavigate }: ContributorsPr
                     Senior local government leader with extensive experience of council governance and organisational leadership during periods of reform and transition.
                   </p>
                 </div>
+
+                {/* Eric Owens */}
+                <div className="flex flex-col">
+                  <OptimizedImage
+                    src="/eric_owens_interview_-_coming_soon.png"
+                    alt="Eric Owens"
+                    variant="article"
+                    className="w-full rounded-lg object-cover shadow-md mb-4"
+                  />
+                  <h3 className="text-academic-xl font-display font-bold text-academic-charcoal mb-1">
+                    Eric Owens
+                  </h3>
+                  <p className="text-academic-sm text-teal-700 font-semibold mb-2">
+                    Former Buckinghamshire Planning Service Director
+                  </p>
+                  <p className="text-academic-sm text-academic-neutral-700 leading-relaxed">
+                    Experienced planning service director with direct insight into the operational and digital realities of local government reorganisation and service delivery.
+                  </p>
+                </div>
               </div>
             </section>
           </div>

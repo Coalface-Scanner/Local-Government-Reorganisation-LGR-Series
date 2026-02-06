@@ -658,7 +658,7 @@ export default function Home({ onNavigate }: HomeProps) {
                         />
                       </div>
                     )}
-                    <div className="text-academic-xs font-display font-semibold text-teal-600">
+                    <div className="text-academic-xs font-display font-semibold text-teal-700">
                       Read article →
                     </div>
                   </button>

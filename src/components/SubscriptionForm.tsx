@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useId } from 'react';
 import { supabase } from '../lib/supabase';
 import { trackSubscription } from '../utils/analytics';
 
@@ -14,6 +14,8 @@ const AVAILABLE_TOPICS = [
 ];
 
 export default function SubscriptionForm({ variant = 'default', defaultTopics = [] }: SubscriptionFormProps) {
+  const uniqueId = useId();
+  const emailInputId = `subscription-email-${uniqueId}`;
   const [email, setEmail] = useState('');
   const [selectedTopics, setSelectedTopics] = useState<string[]>(defaultTopics);
   const [loading, setLoading] = useState(false);
@@ -139,11 +141,11 @@ export default function SubscriptionForm({ variant = 'default', defaultTopics = 
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="relative group">
-          <label htmlFor="subscription-email" className="sr-only">
+          <label htmlFor={emailInputId} className="sr-only">
             Email address
           </label>
           <input
-            id="subscription-email"
+            id={emailInputId}
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}

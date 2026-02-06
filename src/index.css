@@ -270,11 +270,33 @@
     margin: 2cm;
   }
 
+  /* Ensure all content is visible */
   * {
     background: white !important;
     color: black !important;
     box-shadow: none !important;
     text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  /* Ensure main content is displayed */
+  body,
+  #main-content,
+  main {
+    display: block !important;
+    position: static !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  /* Ensure all page containers are visible */
+  div[class*="min-h-screen"],
+  div[class*="bg-academic"] {
+    display: block !important;
+    position: static !important;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
   body {
@@ -285,15 +307,19 @@
   h1, h2, h3, h4, h5, h6 {
     page-break-after: avoid;
     page-break-inside: avoid;
+    color: black !important;
   }
 
   img {
     max-width: 100% !important;
     page-break-inside: avoid;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
   a {
     text-decoration: underline;
+    color: black !important;
   }
 
   a[href^="http"]:after {
@@ -1447,16 +1473,417 @@ select:focus-visible {
 
 @media print {
   @page {
-    margin: 2cm;
+    margin: 2.5cm 2cm;
     size: A4;
   }
 
+  /* Ensure all content is visible - colors and visibility */
   * {
     background: white !important;
     color: black !important;
     box-shadow: none !important;
     text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
+
+  /* Reset problematic positioning only for elements that might be off-screen */
+  [class*="fixed"],
+  [class*="absolute"]:not([class*="relative"]) {
+    position: static !important;
+    transform: none !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+  }
+
+  /* Ensure main content is displayed */
+  html {
+    display: block !important;
+    height: auto !important;
+  }
+
+  body {
+    display: block !important;
+    position: static !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #root {
+    display: block !important;
+    position: static !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+  }
+
+  #root > * {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+  }
+  
+  /* Ensure the main app container is visible */
+  #root > div[class*="min-h-screen"] {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    position: static !important;
+  }
+  
+  /* Fix flex-grow issue - main needs explicit height in print */
+  main[class*="flex-grow"],
+  #main-content[class*="flex-grow"] {
+    flex-grow: 0 !important;
+    display: block !important;
+    height: auto !important;
+    min-height: auto !important;
+    width: 100% !important;
+  }
+  
+  /* Ensure Suspense and Routes render - these are React components so target by structure */
+  #main-content > div,
+  main > div {
+    display: block !important;
+    height: auto !important;
+    min-height: auto !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  /* Ensure page content divs are visible with clean spacing */
+  div[class*="min-h-screen"] > * {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    margin: 0 !important;
+  }
+  
+  /* Remove all rounded corners and shadows */
+  [class*="rounded"],
+  [class*="shadow"] {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+  
+  /* Clean up badges/tags */
+  [class*="px-3"][class*="py-1"],
+  [class*="px-4"][class*="py-2"] {
+    border: 1px solid #ccc !important;
+    background: white !important;
+    padding: 0.2em 0.5em !important;
+    display: inline-block !important;
+    margin-right: 0.5em !important;
+    font-size: 9pt !important;
+  }
+
+  #main-content,
+  main {
+    display: block !important;
+    position: static !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    flex-grow: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  /* Ensure main content children are visible with clean spacing */
+  #main-content > *,
+  main > * {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    height: auto !important;
+    margin: 0 0 0.75em 0 !important;
+  }
+  
+  #main-content > *:last-child,
+  main > *:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  /* Ensure all divs are visible but preserve layout where possible */
+  div {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  
+  /* Critical: Ensure React root and app container don't collapse */
+  #root {
+    min-height: auto !important;
+  }
+  
+  #root > div {
+    min-height: auto !important;
+    height: auto !important;
+  }
+
+  /* Reset problematic flex/grid that might collapse - but preserve children */
+  [class*="flex"] {
+    display: block !important;
+    gap: 0 !important;
+  }
+  
+  [class*="flex"] > * {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 0 0.5em 0 !important;
+  }
+  
+  [class*="flex"] > *:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  /* Ensure content containers are visible - with clean spacing */
+  div[class*="min-h-screen"],
+  div[class*="bg-academic"] {
+    display: block !important;
+    position: static !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    width: 100% !important;
+    min-height: auto !important;
+    height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  section,
+  article {
+    display: block !important;
+    position: static !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 1.5em 0 !important;
+    padding: 0 !important;
+  }
+  
+  header {
+    display: block !important;
+    margin-bottom: 1.5em !important;
+    padding-bottom: 0.75em !important;
+    border-bottom: 2px solid #000 !important;
+  }
+  
+  /* Modern card styling - minimal borders */
+  .academic-card {
+    border: none !important;
+    border-bottom: 1px solid #e5e5e5 !important;
+    padding: 0 !important;
+    margin: 0 0 2em 0 !important;
+    page-break-inside: avoid;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    background: white !important;
+    box-shadow: none !important;
+  }
+  
+  .academic-card:last-child {
+    border-bottom: none !important;
+  }
+  
+  .max-w-7xl,
+  .max-w-5xl,
+  .max-w-4xl,
+  .max-w-3xl {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  /* Clean, minimal spacing */
+  div[class*="px-"],
+  div[class*="py-"] {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  
+  div[class*="py-"] {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  
+  /* Minimal gaps */
+  [class*="gap-"] {
+    gap: 0 !important;
+  }
+  
+  [class*="space-y-"] > * + * {
+    margin-top: 1em !important;
+  }
+  
+  /* Remove excessive padding from content containers */
+  [class*="p-"]:not([class*="px-"]):not([class*="py-"]) {
+    padding: 0 !important;
+  }
+
+  /* Ensure grid layouts convert properly */
+  [class*="grid"] {
+    display: block !important;
+    gap: 0 !important;
+  }
+
+  [class*="grid"] > * {
+    display: block !important;
+    width: 100% !important;
+    margin-bottom: 0.75em !important;
+  }
+  
+  [class*="grid"] > *:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  /* Modern Editorial Content */
+  .editorial-layout,
+  .academic-prose {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    color: #1a1a1a !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.7 !important;
+    font-size: 11pt;
+  }
+  
+  .editorial-layout > *,
+  .academic-prose > * {
+    margin-bottom: 0.9em !important;
+  }
+  
+  .editorial-layout > *:last-child,
+  .academic-prose > *:last-child {
+    margin-bottom: 0 !important;
+  }
+  
+  /* Standfirst/intro paragraphs */
+  .editorial-layout > p:first-child,
+  .academic-prose > p:first-child {
+    font-size: 12pt;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 1.2em;
+  }
+
+  /* Clean margins */
+  div[class*="mx-auto"] {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  
+  /* Refined margins */
+  [class*="mb-"] {
+    margin-bottom: 0.75em !important;
+  }
+  
+  [class*="mt-"] {
+    margin-top: 1em !important;
+  }
+  
+  [class*="my-"] {
+    margin-top: 1em !important;
+    margin-bottom: 1em !important;
+  }
+  
+  /* Remove excessive spacing from headings */
+  h1[class*="mb-"],
+  h2[class*="mb-"],
+  h3[class*="mb-"] {
+    margin-bottom: 0.4em !important;
+  }
+  
+  /* Clean up header sections */
+  div[class*="bg-gradient"],
+  div[class*="bg-academic-warm"],
+  div[class*="bg-academic-charcoal"] {
+    background: white !important;
+    padding: 0 !important;
+    margin-bottom: 1.5em !important;
+    border-bottom: 2px solid #000 !important;
+  }
+
+  /* Ensure text content is visible */
+  p, h1, h2, h3, h4, h5, h6, li, td, th, span, a, strong, em, div {
+    color: black !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  p, h1, h2, h3, h4, h5, h6, li, div, section, article {
+    display: block !important;
+  }
+
+  span, a, strong, em {
+    display: inline !important;
+  }
+  
+  /* Modern code blocks */
+  pre,
+  code {
+    font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+    font-size: 9pt;
+    line-height: 1.5;
+  }
+  
+  pre {
+    background: #f5f5f5 !important;
+    border: 1px solid #ddd !important;
+    padding: 0.75em !important;
+    margin: 1em 0 !important;
+    page-break-inside: avoid;
+    overflow: visible !important;
+    white-space: pre-wrap;
+  }
+  
+  code {
+    background: #f5f5f5 !important;
+    padding: 0.15em 0.3em !important;
+    border-radius: 2px;
+  }
+  
+  pre code {
+    background: transparent !important;
+    padding: 0 !important;
+  }
+  
+  /* Horizontal rules */
+  hr {
+    border: none !important;
+    border-top: 1px solid #e5e5e5 !important;
+    margin: 2em 0 !important;
+    page-break-inside: avoid;
+  }
+
 
   /* Hide navigation, footer, and non-essential elements */
   nav,
@@ -1471,16 +1898,18 @@ select:focus-visible {
   .page-navigation,
   .back-to-top,
   .cookie-banner,
-  .skip-link {
+  .skip-link,
+  elevenlabs-convai {
     display: none !important;
   }
 
-  /* Typography */
+  /* Modern Typography */
   body {
-    font-size: 12pt;
-    line-height: 1.6;
-    color: #000;
+    font-size: 11pt;
+    line-height: 1.7;
+    color: #1a1a1a;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -1488,74 +1917,185 @@ select:focus-visible {
     page-break-inside: avoid;
     color: #000;
     font-weight: 700;
+    letter-spacing: -0.02em;
   }
 
   h1 {
-    font-size: 24pt;
+    font-size: 22pt;
+    line-height: 1.2;
     margin-top: 0;
     margin-bottom: 0.5em;
+    page-break-after: avoid;
   }
 
   h2 {
-    font-size: 18pt;
+    font-size: 16pt;
+    line-height: 1.3;
     margin-top: 1.5em;
-    margin-bottom: 0.5em;
+    margin-bottom: 0.4em;
+    page-break-after: avoid;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 0.3em;
   }
 
   h3 {
-    font-size: 14pt;
+    font-size: 13pt;
+    line-height: 1.4;
+    margin-top: 1.2em;
+    margin-bottom: 0.3em;
+    page-break-after: avoid;
+  }
+  
+  h4, h5, h6 {
+    font-size: 11pt;
+    line-height: 1.4;
     margin-top: 1em;
-    margin-bottom: 0.4em;
+    margin-bottom: 0.25em;
+    page-break-after: avoid;
   }
 
   p {
     orphans: 3;
     widows: 3;
-    margin-bottom: 1em;
+    margin-bottom: 0.9em;
+    line-height: 1.7;
+    text-align: justify;
+  }
+  
+  p:last-child {
+    margin-bottom: 0;
+  }
+  
+  /* First paragraph after heading */
+  h1 + p,
+  h2 + p,
+  h3 + p {
+    margin-top: 0.5em;
   }
 
-  /* Links */
+  /* Modern Links */
   a {
     color: #000;
-    text-decoration: underline;
+    text-decoration: none;
+    border-bottom: 1px solid #999;
+  }
+  
+  a:hover {
+    border-bottom-color: #000;
   }
 
-  a[href]:after {
-    content: " (" attr(href) ")";
-    font-size: 10pt;
+  a[href^="http"]:after {
+    content: " [" attr(href) "]";
+    font-size: 9pt;
     color: #666;
+    border-bottom: none;
+    font-weight: normal;
   }
 
   a[href^="#"]:after,
-  a[href^="javascript:"]:after {
+  a[href^="javascript:"]:after,
+  a[href^="/"]:after {
     content: "";
   }
 
-  /* Images */
+  /* Modern Images */
   img {
     max-width: 100% !important;
     height: auto !important;
     page-break-inside: avoid;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+    margin: 1.5em auto !important;
+  }
+  
+  /* Image captions */
+  figure {
+    margin: 1.5em 0 !important;
+    page-break-inside: avoid;
+  }
+  
+  figcaption {
+    font-size: 9pt;
+    color: #666;
+    margin-top: 0.5em;
+    text-align: center;
+    font-style: italic;
+  }
+  
+  /* Remove all decorative backgrounds and heavy borders */
+  [class*="bg-"]:not([class*="bg-white"]) {
+    background: white !important;
+  }
+  
+  [class*="border"]:not([class*="border-b"]):not([class*="border-t"]) {
+    border: none !important;
+  }
+  
+  /* Subtle borders only */
+  [class*="border-b"] {
+    border-bottom-color: #e5e5e5 !important;
+    border-bottom-width: 1px !important;
+  }
+  
+  [class*="border-t"] {
+    border-top-color: #e5e5e5 !important;
+    border-top-width: 1px !important;
   }
 
-  /* Tables */
+  /* Modern Tables */
   table {
     border-collapse: collapse;
     page-break-inside: avoid;
+    width: 100%;
+    margin: 1.5em 0;
   }
 
   th, td {
-    border: 1px solid #000;
-    padding: 0.5em;
+    border-bottom: 1px solid #ddd;
+    padding: 0.6em 0.8em;
+    text-align: left;
+  }
+  
+  th {
+    border-bottom: 2px solid #000;
+    font-weight: 600;
+    font-size: 10pt;
+  }
+  
+  tr:last-child td {
+    border-bottom: none;
   }
 
-  /* Lists */
+  /* Modern Lists */
   ul, ol {
     page-break-inside: avoid;
+    margin: 1em 0 !important;
+    padding-left: 1.8em !important;
   }
 
   li {
     page-break-inside: avoid;
+    margin-bottom: 0.5em !important;
+    line-height: 1.6;
+  }
+  
+  li:last-child {
+    margin-bottom: 0 !important;
+  }
+  
+  /* Modern Blockquotes */
+  blockquote {
+    border-left: 2px solid #ccc !important;
+    padding-left: 1.2em !important;
+    margin: 1.5em 0 !important;
+    font-style: italic;
+    color: #444;
+    page-break-inside: avoid;
+  }
+  
+  blockquote p {
+    margin-bottom: 0.5em !important;
   }
 
   /* Article content */
@@ -1563,13 +2103,27 @@ select:focus-visible {
     max-width: 100%;
     margin: 0;
     padding: 0;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
   .academic-card {
-    border: 1px solid #ccc;
-    padding: 1em;
-    margin-bottom: 1em;
+    border: 1px solid #ddd !important;
+    padding: 0.75em !important;
+    margin-bottom: 0.75em !important;
     page-break-inside: avoid;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    background: white !important;
+  }
+
+  /* Ensure all text content is visible */
+  p, span, div, section, article, h1, h2, h3, h4, h5, h6, li, td, th {
+    opacity: 1 !important;
+    visibility: visible !important;
+    color: black !important;
   }
 
   /* Page breaks */
@@ -1585,30 +2139,33 @@ select:focus-visible {
     page-break-inside: avoid;
   }
 
-  /* Header and footer for print */
+  /* Modern page headers and footers */
   @page {
     @top-center {
       content: "LGR Series";
-      font-size: 10pt;
-      color: #666;
+      font-size: 9pt;
+      color: #999;
+      font-weight: 500;
+      letter-spacing: 0.05em;
     }
     @bottom-center {
-      content: "Page " counter(page) " of " counter(pages);
-      font-size: 10pt;
-      color: #666;
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+      font-weight: 400;
     }
   }
 
-  /* Print URL and date */
+  /* Modern print footer */
   .print-footer {
     margin-top: 2em;
-    padding-top: 1em;
-    border-top: 1px solid #ccc;
-    font-size: 10pt;
-    color: #666;
+    padding-top: 0.75em;
+    border-top: 1px solid #e5e5e5;
+    font-size: 9pt;
+    color: #999;
   }
 
   .print-footer::before {
-    content: "Source: " attr(data-url) " | Printed: " attr(data-date);
+    content: attr(data-url) " • Printed " attr(data-date);
   }
 }
