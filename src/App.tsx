@@ -40,6 +40,7 @@ const Topics = lazy(() => import('./pages/Topics'));
 const Tools = lazy(() => import('./pages/Tools'));
 const LGRHub = lazy(() => import('./pages/LGRHub'));
 const FactsAndData = lazy(() => import('./pages/FactsAndData'));
+const Reorganisations = lazy(() => import('./pages/Reorganisations'));
 
 // Admin pages - lazy loaded (less frequently accessed)
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
@@ -192,6 +193,7 @@ function AppContent() {
             <Route path="/roadmap" element={<PageWrapper>{(nav) => <JourneyMap onNavigate={nav} />}</PageWrapper>} />
             <Route path="/lgr-hub" element={<PageWrapper>{(nav) => <LGRHub onNavigate={nav} />}</PageWrapper>} />
             <Route path="/facts-and-data" element={<PageWrapper>{(nav) => <FactsAndData onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/reorganisations" element={<PageWrapper>{(nav) => <Reorganisations onNavigate={nav} />}</PageWrapper>} />
             <Route path="/sitemap.xml" element={<Sitemap />} />
             <Route path="/lessons" element={<PageWrapper>{(nav) => <Lessons onNavigate={nav} />}</PageWrapper>} />
             <Route path="/reasons" element={<PageWrapper>{(nav) => <Reasons onNavigate={nav} />}</PageWrapper>} />
