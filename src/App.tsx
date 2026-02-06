@@ -83,6 +83,9 @@ const StatecraftAndSystemDesign = lazy(() => import('./pages/topics/StatecraftAn
 const Glossary = lazy(() => import('./app/glossary/page'));
 const GlossaryTerm = lazy(() => import('./app/glossary/[slug]/page'));
 
+// 404 page - lazy loaded
+const NotFound = lazy(() => import('./pages/NotFound'));
+
 // Loading component for Suspense
 function PageLoader() {
   return (
@@ -234,6 +237,7 @@ function AppContent() {
             <Route path="/admin/dashboard" element={<PageWrapper>{(nav) => <AdminDashboard onNavigate={nav} />}</PageWrapper>} />
             <Route path="/admin/articles/login" element={<PageWrapper>{(nav) => <AdminArticleLogin onNavigate={nav} />}</PageWrapper>} />
             <Route path="/admin/articles" element={<PageWrapper>{(nav) => <AdminArticles onNavigate={nav} />}</PageWrapper>} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
       </main>
