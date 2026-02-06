@@ -24,7 +24,7 @@ export default function MetaTags({
   description,
   keywords,
   ogType = 'website',
-  ogImage = '/lgr_banner.png',
+  ogImage = '/LGR-Series-Tumbnail.jpg',
   ogTitle,
   ogDescription,
   noindex = false,
