@@ -1,4 +1,4 @@
-import { ArrowRight, Calendar, Vote, BookOpen, Headphones, Route } from 'lucide-react';
+import { ArrowRight, Calendar, BookOpen, Headphones, Route } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
 import CollectionPageStructuredData from '../components/CollectionPageStructuredData';
 import SubscriptionForm from '../components/SubscriptionForm';

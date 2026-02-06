@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import SubscriptionForm from '../components/SubscriptionForm';
 import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
@@ -48,7 +48,7 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
   /**
    * Transform RSS item to Interview interface
    */
-  const transformRSSItemToInterview = (item: RSSItem, index: number): Interview => {
+  const transformRSSItemToInterview = useCallback((item: RSSItem, _index: number): Interview => {
     const guestName = extractGuestName(item.title);
     const pubDate = item.pubDate ? new Date(item.pubDate) : new Date();
     
@@ -66,12 +66,12 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
       status: 'published',
       order_index: -pubDate.getTime(), // Negative timestamp for descending order (newest first)
     };
-  };
+  }, []);
 
   /**
    * Fetch episodes from RSS feed
    */
-  const fetchRSSFeed = async (): Promise<Interview[]> => {
+  const fetchRSSFeed = useCallback(async (): Promise<Interview[]> => {
     try {
       const response = await fetch(RSS_FEED_URL, {
         method: 'GET',
@@ -112,12 +112,12 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
         throw new Error('Unknown error occurred while fetching RSS feed');
       }
     }
-  };
+  }, [transformRSSItemToInterview]);
 
   /**
    * Fetch interviews from database
    */
-  const fetchDatabaseInterviews = async (): Promise<Interview[]> => {
+  const fetchDatabaseInterviews = useCallback(async (): Promise<Interview[]> => {
     try {
       const { data, error: fetchError } = await supabase
         .from('interviews')
@@ -134,12 +134,12 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
       console.error('Error fetching database interviews:', err);
       throw err;
     }
-  };
+  }, []);
 
   /**
    * Fetch interviews - try database first, fallback to RSS feed
    */
-  const fetchInterviews = async () => {
+  const fetchInterviews = useCallback(async () => {
     try {
       setError(null);
       setLoading(true);
@@ -186,11 +186,11 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [fetchRSSFeed, fetchDatabaseInterviews]);
 
   useEffect(() => {
     fetchInterviews();
-  }, []);
+  }, [fetchInterviews]);
 
   return (
     <div className="min-h-screen bg-neutral-50">

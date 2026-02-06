@@ -44,8 +44,8 @@ function decodeHTMLEntities(text: string): string {
 /**
  * Parse RFC 822 date format (e.g., "Fri, 23 Jan 2026 14:26:29 GMT")
  */
-function parseRFC822Date(dateString: string): Date {
-  return new Date(dateString);
+function _parseRFC822Date(_dateString: string): Date {
+  return new Date(_dateString);
 }
 
 /**
@@ -67,15 +67,15 @@ function getAttribute(element: Element | null, attribute: string): string | null
 /**
  * Get elements by tag name with namespace support
  */
-function getElementsByTagNameNS(
-  parent: Element | Document,
-  namespace: string | null,
-  tagName: string
+function _getElementsByTagNameNS(
+  _parent: Element | Document,
+  _namespace: string | null,
+  _tagName: string
 ): Element[] {
-  if (namespace) {
-    return Array.from(parent.getElementsByTagNameNS(namespace, tagName));
+  if (_namespace) {
+    return Array.from(_parent.getElementsByTagNameNS(_namespace, _tagName));
   }
-  return Array.from(parent.getElementsByTagName(tagName));
+  return Array.from(_parent.getElementsByTagName(_tagName));
 }
 
 /**

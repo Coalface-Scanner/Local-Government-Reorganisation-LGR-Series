@@ -7,7 +7,7 @@ interface NavigationProps {
   currentPage: string;
 }
 
-export default function Navigation({ onNavigate: _onNavigate, currentPage }: NavigationProps) {
+export default function Navigation({ onNavigate: _onNavigate, currentPage: _currentPage }: NavigationProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lgrHubDropdownOpen, setLgrHubDropdownOpen] = useState(false);
   const [topicsDropdownOpen, setTopicsDropdownOpen] = useState(false);

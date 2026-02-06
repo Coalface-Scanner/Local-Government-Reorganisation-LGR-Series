@@ -48,7 +48,19 @@ export default function PrintButton({ className = '', variant = 'default' }: Pri
         'section'
       ];
       
-      const results: Record<string, any> = {};
+      const results: Record<string, {
+        count: number;
+        display?: string;
+        opacity?: string;
+        visibility?: string;
+        width?: number;
+        height?: number;
+        flexGrow?: string;
+        minHeight?: string;
+        hasText?: boolean;
+        childrenCount?: number;
+        flexDirection?: string;
+      }> = {};
       contentSelectors.forEach(selector => {
         const elements = document.querySelectorAll(selector);
         if (elements.length > 0) {
@@ -100,7 +112,7 @@ export default function PrintButton({ className = '', variant = 'default' }: Pri
       let printRulesFound = 0;
       let printRulesWithContent = 0;
       
-      sheets.forEach((sheet, idx) => {
+      sheets.forEach((sheet, _idx) => {
         try {
           const rules = Array.from(sheet.cssRules || []);
           rules.forEach(rule => {
@@ -112,7 +124,7 @@ export default function PrintButton({ className = '', variant = 'default' }: Pri
               }
             }
           });
-        } catch (e) {
+        } catch (_e) {
           // Cross-origin stylesheet, skip
         }
       });
