@@ -79,16 +79,67 @@ function _getElementsByTagNameNS(
 }
 
 /**
+ * Sanitize XML string to fix common malformed HTML issues
+ */
+function sanitizeXML(xmlString: string): string {
+  // Remove any HTML tags that might be breaking XML structure
+  // Fix common issues like unclosed tags in descriptions
+  let sanitized = xmlString;
+  
+  // Remove any <script> tags that might be in descriptions
+  sanitized = sanitized.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+  
+  // Fix unclosed tags in descriptions by wrapping CDATA or escaping
+  // This is a common issue with Anchor.fm feeds that include HTML in descriptions
+  sanitized = sanitized.replace(/<description><!\[CDATA\[([\s\S]*?)\]\]><\/description>/gi, (match, content) => {
+    // If CDATA exists, keep it
+    return match;
+  });
+  
+  // For descriptions without CDATA, try to fix common HTML issues
+  sanitized = sanitized.replace(/<description>([\s\S]*?)<\/description>/gi, (match, content) => {
+    // If content contains HTML tags, wrap in CDATA to prevent XML parsing issues
+    if (content.includes('<') && content.includes('>')) {
+      // Check if already has CDATA
+      if (!content.includes('<![CDATA[')) {
+        // Escape any existing CDATA markers
+        content = content.replace(/<!\[CDATA\[/g, '&lt;![CDATA[');
+        content = content.replace(/\]\]>/g, ']]&gt;');
+        return `<description><![CDATA[${content}]]></description>`;
+      }
+    }
+    return match;
+  });
+  
+  return sanitized;
+}
+
+/**
  * Parse RSS feed XML string into structured data
  */
 export function parseRSSFeed(xmlString: string): RSSChannel {
+  // Sanitize the XML first to fix common malformed HTML issues
+  const sanitizedXML = sanitizeXML(xmlString);
+  
   const parser = new DOMParser();
-  const doc = parser.parseFromString(xmlString, 'text/xml');
+  const doc = parser.parseFromString(sanitizedXML, 'text/xml');
 
   // Check for parsing errors
   const parserError = doc.querySelector('parsererror');
   if (parserError) {
-    throw new Error(`Failed to parse RSS feed: ${parserError.textContent}`);
+    // Try parsing as HTML if XML parsing fails (some feeds have HTML in them)
+    const htmlDoc = parser.parseFromString(sanitizedXML, 'text/html');
+    const rssElement = htmlDoc.querySelector('rss, feed');
+    if (!rssElement) {
+      throw new Error(`Failed to parse RSS feed: ${parserError.textContent}`);
+    }
+    // If HTML parsing worked, try to extract RSS structure
+    // Fallback: return empty channel
+    return {
+      title: 'RSS Feed',
+      description: '',
+      items: [],
+    };
   }
 
   // Get channel element
@@ -130,8 +181,26 @@ export function parseRSSFeed(xmlString: string): RSSChannel {
   const itemElements = channel.querySelectorAll('item');
 
   itemElements.forEach((item) => {
-    const title = decodeHTMLEntities(getTextContent(item.querySelector('title')));
-    const description = stripHTML(getTextContent(item.querySelector('description')));
+    const titleElement = item.querySelector('title');
+    const descriptionElement = item.querySelector('description');
+    
+    // Handle title - try to get text content, fallback to innerHTML if needed
+    let title = '';
+    if (titleElement) {
+      title = decodeHTMLEntities(getTextContent(titleElement) || titleElement.innerHTML || '');
+    }
+    
+    // Handle description - strip HTML but be more lenient with parsing
+    let description = '';
+    if (descriptionElement) {
+      const descText = getTextContent(descriptionElement);
+      if (descText) {
+        description = stripHTML(descText);
+      } else {
+        // Fallback: try innerHTML if textContent is empty
+        description = stripHTML(descriptionElement.innerHTML || '');
+      }
+    }
     const pubDate = getTextContent(item.querySelector('pubDate'));
     const guid = getTextContent(item.querySelector('guid')) || title;
     const link = getTextContent(item.querySelector('link'));

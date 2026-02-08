@@ -795,7 +795,7 @@ export default function Home({ onNavigate }: HomeProps) {
             to="/interviews"
             className="block mb-8 group overflow-hidden rounded-lg"
           >
-            <div className="w-full h-48 md:h-64 overflow-hidden">
+            <div className="w-full h-48 md:h-64 overflow-hidden bg-gradient-to-br from-teal-600 to-teal-800 flex items-center justify-center">
               <img
                 src="/LGR-100Podcast-Youtube-Banner.png"
                 alt="First 100 Days Podcast"
@@ -803,6 +803,21 @@ export default function Home({ onNavigate }: HomeProps) {
                 loading="eager"
                 fetchPriority="high"
                 decoding="async"
+                onError={(e) => {
+                  // Fallback if image fails to load
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  const parent = target.parentElement;
+                  if (parent) {
+                    parent.innerHTML = `
+                      <div class="w-full h-full flex flex-col items-center justify-center text-white p-8 text-center">
+                        <h3 class="text-2xl md:text-3xl font-bold mb-2">First 100 Days Podcast</h3>
+                        <p class="text-lg opacity-90">Listen to expert interviews on Local Government Reorganisation</p>
+                        <span class="mt-4 text-sm opacity-75">Click to view all episodes →</span>
+                      </div>
+                    `;
+                  }
+                }}
               />
             </div>
           </Link>
