@@ -106,6 +106,39 @@ export default function Contribute({ onNavigate: _onNavigate }: ContributeProps)
               </div>
             </section>
 
+            {/* Organisations Section */}
+            <section>
+              <h2 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-6">
+                Organisations
+              </h2>
+              
+              {/* Strategic Partner - E.C.F. */}
+              <div className="academic-card p-8 md:p-10 bg-gradient-to-br from-teal-50 to-teal-100 border-2 border-teal-300 shadow-lg">
+                <div className="flex items-start gap-6 flex-col md:flex-row">
+                  <div className="flex-shrink-0">
+                    <img
+                      src="/E.C.F_Initials_Logo_Colour.jpg"
+                      alt="E.C.F. Logo"
+                      className="w-32 h-32 object-contain bg-white p-4 rounded-lg shadow-sm"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <div className="mb-3">
+                      <span className="inline-block bg-teal-700 text-white px-4 py-1.5 rounded-full text-academic-xs font-display font-bold uppercase tracking-wider">
+                        Strategic Partner
+                      </span>
+                    </div>
+                    <h3 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-4">
+                      E.C.F.
+                    </h3>
+                    <p className="text-academic-base text-academic-neutral-700 font-serif leading-relaxed">
+                      ECF are a specialist communications and engagement consultancy working on built environment projects across the country. From large transport infrastructure projects to small housing developments, they ensure that proposals for development are communicated with the public through meaningful engagement.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
             {/* Contact Section */}
             <section className="academic-card p-8 md:p-10 bg-teal-50 border-teal-200">
               <h2 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-4">
