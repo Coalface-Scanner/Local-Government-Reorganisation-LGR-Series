@@ -1,4 +1,6 @@
+import { useLocation } from 'react-router-dom';
 import MetaTags from '../../components/MetaTags';
+import PageBanner from '../../components/PageBanner';
 import LastUpdated from '../../components/LastUpdated';
 import OptimizedImage from '../../components/OptimizedImage';
 
@@ -7,6 +9,8 @@ interface ContributorsProps {
 }
 
 export default function Contributors({ onNavigate: _onNavigate }: ContributorsProps) {
+  const location = useLocation();
+  
   return (
     <div className="bg-academic-cream min-h-screen">
       <MetaTags
@@ -15,29 +19,12 @@ export default function Contributors({ onNavigate: _onNavigate }: ContributorsPr
         keywords="LGR series contributors, LGR authors, local government reorganisation researchers, COALFACE team"
       />
       
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        {/* Colored gradient overlay */}
-        <div 
-          className="absolute inset-0 opacity-60 z-0"
-          style={{
-            background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.4) 0%, rgba(6, 182, 212, 0.5) 50%, rgba(14, 165, 233, 0.4) 100%)'
-          }}
-        />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">ABOUT</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              Contributors{' '}
-              <span className="text-teal-700 font-serif italic">
-                & Authors
-              </span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              Meet the contributors and authors behind the LGR Series research programme.
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageBanner
+        heroLabel="ABOUT"
+        heroTitle="Contributors & Authors"
+        heroSubtitle="Meet the contributors and authors behind the LGR Series research programme."
+        currentPath={location.pathname}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid lg:grid-cols-3 gap-8">

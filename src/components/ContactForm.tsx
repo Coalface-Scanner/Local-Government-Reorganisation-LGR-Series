@@ -92,7 +92,7 @@ export default function ContactForm({ className = '' }: ContactFormProps) {
         
         // Fallback: send email via mailto link (user's email client)
         // Or you could use a service like Formspree, EmailJS, etc.
-        const mailtoLink = `mailto:editor@localgovernmentreorganisation.co.uk?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`From: ${formData.name} (${formData.email})\n\n${formData.message}`)}`;
+        const mailtoLink = `mailto:editor@localgovernmentreorganisation.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`From: ${formData.name} (${formData.email})\n\n${formData.message}`)}`;
         window.location.href = mailtoLink;
         
         trackContactForm();
@@ -105,7 +105,7 @@ export default function ContactForm({ className = '' }: ContactFormProps) {
       }
     } catch (err) {
       console.error('Unexpected error:', err);
-      setErrorMessage('An error occurred. Please try again or email us directly at editor@localgovernmentreorganisation.co.uk');
+      setErrorMessage('An error occurred. Please try again or email us directly at editor@localgovernmentreorganisation.com');
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -239,8 +239,8 @@ export default function ContactForm({ className = '' }: ContactFormProps) {
             </p>
             <p className="text-academic-sm text-teal-800 font-serif">
               We'll get back to you as soon as possible. If your message is urgent, please email us directly at{' '}
-              <a href="mailto:editor@localgovernmentreorganisation.co.uk" className="underline font-semibold">
-                editor@localgovernmentreorganisation.co.uk
+              <a href="mailto:editor@localgovernmentreorganisation.com" className="underline font-semibold">
+                editor@localgovernmentreorganisation.com
               </a>
             </p>
           </div>

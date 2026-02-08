@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import MetaTags from '../../components/MetaTags';
-import SubscriptionForm from '../../components/SubscriptionForm';
+import PageBanner from '../../components/PageBanner';
 import LastUpdated from '../../components/LastUpdated';
 import { useAboutPage } from '../../hooks/useAboutPage';
 
@@ -11,6 +11,8 @@ interface MethodologyProps {
 
 export default function Methodology({ onNavigate: _onNavigate }: MethodologyProps) {
   const { page: cmsPage, loading } = useAboutPage('methodology');
+  const location = useLocation();
+  
   return (
     <div className="bg-academic-cream min-h-screen">
       <MetaTags
@@ -19,22 +21,12 @@ export default function Methodology({ onNavigate: _onNavigate }: MethodologyProp
         keywords="LGR methodology, research methodology, Council Scanner, data sources, analytical framework"
       />
       
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">ABOUT</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              Research{' '}
-              <span className="text-teal-700 font-serif italic">
-                Methodology
-              </span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              Our systematic approach to analysing planning authority governance, decision-making patterns, and institutional behaviour.
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageBanner
+        heroLabel="ABOUT"
+        heroTitle="Research Methodology"
+        heroSubtitle="Our systematic approach to analysing planning authority governance, decision-making patterns, and institutional behaviour."
+        currentPath={location.pathname}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid lg:grid-cols-3 gap-8">
@@ -129,7 +121,12 @@ export default function Methodology({ onNavigate: _onNavigate }: MethodologyProp
                 <p className="text-academic-sm text-academic-neutral-700 mb-4 font-serif">
                   Get the LGR Series directly in your inbox. No fluff, just deep analysis.
                 </p>
-                <SubscriptionForm variant="compact" />
+                <Link
+                  to="/subscribe"
+                  className="inline-block bg-teal-700 hover:bg-teal-800 text-white px-6 py-3 rounded-lg font-display font-bold text-sm uppercase tracking-wider transition-colors"
+                >
+                  Subscribe
+                </Link>
               </div>
 
               <div className="academic-card p-6">

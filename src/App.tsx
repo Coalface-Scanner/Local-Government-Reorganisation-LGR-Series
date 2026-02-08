@@ -1,13 +1,14 @@
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams } from 'react-router-dom';
-import { useEffect, lazy, Suspense } from 'react';
-import Navigation from './components/Navigation';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import Footer from './components/Footer';
+import StayInformedBanner from './components/StayInformedBanner';
 import CookieBanner from './components/CookieBanner';
 import ErrorBoundary from './components/ErrorBoundary';
 import BackToTop from './components/BackToTop';
 import KeyboardShortcuts from './components/KeyboardShortcuts';
 import SkipLink from './components/SkipLink';
 import { AuthProvider } from './contexts/AuthContext';
+import { trackPageView } from './utils/analytics';
 
 // Lazy load pages for code splitting - improves initial load time
 const Home = lazy(() => import('./pages/Home'));
@@ -88,11 +89,57 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Loading component for Suspense
 function PageLoader() {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    // Simulate progress bar filling up
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          return 100;
+        }
+        // Accelerate then slow down near the end for realistic feel
+        const increment = prev < 70 ? 2 + Math.random() * 3 : 0.5 + Math.random() * 1;
+        return Math.min(prev + increment, 100);
+      });
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-academic-cream flex items-center justify-center">
-      <div className="text-center">
-        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-teal-700 mb-4"></div>
-        <p className="text-academic-neutral-600 font-serif">Loading...</p>
+    <div className="min-h-screen bg-academic-cream flex items-center justify-center px-4">
+      <div className="text-center w-full max-w-md">
+        {/* LGR Logo */}
+        <div className="mb-8 flex justify-center animate-fade-in">
+          <img 
+            src="/lgr.png" 
+            alt="LGR Series Logo" 
+            className="h-24 w-auto object-contain drop-shadow-sm"
+            loading="eager"
+            fetchPriority="high"
+            decoding="sync"
+          />
+        </div>
+
+        {/* Progress Bar Container */}
+        <div className="mb-4">
+          <div className="w-full bg-academic-neutral-200 rounded-full h-3 overflow-hidden shadow-inner border border-academic-neutral-300/50">
+            <div
+              className="h-full bg-gradient-to-r from-teal-600 via-teal-700 to-teal-800 rounded-full transition-all duration-300 ease-out relative overflow-hidden"
+              style={{ width: `${progress}%` }}
+            >
+              {/* Shimmer effect - sliding highlight */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Progress Percentage */}
+        <p className="text-academic-neutral-600 font-serif text-sm font-medium">
+          {Math.round(progress)}%
+        </p>
       </div>
     </div>
   );
@@ -103,6 +150,8 @@ function ScrollToTop() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    // Track page view for Google Analytics
+    trackPageView(pathname, document.title);
   }, [pathname]);
 
   return null;
@@ -170,7 +219,6 @@ function AppContent() {
     <div className="min-h-screen bg-academic-cream flex flex-col">
       <SkipLink />
       <KeyboardShortcuts />
-      <Navigation onNavigate={handleNavigate} currentPage={getCurrentPage()} />
       <main id="main-content" className="flex-grow">
         <Suspense fallback={<PageLoader />}>
           <Routes>
@@ -241,6 +289,7 @@ function AppContent() {
           </Routes>
         </Suspense>
       </main>
+      <StayInformedBanner />
       <Footer onNavigate={handleNavigate} />
       <CookieBanner />
       <BackToTop />

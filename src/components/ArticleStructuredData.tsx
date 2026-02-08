@@ -98,7 +98,9 @@ export default function ArticleStructuredData({
         "url": `${baseUrl}/lgr_banner.png`
       },
       "sameAs": [
-        "https://localgovernmentreorganisation.co.uk"
+        "https://localgovernmentreorganisation.co.uk",
+        "https://www.linkedin.com/showcase/local-government-reorganisation",
+        "https://x.com/LGRSeries"
       ]
     },
     "mainEntityOfPage": {

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, Save, X } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import WYSIWYGEditor from '../../components/WYSIWYGEditor';
+import ErrorMessage from '../../components/admin/ErrorMessage';
 
 interface ArticleQA {
   id: string;
@@ -21,6 +22,7 @@ export default function ArticleQAEditor({ articleSlug, onClose }: ArticleQAEdito
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     question: '',
     answer: '',
@@ -47,9 +49,10 @@ export default function ArticleQAEditor({ articleSlug, onClose }: ArticleQAEdito
 
   const handleCreate = async () => {
     if (!formData.question.trim() || !formData.answer.trim()) {
-      alert('Question and answer are required');
+      setError('Question and answer are required');
       return;
     }
+    setError('');
 
     const { error } = await supabase
       .from('article_qa')
@@ -62,16 +65,18 @@ export default function ArticleQAEditor({ articleSlug, onClose }: ArticleQAEdito
       fetchQAs();
       resetForm();
       setIsCreating(false);
+      setError('');
     } else {
-      alert('Error creating Q&A: ' + error.message);
+      setError('Error creating Q&A: ' + error.message);
     }
   };
 
   const handleUpdate = async (id: string) => {
     if (!formData.question.trim() || !formData.answer.trim()) {
-      alert('Question and answer are required');
+      setError('Question and answer are required');
       return;
     }
+    setError('');
 
     const { error } = await supabase
       .from('article_qa')
@@ -82,8 +87,9 @@ export default function ArticleQAEditor({ articleSlug, onClose }: ArticleQAEdito
       fetchQAs();
       resetForm();
       setEditingId(null);
+      setError('');
     } else {
-      alert('Error updating Q&A: ' + error.message);
+      setError('Error updating Q&A: ' + error.message);
     }
   };
 
@@ -99,8 +105,9 @@ export default function ArticleQAEditor({ articleSlug, onClose }: ArticleQAEdito
 
     if (!error) {
       fetchQAs();
+      setError('');
     } else {
-      alert('Error deleting Q&A: ' + error.message);
+      setError('Error deleting Q&A: ' + error.message);
     }
   };
 
@@ -134,6 +141,11 @@ export default function ArticleQAEditor({ articleSlug, onClose }: ArticleQAEdito
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
+      {error && (
+        <div className="mb-4">
+          <ErrorMessage message={error} onDismiss={() => setError('')} />
+        </div>
+      )}
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-2xl font-bold text-neutral-900">Article Q&A</h2>

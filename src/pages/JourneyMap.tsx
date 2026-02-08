@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   AlertCircle,
   Map,
@@ -23,6 +23,7 @@ import {
   BookOpen
 } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
+import PageBanner from '../components/PageBanner';
 import Breadcrumbs from '../components/Breadcrumbs';
 
 interface JourneyMapProps {
@@ -37,6 +38,7 @@ const ZONES = [
 ];
 
 export default function JourneyMap({ onNavigate: _onNavigate }: JourneyMapProps) {
+  const location = useLocation();
   const revealRefs = useRef<(HTMLDivElement | null)[]>([]);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const zoneRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
@@ -132,30 +134,12 @@ export default function JourneyMap({ onNavigate: _onNavigate }: JourneyMapProps)
         keywords="LGR forecast, local government reorganisation 2026, LGR journey map, unitary authority timeline, shadow elections, structural changes orders"
         canonical="https://localgovernmentreorganisation.co.uk/lgr-journey-2026"
       />
-
-      {/* Hero Header */}
-      <header className="relative bg-academic-warm py-12 lg:py-16 overflow-hidden border-b-4 border-teal-500">
-        <div className="absolute inset-0 bg-gradient-to-r from-teal-50/50 via-cyan-50/30 to-sky-50/50" aria-hidden="true"></div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Breadcrumbs
-            items={[
-              { label: 'LGR Hub', path: '/' },
-              { label: 'Roadmap' }
-            ]}
-            className="mb-6"
-          />
-          
-          <div className="max-w-4xl">
-            <div className="academic-section-label mb-4">JOURNEY MAP</div>
-            <h1 className="text-academic-4xl md:text-academic-5xl font-display font-black text-academic-charcoal leading-[1.1] mb-4">
-              The LGR Journey <span className="text-teal-700">2026-27</span>
-            </h1>
-            <p className="text-academic-lg md:text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              Navigating the twisting highway of Local Government Reorganisation during 2026 and early 2027.
-            </p>
-          </div>
-        </div>
-      </header>
+      <PageBanner
+        heroLabel="JOURNEY MAP"
+        heroTitle="The LGR Journey 2026-27"
+        heroSubtitle="Navigating the twisting highway of Local Government Reorganisation during 2026 and early 2027"
+        currentPath={location.pathname}
+      />
 
       {/* Progress Indicator */}
       <div className="sticky top-0 z-40 bg-academic-cream border-b border-academic-neutral-300">

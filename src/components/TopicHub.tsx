@@ -5,6 +5,8 @@ import { supabase } from '../lib/supabase';
 import OptimizedImage from './OptimizedImage';
 import FollowTopic from './FollowTopic';
 import Breadcrumbs from './Breadcrumbs';
+import FAQSection from './FAQSection';
+import LastUpdated from './LastUpdated';
 import { useTopicPage } from '../hooks/useTopicPage';
 
 interface Article {
@@ -280,7 +282,7 @@ export default function TopicHub({
                     src={pillarArticle.featured_image}
                     alt={pillarArticle.title}
                     variant="hero"
-                    loading="lazy"
+                    priority={true}
                     className="image-zoom-effect"
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
@@ -434,6 +436,11 @@ export default function TopicHub({
           </div>
         </section>
       )}
+
+      {/* FAQ Section */}
+      <FAQSection page={`topics-${themeSlug}`} />
+
+      <LastUpdated />
     </div>
   );
 }

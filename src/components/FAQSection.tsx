@@ -26,7 +26,13 @@ export default function FAQSection({ page }: FAQSectionProps) {
         .eq('page', page)
         .order('order_index', { ascending: true });
 
-      if (!error && data) {
+      if (error) {
+        console.error('Error fetching FAQs:', error);
+        setLoading(false);
+        return;
+      }
+
+      if (data) {
         setFaqs(data);
       }
       setLoading(false);
@@ -35,7 +41,17 @@ export default function FAQSection({ page }: FAQSectionProps) {
     fetchFAQs();
   }, [page]);
 
-  if (loading || faqs.length === 0) {
+  if (loading) {
+    return (
+      <section className="bg-academic-cream py-16 mt-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center text-academic-neutral-500">Loading FAQs...</div>
+        </div>
+      </section>
+    );
+  }
+
+  if (faqs.length === 0) {
     return null;
   }
 
@@ -53,44 +69,49 @@ export default function FAQSection({ page }: FAQSectionProps) {
   };
 
   return (
-    <section className="bg-gray-50 py-16 mt-16">
+    <section className="bg-academic-cream py-16 mt-16">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
       />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+        <h2 className="text-academic-3xl md:text-academic-4xl font-display font-bold text-academic-charcoal mb-8 text-center">
           Frequently Asked Questions
         </h2>
 
-        <div className="space-y-4">
+        <div className="space-y-3">
           {faqs.map((faq) => (
             <div
               key={faq.id}
-              className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
+              className="bg-white rounded-lg border border-academic-neutral-300 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
             >
               <button
                 onClick={() => setExpandedId(expandedId === faq.id ? null : faq.id)}
-                aria-expanded={expandedId === faq.id}
+                aria-expanded={expandedId === faq.id ? 'true' : 'false'}
                 aria-controls={`faq-answer-${faq.id}`}
-                className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
+                className="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-academic-warm transition-colors group"
               >
-                <h3 className="text-lg font-semibold text-gray-900 pr-4">
+                <h3 className="text-academic-lg md:text-academic-xl font-display font-bold text-academic-charcoal pr-4 group-hover:text-teal-700 transition-colors">
                   {faq.question}
                 </h3>
-                {expandedId === faq.id ? (
-                  <ChevronUp className="w-5 h-5 text-blue-600 flex-shrink-0" aria-hidden="true" />
-                ) : (
-                  <ChevronDown className="w-5 h-5 text-gray-400 flex-shrink-0" aria-hidden="true" />
-                )}
+                <div className="flex-shrink-0">
+                  {expandedId === faq.id ? (
+                    <ChevronUp className="w-5 h-5 text-teal-600 transition-transform" aria-hidden="true" />
+                  ) : (
+                    <ChevronDown className="w-5 h-5 text-academic-neutral-400 group-hover:text-teal-600 transition-colors" aria-hidden="true" />
+                  )}
+                </div>
               </button>
 
               {expandedId === faq.id && (
-                <div id={`faq-answer-${faq.id}`} className="px-6 pb-4 pt-2 border-t border-gray-100">
-                  <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+                <div 
+                  id={`faq-answer-${faq.id}`} 
+                  className="px-6 pb-5 pt-2 border-t border-academic-neutral-200 animate-in slide-in-from-top-2 duration-200"
+                >
+                  <div className="text-academic-base text-academic-neutral-700 leading-relaxed font-serif whitespace-pre-wrap prose prose-slate max-w-none">
                     {faq.answer}
-                  </p>
+                  </div>
                 </div>
               )}
             </div>

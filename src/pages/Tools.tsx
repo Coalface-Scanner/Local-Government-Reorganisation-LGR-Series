@@ -1,6 +1,7 @@
 import { ArrowRight, Calendar, Vote, BookOpen, Quote, Headphones } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import MetaTags from '../components/MetaTags';
-import Breadcrumbs from '../components/Breadcrumbs';
+import PageBanner from '../components/PageBanner';
 import ThemeChip from '../components/ThemeChip';
 
 interface ToolsProps {
@@ -8,6 +9,8 @@ interface ToolsProps {
 }
 
 export default function Tools({ onNavigate }: ToolsProps) {
+  const location = useLocation();
+  
   return (
     <div className="bg-academic-cream">
       <MetaTags
@@ -16,29 +19,12 @@ export default function Tools({ onNavigate }: ToolsProps) {
         keywords="LGR tools, local government reorganisation resources, LGR roadmap, election models, first 100 days playbook, LGR lessons, LGR podcast"
       />
       
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Breadcrumbs
-            items={[
-              { label: 'LGR Hub', path: '/' },
-              { label: 'Tools' }
-            ]}
-            className="mb-6"
-          />
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">TOOLS & RESOURCES</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              Tools and Practical{' '}
-              <span className="text-teal-700 font-serif italic">
-                Resources
-              </span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              Practical tools, guides, and resources to support Local Government Reorganisation planning, implementation, and governance.
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageBanner
+        heroLabel="TOOLS & RESOURCES"
+        heroTitle="Tools and Practical Resources"
+        heroSubtitle="Practical tools, guides, and resources to support Local Government Reorganisation planning, implementation, and governance."
+        currentPath={location.pathname}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Main Tools Grid */}

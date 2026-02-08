@@ -39,6 +39,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
   const mainContainerRef = useRef<HTMLDivElement>(null);
   const logoContainerRef = useRef<HTMLDivElement>(null);
   const logoImageRef = useRef<HTMLImageElement>(null);
+  const highRedLogoRef = useRef<HTMLImageElement>(null);
   const navRef = useRef<HTMLElement>(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -240,42 +241,71 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
       <div ref={mainContainerRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ paddingTop: 0, paddingBottom: 0 }}>
         <div 
           ref={logoContainerRef}
-          className="flex items-center justify-center border-b border-academic-neutral-300" 
-          style={{ paddingTop: 0, paddingBottom: 0, margin: 0, marginTop: '-2px' }}
+          className="flex items-start justify-center border-b border-academic-neutral-300 py-1 sm:py-2" 
+          style={{ margin: 0, marginTop: '-2px' }}
         >
           <Link
             to="/"
             aria-label="Go to homepage"
-            className="flex items-center hover:opacity-90 transition-opacity"
+            className="flex items-start hover:opacity-90 transition-opacity"
             style={{ margin: 0, padding: 0, gap: '0.5rem' }}
           >
             {/* LGR High Red Logo */}
-            <div className="flex-shrink-0 flex items-center" style={{ margin: 0, padding: 0 }}>
+            <div className="flex-shrink-0 flex flex-col items-center" style={{ margin: 0, padding: 0 }}>
               <img 
+                ref={highRedLogoRef}
                 src="/LGR_HighRed_Logo.png" 
                 alt="LGR High Red Logo" 
-                className="h-[2.4rem] sm:h-[3rem] md:h-[3.6rem] w-auto object-contain"
+                className="lgr-highred-logo"
                 loading="eager"
-                width={906}
-                height={494}
-                style={{ display: 'block', margin: 0, padding: 0 }}
+                style={{ 
+                  display: 'block', 
+                  margin: 0, 
+                  padding: 0, 
+                  height: '32px', 
+                  width: 'auto', 
+                  maxHeight: '32px',
+                  maxWidth: 'none',
+                  objectFit: 'contain'
+                }}
               />
+              <span className="text-[0.625rem] sm:text-[0.75rem] md:text-[0.875rem] font-display font-bold text-academic-charcoal tracking-wider uppercase mt-1 leading-tight">
+                Series
+              </span>
             </div>
             
             {/* LGR Logo */}
-            <div className="flex-shrink-0 flex items-center h-[3.6rem] sm:h-[4.5rem] md:h-[5.4rem] overflow-hidden relative" style={{ margin: 0, padding: 0 }}>
-              <div style={{ position: 'absolute', top: '-20%', left: 0, right: 0, height: '140%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <img 
-                  ref={logoImageRef}
-                  src="/LGR Podcast Logo Trial.png" 
-                  alt="LGR Logo" 
-                  className="h-[6rem] sm:h-[7.5rem] md:h-[9rem] w-auto object-contain"
-                  loading="eager"
-                  width={400}
-                  height={400}
-                  style={{ display: 'block', margin: 0, padding: 0 }}
-                />
-              </div>
+            <div 
+              className="flex-shrink-0 flex items-center overflow-hidden relative lgr-logo-container" 
+              style={{ 
+                margin: 0, 
+                padding: 0, 
+                height: '48px', 
+                maxHeight: '48px',
+                width: 'auto',
+                minWidth: 0
+              }}
+            >
+              <img 
+                ref={(el) => {
+                  logoImageRef.current = el;
+                }}
+                src="/LGR Podcast Logo Trial.png" 
+                alt="LGR Logo" 
+                className="lgr-main-logo"
+                loading="eager"
+                style={{ 
+                  display: 'block', 
+                  margin: 0, 
+                  padding: 0, 
+                  height: '48px', 
+                  width: 'auto', 
+                  maxHeight: '48px', 
+                  maxWidth: 'none',
+                  objectFit: 'contain',
+                  flexShrink: 0
+                }}
+              />
             </div>
             
             {/* Text Stack */}

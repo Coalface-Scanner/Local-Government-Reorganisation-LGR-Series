@@ -1,10 +1,12 @@
 import MetaTags from '../components/MetaTags';
 import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
-import SubscriptionForm from '../components/SubscriptionForm';
 import CollectionPageStructuredData from '../components/CollectionPageStructuredData';
+import PageBanner from '../components/PageBanner';
 import { Calendar, MapPin, HelpCircle, CheckCircle, FileText, BookOpen, ArrowRight, Route, type LucideIcon } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useScrollDepthTracking } from '../hooks/useScrollDepthTracking';
+import { useTimeOnPageTracking } from '../hooks/useTimeOnPageTracking';
 
 interface FactsProps {
   onNavigate: (page: string) => void;
@@ -105,6 +107,11 @@ const serviceCards: ServiceCard[] = [
 
 export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Track scroll depth and time on page
+  useScrollDepthTracking();
+  useTimeOnPageTracking();
 
   return (
     <div className="min-h-screen bg-academic-cream">
@@ -125,29 +132,12 @@ export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
         }))}
       />
       
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        {/* Colored gradient overlay */}
-        <div 
-          className="absolute inset-0 opacity-60 z-0"
-          style={{
-            background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.4) 0%, rgba(6, 182, 212, 0.5) 50%, rgba(14, 165, 233, 0.4) 100%)'
-          }}
-        />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">EVIDENCE-BASED ANALYSIS</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              Local Government Reorganisation{' '}
-              <span className="text-teal-700 font-serif italic">
-                Facts & Data
-              </span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              Comprehensive evidence-based analysis of Local Government Reorganisation (LGR) in England. Explore LGR timelines, councils, key facts, methodology, sources, and additional resources from the LGR Series.
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageBanner
+        heroLabel="EVIDENCE-BASED ANALYSIS"
+        heroTitle="Local Government Reorganisation Facts & Data"
+        heroSubtitle="What is Local Government Reorganisation? Local Government Reorganisation (LGR) is the process of restructuring local government structures in England, typically moving from a two-tier system (county and district councils) to single-tier unitary authorities. This section provides comprehensive evidence-based analysis of LGR timelines, councils involved, key facts, methodology, sources, and additional resources from the LGR Series."
+        currentPath={location.pathname}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 items-stretch">
@@ -207,7 +197,12 @@ export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
             <p className="text-academic-sm text-white mb-5 font-serif">
               Get the LGR Series directly in your inbox. No fluff, just deep analysis.
             </p>
-            <SubscriptionForm variant="compact" />
+            <Link
+              to="/subscribe"
+              className="inline-block bg-white text-teal-700 px-6 py-3 rounded-lg font-display font-bold text-sm uppercase tracking-wider hover:bg-teal-50 transition-colors"
+            >
+              Subscribe
+            </Link>
           </div>
         </div>
       </div>

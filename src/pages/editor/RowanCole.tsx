@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Linkedin, ExternalLink } from 'lucide-react';
 import MetaTags from '../../components/MetaTags';
-import SubscriptionForm from '../../components/SubscriptionForm';
 import OptimizedImage from '../../components/OptimizedImage';
 import LastUpdated from '../../components/LastUpdated';
 import Breadcrumbs from '../../components/Breadcrumbs';
@@ -228,7 +227,12 @@ export default function RowanCole({ onNavigate: _onNavigate }: RowanColeProps) {
                 <p className="text-academic-sm text-academic-neutral-700 mb-4 font-serif">
                   Get the LGR Series directly in your inbox. No fluff, just deep analysis.
                 </p>
-                <SubscriptionForm variant="compact" />
+                <Link
+                  to="/subscribe"
+                  className="inline-block bg-teal-700 hover:bg-teal-800 text-white px-6 py-3 rounded-lg font-display font-bold text-sm uppercase tracking-wider transition-colors"
+                >
+                  Subscribe
+                </Link>
               </div>
 
               <div className="academic-card p-6">

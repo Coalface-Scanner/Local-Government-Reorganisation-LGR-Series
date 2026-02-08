@@ -1,8 +1,11 @@
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
+import { useLocation } from 'react-router-dom';
 import LastUpdated from '../components/LastUpdated';
 import MetaTags from '../components/MetaTags';
+import PageBanner from '../components/PageBanner';
 import ErrorDisplay from '../components/ErrorDisplay';
+import MembersPasswordProtection from '../components/MembersPasswordProtection';
 import { Search, Filter, ArrowUpDown, Calendar, Building2 } from 'lucide-react';
 import { LGRReorganisation, ReorganisationType, REORGANISATION_TYPE_LABELS } from '../types/reorganisations';
 
@@ -44,6 +47,7 @@ export default function Reorganisations({ onNavigate }: ReorganisationsProps) {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const itemsPerPage = 20;
+  const location = useLocation();
 
   const [selectedYears, setSelectedYears] = useState<number[]>([]);
   const [selectedTypes, setSelectedTypes] = useState<ReorganisationType[]>([]);
@@ -145,36 +149,20 @@ export default function Reorganisations({ onNavigate }: ReorganisationsProps) {
   };
 
   return (
-    <div id="main-content" className="min-h-screen bg-academic-cream">
-      <MetaTags
-        title="Local Government Reorganisations Since 2010"
-        description="Comprehensive list of all local government reorganisations in England since 2010. Filter by year and type including unitary creations, mergers, boundary changes, and council abolitions."
-        keywords="local government reorganisation, LGR, unitary authorities, council mergers, boundary changes, council abolition, England local government, reorganisation history"
-      />
-      
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        {/* Colored gradient overlay */}
-        <div 
-          className="absolute inset-0 opacity-60 z-0"
-          style={{
-            background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.4) 0%, rgba(6, 182, 212, 0.5) 50%, rgba(14, 165, 233, 0.4) 100%)'
-          }}
+    <MembersPasswordProtection>
+      <div id="main-content" className="min-h-screen bg-academic-cream">
+        <MetaTags
+          title="Local Government Reorganisations Since 2010"
+          description="Comprehensive list of all local government reorganisations in England since 2010. Filter by year and type including unitary creations, mergers, boundary changes, and council abolitions."
+          keywords="local government reorganisation, LGR, unitary authorities, council mergers, boundary changes, council abolition, England local government, reorganisation history"
         />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">LGR SERIES</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              Local Government{' '}
-              <span className="text-teal-700 font-serif italic">
-                Reorganisations
-              </span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              A comprehensive list of all local government reorganisations in England since 2010. Filter by year and type to explore the history of structural changes to local government.
-            </p>
-          </div>
-        </div>
-      </div>
+        
+        <PageBanner
+          heroLabel="LGR SERIES"
+          heroTitle="Local Government Reorganisations"
+          heroSubtitle="A comprehensive list of all local government reorganisations in England since 2010. Filter by year and type to explore the history of structural changes to local government."
+          currentPath={location.pathname}
+        />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col lg:flex-row gap-8">
@@ -426,10 +414,11 @@ export default function Reorganisations({ onNavigate }: ReorganisationsProps) {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <LastUpdated />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <LastUpdated />
+        </div>
       </div>
-    </div>
+    </MembersPasswordProtection>
   );
 }
 

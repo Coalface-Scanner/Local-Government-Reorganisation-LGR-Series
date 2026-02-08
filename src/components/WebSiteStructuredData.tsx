@@ -32,6 +32,12 @@ export default function WebSiteStructuredData() {
         "url": `${baseUrl}/lgr_banner.png`
       }
     },
+    "copyrightHolder": {
+      "@type": "Organization",
+      "name": "LGR Series",
+      "legalName": "Coalface Engagement Ltd"
+    },
+    "copyrightYear": new Date().getFullYear().toString(),
     "potentialAction": {
       "@type": "SearchAction",
       "target": {

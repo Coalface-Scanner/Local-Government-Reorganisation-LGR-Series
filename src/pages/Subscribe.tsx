@@ -1,9 +1,10 @@
 import SubscriptionForm from '../components/SubscriptionForm';
 import LastUpdated from '../components/LastUpdated';
 import MetaTags from '../components/MetaTags';
+import PageBanner from '../components/PageBanner';
 import { Mail, FileText, Bell, ArrowRight } from 'lucide-react';
 import { usePageContent } from '../hooks/usePageContent';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface SubscribeProps {
   onNavigate: (page: string) => void;
@@ -11,6 +12,7 @@ interface SubscribeProps {
 
 export default function Subscribe({ onNavigate }: SubscribeProps) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { getSection } = usePageContent('subscribe');
 
   // Get CMS content with fallbacks
@@ -30,22 +32,12 @@ export default function Subscribe({ onNavigate }: SubscribeProps) {
         description="Subscribe to The Dispatch for weekly insights on local government reorganisation. Get notified about new articles, exclusive content, and case studies."
         keywords="LGR newsletter, subscribe to LGR series, weekly insights, local government reorganisation updates, dispatch newsletter"
       />
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">{heroLabel?.content || 'STAY INFORMED'}</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              {heroTitle?.title || 'Subscribe'}{' '}
-              <span className="text-teal-700 font-serif italic">
-                {heroTitle?.content || 'for Updates'}
-              </span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              {heroDescription?.content || "Receive each article as it's released, plus access to extended notes, case material, and the 100 Day Playbook"}
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageBanner
+        heroLabel={heroLabel?.content || 'STAY INFORMED'}
+        heroTitle={`${heroTitle?.title || 'Subscribe'} ${heroTitle?.content || 'for Updates'}`}
+        heroSubtitle={heroDescription?.content || "Receive each article as it's released, plus access to extended notes, case material, and the 100 Day Playbook"}
+        currentPath={location.pathname}
+      />
 
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

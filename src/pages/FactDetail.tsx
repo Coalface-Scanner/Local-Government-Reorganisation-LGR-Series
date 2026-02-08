@@ -1,12 +1,14 @@
-import { useEffect, useState, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import MetaTags from '../components/MetaTags';
+import PageBanner from '../components/PageBanner';
 import ArticleStructuredData from '../components/ArticleStructuredData';
 import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import Breadcrumbs from '../components/Breadcrumbs';
 import { ArrowLeft, AlertCircle, Users, DollarSign, FileText, CheckCircle, type LucideIcon } from 'lucide-react';
+import { enhanceContentWithGlossaryLinks } from '../lib/glossaryLinks';
 
 interface Fact {
   id: string;
@@ -38,6 +40,7 @@ const generateSlug = (title: string): string => {
 
 export default function FactDetail() {
   const { slug } = useParams<{ slug: string }>();
+  const location = useLocation();
   const navigate = useNavigate();
   const [fact, setFact] = useState<Fact | null>(null);
   const [loading, setLoading] = useState(true);
@@ -80,10 +83,10 @@ export default function FactDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex items-center justify-center">
+      <div className="min-h-screen bg-academic-cream flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mb-4"></div>
-          <p className="text-slate-600">Loading fact...</p>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-teal-700 mb-4"></div>
+          <p className="text-academic-neutral-600 font-serif">Loading fact...</p>
         </div>
       </div>
     );
@@ -91,21 +94,21 @@ export default function FactDetail() {
 
   if (notFound || !fact) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      <div className="min-h-screen bg-academic-cream">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <button
             onClick={() => navigate('/facts')}
-            className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-8 group"
+            className="flex items-center gap-2 text-teal-700 hover:text-teal-800 font-medium mb-8 group font-display"
           >
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
             Back to Facts
           </button>
-          <div className="bg-white rounded-2xl p-12 shadow-lg border border-slate-200 text-center">
-            <h1 className="text-3xl font-bold text-slate-900 mb-4">Fact Not Found</h1>
-            <p className="text-slate-600 mb-6">The fact you're looking for doesn't exist.</p>
+          <div className="bg-white rounded-2xl p-12 shadow-lg border border-academic-neutral-200 text-center academic-card">
+            <h1 className="text-3xl font-bold text-academic-charcoal mb-4 font-display">Fact Not Found</h1>
+            <p className="text-academic-neutral-600 mb-6 font-serif">The fact you're looking for doesn't exist.</p>
             <button
               onClick={() => navigate('/facts')}
-              className="px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
+              className="px-6 py-3 bg-teal-700 text-white rounded-lg hover:bg-teal-800 transition-colors font-display font-bold"
             >
               View All Facts
             </button>
@@ -117,6 +120,16 @@ export default function FactDetail() {
 
   const Icon = categoryIcons[fact.category || 'Overview'] || AlertCircle;
   const gradientClass = categoryColors[fact.category || 'Overview'] || 'from-slate-500 to-slate-700';
+
+  // Enhance content with glossary links
+  const enhancedContent = useMemo(() => {
+    if (!fact?.content) return '';
+    return enhanceContentWithGlossaryLinks(fact.content, {
+      onlyFirstOccurrence: true,
+      excludeSlugs: [],
+      linkClass: 'glossary-link text-teal-700 hover:text-teal-800 underline font-medium'
+    });
+  }, [fact?.content]);
 
   const getDescription = () => {
     const textContent = fact.content.replace(/<[^>]*>/g, '').trim();
@@ -156,7 +169,7 @@ export default function FactDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+    <div className="min-h-screen bg-academic-cream">
       <MetaTags
         title={getTitle()}
         description={getDescription()}
@@ -171,39 +184,12 @@ export default function FactDetail() {
         imageUrl={undefined}
         slug={generateSlug(fact.title)}
       />
-
-      <div className={`bg-gradient-to-br ${gradientClass} text-white py-6`}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Breadcrumbs 
-            items={[
-              { label: 'Facts & Figures', path: '/facts' },
-              { label: fact.title }
-            ]}
-            className="mb-6 text-white/80"
-          />
-          <button
-            onClick={() => navigate('/facts')}
-            className="flex items-center gap-2 text-white/80 hover:text-white font-medium mb-6 group"
-          >
-            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-            Back to Facts
-          </button>
-
-          <div className="flex items-start gap-4 mb-4">
-            <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
-              <Icon className="text-white" size={32} />
-            </div>
-            <div className="flex-1">
-              {fact.category && (
-                <div className="text-sm font-bold tracking-wider text-white/90 mb-2 uppercase">
-                  {fact.category}
-                </div>
-              )}
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">{fact.title}</h1>
-            </div>
-          </div>
-        </div>
-      </div>
+      <PageBanner
+        heroLabel={fact.category ? fact.category.toUpperCase() : 'FACTS & FIGURES'}
+        heroTitle={fact.title}
+        heroSubtitle={fact.category ? `${fact.category} insights on local government reorganisation` : undefined}
+        currentPath={location.pathname}
+      />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <article className="prose prose-lg max-w-none">
@@ -270,15 +256,15 @@ export default function FactDetail() {
             }
           `}</style>
           <div 
-            className="bg-white rounded-2xl p-8 md:p-12 shadow-lg border border-slate-200"
-            dangerouslySetInnerHTML={{ __html: fact.content }}
+            className="bg-white rounded-2xl p-8 md:p-12 shadow-lg border border-academic-neutral-200 academic-card"
+            dangerouslySetInnerHTML={{ __html: enhancedContent }}
           />
         </article>
 
-        <div className="mt-12 pt-8 border-t border-slate-200">
+        <div className="mt-12 pt-8 border-t border-academic-neutral-200">
           <button
             onClick={() => navigate('/facts')}
-            className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium group"
+            className="flex items-center gap-2 text-teal-700 hover:text-teal-800 font-medium group font-display"
           >
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
             View All Facts

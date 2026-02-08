@@ -6,6 +6,9 @@ interface MetaTagsProps {
   keywords?: string;
   ogType?: string;
   ogImage?: string;
+  ogImageWidth?: number;
+  ogImageHeight?: number;
+  ogImageAlt?: string;
   ogTitle?: string;
   ogDescription?: string;
   noindex?: boolean;
@@ -25,6 +28,9 @@ export default function MetaTags({
   keywords,
   ogType = 'website',
   ogImage = '/LGR-Series-Tumbnail.jpg',
+  ogImageWidth = 600,
+  ogImageHeight = 350,
+  ogImageAlt = 'Local Government Reorganisation Series banner',
   ogTitle,
   ogDescription,
   noindex = false,
@@ -76,6 +82,9 @@ export default function MetaTags({
       { property: 'og:type', content: ogType },
       { property: 'og:url', content: canonicalUrl },
       { property: 'og:image', content: fullOgImage },
+      { property: 'og:image:width', content: ogImageWidth.toString() },
+      { property: 'og:image:height', content: ogImageHeight.toString() },
+      { property: 'og:image:alt', content: ogImageAlt },
       { property: 'og:site_name', content: 'LGR Series by COALFACE' },
       { property: 'og:locale', content: 'en_GB' },
       { name: 'twitter:card', content: 'summary_large_image' },
@@ -153,7 +162,7 @@ export default function MetaTags({
         }
       });
     };
-  }, [fullTitle, description, keywords, ogType, ogImage, canonicalUrl, article, noindex, finalOgTitle, finalOgDescription]);
+  }, [fullTitle, description, keywords, ogType, ogImage, ogImageWidth, ogImageHeight, ogImageAlt, canonicalUrl, article, noindex, finalOgTitle, finalOgDescription]);
 
   return null;
 }

@@ -3,6 +3,7 @@ import { Plus, Edit, Trash2, Save, X, Image as ImageIcon, Upload } from 'lucide-
 import { supabase } from '../../lib/supabase';
 import { updateSiteTimestamp } from '../../lib/updateTimestamp';
 import WYSIWYGEditor from '../../components/WYSIWYGEditor';
+import ErrorMessage from '../../components/admin/ErrorMessage';
 
 interface Material {
   id: string;
@@ -16,6 +17,7 @@ interface Material {
   featured_site: boolean;
   theme: string | null;
   main_image_url: string | null;
+  thumbnail_image_url: string | null;
   additional_images: Array<{ url: string; caption?: string }>;
   slug: string;
   format: string;
@@ -42,6 +44,7 @@ export default function MaterialsEditor() {
     theme: null as string | null,
     format: 'Article',
     main_image_url: '',
+    thumbnail_image_url: '',
     additional_images: [] as Array<{ url: string; caption?: string }>,
     published_date: new Date().toISOString().split('T')[0],
     status: 'published',
@@ -51,8 +54,11 @@ export default function MaterialsEditor() {
   const [newImageCaption, setNewImageCaption] = useState('');
   const [newTag, setNewTag] = useState('');
   const [uploadingMainImage, setUploadingMainImage] = useState(false);
+  const [uploadingThumbnailImage, setUploadingThumbnailImage] = useState(false);
   const [uploadingAdditionalImage, setUploadingAdditionalImage] = useState(false);
+  const [error, setError] = useState('');
   const mainImageFileInputRef = useRef<HTMLInputElement>(null);
+  const thumbnailImageFileInputRef = useRef<HTMLInputElement>(null);
   const additionalImageFileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -67,8 +73,7 @@ export default function MaterialsEditor() {
         .order('published_date', { ascending: false });
 
       if (error) {
-        console.error('Error loading materials:', error);
-        alert('Error loading materials: ' + error.message);
+        setError('Error loading materials: ' + error.message);
         setMaterials([]);
       } else {
         if (data) {
@@ -84,8 +89,8 @@ export default function MaterialsEditor() {
         }
       }
     } catch (err) {
-      console.error('Unexpected error fetching materials:', err);
-      alert('Unexpected error loading materials. Please refresh the page.');
+      const errorMessage = err instanceof Error ? err.message : 'Unexpected error loading materials. Please refresh the page.';
+      setError(errorMessage);
       setMaterials([]);
     } finally {
       setLoading(false);
@@ -95,9 +100,10 @@ export default function MaterialsEditor() {
   const handleCreate = async () => {
     // Validate theme requirement for published materials
     if (formData.status === 'published' && formData.content_type !== 'FAQ' && formData.content_type !== 'Other' && !formData.theme) {
-      alert('Theme is required for published materials (except FAQ and Other)');
+      setError('Theme is required for published materials (except FAQ and Other)');
       return;
     }
+    setError('');
 
     const dataToInsert = {
       ...formData,
@@ -107,6 +113,7 @@ export default function MaterialsEditor() {
       featured_theme: formData.featured_theme || false,
       featured_site: formData.featured_site || false,
       theme: formData.theme || null,
+      thumbnail_image_url: formData.thumbnail_image_url || null,
     };
 
     const { error } = await supabase
@@ -118,17 +125,19 @@ export default function MaterialsEditor() {
       fetchMaterials();
       resetForm();
       setIsCreating(false);
+      setError('');
     } else {
-      alert('Error creating material: ' + error.message);
+      setError('Error creating material: ' + error.message);
     }
   };
 
   const handleUpdate = async (id: string) => {
     // Validate theme requirement for published materials
     if (formData.status === 'published' && formData.content_type !== 'FAQ' && formData.content_type !== 'Other' && !formData.theme) {
-      alert('Theme is required for published materials (except FAQ and Other)');
+      setError('Theme is required for published materials (except FAQ and Other)');
       return;
     }
+    setError('');
 
     const dataToUpdate = {
       ...formData,
@@ -137,6 +146,7 @@ export default function MaterialsEditor() {
       featured_theme: formData.featured_theme || false,
       featured_site: formData.featured_site || false,
       theme: formData.theme || null,
+      thumbnail_image_url: formData.thumbnail_image_url || null,
     };
 
     const { error } = await supabase
@@ -149,8 +159,9 @@ export default function MaterialsEditor() {
       fetchMaterials();
       resetForm();
       setEditingId(null);
+      setError('');
     } else {
-      alert('Error updating material: ' + error.message);
+      setError('Error updating material: ' + error.message);
     }
   };
 
@@ -193,6 +204,7 @@ export default function MaterialsEditor() {
       theme: material.theme || null,
       format: material.format,
       main_image_url: material.main_image_url || '',
+      thumbnail_image_url: material.thumbnail_image_url || '',
       additional_images: parsedImages,
       published_date: material.published_date,
       status: material.status || 'published',
@@ -216,6 +228,7 @@ export default function MaterialsEditor() {
       theme: null,
       format: 'Article',
       main_image_url: '',
+      thumbnail_image_url: '',
       additional_images: [],
       published_date: new Date().toISOString().split('T')[0],
       status: 'published',
@@ -228,9 +241,10 @@ export default function MaterialsEditor() {
 
   const handleMainImageUpload = async (file: File) => {
     if (file.size > 5 * 1024 * 1024) {
-      alert('Image size must be less than 5MB');
+      setError('Image size must be less than 5MB');
       return;
     }
+    setError('');
 
     const fileExt = file.name.split('.').pop();
     const fileName = `materials/${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
@@ -249,9 +263,10 @@ export default function MaterialsEditor() {
         .getPublicUrl(filePath);
 
       setFormData({ ...formData, main_image_url: data.publicUrl });
+      setError('');
     } catch (err) {
-      console.error('Upload error:', err);
-      alert('Failed to upload image. Please try again.');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to upload image. Please try again.';
+      setError(errorMessage);
     } finally {
       setUploadingMainImage(false);
       if (mainImageFileInputRef.current) {
@@ -260,11 +275,48 @@ export default function MaterialsEditor() {
     }
   };
 
-  const handleAdditionalImageUpload = async (file: File) => {
+  const handleThumbnailImageUpload = async (file: File) => {
     if (file.size > 5 * 1024 * 1024) {
-      alert('Image size must be less than 5MB');
+      setError('Image size must be less than 5MB');
       return;
     }
+    setError('');
+
+    const fileExt = file.name.split('.').pop();
+    const fileName = `materials/thumbnails/${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+    const filePath = fileName;
+
+    try {
+      setUploadingThumbnailImage(true);
+      const { error: uploadError } = await supabase.storage
+        .from('article-images')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage
+        .from('article-images')
+        .getPublicUrl(filePath);
+
+      setFormData({ ...formData, thumbnail_image_url: data.publicUrl });
+      setError('');
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to upload thumbnail image. Please try again.';
+      setError(errorMessage);
+    } finally {
+      setUploadingThumbnailImage(false);
+      if (thumbnailImageFileInputRef.current) {
+        thumbnailImageFileInputRef.current.value = '';
+      }
+    }
+  };
+
+  const handleAdditionalImageUpload = async (file: File) => {
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Image size must be less than 5MB');
+      return;
+    }
+    setError('');
 
     const fileExt = file.name.split('.').pop();
     const fileName = `materials/${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
@@ -287,9 +339,10 @@ export default function MaterialsEditor() {
         additional_images: [...formData.additional_images, { url: data.publicUrl, caption: newImageCaption.trim() || undefined }],
       });
       setNewImageCaption('');
+      setError('');
     } catch (err) {
-      console.error('Upload error:', err);
-      alert('Failed to upload image. Please try again.');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to upload image. Please try again.';
+      setError(errorMessage);
     } finally {
       setUploadingAdditionalImage(false);
       if (additionalImageFileInputRef.current) {
@@ -304,9 +357,10 @@ export default function MaterialsEditor() {
       e.stopPropagation();
     }
     if (!newImageUrl || !newImageUrl.trim()) {
-      alert('Please enter an image URL or upload an image');
+      setError('Please enter an image URL or upload an image');
       return;
     }
+    setError('');
     setFormData({
       ...formData,
       additional_images: [...formData.additional_images, { url: newImageUrl.trim(), caption: newImageCaption.trim() || undefined }],
@@ -344,6 +398,9 @@ export default function MaterialsEditor() {
 
   return (
     <div className="space-y-6">
+      {error && (
+        <ErrorMessage message={error} onDismiss={() => setError('')} />
+      )}
       <div className="flex justify-between items-center">
         <h2 className="text-3xl font-bold text-slate-900">Materials Management</h2>
         <button
@@ -464,21 +521,24 @@ export default function MaterialsEditor() {
               <select
                 value={formData.theme || ''}
                 onChange={(e) => {
-                  // #region agent log
-                  const options = Array.from(e.target.options).map(o => ({value: o.value, text: o.text}));
-                  fetch('http://127.0.0.1:7242/ingest/88a481fd-d50d-4443-a40c-d5f5149aa669',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'MaterialsEditor.tsx:466',message:'Theme dropdown onChange - options count',data:{selectedValue:e.target.value,optionCount:options.length,allOptions:options},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-                  // #endregion
                   setFormData({ ...formData, theme: e.target.value || null });
                 }}
                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500"
                 required={!!(formData.content_type && formData.content_type !== 'FAQ' && formData.content_type !== 'Other' && formData.status === 'published')}
                 ref={(selectEl) => {
-                  // #region agent log
+                  // Clean up any invalid options added by browser extensions
                   if (selectEl) {
-                    const options = Array.from(selectEl.options).map(o => ({value: o.value, text: o.text}));
-                    fetch('http://127.0.0.1:7242/ingest/88a481fd-d50d-4443-a40c-d5f5149aa669',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'MaterialsEditor.tsx:select-ref',message:'Theme dropdown rendered - options count',data:{optionCount:options.length,options:options},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+                    const validValues = ['', 'Local Government', 'Democratic Legitimacy', 'Statecraft and System Design'];
+                    const observer = new MutationObserver(() => {
+                      const currentOptions = Array.from(selectEl.options);
+                      const invalidOptions = currentOptions.filter(opt => !validValues.includes(opt.value));
+                      if (invalidOptions.length > 0) {
+                        invalidOptions.reverse().forEach(opt => opt.remove());
+                      }
+                    });
+                    observer.observe(selectEl, { childList: true, subtree: true });
+                    (selectEl as HTMLSelectElement & { _mutationObserver?: MutationObserver })._mutationObserver = observer;
                   }
-                  // #endregion
                 }}
               >
                 <option value="">Select core theme</option>
@@ -618,6 +678,57 @@ export default function MaterialsEditor() {
               )}
               <p className="text-xs text-slate-500">
                 Upload an image or enter a URL. Images are uploaded to Supabase storage (max 5MB).
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-2">Thumbnail Image (Optional)</label>
+            <div className="space-y-3">
+              <input
+                ref={thumbnailImageFileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  await handleThumbnailImageUpload(file);
+                }}
+                className="hidden"
+                id="thumbnail-image-upload"
+              />
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => thumbnailImageFileInputRef.current?.click()}
+                  disabled={uploadingThumbnailImage}
+                  className="flex items-center justify-center gap-2 px-4 py-2 border border-slate-300 rounded-lg bg-slate-50 hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                >
+                  <Upload size={16} />
+                  {uploadingThumbnailImage ? 'Uploading...' : 'Upload Thumbnail'}
+                </button>
+                <input
+                  type="text"
+                  value={formData.thumbnail_image_url}
+                  onChange={(e) => setFormData({ ...formData, thumbnail_image_url: e.target.value })}
+                  className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500"
+                  placeholder="Or enter thumbnail image URL"
+                />
+              </div>
+              {formData.thumbnail_image_url && (
+                <div className="mt-2">
+                  <img src={formData.thumbnail_image_url} alt="Thumbnail preview" className="max-w-xs rounded-lg border" />
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, thumbnail_image_url: '' })}
+                    className="mt-2 text-xs text-red-600 hover:text-red-800"
+                  >
+                    Remove thumbnail
+                  </button>
+                </div>
+              )}
+              <p className="text-xs text-slate-500">
+                Optional: Upload a separate thumbnail image for card/list views. If not provided, the main image will be used. Images are uploaded to Supabase storage (max 5MB).
               </p>
             </div>
           </div>

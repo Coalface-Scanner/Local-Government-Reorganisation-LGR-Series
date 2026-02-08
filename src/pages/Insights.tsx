@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
+import { useLocation } from 'react-router-dom';
 import ErrorDisplay from '../components/ErrorDisplay';
 import { Calendar } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
 import LastUpdated from '../components/LastUpdated';
 import CollectionPageStructuredData from '../components/CollectionPageStructuredData';
+import PageBanner from '../components/PageBanner';
 import OptimizedImage from '../components/OptimizedImage';
 import ContentTypeTag from '../components/ContentTypeTag';
 
@@ -34,6 +36,7 @@ export default function Insights({ onNavigate }: InsightsProps) {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [error, setError] = useState<string | null>(null);
+  const location = useLocation();
 
   useEffect(() => {
     fetchArticles();
@@ -118,29 +121,12 @@ export default function Insights({ onNavigate }: InsightsProps) {
         }))}
       />
 
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        {/* Colored gradient overlay */}
-        <div 
-          className="absolute inset-0 opacity-60 z-0"
-          style={{
-            background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.4) 0%, rgba(6, 182, 212, 0.5) 50%, rgba(14, 165, 233, 0.4) 100%)'
-          }}
-        />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">EXPERT ANALYSIS</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              Insights{' '}
-              <span className="text-teal-600 font-serif italic">
-                & Analysis
-              </span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              Expert perspectives on local government reorganisation, planning policy, and democratic governance
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageBanner
+        heroLabel="EXPERT ANALYSIS"
+        heroTitle="Insights & Analysis"
+        heroSubtitle="Expert perspectives on local government reorganisation, planning policy, and democratic governance"
+        currentPath={location.pathname}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="mb-6">

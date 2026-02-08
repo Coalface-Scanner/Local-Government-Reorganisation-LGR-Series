@@ -3,6 +3,7 @@ import { Plus, Edit, Trash2, Save, X, Eye, EyeOff } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { updateSiteTimestamp } from '../../lib/updateTimestamp';
 import WYSIWYGEditor from '../../components/WYSIWYGEditor';
+import ErrorMessage from '../../components/admin/ErrorMessage';
 
 interface NewsItem {
   id: string;
@@ -21,6 +22,7 @@ export default function NewsEditor() {
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [error, setError] = useState('');
   const [editorInstanceId] = useState(() => `news-editor-${Date.now()}`);
   const [formData, setFormData] = useState({
     title: '',
@@ -59,9 +61,10 @@ export default function NewsEditor() {
 
   const handleCreate = async () => {
     if (!formData.title || !formData.slug) {
-      alert('Title and slug are required');
+      setError('Title and slug are required');
       return;
     }
+    setError('');
 
     const dataToInsert = {
       ...formData,
@@ -78,16 +81,18 @@ export default function NewsEditor() {
       fetchNews();
       resetForm();
       setIsCreating(false);
+      setError('');
     } else {
-      alert('Error creating news: ' + error.message);
+      setError('Error creating news: ' + error.message);
     }
   };
 
   const handleUpdate = async (id: string) => {
     if (!formData.title || !formData.slug) {
-      alert('Title and slug are required');
+      setError('Title and slug are required');
       return;
     }
+    setError('');
 
     const dataToUpdate = {
       ...formData,
@@ -105,8 +110,9 @@ export default function NewsEditor() {
       fetchNews();
       resetForm();
       setEditingId(null);
+      setError('');
     } else {
-      alert('Error updating news: ' + error.message);
+      setError('Error updating news: ' + error.message);
     }
   };
 
@@ -170,6 +176,9 @@ export default function NewsEditor() {
 
   return (
     <div className="space-y-6">
+      {error && (
+        <ErrorMessage message={error} onDismiss={() => setError('')} />
+      )}
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-3xl font-bold text-slate-900">News Editor</h2>

@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Download, CheckCircle2, AlertTriangle, Target, FileText, Loader2, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import PageNavigation from '../components/PageNavigation';
-import SubscriptionForm from '../components/SubscriptionForm';
+import PageBanner from '../components/PageBanner';
 import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
 import InBriefSection from '../components/InBriefSection';
@@ -294,31 +296,21 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
     { id: 'using', label: 'Using This Playbook', icon: <FileText size={16} /> }
   ];
 
+  const location = useLocation();
+
   return (
-    <div className="bg-neutral-50 min-h-screen">
+    <div className="bg-academic-cream min-h-screen">
       <MetaTags
         title="LGR Series: The First 100 Days Playbook"
         description="Strategic framework for managing the critical first 100 days of Local Government Reorganisation (LGR) unitary transition. Evidence-based guidance on LGR governance, priorities, risks, and success factors from the LGR Series."
         keywords="LGR Series, Local Government Reorganisation playbook, unitary transition, first 100 days, LGR implementation, LGR governance, council transition plan, reorganisation playbook"
       />
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">RESEARCH SERIES</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              The First 100 Days:{' '}
-              <span className="text-teal-700 font-serif italic">
-                A Playbook for Unitary Transition
-              </span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              Drawing on evidence from recent reorganisations, this playbook identifies critical actions
-              for new unitary authorities in their first 100 days. It examines the governance, planning,
-              and political challenges that emerge during transition and provides a framework for managing them.
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageBanner
+        heroLabel="RESEARCH SERIES"
+        heroTitle="The First 100 Days: A Playbook for Unitary Transition"
+        heroSubtitle="Drawing on evidence from recent reorganisations, this playbook identifies critical actions for new unitary authorities in their first 100 days. It examines the governance, planning, and political challenges that emerge during transition and provides a framework for managing them."
+        currentPath={location.pathname}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <InBriefSection content="The first 100 days after vesting day are critical for new unitary authorities created through Local Government Reorganisation (LGR). This playbook draws on evidence from recent reorganisations to identify key priorities: establishing governance structures, managing service integration, addressing councillor transitions, and maintaining democratic legitimacy. Effective LGR governance during this period sets the foundation for long-term success." />
@@ -342,7 +334,7 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
           </button>
           <button
             onClick={() => onNavigate('materials')}
-            className="px-6 py-3 bg-white border-2 border-neutral-900 hover:bg-neutral-50 text-neutral-900 font-bold rounded-full transition-all"
+            className="px-6 py-3 bg-white border-2 border-academic-charcoal hover:bg-academic-warm text-academic-charcoal font-bold rounded-full transition-all font-display"
           >
             VIEW ALL MATERIALS
           </button>
@@ -542,7 +534,12 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
                   <p className="text-sm text-white mb-4">
                     Get the LGR Series directly in your inbox. No fluff, just deep analysis.
                   </p>
-                  <SubscriptionForm variant="compact" />
+                  <Link
+                    to="/subscribe"
+                    className="inline-block bg-white text-teal-700 px-6 py-3 rounded-lg font-display font-bold text-sm uppercase tracking-wider hover:bg-teal-50 transition-colors"
+                  >
+                    Subscribe
+                  </Link>
                 </div>
 
                 <div className="border-2 border-neutral-900 bg-white p-5">
@@ -552,19 +549,19 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
                   <div className="space-y-2.5">
                     <button
                       onClick={() => onNavigate('lessons')}
-                      className="w-full text-left px-4 py-3 bg-neutral-50 hover:bg-teal-50 border border-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-neutral-700 hover:text-teal-700"
+                      className="w-full text-left px-4 py-3 bg-academic-warm hover:bg-teal-50 border border-academic-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-academic-charcoal hover:text-teal-700 font-display"
                     >
                       View the Lessons →
                     </button>
                     <button
                       onClick={() => onNavigate('facts')}
-                      className="w-full text-left px-4 py-3 bg-neutral-50 hover:bg-teal-50 border border-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-neutral-700 hover:text-teal-700"
+                      className="w-full text-left px-4 py-3 bg-academic-warm hover:bg-teal-50 border border-academic-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-academic-charcoal hover:text-teal-700 font-display"
                     >
                       View the Facts & Data →
                     </button>
                     <button
                       onClick={() => onNavigate('surrey')}
-                      className="w-full text-left px-4 py-3 bg-neutral-50 hover:bg-teal-50 border border-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-neutral-700 hover:text-teal-700"
+                      className="w-full text-left px-4 py-3 bg-academic-warm hover:bg-teal-50 border border-academic-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-academic-charcoal hover:text-teal-700 font-display"
                     >
                       Surrey Analysis →
                     </button>
@@ -584,23 +581,23 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
           <div className="grid md:grid-cols-2 gap-6">
             <button
               onClick={() => onNavigate('lessons')}
-              className="bg-white border-2 border-neutral-200 p-6 text-left hover:border-teal-700 transition-all group"
+              className="bg-white border-2 border-academic-neutral-200 p-6 text-left hover:border-teal-700 transition-all group academic-card"
             >
-              <h4 className="font-black text-neutral-900 mb-2 group-hover:text-teal-700 transition-colors">
+              <h4 className="font-black text-academic-charcoal mb-2 group-hover:text-teal-700 transition-colors font-display">
                 LESSONS FROM REORGANISATION
               </h4>
-              <p className="text-sm text-neutral-600">
+              <p className="text-sm text-academic-neutral-600 font-serif">
                 Key insights from recent unitary transitions
               </p>
             </button>
             <button
               onClick={() => onNavigate('facts')}
-              className="bg-white border-2 border-neutral-200 p-6 text-left hover:border-teal-700 transition-all group"
+              className="bg-white border-2 border-academic-neutral-200 p-6 text-left hover:border-teal-700 transition-all group academic-card"
             >
-              <h4 className="font-black text-neutral-900 mb-2 group-hover:text-teal-700 transition-colors">
+              <h4 className="font-black text-academic-charcoal mb-2 group-hover:text-teal-700 transition-colors font-display">
                 FACTS & DATA
               </h4>
-              <p className="text-sm text-neutral-600">
+              <p className="text-sm text-academic-neutral-600 font-serif">
                 Performance indicators from reorganised authorities
               </p>
             </button>

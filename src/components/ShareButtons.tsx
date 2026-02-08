@@ -77,7 +77,7 @@ export default function ShareButtons({ title, description, url }: ShareButtonsPr
     {
       name: 'Copy Link',
       icon: Link2,
-      href: '#',
+      href: undefined, // Not used for button action
       color: 'hover:bg-cyan-600 hover:text-white',
       action: 'copy'
     },

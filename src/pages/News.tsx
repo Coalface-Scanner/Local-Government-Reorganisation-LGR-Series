@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { supabase } from '../lib/supabase';
+import { useLocation, Link } from 'react-router-dom';
 import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
-import SubscriptionForm from '../components/SubscriptionForm';
 import ErrorDisplay from '../components/ErrorDisplay';
+import PageBanner from '../components/PageBanner';
 import { Newspaper, Calendar, Clock } from 'lucide-react';
+import { enhanceContentWithGlossaryLinks } from '../lib/glossaryLinks';
 
 interface NewsItem {
   id: string;
@@ -23,6 +25,19 @@ export default function News() {
   const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const location = useLocation();
+
+  // Enhance news content with glossary links
+  const enhancedNewsItems = useMemo(() => {
+    return newsItems.map(item => ({
+      ...item,
+      enhancedContent: enhanceContentWithGlossaryLinks(item.content, {
+        onlyFirstOccurrence: true,
+        excludeSlugs: [],
+        linkClass: 'glossary-link text-teal-700 hover:text-teal-800 underline font-medium'
+      })
+    }));
+  }, [newsItems]);
 
   useEffect(() => {
     fetchNews();
@@ -79,29 +94,12 @@ export default function News() {
         keywords="LGR news, local government updates, council reform news, reorganisation announcements"
       />
 
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        {/* Colored gradient overlay */}
-        <div 
-          className="absolute inset-0 opacity-60 z-0"
-          style={{
-            background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.4) 0%, rgba(6, 182, 212, 0.5) 50%, rgba(14, 165, 233, 0.4) 100%)'
-          }}
-        />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">LATEST UPDATES</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              News{' '}
-              <span className="text-teal-700 font-serif italic">
-                & Updates
-              </span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              Stay informed with the latest announcements, analysis, and commentary on local government reorganisation
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageBanner
+        heroLabel="LATEST UPDATES"
+        heroTitle="News"
+        heroSubtitle="Stay informed with the latest announcements, analysis, and commentary on local government reorganisation"
+        currentPath={location.pathname}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="grid lg:grid-cols-3 gap-6">
@@ -172,7 +170,7 @@ export default function News() {
                     </div>
 
                     {/* Divider */}
-                    {index < newsItems.length - 1 && (
+                    {index < enhancedNewsItems.length - 1 && (
                       <div className="px-10 md:px-12 lg:px-14 pb-10">
                         <div className="border-t border-academic-neutral-300"></div>
                       </div>
@@ -192,7 +190,12 @@ export default function News() {
                 <p className="text-sm text-white mb-4">
                   Get the LGR Series directly in your inbox. No fluff, just deep analysis.
                 </p>
-                <SubscriptionForm variant="compact" />
+                <Link
+                  to="/subscribe"
+                  className="inline-block bg-white text-teal-700 px-6 py-3 rounded-lg font-display font-bold text-sm uppercase tracking-wider hover:bg-teal-50 transition-colors"
+                >
+                  Subscribe
+                </Link>
               </div>
 
               <div className="academic-card p-8">

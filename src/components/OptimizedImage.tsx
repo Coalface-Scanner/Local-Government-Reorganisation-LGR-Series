@@ -56,7 +56,7 @@ export default function OptimizedImage({
     wrapperClasses = `aspect-[16/9] w-full overflow-hidden relative ${className}`;
     imageClasses = 'w-full h-full object-cover object-center academic-hero-image';
   } else if (variant === 'thumbnail') {
-    // Thumbnail: 4:3 aspect ratio wrapper
+    // Thumbnail: 4:3 aspect ratio wrapper - ensure image fills completely
     wrapperClasses = `aspect-[4/3] w-full overflow-hidden relative border border-academic-neutral-300 ${className}`;
     imageClasses = 'w-full h-full object-cover object-center';
   } else if (variant === 'article') {
@@ -84,11 +84,20 @@ export default function OptimizedImage({
       <img
         src={src}
         alt={alt}
-        loading={priority ? 'eager' : loading}
-        decoding="async"
+        loading={priority || variant === 'hero' ? 'eager' : loading}
+        fetchPriority={priority || variant === 'hero' ? 'high' : 'auto'}
+        decoding={priority || variant === 'hero' ? 'sync' : 'async'}
         onLoad={handleLoad}
         onError={handleError}
         className={`${imageClasses} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
+        style={variant === 'thumbnail' ? {
+          objectFit: 'cover',
+          width: '100%',
+          height: '100%',
+          minWidth: '100%',
+          minHeight: '100%',
+          display: 'block'
+        } : undefined}
         sizes={sizes}
         width={width}
         height={height}

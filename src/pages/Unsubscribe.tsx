@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import Navigation from '../components/Navigation';
+import PageBanner from '../components/PageBanner';
 import Footer from '../components/Footer';
 import MetaTags from '../components/MetaTags';
 import { Mail, CheckCircle, XCircle } from 'lucide-react';
 
 export default function Unsubscribe() {
   const navigate = useNavigate();
+  const location = useLocation();
   const handleNavigate = (page: string) => navigate(`/${page}`);
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
@@ -71,27 +72,21 @@ export default function Unsubscribe() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+    <div className="min-h-screen bg-academic-cream">
       <MetaTags
         title="Unsubscribe - LGR Series Newsletter"
         description="Unsubscribe from the LGR Series mailing list. Enter your email address to stop receiving weekly insights and updates."
       />
-      <Navigation onNavigate={handleNavigate} currentPage="unsubscribe" />
+      <PageBanner
+        heroLabel="NEWSLETTER"
+        heroTitle="Unsubscribe from Mailing List"
+        heroSubtitle="We're sorry to see you go. Enter your email address below to unsubscribe from our research updates."
+        currentPath={location.pathname}
+      />
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-red-500 to-orange-500 rounded-2xl mb-6 shadow-lg">
-            <Mail className="w-8 h-8 text-white" />
-          </div>
-          <h1 className="text-4xl font-black text-slate-900 mb-4 tracking-tight">
-            Unsubscribe from Mailing List
-          </h1>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            We're sorry to see you go. Enter your email address below to unsubscribe from our research updates.
-          </p>
-        </div>
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-        <div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-8 max-w-md mx-auto">
+        <div className="bg-white rounded-2xl shadow-xl border border-academic-neutral-200/60 p-8 max-w-md mx-auto academic-card">
           <form onSubmit={handleUnsubscribe} className="space-y-6">
             <div>
               <label htmlFor="email" className="block text-sm font-semibold text-slate-700 mb-2">
@@ -138,16 +133,14 @@ export default function Unsubscribe() {
         </div>
 
         <div className="text-center mt-8">
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-academic-neutral-600 font-serif">
             Changed your mind?{' '}
-            <a href="/subscribe" className="text-teal-600 hover:text-teal-700 font-semibold transition-colors">
+            <a href="/subscribe" className="text-teal-700 hover:text-teal-800 font-semibold transition-colors">
               Resubscribe here
             </a>
           </p>
         </div>
       </main>
-
-      <Footer onNavigate={handleNavigate} />
     </div>
   );
 }

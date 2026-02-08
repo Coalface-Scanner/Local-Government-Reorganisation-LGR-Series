@@ -1,12 +1,14 @@
 import { useEffect, useState, useCallback } from 'react';
-import SubscriptionForm from '../components/SubscriptionForm';
+import { useLocation } from 'react-router-dom';
 import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
+import PageBanner from '../components/PageBanner';
 import PageNavigation from '../components/PageNavigation';
 import ErrorDisplay from '../components/ErrorDisplay';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 import { Mic, Calendar, Users, FileText, Headphones, ExternalLink, Video, BookOpen } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { parseRSSFeed, extractGuestName, generateIdFromString, type RSSItem } from '../lib/rssParser';
 
@@ -37,6 +39,7 @@ const RSS_FEED_URL = import.meta.env.PROD
   : 'https://anchor.fm/s/10d7de5ac/podcast/rss';
 
 export default function Interviews({ onNavigate }: InterviewsProps) {
+  const location = useLocation();
   const [interviews, setInterviews] = useState<Interview[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -193,42 +196,21 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
   }, [fetchInterviews]);
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-academic-cream">
       <MetaTags
         title="LGR Governance Interviews - Council Leaders & Practitioners"
         description="In-depth interviews with council leaders, officers, and practitioners on Local Government Reorganisation (LGR) and LGR governance. First-hand accounts and expert perspectives on local government reorganisation reform."
         keywords="LGR interviews, LGR governance interviews, Local Government Reorganisation interviews, council leader interviews, local government insights, reorganisation experiences, practitioner perspectives, LGR Series interviews"
       />
-      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8 overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.05]"
-          style={{
-            backgroundImage: `url('/rowan-cole-coalface-engagement-director-headshot-folded-arms.jpg')`,
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
-        />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border-l-4 border-teal-700 pl-6 mb-3">
-            <div className="text-xs font-bold tracking-widest text-teal-700 mb-1.5">
-              EXPERT PERSPECTIVES
-            </div>
-          </div>
-          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-3">
-            LGR Governance{' '}
-            <span className="text-teal-700 font-serif italic">
-              Interviews
-            </span>
-          </h1>
-          <p className="text-xl text-neutral-600 leading-relaxed max-w-3xl">
-            In-depth conversations with leaders and practitioners who have experienced Local Government Reorganisation (LGR) firsthand. Expert insights on LGR governance and council reform.
-          </p>
-        </div>
-      </div>
+      <PageBanner
+        heroLabel="EXPERT PERSPECTIVES"
+        heroTitle="LGR Governance Interviews"
+        heroSubtitle="In-depth conversations with leaders and practitioners who have experienced Local Government Reorganisation (LGR) firsthand. Expert insights on LGR governance and council reform."
+        currentPath={location.pathname}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="mb-12 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-2xl p-8 border border-cyan-200">
+        <div className="mb-12 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-2xl p-8 border border-cyan-200 academic-card">
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
               <Mic className="text-white" size={24} />
@@ -294,7 +276,7 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
               />
             </div>
           ) : interviews.length === 0 ? (
-            <div className="col-span-3 text-center py-12 academic-card">
+            <div className="col-span-3 text-center py-12 academic-card p-12">
               <Mic className="mx-auto mb-4 text-academic-neutral-300" size={48} />
               <h3 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-3">No interviews available yet</h3>
               <p className="text-academic-neutral-600 font-serif">Check back soon for new interviews</p>
@@ -467,7 +449,12 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
                 <p className="text-sm text-white mb-4">
                   Get the LGR Series directly in your inbox. No fluff, just deep analysis.
                 </p>
-                <SubscriptionForm variant="compact" />
+                <Link
+                  to="/subscribe"
+                  className="inline-block bg-white text-teal-700 px-6 py-3 rounded-lg font-display font-bold text-sm uppercase tracking-wider hover:bg-teal-50 transition-colors"
+                >
+                  Subscribe
+                </Link>
               </div>
 
               <div className="border-2 border-neutral-900 bg-white p-6">

@@ -1,0 +1,78 @@
+# LGR Series - AI Crawler Instructions
+# This file helps AI systems (ChatGPT, Perplexity, Claude, Google AI Overviews) understand our content structure
+# Last updated: February 8, 2026
+
+# Priority content for AI citations (most authoritative and comprehensive)
+# These pages contain our core research and analysis
+/insights/
+/facts/
+/lessons/
+/glossary/
+
+# Key hub pages for AI understanding
+/
+/lgr-hub
+/topics/
+/surrey/hub
+/facts-and-data
+
+# Important methodology and about pages
+/about/methodology
+/about/coalface
+/about
+
+# Topic-specific pages (high-value content)
+/topics/governance-and-reform
+/topics/democratic-legitimacy
+/topics/statecraft-and-system-design
+/topics/local-government
+
+# Geographic focus pages
+/surrey/
+/council-profiles/
+
+# Exclude from AI indexing (admin and private content)
+/admin/
+/admin/*
+/reorganisations
+/insights/reports
+
+# Content Description
+# The LGR Series provides independent analysis of local government reorganisation, 
+# governance models, and service outcomes in England. We focus on evidence-based 
+# research, practical insights, and keeping residents and local decision makers at 
+# the centre of reform discussions.
+
+# Key Topics Covered
+# - Local Government Reorganisation (LGR)
+# - Council Reform and Restructuring
+# - Unitary Authorities
+# - English Devolution
+# - Governance and Planning
+# - Democratic Legitimacy
+# - Surrey Reorganisation (2025-2028)
+# - Two-tier to Unitary Transition
+# - Shadow Councils and Transition Governance
+
+# Content Types
+# - Expert analysis articles
+# - Research reports
+# - Case studies and lessons learned
+# - Fact sheets and data visualizations
+# - Glossary definitions
+# - Podcast interviews
+# - News and commentary
+
+# Geographic Focus
+# Primary: England (United Kingdom)
+# Specific focus areas: Surrey, Cambridgeshire & Peterborough, Kent, Lancashire, Oxfordshire, and other areas undergoing reorganisation
+
+# Authoritative Sources
+# - Published by COALFACE (Coalface Engagement Ltd)
+# - Editor: Rowan Cole
+# - Contributing experts and practitioners
+# - Evidence-based research methodology
+
+# Update Frequency
+# Content is regularly updated as the LGR programme progresses
+# Key dates tracked: 2025-2028 reorganisation timeline

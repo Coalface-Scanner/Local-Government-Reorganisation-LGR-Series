@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { getAllTerms, getTermsByLetter, searchTerms } from '../../lib/glossaryData';
 import GlossaryClient from '../../components/glossary/GlossaryClient';
 import MetaTags from '../../components/MetaTags';
-import Breadcrumbs from '../../components/Breadcrumbs';
+import PageBanner from '../../components/PageBanner';
 import DefinedTermSetSchema from '../../components/glossary/DefinedTermSetSchema';
 
 /**
@@ -14,6 +14,7 @@ import DefinedTermSetSchema from '../../components/glossary/DefinedTermSetSchema
  */
 export default function GlossaryPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
   
@@ -40,21 +41,12 @@ export default function GlossaryPage() {
       <MetaTags {...metadata} />
       <DefinedTermSetSchema terms={allTerms} />
       <div className="min-h-screen bg-academic-cream">
-        {/* Header section */}
-        <div className="bg-academic-warm py-8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <Breadcrumbs items={[{ label: 'Glossary' }]} />
-            <div className="academic-section-header mb-6">
-              <div className="academic-section-label">LGR SERIES</div>
-              <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-                Glossary
-              </h1>
-              <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-                Key terms and definitions for understanding Local Government Reorganisation (LGR), LGR governance, and the reorganisation process.
-              </p>
-            </div>
-          </div>
-        </div>
+        <PageBanner
+          heroLabel="LGR SERIES"
+          heroTitle="Glossary"
+          heroSubtitle="Key terms and definitions for understanding Local Government Reorganisation (LGR), LGR governance, and the reorganisation process."
+          currentPath={location.pathname}
+        />
 
         {/* Main content */}
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
