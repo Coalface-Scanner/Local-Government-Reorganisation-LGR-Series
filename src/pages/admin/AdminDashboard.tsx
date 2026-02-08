@@ -153,11 +153,11 @@ export default function AdminDashboard({ onNavigate }: AdminDashboardProps) {
         <h1 className="text-lg font-bold">CMS Admin</h1>
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="p-2 hover:bg-slate-800 rounded transition-colors min-h-[48px] min-w-[48px] flex items-center justify-center"
+          className="p-2 hover:bg-slate-800 rounded transition-colors min-h-[48px] min-w-[48px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white"
           aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={mobileMenuOpen}
         >
-          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          {mobileMenuOpen ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
         </button>
       </div>
 
@@ -187,13 +187,15 @@ export default function AdminDashboard({ onNavigate }: AdminDashboardProps) {
                 <button
                   key={item.id}
                   onClick={() => handleMenuClick(item.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all min-h-[48px] ${
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all min-h-[48px] focus:outline-none focus:ring-2 focus:ring-white ${
                     activeSection === item.id
                       ? 'bg-white text-slate-900'
                       : 'text-slate-300 hover:bg-slate-800'
                   }`}
+                  aria-label={`Navigate to ${item.label}`}
+                  aria-current={activeSection === item.id ? 'page' : undefined}
                 >
-                  <Icon className="w-5 h-5 shrink-0" />
+                  <Icon className="w-5 h-5 shrink-0" aria-hidden="true" />
                   <span className="font-medium">{item.label}</span>
                 </button>
               );
@@ -206,9 +208,10 @@ export default function AdminDashboard({ onNavigate }: AdminDashboardProps) {
                 navigate('/');
                 setMobileMenuOpen(false);
               }}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-800 transition-all min-h-[48px]"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-800 transition-all min-h-[48px] focus:outline-none focus:ring-2 focus:ring-white"
+              aria-label="View website"
             >
-              <Home className="w-5 h-5 shrink-0" />
+              <Home className="w-5 h-5 shrink-0" aria-hidden="true" />
               <span className="font-medium">View Website</span>
             </button>
             <button
@@ -216,9 +219,10 @@ export default function AdminDashboard({ onNavigate }: AdminDashboardProps) {
                 handleSignOut();
                 setMobileMenuOpen(false);
               }}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-800 transition-all min-h-[48px]"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-800 transition-all min-h-[48px] focus:outline-none focus:ring-2 focus:ring-white"
+              aria-label="Sign out"
             >
-              <LogOut className="w-5 h-5 shrink-0" />
+              <LogOut className="w-5 h-5 shrink-0" aria-hidden="true" />
               <span className="font-medium">Sign Out</span>
             </button>
           </div>

@@ -1,9 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import MetaTags from '../../components/MetaTags';
-import SubscriptionForm from '../../components/SubscriptionForm';
+import PageBanner from '../../components/PageBanner';
 import LastUpdated from '../../components/LastUpdated';
 import { useAboutPage } from '../../hooks/useAboutPage';
+import OrganizationStructuredData from '../../components/OrganizationStructuredData';
 
 interface CoalfaceProps {
   onNavigate: (page: string) => void;
@@ -11,6 +12,8 @@ interface CoalfaceProps {
 
 export default function Coalface({ onNavigate: _onNavigate }: CoalfaceProps) {
   const { page: cmsPage, loading } = useAboutPage('coalface');
+  const location = useLocation();
+  
   return (
     <div className="bg-academic-cream min-h-screen">
       <MetaTags
@@ -18,27 +21,40 @@ export default function Coalface({ onNavigate: _onNavigate }: CoalfaceProps) {
         description="Learn about COALFACE, the research and engagement practice behind the LGR Series, specialising in planning governance and institutional analysis."
         keywords="COALFACE, planning governance, research practice, Council Scanner, COALFACE Insights"
       />
+      <OrganizationStructuredData />
       
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">ABOUT</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              About{' '}
-              <span className="text-teal-700 font-serif italic">
-                COALFACE
-              </span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              The research and engagement practice behind the LGR Series.
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageBanner
+        heroLabel="ABOUT"
+        heroTitle="About COALFACE"
+        heroSubtitle="The research and engagement practice behind the LGR Series."
+        currentPath={location.pathname}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
+            {/* Coalface Logo */}
+            <div className="flex flex-col items-center mb-8">
+              <a
+                href="https://coalfaceengagement.co.uk"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:opacity-90 transition-opacity mb-6"
+              >
+                <img
+                  src="/Primary-logo-stacked.png"
+                  alt="COALFACE Engagement"
+                  className="h-48 md:h-64 lg:h-80 w-auto"
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="sync"
+                />
+              </a>
+              <p className="text-academic-base md:text-academic-lg text-academic-neutral-700 leading-relaxed font-serif font-bold max-w-4xl text-center">
+                The LGR Series is an independent insight programme by COALFACE, focused on local government reorganisation, devolution and the governance conditions that shape delivery in practice. It is written for councillors, senior officers and practitioners, and is intended to support informed, constructive discussion at a time of significant structural reform. The Series is public interest oriented and editorially independent.
+              </p>
+            </div>
+
             {/* Breadcrumb */}
             <nav className="flex items-center gap-2 text-academic-sm text-academic-neutral-600">
               <Link to="/about" className="hover:text-teal-700 transition-colors">About</Link>
@@ -70,9 +86,30 @@ export default function Coalface({ onNavigate: _onNavigate }: CoalfaceProps) {
                       Our Services
                     </h3>
                     <ul className="list-disc pl-6 space-y-2 mb-6">
-                      <li><strong>Council Scanner™:</strong> Systematic analysis of planning authority governance, decision-making patterns, and institutional behaviour</li>
-                      <li><strong>COALFACE Insights:</strong> Research-driven analysis on local government, planning, and place-making</li>
-                      <li><strong>COALFACE Engagement:</strong> Planning consultation and engagement shaped by political behaviour and governance conditions</li>
+                      <li>
+                        <strong>
+                          <a href="https://coalfaceengagement.co.uk/council-scanner" target="_blank" rel="noopener noreferrer" className="text-teal-700 hover:text-teal-800 transition-colors">
+                            Coalface Council Scanner
+                          </a>
+                        </strong>
+                        : Systematic analysis of planning authority governance, decision-making patterns, and institutional behaviour
+                      </li>
+                      <li>
+                        <strong>
+                          <a href="https://coalfaceengagement.co.uk/insight" target="_blank" rel="noopener noreferrer" className="text-teal-700 hover:text-teal-800 transition-colors">
+                            Coalface Insights
+                          </a>
+                        </strong>
+                        : Research-driven analysis on local government, planning, and place-making
+                      </li>
+                      <li>
+                        <strong>
+                          <a href="https://coalfaceengagement.co.uk/engagement" target="_blank" rel="noopener noreferrer" className="text-teal-700 hover:text-teal-800 transition-colors">
+                            Coalface Engagement
+                          </a>
+                        </strong>
+                        : Planning consultation and engagement shaped by political behaviour and governance conditions
+                      </li>
                     </ul>
 
                     <h3 className="text-academic-xl font-display font-bold text-academic-charcoal mb-3 mt-6">
@@ -127,7 +164,12 @@ export default function Coalface({ onNavigate: _onNavigate }: CoalfaceProps) {
                 <p className="text-academic-sm text-academic-neutral-700 mb-4 font-serif">
                   Get the LGR Series directly in your inbox. No fluff, just deep analysis.
                 </p>
-                <SubscriptionForm variant="compact" />
+                <Link
+                  to="/subscribe"
+                  className="inline-block bg-teal-700 hover:bg-teal-800 text-white px-6 py-3 rounded-lg font-display font-bold text-sm uppercase tracking-wider transition-colors"
+                >
+                  Subscribe
+                </Link>
               </div>
 
               <div className="academic-card p-6">
@@ -142,10 +184,10 @@ export default function Coalface({ onNavigate: _onNavigate }: CoalfaceProps) {
                     Overview
                   </Link>
                   <Link
-                    to="/about/editor"
+                    to="/editor/rowan-cole"
                     className="block px-3 py-2 text-academic-sm text-academic-neutral-700 hover:bg-teal-50 hover:text-teal-700 transition-colors rounded"
                   >
-                    Editor's Letter
+                    Editor Profile
                   </Link>
                   <Link
                     to="/about/methodology"

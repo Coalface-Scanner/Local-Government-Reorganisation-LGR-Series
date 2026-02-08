@@ -1,9 +1,11 @@
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
+import { useLocation } from 'react-router-dom';
 import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
 import CollectionPageStructuredData from '../components/CollectionPageStructuredData';
+import PageBanner from '../components/PageBanner';
 import OptimizedImage from '../components/OptimizedImage';
 import ErrorDisplay from '../components/ErrorDisplay';
 import ContentTypeTag from '../components/ContentTypeTag';
@@ -27,6 +29,7 @@ interface Material {
   author: string;
   author_name: string;
   image_url: string | null;
+  thumbnail_image_url: string | null;
   pdf_url: string | null;
   external_url: string | null;
   source?: 'materials' | 'articles' | 'news'; // Track where the material came from
@@ -121,6 +124,7 @@ export default function Materials({ onNavigate }: MaterialsProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [error, setError] = useState<string | null>(null);
   const itemsPerPage = 20;
+  const location = useLocation();
 
   const [selectedType, setSelectedType] = useState<string[]>([]);
   const [selectedGeography, setSelectedGeography] = useState<string[]>([]);
@@ -186,6 +190,7 @@ export default function Materials({ onNavigate }: MaterialsProps) {
           author: article.author || 'Coalface editorial',
           author_name: article.author || 'Coalface editorial',
           image_url: article.featured_image || null,
+          thumbnail_image_url: null, // Articles don't have separate thumbnails yet
           pdf_url: null,
           external_url: null,
           source: 'articles' as const
@@ -357,29 +362,12 @@ export default function Materials({ onNavigate }: MaterialsProps) {
           description: material.description || undefined
         }))}
       />
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        {/* Colored gradient overlay */}
-        <div 
-          className="absolute inset-0 opacity-60 z-0"
-          style={{
-            background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.4) 0%, rgba(6, 182, 212, 0.5) 50%, rgba(14, 165, 233, 0.4) 100%)'
-          }}
-        />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">RESEARCH LIBRARY</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              Local Government Reorganisation (LGR) Series{' '}
-              <span className="text-teal-700 font-serif italic">
-                Materials
-              </span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              Search and explore all research, insights, case studies, and resources from the LGR Series on local government reorganisation and LGR governance
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageBanner
+        heroLabel="RESEARCH LIBRARY"
+        heroTitle="LGR Series Materials"
+        heroSubtitle="Search and explore all research, insights, case studies, and resources from the LGR Series on local government reorganisation and LGR governance"
+        currentPath={location.pathname}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col lg:flex-row gap-8">
@@ -541,10 +529,10 @@ export default function Materials({ onNavigate }: MaterialsProps) {
                     className="academic-card p-8 hover:border-teal-700 transition-all duration-300 group"
                   >
                     <div className="flex flex-col md:flex-row gap-6">
-                      {material.image_url && (
+                      {(material.thumbnail_image_url || material.image_url) && (
                         <div className="w-full md:w-48 overflow-hidden">
                           <OptimizedImage
-                            src={material.image_url}
+                            src={material.thumbnail_image_url || material.image_url || ''}
                             alt={material.title}
                             variant="thumbnail"
                             loading="lazy"

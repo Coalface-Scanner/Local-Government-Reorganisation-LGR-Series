@@ -3,6 +3,7 @@ import { Plus, Edit, Trash2, Save, X } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { updateSiteTimestamp } from '../../lib/updateTimestamp';
 import WYSIWYGEditor from '../../components/WYSIWYGEditor';
+import ErrorMessage from '../../components/admin/ErrorMessage';
 
 interface SiteUpdate {
   id: string;
@@ -19,6 +20,7 @@ export default function SiteUpdatesEditor() {
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -60,8 +62,9 @@ export default function SiteUpdatesEditor() {
       fetchUpdates();
       resetForm();
       setIsCreating(false);
+      setError('');
     } else {
-      alert('Error creating update: ' + error.message);
+      setError('Error creating update: ' + error.message);
     }
   };
 
@@ -83,8 +86,9 @@ export default function SiteUpdatesEditor() {
       fetchUpdates();
       resetForm();
       setEditingId(null);
+      setError('');
     } else {
-      alert('Error updating update: ' + error.message);
+      setError('Error updating update: ' + error.message);
     }
   };
 
@@ -130,6 +134,9 @@ export default function SiteUpdatesEditor() {
 
   return (
     <div className="space-y-6">
+      {error && (
+        <ErrorMessage message={error} onDismiss={() => setError('')} />
+      )}
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-3xl font-bold text-slate-900">Site Updates</h2>

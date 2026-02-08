@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ArrowLeft, Share2, Lightbulb, Database, MessageSquare } from 'lucide-react';
 import MetaTags from '../../components/MetaTags';
-import SubscriptionForm from '../../components/SubscriptionForm';
+import PageBanner from '../../components/PageBanner';
 import LastUpdated from '../../components/LastUpdated';
 import { useAboutPage } from '../../hooks/useAboutPage';
 
@@ -11,6 +11,7 @@ interface ContributeProps {
 
 export default function Contribute({ onNavigate: _onNavigate }: ContributeProps) {
   const { page: cmsPage, loading } = useAboutPage('contribute');
+  const location = useLocation();
   const waysToContribute = [
     {
       icon: <Share2 size={24} className="text-teal-700" />,
@@ -42,22 +43,12 @@ export default function Contribute({ onNavigate: _onNavigate }: ContributeProps)
         keywords="contribute to LGR series, share experience, suggest topics, provide data, expert commentary"
       />
       
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">ABOUT</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              How to{' '}
-              <span className="text-teal-700 font-serif italic">
-                Contribute
-              </span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              Get involved in the LGR Series by sharing your experience, suggesting topics, or contributing to our research.
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageBanner
+        heroLabel="ABOUT"
+        heroTitle="How to Contribute"
+        heroSubtitle="Get involved in the LGR Series by sharing your experience, suggesting topics, or contributing to our research."
+        currentPath={location.pathname}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid lg:grid-cols-3 gap-8">
@@ -124,8 +115,8 @@ export default function Contribute({ onNavigate: _onNavigate }: ContributeProps)
                 To discuss contributions or suggest topics, please contact:
               </p>
               <p className="text-academic-lg font-display font-semibold text-teal-700 mb-6">
-                <a href="mailto:editor@localgovernmentreorganisation.co.uk" className="hover:text-teal-800 transition-colors">
-                  editor@localgovernmentreorganisation.co.uk
+                <a href="mailto:editor@localgovernmentreorganisation.com" className="hover:text-teal-800 transition-colors">
+                  editor@localgovernmentreorganisation.com
                 </a>
               </p>
               <p className="text-academic-sm text-academic-neutral-600 font-serif">
@@ -154,7 +145,12 @@ export default function Contribute({ onNavigate: _onNavigate }: ContributeProps)
                 <p className="text-academic-sm text-academic-neutral-700 mb-4 font-serif">
                   Get the LGR Series directly in your inbox. No fluff, just deep analysis.
                 </p>
-                <SubscriptionForm variant="compact" />
+                <Link
+                  to="/subscribe"
+                  className="inline-block bg-teal-700 hover:bg-teal-800 text-white px-6 py-3 rounded-lg font-display font-bold text-sm uppercase tracking-wider transition-colors"
+                >
+                  Subscribe
+                </Link>
               </div>
 
               <div className="academic-card p-6">
@@ -169,10 +165,10 @@ export default function Contribute({ onNavigate: _onNavigate }: ContributeProps)
                     Overview
                   </Link>
                   <Link
-                    to="/about/editor"
+                    to="/editor/rowan-cole"
                     className="block px-3 py-2 text-academic-sm text-academic-neutral-700 hover:bg-teal-50 hover:text-teal-700 transition-colors rounded"
                   >
-                    Editor's Letter
+                    Editor Profile
                   </Link>
                   <Link
                     to="/about/methodology"

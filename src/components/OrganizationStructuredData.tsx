@@ -45,7 +45,9 @@ export default function OrganizationStructuredData() {
     "description": "The leading resource on Local Government Reorganisation (LGR), council reform, and English devolution. Expert analysis, evidence-based research, and practical insights on local government reform, unitary authorities, and devolution across the UK.",
     "foundingDate": "2019",
     "sameAs": [
-      baseUrl
+      baseUrl,
+      "https://www.linkedin.com/showcase/local-government-reorganisation",
+      "https://x.com/LGRSeries"
     ]
   };
 

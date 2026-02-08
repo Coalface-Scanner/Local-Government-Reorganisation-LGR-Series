@@ -1,15 +1,17 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { User, FileText, MessageSquare, Info, ArrowRight } from 'lucide-react';
 import MetaTags from '../../components/MetaTags';
-import SubscriptionForm from '../../components/SubscriptionForm';
+import PageBanner from '../../components/PageBanner';
 import LastUpdated from '../../components/LastUpdated';
 import FAQSection from '../../components/FAQSection';
+import OrganizationStructuredData from '../../components/OrganizationStructuredData';
 
 interface AboutProps {
   onNavigate: (page: string) => void;
 }
 
 export default function About({ onNavigate: _onNavigate }: AboutProps) {
+  const location = useLocation();
   const aboutSections = [
     {
       id: 'overview',
@@ -24,7 +26,7 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
       title: "Editor's Letter & Editorial Team",
       icon: <User size={24} className="text-teal-700" />,
       description: 'Meet the editor and read the editorial letter introducing the LGR Series and its mission.',
-      link: '/about/editor',
+      link: '/editor/rowan-cole',
       linkText: 'Read the letter'
     },
     {
@@ -60,30 +62,14 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
         description="Learn about the LGR Series research programme examining local government reorganisation and its implications for planning, governance, and development delivery."
         keywords="LGR series, local government reorganisation, council reform research, COALFACE insights, research programme"
       />
+      <OrganizationStructuredData />
       
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        {/* Colored gradient overlay */}
-        <div 
-          className="absolute inset-0 opacity-60 z-0"
-          style={{
-            background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.4) 0%, rgba(6, 182, 212, 0.5) 50%, rgba(14, 165, 233, 0.4) 100%)'
-          }}
-        />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">ABOUT</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              About the{' '}
-              <span className="text-teal-700 font-serif italic">
-                LGR Series
-              </span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              A dedicated research programme examining local government reorganisation and its impact on planning, governance, and development delivery.
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageBanner
+        heroLabel="ABOUT"
+        heroTitle="About the LGR Series"
+        heroSubtitle="A dedicated research programme examining local government reorganisation and its impact on planning, governance, and development delivery."
+        currentPath={location.pathname}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid lg:grid-cols-3 gap-8">
@@ -256,7 +242,12 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
                 <p className="text-academic-sm text-academic-neutral-700 mb-4 font-serif">
                   Get the LGR Series directly in your inbox. No fluff, just deep analysis.
                 </p>
-                <SubscriptionForm variant="compact" />
+                <Link
+                  to="/subscribe"
+                  className="inline-block bg-teal-700 hover:bg-teal-800 text-white px-6 py-3 rounded-lg font-display font-bold text-sm uppercase tracking-wider transition-colors"
+                >
+                  Subscribe
+                </Link>
               </div>
 
               <div className="academic-card p-6">

@@ -122,6 +122,8 @@ export default function Timeline() {
                 className={`w-full text-left mb-4 p-4 rounded-xl transition-all duration-300 ${
                   isSelected ? 'bg-gradient-to-r ' + timeline.color + ' text-white shadow-lg scale-[1.02]' : 'bg-slate-50 hover:bg-slate-100'
                 }`}
+                aria-label={`${isSelected ? 'Collapse' : 'Expand'} timeline for ${timeline.area}`}
+                aria-expanded={isSelected}
               >
                 <div className="flex items-center justify-between">
                   <div>

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { ArrowRight, Building2, Vote, Palette } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
+import PageBanner from '../components/PageBanner';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 import Breadcrumbs from '../components/Breadcrumbs';
 import { supabase } from '../lib/supabase';
@@ -34,6 +36,7 @@ interface ThemeData {
 export default function Topics({ onNavigate }: TopicsProps) {
   const [themes, setThemes] = useState<ThemeData[]>([]);
   const [loadingThemes, setLoadingThemes] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
     const fetchThemes = async () => {
@@ -163,36 +166,12 @@ export default function Topics({ onNavigate }: TopicsProps) {
         keywords="local government reorganisation, governance, democratic legitimacy, statecraft, system design, council reform, LGR themes"
       />
       
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        {/* Colored gradient overlay */}
-        <div 
-          className="absolute inset-0 opacity-60 z-0"
-          style={{
-            background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.4) 0%, rgba(6, 182, 212, 0.5) 50%, rgba(14, 165, 233, 0.4) 100%)'
-          }}
-        />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <Breadcrumbs
-            items={[
-              { label: 'LGR Hub', path: '/' },
-              { label: 'Topics' }
-            ]}
-            className="mb-6"
-          />
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">EXPLORE BY THEME</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              Core{' '}
-              <span className="text-teal-700 font-serif italic">
-                Themes
-              </span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              Explore our research organised around key themes. Each theme features pillar pieces, essays, briefs, and related analysis.
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageBanner
+        heroLabel="EXPLORE BY THEME"
+        heroTitle="Core Themes"
+        heroSubtitle="Explore our research organised around key themes. Each theme features pillar pieces, essays, briefs, and related analysis."
+        currentPath={location.pathname}
+      />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Theme Cards Section */}

@@ -1,8 +1,8 @@
 import { Mail, Send, MessageSquare, FileText, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import SubscriptionForm from '../components/SubscriptionForm';
+import { Link, useLocation } from 'react-router-dom';
 import ContactForm from '../components/ContactForm';
 import MetaTags from '../components/MetaTags';
+import PageBanner from '../components/PageBanner';
 import { usePageContent } from '../hooks/usePageContent';
 
 interface ContactProps {
@@ -10,6 +10,7 @@ interface ContactProps {
 }
 
 export default function Contact({ onNavigate }: ContactProps) {
+  const location = useLocation();
   const { getSection } = usePageContent('contact');
 
   // Get CMS content with fallbacks
@@ -31,22 +32,12 @@ export default function Contact({ onNavigate }: ContactProps) {
         description="Get in touch with the LGR Series editorial team. For editorial inquiries, research questions, contributions, or newsletter subscriptions."
         keywords="LGR contact, editorial inquiries, research questions, contribute to LGR series, newsletter subscription"
       />
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">{heroLabel?.content || 'GET IN TOUCH'}</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              {heroTitle?.title || 'Contact'}{' '}
-              <span className="text-teal-700 font-serif italic">
-                {heroTitle?.content || 'the Series'}
-              </span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              {heroDescription?.content || "Have questions about the research, want to contribute insights, or need to discuss specific reorganisation challenges? We're here to help."}
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageBanner
+        heroLabel={heroLabel?.content || 'GET IN TOUCH'}
+        heroTitle={`${heroTitle?.title || 'Contact'} ${heroTitle?.content || 'the Series'}`}
+        heroSubtitle={heroDescription?.content || "Have questions about the research, want to contribute insights, or need to discuss specific reorganisation challenges? We're here to help."}
+        currentPath={location.pathname}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid lg:grid-cols-3 gap-8">
@@ -84,10 +75,10 @@ export default function Contact({ onNavigate }: ContactProps) {
                   {cardEditorialDescription?.content || 'For editorial inquiries, research questions, or to contribute case studies:'}
                 </p>
                 <a
-                  href={`mailto:${cardEditorialEmail?.content || 'editor@localgovernmentreorganisation.co.uk'}`}
+                  href={`mailto:${cardEditorialEmail?.content || 'editor@localgovernmentreorganisation.com'}`}
                   className="inline-flex items-center gap-2 text-teal-700 font-display font-bold hover:text-teal-800 transition-colors text-academic-base"
                 >
-                  {cardEditorialEmail?.content || 'editor@localgovernmentreorganisation.co.uk'}
+                  {cardEditorialEmail?.content || 'editor@localgovernmentreorganisation.com'}
                   <ArrowRight size={16} />
                 </a>
               </div>
@@ -185,7 +176,12 @@ export default function Contact({ onNavigate }: ContactProps) {
                 <p className="text-academic-sm text-academic-neutral-700 mb-4 font-serif">
                   Get the LGR Series directly in your inbox. No fluff, just deep analysis.
                 </p>
-                <SubscriptionForm variant="compact" />
+                <Link
+                  to="/subscribe"
+                  className="inline-block bg-teal-700 hover:bg-teal-800 text-white px-6 py-3 rounded-lg font-display font-bold text-sm uppercase tracking-wider transition-colors"
+                >
+                  Subscribe
+                </Link>
               </div>
 
               <div className="academic-card p-6">
@@ -226,10 +222,10 @@ export default function Contact({ onNavigate }: ContactProps) {
                     Overview
                   </Link>
                   <Link
-                    to="/about/editor"
+                    to="/editor/rowan-cole"
                     className="block px-3 py-2 text-academic-sm text-academic-neutral-700 hover:bg-teal-50 hover:text-teal-700 transition-colors rounded"
                   >
-                    Editor's Letter
+                    Editor Profile
                   </Link>
                   <Link
                     to="/about/methodology"

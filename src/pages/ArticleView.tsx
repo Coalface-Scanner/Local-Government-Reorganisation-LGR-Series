@@ -1,8 +1,10 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import LastUpdated from '../components/LastUpdated';
 import ShareButtons from '../components/ShareButtons';
 import MetaTags from '../components/MetaTags';
+import PageBanner from '../components/PageBanner';
 import ArticleStructuredData from '../components/ArticleStructuredData';
 import ArticleQASection from '../components/ArticleQASection';
 import OptimizedImage from '../components/OptimizedImage';
@@ -23,6 +25,9 @@ import ContentTypeTag from '../components/ContentTypeTag';
 import { trackArticleView } from '../utils/analytics';
 import { ArrowLeft, Calendar } from 'lucide-react';
 import { retryWithBackoff, generateSlug, getThemeDisplayName, getThemeSlug } from '../lib/utils';
+import { enhanceContentWithGlossaryLinks } from '../lib/glossaryLinks';
+import { useScrollDepthTracking } from '../hooks/useScrollDepthTracking';
+import { useTimeOnPageTracking } from '../hooks/useTimeOnPageTracking';
 
 interface Article {
   id: string;
@@ -51,10 +56,15 @@ interface ArticleViewProps {
 }
 
 export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
+  const location = useLocation();
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Track scroll depth and time on page
+  useScrollDepthTracking();
+  useTimeOnPageTracking();
 
   const fetchArticle = useCallback(async () => {
     setLoading(true);
@@ -99,7 +109,7 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
     }
   }, [slug, fetchArticle]);
 
-  // Process article body to add IDs to headings
+  // Process article body to add IDs to headings and glossary links
   const processedBody = useMemo(() => {
     if (!article?.body) return '';
     
@@ -115,7 +125,16 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
       }
     });
     
-    return doc.body.innerHTML;
+    let htmlContent = doc.body.innerHTML;
+    
+    // Add glossary links
+    htmlContent = enhanceContentWithGlossaryLinks(htmlContent, {
+      onlyFirstOccurrence: true,
+      excludeSlugs: [],
+      linkClass: 'glossary-link text-teal-700 hover:text-teal-800 underline font-medium'
+    });
+    
+    return htmlContent;
   }, [article?.body]);
 
   if (loading) {
@@ -272,61 +291,65 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
         region={article.region}
         theme={article.theme}
       />
+      <PageBanner
+        heroLabel={article.content_type ? article.content_type.toUpperCase() : article.theme ? getThemeDisplayName(article.theme).toUpperCase() : 'INSIGHTS'}
+        heroTitle={article.title}
+        heroSubtitle={article.excerpt || undefined}
+        currentPath={location.pathname}
+      />
 
-      <div className="bg-gradient-to-r from-teal-700 via-teal-400 to-teal-100 text-white py-12">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <BreadcrumbStructuredData
-            items={[
-              { label: 'Home', path: '/' },
-              ...(article.theme ? [{ label: 'Topics', path: '/topics' }, { label: getThemeDisplayName(article.theme), path: `/topics/${getThemeSlug(article.theme)}` }] : [{ label: 'Insights', path: '/insights' }]),
-              { label: article.title }
-            ]}
-          />
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <BreadcrumbStructuredData
+          items={[
+            { label: 'Home', path: '/' },
+            ...(article.theme ? [{ label: 'Topics', path: '/topics' }, { label: getThemeDisplayName(article.theme), path: `/topics/${getThemeSlug(article.theme)}` }] : [{ label: 'Insights', path: '/insights' }]),
+            { label: article.title }
+          ]}
+        />
+        <div className="flex items-center justify-between mb-6">
           <Breadcrumbs 
             items={[
               { label: 'Home', path: '/' },
               ...(article.theme ? [{ label: 'Topics', path: '/topics' }, { label: getThemeDisplayName(article.theme), path: `/topics/${getThemeSlug(article.theme)}` }] : [{ label: 'Insights', path: '/insights' }]),
               { label: article.title }
             ]}
-            className="mb-8 text-white/80"
+            className="text-academic-neutral-600"
           />
           <button
             onClick={() => onNavigate('insights')}
-            className="flex items-center gap-2 text-white/90 hover:text-white font-display font-medium mb-8 group"
+            className="flex items-center gap-2 text-teal-700 hover:text-teal-800 font-display font-medium group"
             aria-label="Back to Insights"
           >
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
             Back to Insights
           </button>
+        </div>
 
-          <div className="flex items-start gap-6 mb-6">
-            <h1 className="text-academic-4xl md:text-academic-5xl lg:text-academic-6xl font-display font-bold leading-tight flex-1 text-white">{article.title}</h1>
-            <div className="flex flex-col gap-2 items-end">
-              {article.featured && (
-                <span className="px-4 py-2 bg-blue-700 text-white text-academic-xs font-display font-bold uppercase tracking-wider">
-                  Exclusive
-                </span>
-              )}
-              {article.content_type && (
-                <ContentTypeTag contentType={article.content_type} />
-              )}
-            </div>
-          </div>
-          {/* Excerpt will be shown as standfirst in the article body */}
-
-          <div className="flex flex-wrap items-center gap-6 text-academic-sm text-white/90 font-serif">
-            {article.published_date && (
-              <div className="flex items-center gap-2">
-                <Calendar size={16} aria-hidden="true" />
-                <span>{new Date(article.published_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
-              </div>
+        <div className="flex items-start gap-6 mb-6">
+          <div className="flex flex-col gap-2">
+            {article.featured && (
+              <span className="px-4 py-2 bg-blue-700 text-white text-academic-xs font-display font-bold uppercase tracking-wider inline-block">
+                Exclusive
+              </span>
             )}
-            <ReadingTime content={article.body} />
+            {article.content_type && (
+              <ContentTypeTag contentType={article.content_type} />
+            )}
           </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-6 text-academic-sm text-academic-neutral-600 font-serif mb-8">
+          {article.published_date && (
+            <div className="flex items-center gap-2">
+              <Calendar size={16} aria-hidden="true" />
+              <span>{new Date(article.published_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+            </div>
+          )}
+          <ReadingTime content={article.body} />
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
         {error && (
           <ErrorDisplay
             message={error}

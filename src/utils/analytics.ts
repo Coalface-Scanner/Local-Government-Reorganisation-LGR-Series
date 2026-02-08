@@ -111,3 +111,23 @@ export const trackPrint = (page: string): void => {
     label: page,
   });
 };
+
+// Track scroll depth
+export const trackScrollDepth = (percentage: number): void => {
+  trackEvent({
+    action: 'scroll_depth',
+    category: 'Engagement',
+    label: `${percentage}%`,
+    value: percentage,
+  });
+};
+
+// Track time on page
+export const trackTimeOnPage = (seconds: number): void => {
+  trackEvent({
+    action: 'time_on_page',
+    category: 'Engagement',
+    label: seconds < 60 ? `${seconds}s` : `${Math.floor(seconds / 60)}min`,
+    value: seconds,
+  });
+};

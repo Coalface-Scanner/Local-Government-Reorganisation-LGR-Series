@@ -1,16 +1,20 @@
-import { useEffect, useState, lazy, Suspense } from 'react';
-import { ArrowRight, MapPin, Quote, FileText, BookOpen, Mail, Building2, Vote, Palette, HelpCircle, Calendar, Users, CheckCircle2, Sparkles, Headphones } from 'lucide-react';
+import { useEffect, useState, lazy, Suspense, useCallback } from 'react';
+import { ArrowRight, MapPin, Quote, FileText, BookOpen, Mail, Building2, Vote, Palette, Calendar, Users, CheckCircle2, Sparkles, Headphones } from 'lucide-react';
+import { useLocation, Link } from 'react-router-dom';
 import MetaTags from '../components/MetaTags';
 import OrganizationStructuredData from '../components/OrganizationStructuredData';
 import WebSiteStructuredData from '../components/WebSiteStructuredData';
-import InBriefSection from '../components/InBriefSection';
 import ThemeChip from '../components/ThemeChip';
+import PageBanner from '../components/PageBanner';
+import FAQSection from '../components/FAQSection';
 import { supabase } from '../lib/supabase';
 import OptimizedImage from '../components/OptimizedImage';
 import LoadingSkeleton from '../components/LoadingSkeleton';
+import ContentTypeTag from '../components/ContentTypeTag';
+import { parseRSSFeed, extractGuestName, generateIdFromString, type RSSItem } from '../lib/rssParser';
+import { useScrollDepthTracking } from '../hooks/useScrollDepthTracking';
+import { useTimeOnPageTracking } from '../hooks/useTimeOnPageTracking';
 
-// Lazy load heavy components
-const SubscriptionForm = lazy(() => import('../components/SubscriptionForm'));
 
 interface HomeProps {
   onNavigate: (page: string, slug?: string) => void;
@@ -38,12 +42,58 @@ interface ThemeData {
   pillarArticle: Article | null;
 }
 
+interface Interview {
+  id: string;
+  name: string;
+  title: string;
+  description: string;
+  image_url: string | null;
+  audio_url: string | null;
+  video_url: string | null;
+  interview_type: string;
+}
+
+const RSS_FEED_URL = import.meta.env.PROD 
+  ? '/rss-proxy' 
+  : 'https://anchor.fm/s/10d7de5ac/podcast/rss';
+
 export default function Home({ onNavigate }: HomeProps) {
   const [recentArticles, setRecentArticles] = useState<Article[]>([]);
   const [loadingArticles, setLoadingArticles] = useState(true);
   const [themes, setThemes] = useState<ThemeData[]>([]);
   const [loadingThemes, setLoadingThemes] = useState(true);
   const [editorsPicks, setEditorsPicks] = useState<Article[]>([]);
+  const [latestEpisodes, setLatestEpisodes] = useState<Interview[]>([]);
+  const [loadingEpisodes, setLoadingEpisodes] = useState(true);
+  const location = useLocation();
+
+  // Track scroll depth and time on page
+  useScrollDepthTracking();
+  useTimeOnPageTracking();
+
+  // Convert YouTube URL to embed format
+  const convertToEmbedUrl = (url: string | null): string | null => {
+    if (!url) return null;
+    
+    // YouTube watch URL: https://www.youtube.com/watch?v=VIDEO_ID
+    const watchMatch = url.match(/youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/);
+    if (watchMatch) {
+      return `https://www.youtube.com/embed/${watchMatch[1]}`;
+    }
+    
+    // YouTube short URL: https://youtu.be/VIDEO_ID
+    const shortMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
+    if (shortMatch) {
+      return `https://www.youtube.com/embed/${shortMatch[1]}`;
+    }
+    
+    // Already an embed URL or other format
+    if (url.includes('youtube.com/embed') || url.includes('spotify.com/embed')) {
+      return url;
+    }
+    
+    return url;
+  };
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -230,6 +280,74 @@ export default function Home({ onNavigate }: HomeProps) {
     Promise.all([fetchArticles(), fetchThemes()]);
   }, []);
 
+  const fetchLatestEpisodes = useCallback(async () => {
+    setLoadingEpisodes(true);
+    try {
+      // Try database first - get episodes with video URLs
+      const { data: dbInterviews } = await supabase
+        .from('interviews')
+        .select('*')
+        .eq('status', 'published')
+        .not('video_url', 'is', null)
+        .order('order_index')
+        .limit(5);
+
+      if (dbInterviews && dbInterviews.length > 0) {
+        const episodes = dbInterviews.map(interview => ({
+          id: interview.id,
+          name: interview.name,
+          title: interview.title,
+          description: interview.description || '',
+          image_url: interview.image_url,
+          audio_url: interview.audio_url,
+          video_url: interview.video_url,
+          interview_type: interview.interview_type,
+        }));
+        setLatestEpisodes(episodes);
+        setLoadingEpisodes(false);
+        return;
+      }
+
+      // Fallback to RSS feed - get latest episodes
+      const response = await fetch(RSS_FEED_URL, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/rss+xml, application/xml, text/xml, */*',
+        },
+        mode: 'cors',
+      });
+
+      if (response.ok) {
+        const xmlText = await response.text();
+        if (xmlText && xmlText.trim().length > 0) {
+          const rssData = parseRSSFeed(xmlText);
+          const episodes = rssData.items.slice(0, 5).map(item => {
+            const guestName = extractGuestName(item.title);
+            return {
+              id: generateIdFromString(item.guid || item.title),
+              name: guestName,
+              title: item.title,
+              description: item.description || '',
+              image_url: item.imageUrl || null,
+              audio_url: item.audioUrl || null,
+              video_url: null,
+              interview_type: 'voice_only' as string,
+            };
+          });
+          setLatestEpisodes(episodes);
+        }
+      }
+    } catch (err) {
+      console.error('Error fetching latest episodes:', err);
+    } finally {
+      setLoadingEpisodes(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchLatestEpisodes();
+  }, [fetchLatestEpisodes]);
+
   const getThemeForArticle = (article: Article): string | null => {
     if (article.theme) {
       const themeLower = article.theme.toLowerCase().trim();
@@ -265,6 +383,17 @@ export default function Home({ onNavigate }: HomeProps) {
     return themeMap[themeName] || null;
   };
 
+  // Format date for article cards (e.g., "2 FEBRUARY 2026")
+  const formatArticleDate = (dateString: string | null) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }).toUpperCase();
+  };
+
   return (
     <div className="bg-academic-cream">
       <MetaTags
@@ -275,697 +404,538 @@ export default function Home({ onNavigate }: HomeProps) {
       <OrganizationStructuredData />
       <WebSiteStructuredData />
       
-      {/* Hero Section */}
-      <section className="relative bg-academic-warm py-12 lg:py-16 overflow-hidden">
-        <div className="absolute inset-0 z-0 opacity-30">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: "url('/polling_station.png')",
-              backgroundRepeat: 'no-repeat',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center'
-            }}
-          />
-          <div 
-            className="absolute inset-0 opacity-60"
-            style={{
-              background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.4) 0%, rgba(6, 182, 212, 0.5) 50%, rgba(14, 165, 233, 0.4) 100%)'
-            }}
-          />
-        </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <div className="max-w-4xl">
-            <h1 className="text-academic-4xl sm:text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-4">
-              Local Government Reorganisation (LGR) Hub
-            </h1>
-            <p className="text-academic-lg sm:text-academic-xl md:text-academic-2xl text-academic-neutral-700 leading-relaxed mb-8 font-serif max-w-3xl">
-              Clear, practical insight on Local Government Reorganisation in England – timelines, governance, elections and system design – for councillors, officers and partners.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <button
-                onClick={() => onNavigate('topics')}
-                className="academic-button academic-button-primary group flex items-center justify-center gap-2 text-sm py-3 px-6 hover:scale-105 hover:shadow-lg transition-all duration-300"
-              >
-                Explore the LGR Topics
-                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button
-                onClick={() => onNavigate('lgr-journey-2026')}
-                className="academic-button academic-button-outline group flex items-center justify-center gap-2 text-sm py-3 px-6 hover:scale-105 hover:shadow-lg transition-all duration-300"
-              >
-                View the 2026–2028 LGR Roadmap
-                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Page Banner with Mission Statement */}
+      <PageBanner
+        isHomepage={true}
+        currentPath={location.pathname}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* What is LGR Section - 2-Column Layout */}
+        {/* Article Grid Section */}
+        {recentArticles.length > 0 && (
+          <section className="mb-16">
+            <div className="flex items-center justify-start mb-8 relative">
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-px bg-gradient-to-r from-teal-600 via-teal-600 to-transparent opacity-30"></div>
+              <h2 className="text-academic-3xl md:text-academic-4xl font-display font-bold text-teal-700 relative z-10 bg-academic-cream pr-4">
+                LATEST
+              </h2>
+            </div>
+            <div className="grid md:grid-cols-2 gap-8">
+              {recentArticles.slice(0, 6).map((article) => (
+                <Link
+                  key={article.id}
+                  to={`/insights/${article.slug}`}
+                  className="group academic-card overflow-hidden transition-all duration-300 hover:shadow-lg"
+                >
+                  <div className="flex gap-4">
+                    {/* Image */}
+                    <div className="flex-shrink-0 w-32 h-32 sm:w-40 sm:h-40 bg-academic-neutral-200 overflow-hidden rounded relative">
+                      {article.featured_image ? (
+                        <img
+                          src={article.featured_image}
+                          alt={article.title}
+                          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                          style={{ 
+                            objectFit: 'cover',
+                            width: '100%',
+                            height: '100%',
+                            display: 'block'
+                          }}
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-teal-100 to-cyan-100 flex items-center justify-center">
+                          <FileText className="text-teal-600" size={32} />
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="flex-1 flex flex-col py-2">
+                      <div className="flex items-center gap-2 mb-2">
+                        {article.content_type && (
+                          <ContentTypeTag contentType={article.content_type} />
+                        )}
+                        {article.published_date && (
+                          <span className="text-academic-xs text-academic-neutral-500 font-display">
+                            {formatArticleDate(article.published_date)}
+                          </span>
+                        )}
+                      </div>
+                      <h3 className="text-academic-lg sm:text-academic-xl font-display font-bold text-academic-charcoal group-hover:text-teal-700 transition-colors line-clamp-3 mb-2">
+                        {article.title}
+                      </h3>
+                      {article.excerpt && (
+                        <p className="text-academic-sm text-academic-neutral-600 font-serif line-clamp-2">
+                          {article.excerpt}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* What is LGR Section - Redesigned */}
         <section className="mb-16">
-          <div className="grid lg:grid-cols-3 gap-6 lg:gap-8 mb-8 items-stretch">
-            {/* Left Column - Main Definition (2/3 width) */}
-            <div className="lg:col-span-2">
-              <div className="academic-card p-8 md:p-12 bg-gradient-to-br from-teal-50 to-cyan-50 border-l-4 border-teal-600 shadow-md h-full flex flex-col">
-                <h2 className="text-academic-3xl md:text-academic-4xl font-display font-bold text-academic-charcoal mb-6">
-                  What is Local Government Reorganisation (LGR)?
-                </h2>
-                <p className="text-academic-lg text-academic-neutral-700 leading-relaxed font-serif flex-grow">
-                  Local Government Reorganisation (LGR) is the process of restructuring local government structures in England, typically merging district and county councils to create unitary authorities. LGR aims to simplify governance, improve service delivery, and enable strategic decision-making at the right scale. The process involves shadow authorities, elections, and a transition period before the new unitary councils take full control on vesting day.
-                </p>
-              </div>
-            </div>
-
-            {/* Right Column - In Brief Card (1/3 width, matching height) */}
-            <div className="lg:col-span-1 flex">
-              <div className="w-full">
-                <InBriefSection 
-                  content="Local Government Reorganisation (LGR) is the process of restructuring councils and governance arrangements, often replacing two-tier counties and districts with new unitary authorities." 
-                  className="mb-0 h-full"
-                />
-              </div>
-            </div>
+          <div className="flex items-center justify-start mb-6 relative">
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-px bg-gradient-to-r from-teal-600 via-teal-600 to-transparent opacity-30"></div>
+            <h2 className="text-academic-3xl md:text-academic-4xl font-display font-bold text-teal-700 relative z-10 bg-academic-cream pr-4">
+              What is Local Government Reorganisation (LGR)?
+            </h2>
           </div>
-
-          {/* Key Points Card - Full Width Below */}
-          <div className="academic-card p-8 md:p-10 bg-gradient-to-br from-white to-teal-50 border border-teal-200 shadow-md mb-8">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-gradient-to-br from-teal-600 to-cyan-600 rounded-lg flex items-center justify-center">
-                <Sparkles className="text-white" size={20} />
+          <div className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-teal-900 via-teal-800 to-teal-900 p-8 min-h-[200px] flex flex-col justify-between transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
+            <div className="relative z-10">
+              <h3 className="text-academic-xl md:text-academic-2xl font-display font-bold text-white mb-4">What is Local Government Reorganisation?</h3>
+              <p className="text-white/90 text-academic-sm md:text-academic-base font-serif mb-6 leading-relaxed">
+                Local Government Reorganisation (LGR) is the process of restructuring local government structures in England, typically merging district and county councils to create unitary authorities. LGR aims to simplify governance, improve service delivery, and enable strategic decision-making at the right scale. The process involves shadow authorities, elections, and a transition period before the new unitary councils take full control on vesting day.
+              </p>
+              <h4 className="text-academic-lg md:text-academic-xl font-display font-bold text-white mb-4">What Does LGR Change?</h4>
+              <ul className="space-y-4 text-white/90 text-academic-sm md:text-academic-base font-serif mb-6">
+                <li className="flex items-start gap-4">
+                  <div className="flex-shrink-0 mt-1">
+                    <CheckCircle2 className="text-white" size={20} />
+                  </div>
+                  <span className="leading-relaxed"><strong>Council structure:</strong> Creates or merges unitary councils, eliminating the two-tier system</span>
+                </li>
+                <li className="flex items-start gap-4">
+                  <div className="flex-shrink-0 mt-1">
+                    <CheckCircle2 className="text-white" size={20} />
+                  </div>
+                  <span className="leading-relaxed"><strong>Decision-making:</strong> Changes who makes planning, housing and care decisions</span>
+                </li>
+                <li className="flex items-start gap-4">
+                  <div className="flex-shrink-0 mt-1">
+                    <CheckCircle2 className="text-white" size={20} />
+                  </div>
+                  <span className="leading-relaxed"><strong>Representation:</strong> Alters how residents are represented and who they vote for</span>
+                </li>
+              </ul>
+              <div className="pt-6 border-t border-white/20">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div>
+                    <h3 className="text-academic-xl md:text-academic-2xl font-display font-bold text-white mb-2">
+                      Want to learn more?
+                    </h3>
+                    <p className="text-white/90 text-academic-sm md:text-academic-base font-serif">
+                      Explore our comprehensive guide to Local Government Reorganisation
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => onNavigate('facts/what-is-lgr')}
+                    className="bg-white text-teal-900 px-6 py-3 rounded-lg font-display font-bold text-academic-sm hover:bg-teal-50 transition-all duration-300 hover:scale-105 inline-flex items-center gap-2 whitespace-nowrap"
+                  >
+                    Learn more about LGR
+                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </div>
               </div>
-              <h3 className="text-academic-2xl font-display font-bold text-academic-charcoal">
-                Key Impacts
-              </h3>
-            </div>
-            <ul className="space-y-4 text-academic-base text-academic-neutral-700 font-serif">
-              <li className="flex items-start gap-4">
-                <div className="flex-shrink-0 mt-1">
-                  <CheckCircle2 className="text-teal-600" size={20} />
-                </div>
-                <span className="leading-relaxed">Creates or merges unitary councils</span>
-              </li>
-              <li className="flex items-start gap-4">
-                <div className="flex-shrink-0 mt-1">
-                  <CheckCircle2 className="text-teal-600" size={20} />
-                </div>
-                <span className="leading-relaxed">Changes who makes planning, housing and care decisions</span>
-              </li>
-              <li className="flex items-start gap-4">
-                <div className="flex-shrink-0 mt-1">
-                  <CheckCircle2 className="text-teal-600" size={20} />
-                </div>
-                <span className="leading-relaxed">Alters how residents are represented and who they vote for</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* CTA Block - Full Width Below */}
-          <div className="academic-card p-6 md:p-8 bg-gradient-to-r from-teal-100 to-cyan-100 border-2 border-teal-300 shadow-sm">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div>
-                <h3 className="text-academic-xl font-display font-bold text-academic-charcoal mb-2">
-                  Want to learn more?
-                </h3>
-                <p className="text-academic-sm text-academic-neutral-700 font-serif">
-                  Explore our comprehensive guide to Local Government Reorganisation
-                </p>
-              </div>
-              <button
-                onClick={() => onNavigate('facts/what-is-lgr')}
-                className="academic-button academic-button-primary inline-flex items-center gap-2 whitespace-nowrap"
-              >
-                Learn more about LGR
-                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-              </button>
             </div>
           </div>
         </section>
 
-        {/* Visual Separator */}
-        <div className="my-12 border-t border-academic-neutral-200"></div>
-
-        {/* Theme Cards Section - Content Hub */}
-        <section id="themes" className="mb-16 scroll-mt-8">
-          <div className="academic-section-header mb-8">
-            <div className="academic-section-label">EXPLORE BY THEME</div>
-            <h2 className="text-academic-3xl md:text-academic-4xl font-display font-bold text-academic-charcoal tracking-tight">
-              LGR Topics and Themes
+        {/* Current Research Streams Section */}
+        <section className="mb-16">
+          <div className="flex items-center justify-start mb-8 relative">
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-px bg-gradient-to-r from-teal-600 via-teal-600 to-transparent opacity-30"></div>
+            <h2 className="text-academic-3xl md:text-academic-4xl font-display font-bold text-teal-700 relative z-10 bg-academic-cream pr-4">
+              CURRENT RESEARCH STREAMS
             </h2>
-            <p className="text-academic-lg text-academic-neutral-700 mt-4 font-serif max-w-3xl">
-              Explore our research organised around key themes. Each theme features pillar pieces, essays, briefs, and related analysis.
-            </p>
           </div>
-
           {loadingThemes ? (
-            <LoadingSkeleton variant="card" count={3} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" />
+            <LoadingSkeleton variant="card" count={4} className="grid sm:grid-cols-2 gap-6" />
           ) : themes.length > 0 ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8" aria-label="Theme cards">
+            <div className="grid sm:grid-cols-2 gap-6">
               {themes.map((theme) => {
-                // Map theme slugs to banner images
+                const gradientColors = {
+                  'governance-and-reform': 'from-purple-900 via-purple-800 to-purple-900',
+                  'democratic-legitimacy': 'from-blue-900 via-blue-800 to-blue-900',
+                  'statecraft-and-system-design': 'from-teal-900 via-teal-800 to-teal-900',
+                };
+                const bgGradient = gradientColors[theme.slug as keyof typeof gradientColors] || 'from-slate-900 via-slate-800 to-slate-900';
+                
+                // Map theme slugs to banner images (same as theme cards section)
                 const bannerImages: Record<string, { src: string; position: string }> = {
                   'democratic-legitimacy': { src: '/Democracy_Banner_Image.jpg', position: 'center' },
                   'governance-and-reform': { src: '/Governance_Banner_Image.jpg', position: 'center bottom' },
                   'statecraft-and-system-design': { src: '/Statecraft_Banner_Image.jpg', position: 'center' },
                 };
                 const banner = bannerImages[theme.slug];
-                
+
                 return (
-                <div
-                  key={theme.slug}
-                  className="group academic-card p-6 text-left transition-all duration-300 flex flex-col relative overflow-hidden h-full hover:scale-[1.02] hover:shadow-xl hover:border-teal-300 border-2 border-transparent"
-                  style={{
-                    backgroundImage: banner ? `url(${banner.src})` : undefined,
-                    backgroundSize: 'cover',
-                    backgroundPosition: banner?.position || 'center',
-                    backgroundRepeat: 'no-repeat',
-                  }}
-                >
-                  {/* Background overlay for readability - allows 10% image visibility (90% transparent) */}
-                  <div className="absolute inset-0 bg-white z-0 transition-opacity duration-300 group-hover:opacity-85" style={{ opacity: 0.9 }} aria-hidden="true"></div>
-                  
-                  {/* Content layer */}
-                  <div className="relative z-10 flex flex-col h-full">
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className="w-12 h-12 bg-teal-50 flex items-center justify-center transition-all duration-300 group-hover:bg-teal-100 group-hover:scale-110 rounded-lg text-teal-600">
-                      {theme.icon}
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-academic-2xl font-serif italic font-bold text-academic-charcoal mb-2 group-hover:text-teal-700 transition-colors leading-tight">
+                  <div
+                    key={theme.slug}
+                    onClick={() => onNavigate(`topics/${theme.slug}`)}
+                    className={`group relative overflow-hidden rounded-lg bg-gradient-to-br ${bgGradient} p-8 cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl min-h-[200px] flex flex-col justify-between`}
+                    style={{
+                      backgroundImage: banner ? `url(${banner.src})` : undefined,
+                      backgroundSize: 'cover',
+                      backgroundPosition: banner?.position || 'center',
+                      backgroundRepeat: 'no-repeat',
+                    }}
+                  >
+                    {/* Gradient overlay to retain colors */}
+                    <div className={`absolute inset-0 bg-gradient-to-br ${bgGradient} opacity-80 group-hover:opacity-70 transition-opacity duration-300`}></div>
+                    <div className="relative z-10">
+                      <h3 className="text-academic-xl md:text-academic-2xl font-display font-bold text-white mb-3">
                         {theme.name}
                       </h3>
+                      <p className="text-white/90 text-academic-sm md:text-academic-base font-serif">
+                        {theme.description}
+                      </p>
                     </div>
                   </div>
-                  
-                  <p className="text-academic-base text-academic-charcoal mb-4 font-serif leading-relaxed flex-grow font-medium">
-                    {theme.description}
-                  </p>
-
-                  {theme.pillarArticle && (
-                    <div className="mb-4 pb-4 border-b border-academic-neutral-300">
-                      <div className="text-academic-xs font-display font-bold tracking-wider text-teal-700 mb-1">
-                        FEATURED PIECE
-                      </div>
-                      <h4 className="text-academic-lg font-display font-semibold text-academic-charcoal mb-2 line-clamp-2 group-hover:text-teal-700 transition-colors">
-                        {theme.pillarArticle.title}
-                      </h4>
-                      {theme.pillarArticle.excerpt && (
-                        <p className="text-academic-sm text-academic-neutral-800 line-clamp-2 font-serif">
-                          {theme.pillarArticle.excerpt}
-                        </p>
-                      )}
-                    </div>
-                  )}
-
-                  <div className="mb-4 flex flex-wrap gap-2">
-                    {theme.slug === 'governance-and-reform' && (
-                      <>
-                        <ThemeChip theme="Governance" variant="secondary" />
-                        <ThemeChip theme="Planning" variant="secondary" />
-                        <ThemeChip theme="Accountability" variant="secondary" />
-                      </>
-                    )}
-                    {theme.slug === 'democratic-legitimacy' && (
-                      <>
-                        <ThemeChip theme="Elections" variant="secondary" />
-                        <ThemeChip theme="Representation" variant="secondary" />
-                        <ThemeChip theme="Trust" variant="secondary" />
-                      </>
-                    )}
-                    {theme.slug === 'statecraft-and-system-design' && (
-                      <>
-                        <ThemeChip theme="Leadership" variant="secondary" />
-                        <ThemeChip theme="Operating Model" variant="secondary" />
-                        <ThemeChip theme="Risk" variant="secondary" />
-                      </>
-                    )}
-                  </div>
-
-                  <button
-                    onClick={() => onNavigate(`topics/${theme.slug}`)}
-                    className="academic-button academic-button-outline w-full mt-auto flex items-center justify-center gap-2 text-sm py-2.5"
-                    aria-label={`View ${theme.name} topic`}
-                  >
-                    View topic
-                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                  </button>
-                  </div>
-                </div>
                 );
               })}
+              {/* All our materials card */}
+              {themes.length < 4 && (
+                <Link
+                  to="/materials"
+                  className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-900 p-8 min-h-[200px] flex flex-col justify-between transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
+                >
+                  <div className="relative z-10">
+                    <h3 className="text-academic-xl md:text-academic-2xl font-display font-bold text-white mb-3">
+                      All our materials
+                    </h3>
+                    <p className="text-white/90 text-academic-sm md:text-academic-base font-serif">
+                      Explore all research, insights, case studies, and resources from the LGR Series
+                    </p>
+                  </div>
+                </Link>
+              )}
             </div>
           ) : (
-            <div className="academic-card p-12 text-center">
-              <p className="text-academic-lg text-academic-neutral-700 font-serif mb-4">
-                No themes with content available yet.
-              </p>
-              <p className="text-academic-sm text-academic-neutral-600 font-serif">
-                Theme cards will appear here as articles are published and tagged with themes.
-              </p>
+            <div className="grid sm:grid-cols-2 gap-6">
+              {/* Placeholder cards */}
+              {[1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className="relative overflow-hidden rounded-lg bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8 min-h-[200px] flex flex-col justify-between"
+                >
+                  <div className="relative z-10">
+                    <h3 className="text-academic-xl md:text-academic-2xl font-display font-bold text-white mb-3">
+                      Research Stream {i}
+                    </h3>
+                    <p className="text-white/90 text-academic-sm md:text-academic-base font-serif">
+                      Research stream description coming soon
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </section>
 
-        {/* Visual Separator */}
-        <div className="my-12 border-t border-academic-neutral-200"></div>
-
-        {/* Timelines and Areas Affected */}
+        {/* Meet LGR Series Section */}
         <section className="mb-16">
-          <h2 className="text-academic-3xl md:text-academic-4xl font-display font-bold text-academic-charcoal mb-8">
-            LGR Timelines and Areas
-          </h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="academic-card p-8 bg-gradient-to-br from-blue-50 to-cyan-50 border-l-4 border-blue-600 shadow-md hover:shadow-lg transition-shadow duration-300">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-lg flex items-center justify-center">
-                  <Calendar className="text-white" size={20} />
-                </div>
-                <h3 className="text-academic-xl font-display font-bold text-academic-charcoal">
-                  National LGR Roadmap 2026–2028
+          <div className="flex items-center justify-start mb-8 relative">
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-px bg-gradient-to-r from-teal-600 via-teal-600 to-transparent opacity-30"></div>
+            <h2 className="text-academic-3xl md:text-academic-4xl font-display font-bold text-teal-700 relative z-10 bg-academic-cream pr-4">
+              MEET LGR SERIES
+            </h2>
+          </div>
+          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
+            <Link
+              to="/editor/rowan-cole"
+              className="group relative overflow-hidden bg-gradient-to-br from-teal-800 via-teal-700 to-teal-800 p-6 rounded-lg transition-all duration-300 hover:scale-105 text-center min-h-[140px] flex flex-col justify-center"
+              style={{
+                backgroundImage: "url('/rowan-cole-coalface-engagement-director-headshot-folded-arms.jpg')",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+              }}
+            >
+              {/* Gradient overlay to maintain readability */}
+              <div className="absolute inset-0 bg-gradient-to-br from-teal-800 via-teal-700 to-teal-800 opacity-80 group-hover:opacity-75 transition-opacity duration-300"></div>
+              <div className="relative z-10">
+                <h3 className="text-academic-lg font-display font-bold text-white mb-2">
+                  Our Team
                 </h3>
+                <p className="text-white/90 text-academic-xs font-serif">
+                  Learn about the people behind LGR Series
+                </p>
               </div>
-              <p className="text-academic-base text-academic-neutral-700 leading-relaxed mb-6 font-serif">
-                The LGR timetable 2026 represents a significant wave of reorganisations across England. Key milestones include shadow elections in 2026, with many new unitary authorities taking full control in 2027 or 2028. Understanding the timeline is essential for effective planning and transition management.
+            </Link>
+            <Link
+              to="/about/contribute"
+              className="group relative overflow-hidden bg-gradient-to-br from-teal-800 via-teal-700 to-teal-800 p-6 rounded-lg transition-all duration-300 hover:scale-105 text-center min-h-[140px] flex flex-col justify-center"
+              style={{
+                backgroundImage: "url('/Oliver_TNail_Article.png')",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+              }}
+            >
+              {/* Gradient overlay to maintain readability */}
+              <div className="absolute inset-0 bg-gradient-to-br from-teal-800 via-teal-700 to-teal-800 opacity-80 group-hover:opacity-75 transition-opacity duration-300"></div>
+              <div className="relative z-10">
+                <h3 className="text-academic-lg font-display font-bold text-white mb-2">
+                  Contributors
+                </h3>
+                <p className="text-white/90 text-academic-xs font-serif">
+                  How to contribute to the LGR Series
+                </p>
+              </div>
+            </Link>
+            <Link
+              to="/about/contributors"
+              className="group relative overflow-hidden bg-gradient-to-br from-teal-800 via-teal-700 to-teal-800 p-6 rounded-lg transition-all duration-300 hover:scale-105 text-center min-h-[140px] flex flex-col justify-center"
+              style={{
+                backgroundImage: "url('/coalface-logo.png')",
+                backgroundSize: 'contain',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+              }}
+            >
+              {/* Gradient overlay to maintain readability */}
+              <div className="absolute inset-0 bg-gradient-to-br from-teal-800 via-teal-700 to-teal-800 opacity-80 group-hover:opacity-75 transition-opacity duration-300"></div>
+              <div className="relative z-10">
+                <h3 className="text-academic-lg font-display font-bold text-white mb-2">
+                  Partners
+                </h3>
+                <p className="text-white/90 text-academic-xs font-serif">
+                  Meet the organisations supporting our work
+                </p>
+              </div>
+            </Link>
+            <Link
+              to="/about"
+              className="group bg-teal-600 hover:bg-teal-700 p-6 rounded-lg transition-all duration-300 hover:scale-105 text-center"
+            >
+              <h3 className="text-academic-lg font-display font-bold text-white mb-2">
+                About
+              </h3>
+              <p className="text-white/90 text-academic-xs font-serif">
+                Learn more about LGR Series
               </p>
-              <button
-                onClick={() => onNavigate('lgr-journey-2026')}
-                className="academic-button academic-button-primary inline-flex items-center gap-2 hover:scale-105 transition-transform duration-300"
-              >
-                Open the LGR Timetable & Governance Roadmap
-                <ArrowRight size={16} />
-              </button>
-            </div>
-            <div className="academic-card p-8 bg-gradient-to-br from-emerald-50 to-teal-50 border-l-4 border-emerald-600 shadow-md hover:shadow-lg transition-shadow duration-300">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-lg flex items-center justify-center">
-                  <MapPin className="text-white" size={20} />
-                </div>
-                <h3 className="text-academic-xl font-display font-bold text-academic-charcoal">
-                  Where LGR is Live or Proposed
-                </h3>
-              </div>
-              <ul className="space-y-2 text-academic-base text-academic-neutral-700 font-serif mb-6">
-                <li className="flex items-start gap-2">
-                  <span className="text-teal-700 font-bold mt-1">•</span>
-                  <span>Dorset</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-teal-700 font-bold mt-1">•</span>
-                  <span>Somerset</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-teal-700 font-bold mt-1">•</span>
-                  <span>Cumbria</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-teal-700 font-bold mt-1">•</span>
-                  <span>Buckinghamshire</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-teal-700 font-bold mt-1">•</span>
-                  <span>Northamptonshire</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-teal-700 font-bold mt-1">•</span>
-                  <span>Surrey</span>
-                </li>
-              </ul>
-              <button
-                onClick={() => onNavigate('facts/council-cases')}
-                className="text-teal-700 hover:text-teal-800 font-display font-semibold inline-flex items-center gap-2 transition-colors"
-              >
-                See all case areas
-                <ArrowRight size={16} />
-              </button>
-            </div>
+            </Link>
           </div>
         </section>
 
-        {/* Visual Separator */}
-        <div className="my-12 border-t border-academic-neutral-200"></div>
-
-        {/* Latest Insights and Interviews */}
+        {/* Timelines and Areas Affected */}
         <section className="mb-16">
-          <h2 className="text-academic-3xl md:text-academic-4xl font-display font-bold text-academic-charcoal mb-8">
-            Latest from the LGR Series
-          </h2>
-          
-          {/* Row 1: Latest Articles */}
-          {loadingArticles ? (
-            <LoadingSkeleton variant="card" count={4} className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8" />
-          ) : recentArticles.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-              {recentArticles.map((article) => {
-                const articleTheme = getThemeForArticle(article);
-                return (
-                  <button
-                    key={article.id}
-                    onClick={() => onNavigate('insights', article.slug)}
-                    className="group academic-card p-6 text-left transition-all hover:shadow-xl hover:scale-[1.02] duration-300"
-                  >
-                    {article.featured_image ? (
-                      <div className="relative mb-4 aspect-video overflow-hidden rounded">
-                        <OptimizedImage
-                          src={article.featured_image}
-                          alt={article.title}
-                          variant="thumbnail"
-                          loading="lazy"
-                          className="image-zoom-effect"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      </div>
-                    ) : (
-                      /* Placeholder if no featured image */
-                      <div className="relative mb-4 aspect-video overflow-hidden rounded bg-gradient-to-br from-teal-100 to-cyan-100 flex items-center justify-center">
-                        <FileText className="text-teal-600" size={48} />
-                      </div>
-                    )}
-                    <h3 className="text-academic-lg font-display font-bold text-academic-charcoal mb-2 group-hover:text-teal-700 transition-colors line-clamp-2">
-                      {article.title}
-                    </h3>
-                    {article.excerpt && (
-                      <p className="text-academic-sm text-academic-neutral-700 mb-3 font-serif line-clamp-2">
-                        {article.excerpt}
-                      </p>
-                    )}
-                    {articleTheme && (
-                      <div className="mb-3" onClick={(e) => e.stopPropagation()}>
-                        <ThemeChip 
-                          theme={articleTheme} 
-                          variant="secondary" 
-                          href={getTopicSlugForTheme(articleTheme) || undefined}
-                        />
-                      </div>
-                    )}
-                    <div className="text-academic-xs font-display font-semibold text-teal-600">
-                      Read article →
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          ) : null}
+          <div className="flex items-center justify-start mb-8 relative">
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-px bg-gradient-to-r from-teal-600 via-teal-600 to-transparent opacity-30"></div>
+            <h2 className="text-academic-3xl md:text-academic-4xl font-display font-bold text-teal-700 relative z-10 bg-academic-cream pr-4">
+              LGR Timelines and Areas
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            <button
+              onClick={() => onNavigate('lgr-journey-2026')}
+              className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 p-8 cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl min-h-[200px] flex flex-col justify-between"
+            >
+              <div className="relative z-10">
+                <h3 className="text-academic-xl md:text-academic-2xl font-display font-bold text-white mb-3">
+                  National LGR Roadmap 2026–2028
+                </h3>
+                <p className="text-white/90 text-academic-sm md:text-academic-base font-serif mb-4">
+                  The LGR timetable 2026 represents a significant wave of reorganisations across England. Key milestones include shadow elections in 2026, with many new unitary authorities taking full control in 2027 or 2028. Understanding the timeline is essential for effective planning and transition management.
+                </p>
+                <div className="text-white/90 text-academic-xs font-display font-semibold">
+                  Open the LGR Timetable & Governance Roadmap →
+                </div>
+              </div>
+            </button>
+            <button
+              onClick={() => onNavigate('facts/council-cases')}
+              className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-900 p-8 cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl min-h-[200px] flex flex-col justify-between"
+            >
+              <div className="relative z-10">
+                <h3 className="text-academic-xl md:text-academic-2xl font-display font-bold text-white mb-3">
+                  Where LGR is Live or Proposed
+                </h3>
+                <ul className="space-y-2 text-white/90 text-academic-sm md:text-academic-base font-serif mb-4">
+                  <li className="flex items-start gap-2">
+                    <span className="text-white font-bold mt-1">•</span>
+                    <span>Dorset</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-white font-bold mt-1">•</span>
+                    <span>Somerset</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-white font-bold mt-1">•</span>
+                    <span>Cumbria</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-white font-bold mt-1">•</span>
+                    <span>Buckinghamshire</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-white font-bold mt-1">•</span>
+                    <span>Northamptonshire</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-white font-bold mt-1">•</span>
+                    <span>Surrey</span>
+                  </li>
+                </ul>
+                <div className="text-white/90 text-academic-xs font-display font-semibold">
+                  See all case areas →
+                </div>
+              </div>
+            </button>
+          </div>
+        </section>
 
-          {/* Row 2: Editor's Picks */}
-          {editorsPicks.length > 0 && (
-            <div>
-              <h3 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-6">
-                Editor's Picks
+        {/* First 100 Days Podcast */}
+        <section className="mb-16">
+          <div className="flex items-center justify-start mb-8 relative">
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-px bg-gradient-to-r from-teal-600 via-teal-600 to-transparent opacity-30"></div>
+            <h2 className="text-academic-3xl md:text-academic-4xl font-display font-bold text-teal-700 relative z-10 bg-academic-cream pr-4">
+              First 100 Days Podcast
+            </h2>
+          </div>
+          
+          {/* Banner Image - Cropped */}
+          <Link
+            to="/interviews"
+            className="block mb-8 group overflow-hidden rounded-lg"
+          >
+            <div className="w-full h-48 md:h-64 overflow-hidden">
+              <img
+                src="/LGR-100Podcast-Youtube-Banner.png"
+                alt="First 100 Days Podcast"
+                className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-[1.02]"
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+              />
+            </div>
+          </Link>
+
+          {/* Latest Episodes - Video Embeds */}
+          {loadingEpisodes ? (
+            <div className="mb-8">
+              <LoadingSkeleton variant="article" count={3} />
+            </div>
+          ) : latestEpisodes.length > 0 ? (
+            <div className="mb-8">
+              <h3 className="text-2xl md:text-3xl font-bold text-academic-charcoal mb-6 text-center">
+                Latest Episodes
               </h3>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {editorsPicks.map((article) => {
-                  const articleTheme = getThemeForArticle(article);
+                {latestEpisodes.map((episode) => {
+                  const embedUrl = convertToEmbedUrl(episode.video_url);
+                  if (!embedUrl) return null;
+                  
                   return (
-                    <button
-                      key={article.id}
-                      onClick={() => onNavigate('insights', article.slug)}
-                      className="group academic-card p-6 text-left transition-all hover:shadow-xl hover:scale-[1.02] duration-300 relative"
-                    >
-                      <div className="absolute top-4 right-4 bg-gradient-to-r from-teal-600 to-cyan-600 text-white px-3 py-1 rounded-full text-xs font-display font-bold shadow-lg z-10">
-                        EDITOR'S PICK
+                    <div key={episode.id} className="space-y-3">
+                      <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                        <iframe
+                          style={{
+                            borderRadius: '12px',
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%'
+                          }}
+                          src={embedUrl}
+                          width="100%"
+                          height="100%"
+                          frameBorder="0"
+                          allowFullScreen
+                          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                          loading="lazy"
+                          title={episode.title}
+                        />
                       </div>
-                      {article.featured_image ? (
-                        <div className="relative mb-4 aspect-video overflow-hidden rounded">
-                          <OptimizedImage
-                            src={article.featured_image}
-                            alt={article.title}
-                            variant="thumbnail"
-                            loading="lazy"
-                            className="image-zoom-effect"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        </div>
-                      ) : (
-                        /* Placeholder if no featured image */
-                        <div className="relative mb-4 aspect-video overflow-hidden rounded bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center">
-                          <FileText className="text-amber-600" size={48} />
-                        </div>
-                      )}
-                      <h3 className="text-academic-lg font-display font-bold text-academic-charcoal mb-2 group-hover:text-teal-700 transition-colors line-clamp-2">
-                        {article.title}
-                      </h3>
-                      {article.excerpt && (
-                        <p className="text-academic-sm text-academic-neutral-700 mb-3 font-serif line-clamp-2">
-                          {article.excerpt}
-                        </p>
-                      )}
-                      {articleTheme && (
-                        <div className="mb-3">
-                          <ThemeChip theme={articleTheme} variant="secondary" />
-                        </div>
-                      )}
-                      <div className="text-academic-xs font-display font-semibold text-teal-600">
-                        Read article →
-                      </div>
-                    </button>
+                      <h4 className="text-lg font-bold text-academic-charcoal line-clamp-2">
+                        {episode.title}
+                      </h4>
+                    </div>
                   );
                 })}
               </div>
             </div>
-          )}
+          ) : null}
         </section>
-
-        {/* Visual Separator */}
-        <div className="my-12 border-t border-academic-neutral-200"></div>
 
         {/* Tools and Practical Resources */}
         <section className="mb-16">
-          <h2 className="text-academic-3xl md:text-academic-4xl font-display font-bold text-academic-charcoal mb-8">
-            Tools and Practical Resources
-          </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="flex items-center justify-start mb-8 relative">
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-px bg-gradient-to-r from-teal-600 via-teal-600 to-transparent opacity-30"></div>
+            <h2 className="text-academic-3xl md:text-academic-4xl font-display font-bold text-teal-700 relative z-10 bg-academic-cream pr-4">
+              Tools and Practical Resources
+            </h2>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <button
               onClick={() => onNavigate('lgr-journey-2026')}
-              className="group academic-card p-6 text-left transition-all hover:shadow-xl hover:scale-[1.02] duration-300"
+              className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 p-8 cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl min-h-[200px] flex flex-col justify-between"
             >
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center transition-all duration-300 group-hover:scale-110 rounded-lg shadow-md">
-                  <Calendar size={24} className="text-white" />
+              <div className="relative z-10">
+                <h3 className="text-academic-xl md:text-academic-2xl font-display font-bold text-white mb-3">
+                  LGR Timetable & Governance Roadmap
+                </h3>
+                <p className="text-white/90 text-academic-sm md:text-academic-base font-serif mb-4">
+                  Overview of key milestones from proposal to vesting day.
+                </p>
+                <div className="text-white/90 text-academic-xs font-display font-semibold">
+                  Open roadmap →
                 </div>
-              </div>
-              <h3 className="text-academic-xl font-display font-bold text-academic-charcoal mb-3 group-hover:text-teal-700 transition-colors">
-                LGR Timetable & Governance Roadmap
-              </h3>
-              <p className="text-academic-sm text-academic-neutral-700 mb-4 font-serif">
-                Overview of key milestones from proposal to vesting day.
-              </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                <ThemeChip theme="Governance and Reform" variant="secondary" />
-              </div>
-              <div className="text-academic-sm font-display font-semibold text-teal-700">
-                Open roadmap →
               </div>
             </button>
 
             <button
               onClick={() => onNavigate('surrey/election-tracker/simulator')}
-              className="group academic-card p-6 text-left transition-all hover:shadow-xl hover:scale-[1.02] duration-300"
+              className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-900 p-8 cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl min-h-[200px] flex flex-col justify-between"
             >
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center transition-all duration-300 group-hover:scale-110 rounded-lg shadow-md">
-                  <Vote size={24} className="text-white" />
+              <div className="relative z-10">
+                <h3 className="text-academic-xl md:text-academic-2xl font-display font-bold text-white mb-3">
+                  Election & Representation Models
+                </h3>
+                <p className="text-white/90 text-academic-sm md:text-academic-base font-serif mb-4">
+                  How ward patterns and election timings change representation.
+                </p>
+                <div className="text-white/90 text-academic-xs font-display font-semibold">
+                  Explore models →
                 </div>
-              </div>
-              <h3 className="text-academic-xl font-display font-bold text-academic-charcoal mb-3 group-hover:text-teal-700 transition-colors">
-                Election & Representation Models
-              </h3>
-              <p className="text-academic-sm text-academic-neutral-700 mb-4 font-serif">
-                How ward patterns and election timings change representation.
-              </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                <ThemeChip theme="Democratic Legitimacy" variant="secondary" />
-              </div>
-              <div className="text-academic-sm font-display font-semibold text-teal-700">
-                Explore models →
               </div>
             </button>
 
             <button
               onClick={() => onNavigate('100days')}
-              className="group academic-card p-6 text-left transition-all hover:shadow-xl hover:scale-[1.02] duration-300"
+              className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900 p-8 cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl min-h-[200px] flex flex-col justify-between"
             >
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center transition-all duration-300 group-hover:scale-110 rounded-lg shadow-md">
-                  <BookOpen size={24} className="text-white" />
+              <div className="relative z-10">
+                <h3 className="text-academic-xl md:text-academic-2xl font-display font-bold text-white mb-3">
+                  First 100 Days Playbook
+                </h3>
+                <p className="text-white/90 text-academic-sm md:text-academic-base font-serif mb-4">
+                  Guidance for leaders, cabinet members and senior officers in new authorities.
+                </p>
+                <div className="text-white/90 text-academic-xs font-display font-semibold">
+                  Read playbook →
                 </div>
-              </div>
-              <h3 className="text-academic-xl font-display font-bold text-academic-charcoal mb-3 group-hover:text-teal-700 transition-colors">
-                First 100 Days Playbook
-              </h3>
-              <p className="text-academic-sm text-academic-neutral-700 mb-4 font-serif">
-                Guidance for leaders, cabinet members and senior officers in new authorities.
-              </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                <ThemeChip theme="Statecraft and System Design" variant="secondary" />
-                <ThemeChip theme="Governance and Reform" variant="secondary" />
-              </div>
-              <div className="text-academic-sm font-display font-semibold text-teal-700">
-                Read playbook →
               </div>
             </button>
 
             <button
               onClick={() => onNavigate('lessons')}
-              className="group academic-card p-6 text-left transition-all hover:shadow-xl hover:scale-[1.02] duration-300"
+              className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-amber-900 via-amber-800 to-amber-900 p-8 cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl min-h-[200px] flex flex-col justify-between"
             >
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-amber-600 to-orange-600 flex items-center justify-center transition-all duration-300 group-hover:scale-110 rounded-lg shadow-md">
-                  <Quote size={24} className="text-white" />
+              <div className="relative z-10">
+                <h3 className="text-academic-xl md:text-academic-2xl font-display font-bold text-white mb-3">
+                  Lessons Library
+                </h3>
+                <p className="text-white/90 text-academic-sm md:text-academic-base font-serif mb-4">
+                  Curated reflections and case studies from recent reorganisations.
+                </p>
+                <div className="text-white/90 text-academic-xs font-display font-semibold">
+                  Browse lessons →
                 </div>
-              </div>
-              <h3 className="text-academic-xl font-display font-bold text-academic-charcoal mb-3 group-hover:text-teal-700 transition-colors">
-                Lessons Library
-              </h3>
-              <p className="text-academic-sm text-academic-neutral-700 mb-4 font-serif">
-                Curated reflections and case studies from recent reorganisations.
-              </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                <ThemeChip theme="All themes" variant="secondary" />
-              </div>
-              <div className="text-academic-sm font-display font-semibold text-teal-700">
-                Browse lessons →
               </div>
             </button>
           </div>
-
-          {/* Additional Cards Row - 3 cards with equal heights */}
-          <div className="grid md:grid-cols-3 gap-6 mt-8 items-stretch">
-            {/* LGR Podcast and Audio Card */}
-            <button
-              onClick={() => onNavigate('interviews')}
-              className="group academic-card p-6 text-left transition-all hover:shadow-xl hover:scale-[1.02] duration-300 flex flex-col h-full"
-            >
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center transition-all duration-300 group-hover:scale-110 rounded-lg shadow-md">
-                  <Headphones size={24} className="text-white" />
-                </div>
-              </div>
-              <h3 className="text-academic-xl font-display font-bold text-academic-charcoal mb-3 group-hover:text-teal-700 transition-colors">
-                LGR Podcast and Audio
-              </h3>
-              <p className="text-academic-sm text-academic-neutral-700 mb-4 font-serif flex-grow">
-                Conversations with leaders, practitioners and academics on how LGR works in practice.
-              </p>
-              <div className="text-academic-sm font-display font-semibold text-teal-700">
-                View all episodes →
-              </div>
-            </button>
-
-            {/* Who This Hub Is For Card */}
-            <div className="academic-card p-6 text-left transition-all hover:shadow-xl duration-300 flex flex-col h-full">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-teal-600 to-cyan-600 flex items-center justify-center rounded-lg shadow-md">
-                  <Users size={24} className="text-white" />
-                </div>
-              </div>
-              <h3 className="text-academic-xl font-display font-bold text-academic-charcoal mb-3">
-                Who This Hub Is For
-              </h3>
-              <p className="text-academic-sm text-academic-neutral-700 font-serif flex-grow">
-                This hub is designed for councillors, senior officers, partners (NHS, police, universities, voluntary sector), developers, suppliers, and residents who need clear, practical insight on Local Government Reorganisation in England.
-              </p>
-            </div>
-
-            {/* Stay Informed Card */}
-            <div className="academic-card p-3 text-left transition-all hover:shadow-xl duration-300 flex flex-col h-full">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-teal-600 to-cyan-600 flex items-center justify-center rounded-lg shadow-md">
-                  <Mail size={18} className="text-white" />
-                </div>
-              </div>
-              <h3 className="text-academic-lg font-display font-bold text-academic-charcoal mb-2">
-                Stay Informed on LGR
-              </h3>
-              <p className="text-academic-sm text-academic-neutral-700 mb-3 font-serif">
-                Subscribe to receive updates and new insights from the LGR Series directly in your inbox.
-              </p>
-              <div className="flex-grow -m-3">
-                <Suspense fallback={<div className="h-12 bg-slate-200/50 animate-pulse rounded" />}>
-                  <div className="[&>div]:!p-4 [&>div>h3]:!text-base [&>div>h3]:!mb-2 [&>div>p]:!text-xs [&>div>p]:!mb-3 [&>div>form]:!space-y-2 [&>div>form>div>input]:!py-2 [&>div>form>div>input]:!px-3 [&>div>form>div>input]:!text-sm [&>div>form>button]:!py-2 [&>div>form>button]:!text-xs [&>div>form>button]:!min-h-[40px]">
-                    <SubscriptionForm variant="default" />
-                  </div>
-                </Suspense>
-              </div>
-            </div>
-          </div>
         </section>
 
-        {/* Frequently Asked Questions Section - Full Width */}
-        <section className="mb-16">
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify({
-                "@context": "https://schema.org",
-                "@type": "FAQPage",
-                "mainEntity": [
-                  {
-                    "@type": "Question",
-                    "name": "What is LGR?",
-                    "acceptedAnswer": {
-                      "@type": "Answer",
-                      "text": "Local Government Reorganisation (LGR) is the process of restructuring councils and governance arrangements, often replacing two-tier counties and districts with new unitary authorities."
-                    }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "What is the LGR timetable?",
-                    "acceptedAnswer": {
-                      "@type": "Answer",
-                      "text": "The LGR timetable 2026 represents a significant wave of reorganisations across England. Key milestones include shadow elections in 2026, with many new unitary authorities taking full control in 2027 or 2028."
-                    }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "Who decides when reorganisation happens?",
-                    "acceptedAnswer": {
-                      "@type": "Answer",
-                      "text": "Reorganisation proposals are typically initiated by local authorities or the Secretary of State, and require approval from Parliament before implementation."
-                    }
-                  }
-                ]
-              })
-            }}
-          />
-          <div className="academic-card p-8 md:p-10">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center rounded-lg shadow-md">
-                <HelpCircle size={24} className="text-white" />
-              </div>
-              <h2 className="text-academic-2xl md:text-academic-3xl font-display font-bold text-academic-charcoal">
-                Frequently Asked Questions
-              </h2>
-            </div>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div>
-                <h3 className="text-academic-lg font-display font-semibold text-academic-charcoal mb-3">
-                  What is LGR?
-                </h3>
-                <p className="text-academic-sm text-academic-neutral-700 font-serif leading-relaxed">
-                  Local Government Reorganisation (LGR) is the process of restructuring councils and governance arrangements, often replacing two-tier counties and districts with new unitary authorities.
-                </p>
-              </div>
-              <div>
-                <h3 className="text-academic-lg font-display font-semibold text-academic-charcoal mb-3">
-                  What is the LGR timetable?
-                </h3>
-                <p className="text-academic-sm text-academic-neutral-700 font-serif leading-relaxed">
-                  The LGR timetable 2026 represents a significant wave of reorganisations across England. Key milestones include shadow elections in 2026, with many new unitary authorities taking full control in 2027 or 2028.
-                </p>
-              </div>
-              <div>
-                <h3 className="text-academic-lg font-display font-semibold text-academic-charcoal mb-3">
-                  Who decides when reorganisation happens?
-                </h3>
-                <p className="text-academic-sm text-academic-neutral-700 font-serif leading-relaxed">
-                  Reorganisation proposals are typically initiated by local authorities or the Secretary of State, and require approval from Parliament before implementation.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
+        {/* FAQ Section */}
+        <FAQSection page="home" />
 
       </div>
     </div>

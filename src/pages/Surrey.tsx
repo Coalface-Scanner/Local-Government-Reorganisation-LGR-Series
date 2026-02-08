@@ -1,7 +1,8 @@
-import SubscriptionForm from '../components/SubscriptionForm';
+import { useLocation, Link } from 'react-router-dom';
 import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
+import PageBanner from '../components/PageBanner';
 import PageNavigation from '../components/PageNavigation';
 import LocalPlaceStructuredData from '../components/LocalPlaceStructuredData';
 import InBriefSection from '../components/InBriefSection';
@@ -12,6 +13,7 @@ interface SurreyProps {
 }
 
 export default function Surrey({ onNavigate }: SurreyProps) {
+  const location = useLocation();
   const navItems = [
     { id: 'playbook', label: 'The Playbook', icon: <BookOpen size={16} /> },
     { id: 'disciplines', label: 'Five Disciplines', icon: <Target size={16} /> },
@@ -46,29 +48,12 @@ export default function Surrey({ onNavigate }: SurreyProps) {
         ]}
         url="/surrey"
       />
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        {/* Colored gradient overlay */}
-        <div 
-          className="absolute inset-0 opacity-60 z-0"
-          style={{
-            background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.4) 0%, rgba(6, 182, 212, 0.5) 50%, rgba(14, 165, 233, 0.4) 100%)'
-          }}
-        />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">CASE STUDY</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              Surrey:{' '}
-              <span className="text-teal-700 font-serif italic">
-                Lessons & Warnings
-              </span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              Primary risks for Surrey based on evidence from elsewhere, with actionable guidance for the first 100 days
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageBanner
+        heroLabel="CASE STUDY"
+        heroTitle="Surrey: Lessons & Warnings"
+        heroSubtitle="Primary risks for Surrey based on evidence from elsewhere, with actionable guidance for the first 100 days"
+        currentPath={location.pathname}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <InBriefSection content="Surrey is undergoing Local Government Reorganisation (LGR) to form East Surrey and West Surrey unitary authorities, with shadow elections scheduled for May 2026 and go-live in May 2027. This fast-tracked LGR timetable 2026 creates both opportunities and risks, particularly around planning decisions, councillor transitions, and governance during the transition period. Evidence from recent reorganisations suggests careful management of the first 100 days is critical for success." />
@@ -247,7 +232,12 @@ export default function Surrey({ onNavigate }: SurreyProps) {
                 <p className="text-sm text-white mb-4">
                   Get the LGR Series directly in your inbox. No fluff, just deep analysis.
                 </p>
-                <SubscriptionForm variant="compact" />
+                <Link
+                  to="/subscribe"
+                  className="inline-block bg-white text-teal-700 px-6 py-3 rounded-lg font-display font-bold text-sm uppercase tracking-wider hover:bg-teal-50 transition-colors"
+                >
+                  Subscribe
+                </Link>
               </div>
 
               <div className="border-2 border-neutral-900 bg-white p-5">

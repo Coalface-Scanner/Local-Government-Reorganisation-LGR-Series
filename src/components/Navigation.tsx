@@ -7,7 +7,7 @@ interface NavigationProps {
   currentPage: string;
 }
 
-export default function Navigation({ onNavigate: _onNavigate, currentPage }: NavigationProps) {
+export default function Navigation({ onNavigate: _onNavigate, currentPage: _currentPage }: NavigationProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lgrHubDropdownOpen, setLgrHubDropdownOpen] = useState(false);
   const [topicsDropdownOpen, setTopicsDropdownOpen] = useState(false);
@@ -39,6 +39,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
   const mainContainerRef = useRef<HTMLDivElement>(null);
   const logoContainerRef = useRef<HTMLDivElement>(null);
   const logoImageRef = useRef<HTMLImageElement>(null);
+  const highRedLogoRef = useRef<HTMLImageElement>(null);
   const navRef = useRef<HTMLElement>(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -107,6 +108,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
     { id: 'topics', label: 'TOPICS', path: '/topics' },
     { id: 'insights', label: 'INSIGHTS', path: '/insights' },
     { id: 'facts', label: 'FACTS & DATA', path: '/facts-and-data' },
+    { id: 'glossary', label: 'GLOSSARY', path: '/glossary' },
     { id: 'lessons', label: 'LESSONS', path: '/lessons' },
     { id: 'surrey', label: 'FOCUS: SURREY', path: '/surrey' },
     { id: 'about', label: 'ABOUT', path: '/about' },
@@ -195,6 +197,8 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
   const isInsightsSection = location.pathname.startsWith('/insights') || location.pathname.startsWith('/100days') || location.pathname.startsWith('/news');
   // Check if current page is under facts section (check /facts-and-data first to avoid matching /facts)
   const isFactsSection = location.pathname.startsWith('/facts-and-data') || (location.pathname.startsWith('/facts') && !location.pathname.startsWith('/facts-and-data')) || location.pathname.startsWith('/materials') || location.pathname.startsWith('/councils');
+  // Check if current page is glossary
+  const isGlossarySection = location.pathname.startsWith('/glossary');
   // Check if current page is under surrey section
   const isSurreySection = location.pathname.startsWith('/surrey');
   // Check if current page is under about section
@@ -219,7 +223,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
           <div className="flex justify-between items-center text-[0.625rem] md:text-[0.6875rem] tracking-wider text-academic-neutral-700 font-display font-medium" style={{ lineHeight: '1.1', margin: 0, padding: 0 }}>
             <div className="hidden md:block" style={{ lineHeight: '1.1', margin: 0, padding: 0 }}>EST. 2025 | A <a href="https://www.coalfaceengagement.co.uk" target="_blank" rel="noopener noreferrer" className="hover:text-academic-charcoal transition-colors underline">COALFACE</a> Insight Project</div>
             <div className="md:hidden text-[0.5rem]" style={{ lineHeight: '1.1', margin: 0, padding: 0 }}>EST. 2025</div>
-            <div className="hidden sm:block text-[0.625rem] md:text-[0.6875rem] font-display font-medium text-academic-neutral-600 text-center absolute left-1/2 -translate-x-1/2" style={{ lineHeight: '1.1' }}>{currentDate || 'Loading...'}</div>
+            <div className="hidden sm:block text-[0.625rem] md:text-[0.6875rem] font-display font-medium text-academic-neutral-800 text-center absolute left-1/2 -translate-x-1/2" style={{ lineHeight: '1.1' }}>{currentDate || 'Loading...'}</div>
             <div className="flex gap-2 sm:gap-3 text-[0.5rem] sm:text-[0.625rem]" style={{ margin: 0, padding: 0 }}>
               <Link
                 to="/admin/login"
@@ -237,38 +241,71 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
       <div ref={mainContainerRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ paddingTop: 0, paddingBottom: 0 }}>
         <div 
           ref={logoContainerRef}
-          className="flex items-center justify-center border-b border-academic-neutral-300" 
-          style={{ paddingTop: 0, paddingBottom: 0, margin: 0, marginTop: '-2px' }}
+          className="flex items-start justify-center border-b border-academic-neutral-300 py-1 sm:py-2" 
+          style={{ margin: 0, marginTop: '-2px' }}
         >
           <Link
             to="/"
             aria-label="Go to homepage"
-            className="flex items-center hover:opacity-90 transition-opacity"
+            className="flex items-start hover:opacity-90 transition-opacity"
             style={{ margin: 0, padding: 0, gap: '0.5rem' }}
           >
             {/* LGR High Red Logo */}
-            <div className="flex-shrink-0 flex items-center" style={{ margin: 0, padding: 0 }}>
+            <div className="flex-shrink-0 flex flex-col items-center" style={{ margin: 0, padding: 0 }}>
               <img 
+                ref={highRedLogoRef}
                 src="/LGR_HighRed_Logo.png" 
                 alt="LGR High Red Logo" 
-                className="h-[2.4rem] sm:h-[3rem] md:h-[3.6rem] w-auto object-contain"
+                className="lgr-highred-logo"
                 loading="eager"
-                style={{ display: 'block', margin: 0, padding: 0 }}
+                style={{ 
+                  display: 'block', 
+                  margin: 0, 
+                  padding: 0, 
+                  height: '32px', 
+                  width: 'auto', 
+                  maxHeight: '32px',
+                  maxWidth: 'none',
+                  objectFit: 'contain'
+                }}
               />
+              <span className="text-[0.625rem] sm:text-[0.75rem] md:text-[0.875rem] font-display font-bold text-academic-charcoal tracking-wider uppercase mt-1 leading-tight">
+                Series
+              </span>
             </div>
             
             {/* LGR Logo */}
-            <div className="flex-shrink-0 flex items-center h-[3.6rem] sm:h-[4.5rem] md:h-[5.4rem] overflow-hidden relative" style={{ margin: 0, padding: 0 }}>
-              <div style={{ position: 'absolute', top: '-20%', left: 0, right: 0, height: '140%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <img 
-                  ref={logoImageRef}
-                  src="/LGR Podcast Logo Trial.png" 
-                  alt="LGR Logo" 
-                  className="h-[6rem] sm:h-[7.5rem] md:h-[9rem] w-auto object-contain"
-                  loading="eager"
-                  style={{ display: 'block', margin: 0, padding: 0 }}
-                />
-              </div>
+            <div 
+              className="flex-shrink-0 flex items-center overflow-hidden relative lgr-logo-container" 
+              style={{ 
+                margin: 0, 
+                padding: 0, 
+                height: '48px', 
+                maxHeight: '48px',
+                width: 'auto',
+                minWidth: 0
+              }}
+            >
+              <img 
+                ref={(el) => {
+                  logoImageRef.current = el;
+                }}
+                src="/LGR Podcast Logo Trial.png" 
+                alt="LGR Logo" 
+                className="lgr-main-logo"
+                loading="eager"
+                style={{ 
+                  display: 'block', 
+                  margin: 0, 
+                  padding: 0, 
+                  height: '48px', 
+                  width: 'auto', 
+                  maxHeight: '48px', 
+                  maxWidth: 'none',
+                  objectFit: 'contain',
+                  flexShrink: 0
+                }}
+              />
             </div>
             
             {/* Text Stack */}
@@ -502,7 +539,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
                             : 'text-academic-neutral-700 hover:bg-academic-warm'
                         }`}
                       >
-                        Interviews
+                        Podcast
                       </Link>
                     </div>
                   )}
@@ -565,9 +602,34 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
                       >
                         Council Map & Profiles
                       </Link>
+                      <Link
+                        to="/glossary"
+                        className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
+                          location.pathname.startsWith('/glossary')
+                            ? 'text-teal-600 bg-teal-50'
+                            : 'text-academic-neutral-700 hover:bg-academic-warm'
+                        }`}
+                      >
+                        Glossary
+                      </Link>
                     </div>
                   )}
                 </div>
+              );
+            }
+            if (item.id === 'glossary') {
+              return (
+                <Link
+                  key={item.id}
+                  to={item.path}
+                  className={`px-2 py-1.5 text-[0.625rem] font-display font-bold tracking-wider transition-all duration-200 min-h-[24px] flex items-center justify-center whitespace-nowrap ${
+                    isGlossarySection
+                      ? 'text-teal-600 border-b-2 border-teal-500'
+                      : 'text-academic-neutral-700 hover:text-academic-charcoal'
+                  }`}
+                >
+                  {item.label}
+                </Link>
               );
             }
             if (item.id === 'surrey') {
@@ -1017,7 +1079,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
                                 : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
                             }`}
                           >
-                            Interviews
+                            Podcast
                           </Link>
                         </div>
                       )}
@@ -1076,9 +1138,36 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage }: Nav
                           >
                             Council Map & Profiles
                           </Link>
+                          <Link
+                            to="/glossary"
+                            onClick={handleNavClick}
+                            className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
+                              location.pathname.startsWith('/glossary')
+                                ? 'text-teal-700 bg-teal-100'
+                                : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
+                            }`}
+                          >
+                            Glossary
+                          </Link>
                         </div>
                       )}
                     </div>
+                  );
+                }
+                if (item.id === 'glossary') {
+                  return (
+                    <Link
+                      key={item.id}
+                      to={item.path}
+                      onClick={handleNavClick}
+                      className={`w-full px-4 py-3 text-sm font-bold tracking-wider text-left border-b border-neutral-100 transition-colors ${
+                        isGlossarySection
+                          ? 'text-teal-600 bg-teal-50'
+                          : 'text-academic-neutral-700 hover:bg-academic-warm'
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
                   );
                 }
                 if (item.id === 'surrey') {

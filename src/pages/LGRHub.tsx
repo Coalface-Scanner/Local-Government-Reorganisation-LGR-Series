@@ -1,7 +1,8 @@
-import { ArrowRight, Calendar, Vote, BookOpen, Headphones, Route } from 'lucide-react';
+import { ArrowRight, Calendar, BookOpen, Headphones, Route } from 'lucide-react';
+import { useLocation, Link } from 'react-router-dom';
 import MetaTags from '../components/MetaTags';
 import CollectionPageStructuredData from '../components/CollectionPageStructuredData';
-import SubscriptionForm from '../components/SubscriptionForm';
+import PageBanner from '../components/PageBanner';
 import LastUpdated from '../components/LastUpdated';
 
 interface LGRHubProps {
@@ -44,6 +45,8 @@ const hubSections = [
 ];
 
 export default function LGRHub({ onNavigate }: LGRHubProps) {
+  const location = useLocation();
+  
   return (
     <div className="min-h-screen bg-academic-cream">
       <MetaTags
@@ -63,29 +66,12 @@ export default function LGRHub({ onNavigate }: LGRHubProps) {
         }))}
       />
       
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        {/* Colored gradient overlay */}
-        <div 
-          className="absolute inset-0 opacity-60 z-0"
-          style={{
-            background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.4) 0%, rgba(6, 182, 212, 0.5) 50%, rgba(14, 165, 233, 0.4) 100%)'
-          }}
-        />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">LGR HUB</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              Local Government Reorganisation{' '}
-              <span className="text-teal-700 font-serif italic">
-                Hub
-              </span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              Your central resource for Local Government Reorganisation. Explore roadmap, tools, podcast, and practical guidance for council reorganisation.
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageBanner
+        heroLabel="LGR HUB"
+        heroTitle="Local Government Reorganisation Hub"
+        heroSubtitle="Your central resource for Local Government Reorganisation. Explore roadmap, tools, podcast, and practical guidance for council reorganisation."
+        currentPath={location.pathname}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
@@ -135,7 +121,12 @@ export default function LGRHub({ onNavigate }: LGRHubProps) {
             <p className="text-academic-sm text-white mb-5 font-serif">
               Get the LGR Series directly in your inbox. No fluff, just deep analysis.
             </p>
-            <SubscriptionForm variant="compact" />
+            <Link
+              to="/subscribe"
+              className="inline-block bg-white text-teal-700 px-6 py-3 rounded-lg font-display font-bold text-sm uppercase tracking-wider hover:bg-teal-50 transition-colors"
+            >
+              Subscribe
+            </Link>
           </div>
         </div>
       </div>

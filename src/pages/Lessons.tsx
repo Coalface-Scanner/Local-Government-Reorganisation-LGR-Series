@@ -1,13 +1,17 @@
-import { useEffect, useState } from 'react';
-import SubscriptionForm from '../components/SubscriptionForm';
+import { useEffect, useState, useMemo } from 'react';
+import { useLocation, Link } from 'react-router-dom';
 import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
+import PageBanner from '../components/PageBanner';
 import PageNavigation from '../components/PageNavigation';
 import RelatedContent from '../components/RelatedContent';
 import { supabase } from '../lib/supabase';
 import { BookOpen, Lightbulb, Target, Users, TrendingUp, Building2, FileText, Scale, DollarSign, ArrowRight } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
+import { enhanceContentWithGlossaryLinks } from '../lib/glossaryLinks';
+import { useScrollDepthTracking } from '../hooks/useScrollDepthTracking';
+import { useTimeOnPageTracking } from '../hooks/useTimeOnPageTracking';
 
 interface LessonsProps {
   onNavigate: (page: string) => void;
@@ -40,6 +44,23 @@ interface RelatedArticle {
 export default function Lessons({ onNavigate }: LessonsProps) {
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [relatedArticles, setRelatedArticles] = useState<RelatedArticle[]>([]);
+  const location = useLocation();
+
+  // Track scroll depth and time on page
+  useScrollDepthTracking();
+  useTimeOnPageTracking();
+
+  // Enhance lessons content with glossary links
+  const enhancedLessons = useMemo(() => {
+    return lessons.map(lesson => ({
+      ...lesson,
+      enhancedContent: enhanceContentWithGlossaryLinks(lesson.content, {
+        onlyFirstOccurrence: true,
+        excludeSlugs: [],
+        linkClass: 'glossary-link text-teal-700 hover:text-teal-800 underline font-medium'
+      })
+    }));
+  }, [lessons]);
 
   const navItems = [
     { id: 'insights', label: 'Key Insights', icon: <BookOpen size={16} /> },
@@ -140,29 +161,12 @@ export default function Lessons({ onNavigate }: LessonsProps) {
         description="Critical lessons from recent local government reorganisations across England. Evidence-based insights on what works, what fails, and how to navigate reform."
         keywords="LGR lessons, council reform insights, reorganisation best practices, local government change management, unitary transition guidance"
       />
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        {/* Colored gradient overlay */}
-        <div 
-          className="absolute inset-0 opacity-60 z-0"
-          style={{
-            background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.4) 0%, rgba(6, 182, 212, 0.5) 50%, rgba(14, 165, 233, 0.4) 100%)'
-          }}
-        />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">LEARNING FROM EXPERIENCE</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              Lessons from{' '}
-              <span className="text-teal-700 font-serif italic">
-                Reorganisation
-              </span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              What recent reorganisations have taught us about governance, planning, and delivery across England
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageBanner
+        heroLabel="LEARNING FROM EXPERIENCE"
+        heroTitle="Lessons from Reorganisation"
+        heroSubtitle="What recent reorganisations have taught us about governance, planning, and delivery across England"
+        currentPath={location.pathname}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="grid lg:grid-cols-3 gap-6">
@@ -179,58 +183,83 @@ export default function Lessons({ onNavigate }: LessonsProps) {
               </div>
 
               <div className="space-y-8">
-                <p className="text-academic-lg text-academic-neutral-700 leading-relaxed font-serif">
-                  The recent wave of local government reorganisation across England provides valuable evidence about
-                  what works, what doesn't, and why outcomes vary so significantly between authorities.
-                </p>
-
-                <div className="grid md:grid-cols-2 gap-8 my-12">
-                  <div className="bg-teal-50 border border-teal-300 p-8">
-                    <div className="w-12 h-12 bg-teal-700 flex items-center justify-center mb-5">
-                      <Lightbulb className="text-white" size={24} />
-                    </div>
-                    <h3 className="font-display font-bold text-academic-charcoal mb-4 text-academic-xl">Governance Matters</h3>
-                    <p className="text-academic-base text-academic-neutral-700 leading-relaxed font-serif">
-                      Clear decision-making structures and political stewardship are critical success factors
-                    </p>
-                  </div>
-
-                  <div className="bg-teal-50 border border-teal-300 p-8">
-                    <div className="w-12 h-12 bg-teal-700 flex items-center justify-center mb-5">
-                      <Target className="text-white" size={24} />
-                    </div>
-                    <h3 className="font-display font-bold text-academic-charcoal mb-4 text-academic-xl">Systems Integration</h3>
-                    <p className="text-academic-base text-academic-neutral-700 leading-relaxed font-serif">
-                      Technical convergence and data integration cannot be delayed or deprioritised
-                    </p>
-                  </div>
-
-                  <div className="bg-teal-50 border border-teal-300 p-8">
-                    <div className="w-12 h-12 bg-teal-700 flex items-center justify-center mb-5">
-                      <Users className="text-white" size={24} />
-                    </div>
-                    <h3 className="font-display font-bold text-academic-charcoal mb-4 text-academic-xl">Workforce Capacity</h3>
-                    <p className="text-academic-base text-academic-neutral-700 leading-relaxed font-serif">
-                      Staff retention and organisational culture determine whether change succeeds or stalls
-                    </p>
-                  </div>
-
-                  <div className="bg-teal-50 border border-teal-300 p-8">
-                    <div className="w-12 h-12 bg-teal-700 flex items-center justify-center mb-5">
-                      <TrendingUp className="text-white" size={24} />
-                    </div>
-                    <h3 className="font-display font-bold text-academic-charcoal mb-4 text-academic-xl">Financial Reality</h3>
-                    <p className="text-academic-base text-academic-neutral-700 leading-relaxed font-serif">
-                      Early transition costs must be properly funded, not absorbed from existing budgets
-                    </p>
-                  </div>
+                <div>
+                  <h2 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-4">What Lessons Can We Learn from Recent Reorganisations?</h2>
+                  <p className="text-academic-lg text-academic-neutral-700 leading-relaxed font-serif mb-6">
+                    Recent local government reorganisations across England reveal four critical success factors: 
+                    strong governance structures, effective systems integration, workforce capacity retention, 
+                    and proper financial planning. Authorities that prioritise these areas achieve smoother 
+                    transitions and better outcomes, while those that deprioritise them face delays, 
+                    disruption, and reduced performance.
+                  </p>
                 </div>
 
-                <p className="text-academic-base text-academic-neutral-700 leading-relaxed font-serif">
-                  Detailed analysis and case studies from recent reorganisations will be published here as part of
-                  the ongoing research series. This content will examine specific governance models, planning system
-                  transitions, and the political dynamics that shape outcomes.
-                </p>
+                <div>
+                  <h3 className="text-academic-xl font-display font-bold text-academic-charcoal mb-6">Key Success Factors</h3>
+                  <ul className="space-y-4 mb-8">
+                    <li className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-teal-700 flex items-center justify-center flex-shrink-0 mt-1">
+                        <Lightbulb className="text-white" size={24} />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-display font-bold text-academic-charcoal mb-2 text-academic-lg">Governance Matters</h4>
+                        <p className="text-academic-base text-academic-neutral-700 leading-relaxed font-serif">
+                          Clear decision-making structures and political stewardship are critical success factors. 
+                          Authorities with well-defined governance frameworks and strong political leadership navigate 
+                          transition more effectively than those with fragmented decision-making.
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-teal-700 flex items-center justify-center flex-shrink-0 mt-1">
+                        <Target className="text-white" size={24} />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-display font-bold text-academic-charcoal mb-2 text-academic-lg">Systems Integration</h4>
+                        <p className="text-academic-base text-academic-neutral-700 leading-relaxed font-serif">
+                          Technical convergence and data integration cannot be delayed or deprioritised. 
+                          Early investment in merging IT systems, data platforms, and operational processes 
+                          prevents bottlenecks and service disruption during transition.
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-teal-700 flex items-center justify-center flex-shrink-0 mt-1">
+                        <Users className="text-white" size={24} />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-display font-bold text-academic-charcoal mb-2 text-academic-lg">Workforce Capacity</h4>
+                        <p className="text-academic-base text-academic-neutral-700 leading-relaxed font-serif">
+                          Staff retention and organisational culture determine whether change succeeds or stalls. 
+                          Authorities that invest in change management, clear communication, and staff support 
+                          maintain service quality throughout transition.
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-teal-700 flex items-center justify-center flex-shrink-0 mt-1">
+                        <TrendingUp className="text-white" size={24} />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-display font-bold text-academic-charcoal mb-2 text-academic-lg">Financial Reality</h4>
+                        <p className="text-academic-base text-academic-neutral-700 leading-relaxed font-serif">
+                          Early transition costs must be properly funded, not absorbed from existing budgets. 
+                          Realistic financial planning that accounts for one-off transition expenses, system 
+                          integration costs, and temporary capacity gaps prevents budget overruns and service cuts.
+                        </p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className="text-academic-xl font-display font-bold text-academic-charcoal mb-4">Ongoing Research</h3>
+                  <p className="text-academic-base text-academic-neutral-700 leading-relaxed font-serif">
+                    Detailed analysis and case studies from recent reorganisations will be published here as part of
+                    the ongoing research series. This content will examine specific governance models, planning system
+                    transitions, and the political dynamics that shape outcomes.
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -293,7 +322,7 @@ export default function Lessons({ onNavigate }: LessonsProps) {
                     <h3 className="text-academic-2xl font-display font-bold text-academic-charcoal">Lessons from Experience</h3>
                   </div>
                   <div className="grid md:grid-cols-2 gap-8">
-                    {lessons.map((lesson) => {
+                    {enhancedLessons.map((lesson) => {
                       const Icon = getIconComponent(lesson.icon);
                       return (
                         <div key={lesson.id} className="academic-card p-8">
@@ -307,7 +336,7 @@ export default function Lessons({ onNavigate }: LessonsProps) {
                               </h4>
                               <div 
                                 className="text-academic-sm text-academic-neutral-700 font-serif leading-relaxed prose prose-sm max-w-none"
-                                dangerouslySetInnerHTML={{ __html: lesson.content }}
+                                dangerouslySetInnerHTML={{ __html: lesson.enhancedContent }}
                               />
                             </div>
                           </div>
@@ -330,7 +359,12 @@ export default function Lessons({ onNavigate }: LessonsProps) {
                 <p className="text-academic-sm text-white mb-5 font-serif">
                   Get the LGR Series directly in your inbox. No fluff, just deep analysis.
                 </p>
-                <SubscriptionForm variant="compact" />
+                <Link
+                  to="/subscribe"
+                  className="inline-block bg-white text-teal-700 px-6 py-3 rounded-lg font-display font-bold text-sm uppercase tracking-wider hover:bg-teal-50 transition-colors"
+                >
+                  Subscribe
+                </Link>
               </div>
 
               <div className="academic-card p-8">

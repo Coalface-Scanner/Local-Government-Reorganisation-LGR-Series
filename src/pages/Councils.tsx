@@ -1,10 +1,13 @@
-import { MapPin } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import CouncilMap from '../components/CouncilMap';
 import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
+import PageBanner from '../components/PageBanner';
 import LocalPlaceStructuredData from '../components/LocalPlaceStructuredData';
 
 export default function Councils() {
+  const location = useLocation();
+  
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <MetaTags
@@ -22,16 +25,15 @@ export default function Councils() {
         areaServed={["England", "Scotland", "Wales", "Northern Ireland"]}
         url="/councils"
       />
-      <header className="bg-white shadow-sm border-b border-gray-200">
+      <PageBanner
+        heroLabel="FACTS & DATA"
+        heroTitle="UK Councils Map"
+        heroSubtitle="Interactive map of Local Authority Districts across England, Scotland, Wales, and Northern Ireland"
+        currentPath={location.pathname}
+      />
+      <div className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-6 py-6">
-          <div className="flex items-center gap-3 mb-2">
-            <MapPin className="w-8 h-8 text-blue-600" />
-            <h1 className="text-4xl font-bold text-gray-900">UK Councils Map</h1>
-          </div>
-          <p className="text-gray-600 text-lg mb-4">
-            Interactive map of Local Authority Districts across England, Scotland, Wales, and Northern Ireland
-          </p>
-          <section className="mt-6 pt-6 border-t border-gray-200">
+          <section>
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Local Authority Districts by Region</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
               <div>
@@ -74,7 +76,7 @@ export default function Councils() {
             </div>
           </section>
         </div>
-      </header>
+      </div>
 
       <main className="flex-1 relative">
         <div className="absolute inset-0">

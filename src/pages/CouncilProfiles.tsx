@@ -1,6 +1,7 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { MapPin, Users, Building2, ArrowRight } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
+import PageBanner from '../components/PageBanner';
 import { surreyCouncils } from '../data/surreyCouncils';
 import FAQSection from '../components/FAQSection';
 import LastUpdated from '../components/LastUpdated';
@@ -26,54 +27,42 @@ export default function CouncilProfiles() {
 
   // Removed unused _getUnitaryColor function
 
+  const location = useLocation();
+
   return (
     <CouncilProfilesPasswordProtection>
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-academic-cream">
       <MetaTags
         title="Surrey Council Profiles"
         description="Profiles of all 12 Surrey councils: 11 boroughs and districts plus Surrey County Council. Key statistics, demographics, and future unitary arrangements."
         keywords="Surrey councils, borough profiles, district councils, Surrey County Council, local authority profiles, council statistics"
       />
-
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border-l-4 border-teal-700 pl-6 mb-6">
-            <div className="text-xs font-bold tracking-widest text-teal-700 mb-3">
-              SURREY REORGANISATION
-            </div>
-          </div>
-          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-6">
-            Council{' '}
-            <span className="text-teal-700 font-serif italic">
-              Profiles
-            </span>
-          </h1>
-          <p className="text-xl text-neutral-600 leading-relaxed max-w-3xl">
-            Detailed profiles of all 12 Surrey councils, including key statistics, demographics, services, and their future roles in the East and West Surrey unitary authorities
-          </p>
-        </div>
-      </div>
+      <PageBanner
+        heroLabel="SURREY REORGANISATION"
+        heroTitle="Council Profiles"
+        heroSubtitle="Detailed profiles of all 12 Surrey councils, including key statistics, demographics, services, and their future roles in the East and West Surrey unitary authorities"
+        currentPath={location.pathname}
+      />
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Overview Stats */}
         <div className="grid md:grid-cols-4 gap-6 mb-12">
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-200">
-            <div className="text-3xl font-black text-teal-700 mb-2">12</div>
-          <div className="text-sm font-medium text-neutral-600">Total Councils</div>
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-academic-neutral-200 academic-card">
+            <div className="text-3xl font-black text-teal-700 mb-2 font-display">12</div>
+          <div className="text-sm font-medium text-academic-neutral-600 font-serif">Total Councils</div>
           </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-200">
-            <div className="text-3xl font-black text-green-700 mb-2">5</div>
-            <div className="text-sm font-medium text-neutral-600">East Surrey</div>
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-academic-neutral-200 academic-card">
+            <div className="text-3xl font-black text-green-700 mb-2 font-display">5</div>
+            <div className="text-sm font-medium text-academic-neutral-600 font-serif">East Surrey</div>
           </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-200">
-            <div className="text-3xl font-black text-purple-700 mb-2">6</div>
-            <div className="text-sm font-medium text-neutral-600">West Surrey</div>
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-academic-neutral-200 academic-card">
+            <div className="text-3xl font-black text-purple-700 mb-2 font-display">6</div>
+            <div className="text-sm font-medium text-academic-neutral-600 font-serif">West Surrey</div>
           </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-200">
-            <div className="text-3xl font-black text-amber-700 mb-2">1.2M</div>
-            <div className="text-sm font-medium text-neutral-600">Total Population</div>
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-academic-neutral-200 academic-card">
+            <div className="text-3xl font-black text-amber-700 mb-2 font-display">1.2M</div>
+            <div className="text-sm font-medium text-academic-neutral-600 font-serif">Total Population</div>
           </div>
         </div>
 
@@ -81,15 +70,15 @@ export default function CouncilProfiles() {
         <section className="mb-16">
           <div className="flex items-center gap-4 mb-8">
             <div className="h-1 w-16 bg-green-600"></div>
-            <h2 className="text-3xl font-black text-neutral-900">East Surrey Unitary</h2>
-            <div className="h-px flex-grow bg-neutral-300"></div>
+            <h2 className="text-3xl font-black text-academic-charcoal font-display">East Surrey Unitary</h2>
+            <div className="h-px flex-grow bg-academic-neutral-300"></div>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {eastSurrey.map((council) => (
               <Link
                 key={council.id}
                 to={`/council-profiles/${council.slug}`}
-                className="group bg-white rounded-xl shadow-sm border-2 border-neutral-200 hover:border-teal-700 overflow-hidden transition-all hover:shadow-lg"
+                className="group bg-white rounded-xl shadow-sm border-2 border-academic-neutral-200 hover:border-teal-700 overflow-hidden transition-all hover:shadow-lg academic-card"
               >
                 <div className="p-6">
                   <div className="flex items-start justify-between mb-4">

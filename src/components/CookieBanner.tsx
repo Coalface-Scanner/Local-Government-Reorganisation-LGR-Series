@@ -50,8 +50,12 @@ export default function CookieBanner() {
       timestamp: new Date().toISOString(),
     };
     localStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify(allAccepted));
-    // Trigger storage event to notify analytics script
-    window.dispatchEvent(new Event('storage'));
+    // Trigger storage event to notify analytics script (must be StorageEvent for cross-tab)
+    window.dispatchEvent(new StorageEvent('storage', {
+      key: COOKIE_CONSENT_KEY,
+      newValue: JSON.stringify(allAccepted),
+      storageArea: localStorage
+    }));
     // Load analytics since user accepted all
     loadGoogleAnalytics();
     setShowBanner(false);
@@ -74,8 +78,12 @@ export default function CookieBanner() {
       timestamp: new Date().toISOString(),
     };
     localStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify(saved));
-    // Trigger storage event to notify analytics script
-    window.dispatchEvent(new Event('storage'));
+    // Trigger storage event to notify analytics script (must be StorageEvent for cross-tab)
+    window.dispatchEvent(new StorageEvent('storage', {
+      key: COOKIE_CONSENT_KEY,
+      newValue: JSON.stringify(saved),
+      storageArea: localStorage
+    }));
     // Load analytics if consent given
     if (saved.analytics) {
       loadGoogleAnalytics();

@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { Calendar, Download, ExternalLink } from 'lucide-react';
 import MetaTags from '../../components/MetaTags';
+import PageBanner from '../../components/PageBanner';
 import LastUpdated from '../../components/LastUpdated';
 import CollectionPageStructuredData from '../../components/CollectionPageStructuredData';
 import OptimizedImage from '../../components/OptimizedImage';
+import MembersPasswordProtection from '../../components/MembersPasswordProtection';
 
 interface Report {
   id: string;
@@ -34,6 +37,7 @@ interface ReportsProps {
 const ITEMS_PER_PAGE = 9;
 
 export default function Reports({ onNavigate }: ReportsProps) {
+  const location = useLocation();
   const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -81,42 +85,32 @@ export default function Reports({ onNavigate }: ReportsProps) {
   }
 
   return (
-    <div className="min-h-screen bg-academic-cream">
-      <MetaTags
-        title="Reports - LGR Research Reports"
-        description="Browse research reports on local government reorganisation, planning, and governance. Comprehensive analysis and findings from the LGR Series."
-        keywords="LGR reports, research reports, local government reports, council reform reports, reorganisation analysis"
-      />
-      <CollectionPageStructuredData
-        name="Reports"
-        description="Browse research reports on local government reorganisation, planning, and governance. Comprehensive analysis and findings from the LGR Series."
-        url="/insights/reports"
-        numberOfItems={reports.length}
-        items={reports.map(report => ({
-          name: report.title,
-          url: `/article/${report.slug}`,
-          description: report.description || undefined
-        }))}
-      />
+    <MembersPasswordProtection>
+      <div className="min-h-screen bg-academic-cream">
+        <MetaTags
+          title="Reports - LGR Research Reports"
+          description="Browse research reports on local government reorganisation, planning, and governance. Comprehensive analysis and findings from the LGR Series."
+          keywords="LGR reports, research reports, local government reports, council reform reports, reorganisation analysis"
+        />
+        <CollectionPageStructuredData
+          name="Reports"
+          description="Browse research reports on local government reorganisation, planning, and governance. Comprehensive analysis and findings from the LGR Series."
+          url="/insights/reports"
+          numberOfItems={reports.length}
+          items={reports.map(report => ({
+            name: report.title,
+            url: `/article/${report.slug}`,
+            description: report.description || undefined
+          }))}
+        />
+        <PageBanner
+          heroLabel="RESEARCH REPORTS"
+          heroTitle="Reports & Research"
+          heroSubtitle="Comprehensive research reports and analysis on local government reorganisation and council reform"
+          currentPath={location.pathname}
+        />
 
-      <div className="relative bg-academic-warm py-8">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">RESEARCH REPORTS</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              Reports{' '}
-              <span className="text-teal-700 font-serif italic">
-                & Research
-              </span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              Comprehensive research reports and analysis on local government reorganisation and council reform
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="mb-6">
           <div className="text-academic-neutral-600 font-serif">
             {reports.length} {reports.length === 1 ? 'report' : 'reports'}
@@ -249,9 +243,10 @@ export default function Reports({ onNavigate }: ReportsProps) {
             )}
           </>
         )}
-      </div>
+        </div>
 
-      <LastUpdated />
-    </div>
+        <LastUpdated />
+      </div>
+    </MembersPasswordProtection>
   );
 }

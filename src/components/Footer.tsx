@@ -1,6 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Twitter, Linkedin, Mail, ExternalLink } from 'lucide-react';
-import SubscriptionForm from './SubscriptionForm';
 import { useFooterContent } from '../hooks/useFooterContent';
 
 interface FooterProps {
@@ -19,301 +18,245 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
   const tagline = getSection('tagline');
 
   return (
-    <footer className="bg-academic-charcoal text-academic-neutral-300 mt-16 border-t-4 border-academic-charcoal">
+    <footer className="bg-academic-charcoal/95 text-academic-neutral-300 mt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Subtle sponsorship statement - all pages */}
-        <div className="py-2.5 border-b border-academic-neutral-800">
-          <p className="text-academic-xs text-teal-400/70 text-center font-display">
-            {sponsorship ? (
-              <>
-                {sponsorship.content.split('COALFACE').map((part, i, arr) => 
-                  i === arr.length - 1 ? (
-                    <span key={i}>{part}</span>
-                  ) : (
-                    <span key={i}>
-                      {part}
-                      <a href={sponsorship.link_url || "https://coalfaceengagement.co.uk"} target="_blank" rel="noopener noreferrer" className="text-teal-400/90 hover:text-teal-300 transition-colors">
-                        {sponsorship.link_text || 'COALFACE™'}
-                      </a>
-                    </span>
-                  )
-                )}
-              </>
-            ) : (
-              <>The LGR Series is an Insight Project by <a href="https://coalfaceengagement.co.uk" target="_blank" rel="noopener noreferrer" className="text-teal-400/90 hover:text-teal-300 transition-colors">COALFACE™</a></>
-            )}
-          </p>
-        </div>
-
-        <div className="py-5 border-b border-academic-neutral-700 bg-teal-900/20">
-          <p className="text-academic-sm text-center text-academic-neutral-200 font-serif">
-            {subscriptionCta ? (
-              <>
-                <span className="font-semibold">{subscriptionCta.content}</span>
-                {subscriptionCta.link_text && subscriptionCta.link_url && (
-                  <> {' '}
-                    <Link
-                      to={subscriptionCta.link_url}
-                      className="text-teal-400 hover:text-teal-300 underline transition-colors font-medium"
-                    >
-                      {subscriptionCta.link_text}
-                    </Link>
-                  </>
-                )}
-              </>
-            ) : (
-              <>
-                <span className="font-semibold">The LGR Series is constantly updated with new information added frequently.</span>{' '}
-                <Link
-                  to="/subscribe"
-                  className="text-teal-400 hover:text-teal-300 underline transition-colors font-medium"
-                >
-                  Subscribe to stay updated with new materials
-                </Link>
-              </>
-            )}
-          </p>
-        </div>
-
-        <div className="py-6 border-b border-academic-neutral-700">
-          <p className="text-academic-xs text-academic-neutral-300 leading-relaxed font-serif">
-            <strong className="text-academic-neutral-100 font-display">Disclaimer:</strong> {disclaimer?.content || 'Content on this site is for general information only and is not a substitute for technical, planning, legal or professional advice. Coalface Engagement Ltd / COALFACE™ accepts no liability for decisions made on the basis of this material. Please contact us for advice relating to specific sites, schemes or authorities.'}
-          </p>
-        </div>
-
-        <div className="py-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-          <div className="lg:col-span-1">
+        {/* Main Footer Content */}
+        <div className="py-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-6">
+          {/* Brand Section */}
+          <div>
             <a
               href="https://coalfaceengagement.co.uk"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block mb-4"
+              className="inline-block mb-3"
             >
               <img
-                src="/insights-logo-horizontal.png"
+                src="/LGR-COALFACE-FOOTER-LOGO.png"
                 alt="COALFACE Insights"
-                loading="lazy"
-                className="h-16 w-auto"
+                loading="eager"
+                fetchPriority="high"
+                decoding="sync"
+                className="h-16 md:h-20 w-auto"
+                width={320}
+                height={64}
               />
             </a>
-            <p className="text-academic-xs text-academic-neutral-300 leading-relaxed italic font-serif mb-4">
-              {tagline?.content || 'Planning consultation and engagement shaped by political behaviour, governance conditions and planning system realities.'}
+            <p className="text-academic-xs text-academic-neutral-200 leading-relaxed font-serif mb-4">
+              Independent insight<br />
+              by <a href="https://coalfaceengagement.co.uk" target="_blank" rel="noopener noreferrer" className="text-teal-400 hover:text-teal-300 transition-colors">COALFACE</a>
             </p>
             {/* Social Media Links */}
-            <div className="flex items-center gap-3 mb-4" role="list" aria-label="Social media links">
-              <a
-                href="https://twitter.com/coalfaceengage"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-8 h-8 flex items-center justify-center text-academic-neutral-400 hover:text-teal-400 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 rounded"
-                aria-label="Follow on Twitter"
-                role="listitem"
-              >
-                <Twitter size={18} aria-hidden="true" />
-              </a>
-              <a
-                href="https://www.linkedin.com/company/coalface-engagement"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-8 h-8 flex items-center justify-center text-academic-neutral-400 hover:text-teal-400 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 rounded"
-                aria-label="Follow on LinkedIn"
-                role="listitem"
-              >
-                <Linkedin size={18} aria-hidden="true" />
-              </a>
-              <a
-                href="mailto:editor@localgovernmentreorganisation.co.uk"
-                className="w-8 h-8 flex items-center justify-center text-academic-neutral-400 hover:text-teal-400 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 rounded"
-                aria-label="Email us at editor@localgovernmentreorganisation.co.uk"
-                role="listitem"
-              >
-                <Mail size={18} aria-hidden="true" />
-              </a>
-            </div>
-            {/* Newsletter Signup */}
-            <div className="mt-4">
-              <h4 className="text-academic-xs font-display font-bold text-white mb-2 uppercase tracking-wider">Newsletter</h4>
-              <SubscriptionForm variant="compact" />
-            </div>
+            <ul className="flex items-center gap-3" aria-label="Social media links">
+              <li>
+                <a
+                  href="https://x.com/LGRSeries"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 flex items-center justify-center text-academic-neutral-200 hover:text-teal-400 transition-colors"
+                  aria-label="Follow on Twitter"
+                >
+                  <Twitter size={18} aria-hidden="true" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.linkedin.com/showcase/local-government-reorganisation"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 flex items-center justify-center text-academic-neutral-200 hover:text-teal-400 transition-colors"
+                  aria-label="Follow on LinkedIn"
+                >
+                  <Linkedin size={18} aria-hidden="true" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href="mailto:editor@localgovernmentreorganisation.com"
+                  className="w-8 h-8 flex items-center justify-center text-academic-neutral-200 hover:text-teal-400 transition-colors"
+                  aria-label="Email us"
+                >
+                  <Mail size={18} aria-hidden="true" />
+                </a>
+              </li>
+            </ul>
           </div>
 
+          {/* Navigation Sections */}
           <div>
-            <h3 className="text-white font-display font-bold text-academic-sm mb-4 tracking-wider">LGR HUB</h3>
-            <ul className="space-y-1.5 text-academic-xs">
+            <h3 className="text-white font-display font-semibold text-sm mb-3">LGR Hub</h3>
+            <ul className="space-y-2 text-sm">
               <li>
-                <Link to="/lgr-hub" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
+                <Link to="/lgr-hub" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
                   Overview
                 </Link>
               </li>
               <li>
-                <Link to="/roadmap" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
+                <Link to="/roadmap" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
                   Roadmap
                 </Link>
               </li>
               <li>
-                <Link to="/tools" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
+                <Link to="/tools" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
                   Tools
                 </Link>
               </li>
               <li>
-                <Link to="/podcast" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
+                <Link to="/podcast" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
                   Podcast
                 </Link>
               </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-white font-display font-bold text-academic-sm mb-4 tracking-wider">TOPICS</h3>
-            <ul className="space-y-1.5 text-academic-xs">
               <li>
-                <Link to="/topics/governance-and-reform" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
-                  Governance and Reform
-                </Link>
-              </li>
-              <li>
-                <Link to="/topics/democratic-legitimacy" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
-                  Democratic Legitimacy
-                </Link>
-              </li>
-              <li>
-                <Link to="/topics/statecraft-and-system-design" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
-                  Statecraft and System Design
+                <Link to="/100days" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
+                  100 Days Playbook
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-white font-display font-bold text-academic-sm mb-4 tracking-wider">RESOURCES</h3>
-            <ul className="space-y-1.5 text-academic-xs">
+            <h3 className="text-white font-display font-semibold text-sm mb-3">Resources</h3>
+            <ul className="space-y-2 text-sm">
               <li>
-                <Link to="/insights" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
+                <Link to="/insights" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
                   Insights
                 </Link>
               </li>
               <li>
-                <Link to="/facts-and-data" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
+                <Link to="/library" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
+                  Library
+                </Link>
+              </li>
+              <li>
+                <Link to="/facts-and-data" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
                   Facts & Data
                 </Link>
               </li>
               <li>
-                <Link to="/lessons" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
+                <Link to="/lessons" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
                   Lessons
                 </Link>
               </li>
               <li>
-                <Link to="/surrey" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-2 min-h-[48px] flex items-center font-serif">
+                <Link to="/reorganisations" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
+                  Reorganisations
+                </Link>
+              </li>
+              <li>
+                <Link to="/surrey" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
                   Focus: Surrey
+                </Link>
+              </li>
+              <li>
+                <Link to="/glossary" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
+                  Glossary
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-white font-display font-bold text-academic-sm mb-4 tracking-wider">ABOUT</h3>
-            <p className="text-academic-xs text-academic-neutral-300 leading-relaxed mb-4 font-serif">
-              The LGR Series is a dedicated research programme by COALFACE™ designed to strengthen public understanding of local government reorganisation and council reform.
-            </p>
-            <ul className="space-y-1.5 text-academic-xs">
+            <h3 className="text-white font-display font-semibold text-sm mb-3">About</h3>
+            <ul className="space-y-2 text-sm mb-4">
               <li>
-                <Link to="/about" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-1 font-serif">
-                  About the LGR Series
+                <Link to="/about" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
+                  About the Series
                 </Link>
               </li>
               <li>
-                <Link to="/about/contributors" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-1 font-serif">
+                <Link to="/about/contributors" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
                   Contributors
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-academic-neutral-300 hover:text-teal-400 transition-colors block py-1 font-serif">
+                <Link to="/about/contribute" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
+                  Contribute
+                </Link>
+              </li>
+              <li>
+                <Link to="/about/coalface" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
+                  About COALFACE
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
                   Contact
                 </Link>
               </li>
             </ul>
+            <div>
+              <Link
+                to="/subscribe"
+                className="inline-block bg-teal-700 hover:bg-teal-600 text-white px-4 py-2 rounded-md font-display font-semibold text-xs uppercase tracking-wider transition-colors"
+              >
+                Subscribe
+              </Link>
+            </div>
           </div>
-
 
           <div>
-            <h3 className="text-white font-display font-bold text-academic-sm mb-4 tracking-wider">CONTACT</h3>
-            <div className="text-academic-xs text-academic-neutral-300 space-y-1.5 mb-4 font-serif">
-              <p>Coalface Engagement Ltd (11741464)</p>
+            <h3 className="text-white font-display font-semibold text-sm mb-3">Contact</h3>
+            <div className="text-sm text-academic-neutral-200 space-y-2 font-serif">
+              <p className="whitespace-nowrap">Coalface Engagement Ltd</p>
+              <p className="text-academic-xs text-academic-neutral-300">(11741464)</p>
               <p>Prebend House, 72 London Road</p>
               <p>Leicester, LE2 0QR</p>
-              <p className="mt-2">
-                <a href="mailto:LGR@coalfaceengagement.co.uk" className="hover:text-teal-400 transition-colors flex items-center gap-1">
+              <div className="pt-2 space-y-1">
+                <a href="mailto:LGR@coalfaceengagement.co.uk" className="text-teal-400 hover:text-teal-300 transition-colors block text-xs">
                   LGR@coalfaceengagement.co.uk
                 </a>
-              </p>
-              <p className="mt-2">
-                <a href="mailto:editor@localgovernmentreorganisation.co.uk" className="hover:text-teal-400 transition-colors flex items-center gap-1">
-                  editor@localgovernmentreorganisation.co.uk
+                <a href="mailto:editor@localgovernmentreorganisation.com" className="text-teal-400 hover:text-teal-300 transition-colors block text-xs">
+                  editor@localgovernmentreorganisation.com
                 </a>
-              </p>
+              </div>
             </div>
-            <Link to="/contact" className="text-academic-xs text-teal-400 hover:text-teal-300 transition-colors font-display font-medium inline-flex items-center gap-1">
-              Contact us
-              <ExternalLink size={12} />
-            </Link>
           </div>
         </div>
 
-        <div className="py-5 border-t border-academic-neutral-700 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex flex-wrap justify-center md:justify-start gap-2 text-academic-xs items-center font-serif">
-            <a href="https://coalfaceengagement.co.uk/privacy" target="_blank" rel="noopener noreferrer" className="text-academic-neutral-300 hover:text-teal-400 transition-colors px-3 py-2 min-h-[48px] inline-flex items-center">
-              Privacy Policy
-            </a>
-            <span className="text-academic-neutral-500">|</span>
-            <a href="https://coalfaceengagement.co.uk/accessibility" target="_blank" rel="noopener noreferrer" className="text-academic-neutral-300 hover:text-teal-400 transition-colors px-3 py-2 min-h-[48px] inline-flex items-center">
-              Accessibility
-            </a>
-            <span className="text-academic-neutral-500">|</span>
-            <a href="https://coalfaceengagement.co.uk/terms" target="_blank" rel="noopener noreferrer" className="text-academic-neutral-300 hover:text-teal-400 transition-colors px-3 py-2 min-h-[48px] inline-flex items-center">
-              Terms & Conditions
-            </a>
-            <span className="text-academic-neutral-500">|</span>
-            <a href="https://coalfaceengagement.co.uk/cookies" target="_blank" rel="noopener noreferrer" className="text-academic-neutral-300 hover:text-teal-400 transition-colors px-3 py-2 min-h-[48px] inline-flex items-center">
-              Cookie Policy
-            </a>
-            <span className="text-academic-neutral-500">|</span>
-            <a href="https://coalface.netlify.app/ai-statement" target="_blank" rel="noopener noreferrer" className="text-academic-neutral-300 hover:text-teal-400 transition-colors px-3 py-2 min-h-[48px] inline-flex items-center">
-              AI Governance
-            </a>
-            <span className="text-academic-neutral-500">|</span>
-            <Link to="/unsubscribe" className="text-academic-neutral-300 hover:text-teal-400 transition-colors px-3 py-2 min-h-[48px] inline-flex items-center">
-              Unsubscribe
-            </Link>
-            <span className="text-academic-neutral-500">|</span>
+        {/* Bottom Bar */}
+        <div className="border-t border-academic-neutral-800 py-6">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+            {/* Disclaimer - spans columns 1, 2, 3 */}
+            <div className="lg:col-span-3 text-xs text-academic-neutral-200 leading-relaxed font-serif">
+              <span className="font-semibold text-academic-neutral-100">Disclaimer:</span> Content on this site is for general information only and is not a substitute for technical, planning, legal or professional advice. Coalface Engagement Ltd / COALFACE™ accepts no liability for decisions made on the basis of this material. Please contact us for advice relating to specific sites, schemes or authorities.
+            </div>
+
+            {/* Legal Links - spans columns 4, 5 */}
+            <div className="lg:col-span-2 flex flex-wrap gap-x-4 gap-y-2 text-xs text-academic-neutral-200">
+              <a href="https://coalfaceengagement.co.uk/privacy" target="_blank" rel="noopener noreferrer" className="hover:text-teal-400 transition-colors">
+                Privacy
+              </a>
+              <a href="https://coalfaceengagement.co.uk/accessibility" target="_blank" rel="noopener noreferrer" className="hover:text-teal-400 transition-colors">
+                Accessibility
+              </a>
+              <a href="https://coalfaceengagement.co.uk/terms" target="_blank" rel="noopener noreferrer" className="hover:text-teal-400 transition-colors">
+                Terms
+              </a>
+              <a href="https://coalfaceengagement.co.uk/cookies" target="_blank" rel="noopener noreferrer" className="hover:text-teal-400 transition-colors">
+                Cookies
+              </a>
+              <a href="https://coalface.netlify.app/ai-statement" target="_blank" rel="noopener noreferrer" className="hover:text-teal-400 transition-colors">
+                AI Governance
+              </a>
+              <Link to="/unsubscribe" className="hover:text-teal-400 transition-colors">
+                Unsubscribe
+              </Link>
+            </div>
+          </div>
+
+          {/* Copyright */}
+          <div className="mt-4 pt-4 border-t border-academic-neutral-800 flex justify-between items-center">
+            <p className="text-xs text-academic-neutral-200 font-serif">
+              © {new Date().getFullYear()} Coalface Engagement Ltd. All rights reserved.
+            </p>
             <Link 
               to="/admin/login" 
-              className="text-academic-neutral-500 hover:text-academic-neutral-400 transition-colors px-3 py-2 min-h-[48px] min-w-[48px] inline-flex items-center justify-center"
+              className="text-academic-neutral-300 hover:text-academic-neutral-100 transition-colors text-xs"
               aria-label="Admin login"
             >
-              •
+              Admin
             </Link>
           </div>
-          <div className="text-academic-xs text-academic-neutral-300 font-serif">
-            © {new Date().getFullYear()} Coalface Engagement Ltd. All rights reserved.
-          </div>
         </div>
-
-        {/* Full sponsorship banner - home page only */}
-        {isHomePage && (
-          <div className="bg-academic-charcoal border-t border-teal-700/30 py-4">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <img 
-                src="/coalface-logo.png" 
-                alt="COALFACE" 
-                className="h-8 w-auto"
-                loading="lazy"
-              />
-              <p className="text-academic-sm text-teal-400 font-display font-medium">
-                The LGR Series is an Insight Project by <a href="https://coalfaceengagement.co.uk" target="_blank" rel="noopener noreferrer" className="text-teal-300 hover:text-teal-200 transition-colors">COALFACE™</a>
-              </p>
-            </div>
-          </div>
-        )}
       </div>
     </footer>
   );

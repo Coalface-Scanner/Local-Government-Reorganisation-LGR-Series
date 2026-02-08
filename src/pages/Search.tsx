@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useLocation } from 'react-router-dom';
 import { Search as SearchIcon, Filter, MapPin, User, Tag, Calendar } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import MetaTags from '../components/MetaTags';
+import PageBanner from '../components/PageBanner';
 import { trackSearch } from '../utils/analytics';
 
 interface SearchResult {
@@ -28,6 +29,7 @@ const MAX_HISTORY_ITEMS = 10;
 
 export default function Search({ onNavigate }: SearchProps) {
   const [searchParams] = useSearchParams();
+  const location = useLocation();
   const initialQuery = searchParams.get('q') || '';
   const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [results, setResults] = useState<SearchResult[]>([]);
@@ -360,49 +362,47 @@ export default function Search({ onNavigate }: SearchProps) {
   };
 
   return (
-    <div id="main-content" className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 py-6">
+    <div id="main-content" className="min-h-screen bg-academic-cream">
       <MetaTags
         title="Search - LGR Series Library"
         description="Search and browse all published articles, reports, data, and insights on local government reorganisation. Filter by type, region, category, or author."
         keywords="LGR search, local government reorganisation articles, council reform research, search library"
       />
-      <div className="container mx-auto px-6 max-w-7xl">
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-gray-900 mb-4">
-            Library
-          </h1>
-          <p className="text-xl text-gray-600">
-            Browse and search all published articles, reports, data, and insights
-          </p>
-        </div>
+      <PageBanner
+        heroLabel="LIBRARY"
+        heroTitle="Search & Browse"
+        heroSubtitle="Search and browse all published articles, reports, data, and insights on local government reorganisation"
+        currentPath={location.pathname}
+      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
-          <div className="relative mb-6">
-            <SearchIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-6 h-6" />
+        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8 academic-card">
+            <div className="relative mb-6">
+            <SearchIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 text-academic-neutral-400 w-6 h-6" />
             <input
               type="text"
               placeholder="Search by keyword, title, author..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               aria-label="Search content"
-              className="w-full pl-14 pr-4 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors"
+              className="w-full pl-14 pr-4 py-4 text-lg border-2 border-academic-neutral-200 rounded-xl focus:border-teal-500 focus:outline-none transition-colors bg-white text-academic-charcoal font-serif"
             />
           </div>
 
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors mb-4"
+            className="flex items-center gap-2 text-academic-charcoal hover:text-teal-700 transition-colors mb-4 font-display font-medium"
           >
             <Filter className="w-5 h-5" />
-            <span className="font-medium">
+            <span>
               {showFilters ? 'Hide Filters' : 'Show Filters'}
             </span>
           </button>
 
           {showFilters && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-6 bg-slate-50 rounded-xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-6 bg-academic-warm rounded-xl">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-academic-charcoal mb-2 font-display">
                   <Tag className="w-4 h-4 inline mr-1" />
                   Content Type
                 </label>
@@ -410,7 +410,7 @@ export default function Search({ onNavigate }: SearchProps) {
                   value={filters.type}
                   onChange={(e) => setFilters({ ...filters, type: e.target.value })}
                   aria-label="Filter by content type"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-3 py-2 border border-academic-neutral-300 rounded-lg focus:border-teal-500 focus:outline-none bg-white text-academic-charcoal font-serif"
                 >
                   <option value="all">All Types</option>
                   <option value="article">Articles</option>
@@ -422,7 +422,7 @@ export default function Search({ onNavigate }: SearchProps) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-academic-charcoal mb-2 font-display">
                   <MapPin className="w-4 h-4 inline mr-1" />
                   Region
                 </label>
@@ -430,7 +430,7 @@ export default function Search({ onNavigate }: SearchProps) {
                   value={filters.region}
                   onChange={(e) => setFilters({ ...filters, region: e.target.value })}
                   aria-label="Filter by region"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-3 py-2 border border-academic-neutral-300 rounded-lg focus:border-teal-500 focus:outline-none bg-white text-academic-charcoal font-serif"
                 >
                   <option value="all">All Regions</option>
                   {availableRegions.map(region => (
@@ -440,7 +440,7 @@ export default function Search({ onNavigate }: SearchProps) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-academic-charcoal mb-2 font-display">
                   <Tag className="w-4 h-4 inline mr-1" />
                   Category
                 </label>
@@ -448,7 +448,7 @@ export default function Search({ onNavigate }: SearchProps) {
                   value={filters.category}
                   onChange={(e) => setFilters({ ...filters, category: e.target.value })}
                   aria-label="Filter by category"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-3 py-2 border border-academic-neutral-300 rounded-lg focus:border-teal-500 focus:outline-none bg-white text-academic-charcoal font-serif"
                 >
                   <option value="all">All Categories</option>
                   {availableCategories.map(category => (
@@ -458,7 +458,7 @@ export default function Search({ onNavigate }: SearchProps) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-academic-charcoal mb-2 font-display">
                   <User className="w-4 h-4 inline mr-1" />
                   Author
                 </label>
@@ -466,7 +466,7 @@ export default function Search({ onNavigate }: SearchProps) {
                   value={filters.author}
                   onChange={(e) => setFilters({ ...filters, author: e.target.value })}
                   aria-label="Filter by author"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-3 py-2 border border-academic-neutral-300 rounded-lg focus:border-teal-500 focus:outline-none bg-white text-academic-charcoal font-serif"
                 >
                   <option value="all">All Authors</option>
                   {availableAuthors.map(author => (
@@ -480,55 +480,55 @@ export default function Search({ onNavigate }: SearchProps) {
 
         {loading ? (
           <div className="text-center py-6">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-            <p className="mt-4 text-gray-600">Searching...</p>
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-teal-700"></div>
+            <p className="mt-4 text-academic-neutral-600 font-serif">Searching...</p>
           </div>
         ) : (
           <div className="space-y-4" aria-live="polite" aria-atomic="false">
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg font-serif">
                 {error}
               </div>
             )}
             {results.length === 0 && !error ? (
-              <div className="text-center py-6 bg-white rounded-2xl shadow-lg">
-                <SearchIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-xl text-gray-600">
+              <div className="text-center py-6 bg-white rounded-2xl shadow-lg academic-card">
+                <SearchIcon className="w-16 h-16 text-academic-neutral-300 mx-auto mb-4" />
+                <p className="text-xl text-academic-neutral-600 font-serif">
                   No results found. Try adjusting your search or filters.
                 </p>
               </div>
             ) : (
               <>
-                <div className="text-sm text-gray-600 mb-4">
+                <div className="text-sm text-academic-neutral-600 mb-4 font-serif">
                   Found {results.length} result{results.length !== 1 ? 's' : ''}
                 </div>
                 {results.map((result) => (
                   <div
                     key={`${result.type}-${result.id}`}
                     onClick={() => handleResultClick(result)}
-                    className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 cursor-pointer border-l-4 border-blue-500 hover:border-blue-600"
+                    className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 cursor-pointer border-l-4 border-teal-500 hover:border-teal-600 academic-card"
                   >
                     <div className="flex items-start justify-between gap-4 mb-3">
-                      <h3 className="text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors flex-1">
+                      <h3 className="text-xl font-bold text-academic-charcoal hover:text-teal-700 transition-colors flex-1 font-display">
                         {result.title}
                       </h3>
                       <div className="flex items-center gap-2">
                         {result.featured && (
-                          <span className="px-3 py-1 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-xs font-bold uppercase tracking-wider rounded-md shadow-md whitespace-nowrap">
+                          <span className="px-3 py-1 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-xs font-bold uppercase tracking-wider rounded-md shadow-md whitespace-nowrap font-display">
                             Exclusive
                           </span>
                         )}
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${getTypeColor(result.type)}`}>
+                        <span className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${getTypeColor(result.type)} font-display`}>
                           {getTypeLabel(result.type)}
                         </span>
                       </div>
                     </div>
 
-                    <p className="text-gray-600 mb-4 line-clamp-2">
+                    <p className="text-academic-neutral-600 mb-4 line-clamp-2 font-serif">
                       {result.excerpt}
                     </p>
 
-                    <div className="flex flex-wrap gap-3 text-sm text-gray-500">
+                    <div className="flex flex-wrap gap-3 text-sm text-academic-neutral-500 font-serif">
                       {result.author && (
                         <span className="flex items-center gap-1">
                           <User className="w-4 h-4" />

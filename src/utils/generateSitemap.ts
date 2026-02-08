@@ -67,7 +67,7 @@ export const staticRoutes: SitemapUrl[] = [
   { loc: '/contact', changefreq: 'monthly', priority: 0.6 },
   { loc: '/subscribe', changefreq: 'monthly', priority: 0.6 },
   { loc: '/about', changefreq: 'monthly', priority: 0.7 },
-  { loc: '/about/editor', changefreq: 'monthly', priority: 0.6 },
+  { loc: '/editor/rowan-cole', changefreq: 'monthly', priority: 0.6 },
   { loc: '/about/methodology', changefreq: 'monthly', priority: 0.6 },
   { loc: '/about/contribute', changefreq: 'monthly', priority: 0.6 },
   { loc: '/about/coalface', changefreq: 'monthly', priority: 0.6 },

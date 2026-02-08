@@ -1,8 +1,10 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import LastUpdated from '../components/LastUpdated';
 import ShareButtons from '../components/ShareButtons';
 import MetaTags from '../components/MetaTags';
+import PageBanner from '../components/PageBanner';
 import ArticleStructuredData from '../components/ArticleStructuredData';
 import OptimizedImage from '../components/OptimizedImage';
 import ReadingTime from '../components/ReadingTime';
@@ -16,6 +18,9 @@ import SeeAlsoSection from '../components/SeeAlsoSection';
 import PrintButton from '../components/PrintButton';
 import { ArrowLeft, Download, ExternalLink, Calendar, User, Eye } from 'lucide-react';
 import { retryWithBackoff, getThemeDisplayName } from '../lib/utils';
+import { enhanceContentWithGlossaryLinks } from '../lib/glossaryLinks';
+import { useScrollDepthTracking } from '../hooks/useScrollDepthTracking';
+import { useTimeOnPageTracking } from '../hooks/useTimeOnPageTracking';
 
 interface Material {
   id: string;
@@ -49,10 +54,15 @@ interface ArticleProps {
 }
 
 export default function Article({ slug, onNavigate }: ArticleProps) {
+  const location = useLocation();
   const [material, setMaterial] = useState<Material | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Track scroll depth and time on page
+  useScrollDepthTracking();
+  useTimeOnPageTracking();
 
   const fetchMaterial = useCallback(async () => {
     setLoading(true);
@@ -169,6 +179,17 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
     return title;
   };
 
+  // Enhance content with glossary links
+  const enhancedContent = useMemo(() => {
+    const content = material?.rich_content || material?.content;
+    if (!content) return '';
+    return enhanceContentWithGlossaryLinks(content, {
+      onlyFirstOccurrence: true,
+      excludeSlugs: [],
+      linkClass: 'glossary-link text-teal-700 hover:text-teal-800 underline font-medium'
+    });
+  }, [material?.rich_content, material?.content]);
+
   // Generate description from material description or content, including geography context (25-160 chars)
   const getDescription = () => {
     let desc = '';
@@ -241,72 +262,74 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
         geography={material.geography}
         theme={material.theme}
       />
-      <div className="bg-academic-charcoal text-academic-neutral-200 py-12">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <BreadcrumbStructuredData
-            items={[
-              { label: 'Materials', path: '/materials' },
-              { label: material.title }
-            ]}
-          />
+      <PageBanner
+        heroLabel={material.type ? material.type.toUpperCase() : 'MATERIALS'}
+        heroTitle={material.title}
+        heroSubtitle={material.description || undefined}
+        currentPath={location.pathname}
+      />
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <BreadcrumbStructuredData
+          items={[
+            { label: 'Materials', path: '/materials' },
+            { label: material.title }
+          ]}
+        />
+        <div className="flex items-center justify-between mb-6">
           <Breadcrumbs 
             items={[
               { label: 'Materials', path: '/materials' },
               { label: material.title }
             ]}
-            className="mb-8 text-academic-neutral-400"
+            className="text-academic-neutral-600"
           />
           <button
             onClick={() => onNavigate('materials')}
-            className="flex items-center gap-2 text-academic-neutral-400 hover:text-white font-display font-medium mb-8 group"
+            className="flex items-center gap-2 text-teal-700 hover:text-teal-800 font-display font-medium group"
             aria-label="Back to Materials"
           >
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" aria-hidden="true" />
             Back to Materials
           </button>
+        </div>
 
-          <div className="flex flex-wrap gap-2 mb-6">
-            <span className="px-3 py-1 bg-teal-700/30 border border-teal-500 text-teal-200 text-academic-xs font-display font-semibold" style={{ borderRadius: '2px' }}>
-              {material.type}
+        <div className="flex flex-wrap gap-2 mb-6">
+          <span className="px-3 py-1 bg-teal-100 border border-teal-500 text-teal-800 text-academic-xs font-display font-semibold" style={{ borderRadius: '2px' }}>
+            {material.type}
+          </span>
+          <span className="px-3 py-1 bg-academic-neutral-100 border border-academic-neutral-300 text-academic-charcoal text-academic-xs font-display font-semibold" style={{ borderRadius: '2px' }}>
+            {material.format}
+          </span>
+          {material.editors_pick && (
+            <span className="px-3 py-1 bg-amber-100 border border-amber-400 text-amber-800 text-academic-xs font-display font-semibold" style={{ borderRadius: '2px' }}>
+              Editor's Pick
             </span>
-            <span className="px-3 py-1 bg-white/10 border border-white/30 text-white text-academic-xs font-display font-semibold" style={{ borderRadius: '2px' }}>
-              {material.format}
-            </span>
-            {material.editors_pick && (
-              <span className="px-3 py-1 bg-amber-500/30 border border-amber-400 text-amber-200 text-academic-xs font-display font-semibold" style={{ borderRadius: '2px' }}>
-                Editor's Pick
-              </span>
-            )}
-          </div>
-
-          <h1 className="text-academic-4xl md:text-academic-5xl lg:text-academic-6xl font-display font-bold mb-6 leading-tight text-white">{material.title}</h1>
-          {material.description && (
-            <p className="text-academic-xl text-academic-neutral-300 mb-8 leading-relaxed font-serif">{material.description}</p>
           )}
+        </div>
 
-          <div className="flex flex-wrap items-center gap-6 text-academic-sm text-academic-neutral-400 font-serif">
-            {material.author_name && (
-              <div className="flex items-center gap-2">
-                <User size={16} aria-hidden="true" />
-                <span>{material.author_name}</span>
-              </div>
-            )}
+        <div className="flex flex-wrap items-center gap-6 text-academic-sm text-academic-neutral-600 font-serif mb-8">
+          {material.author_name && (
             <div className="flex items-center gap-2">
-              <Calendar size={16} aria-hidden="true" />
-              <span>{new Date(material.published_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+              <User size={16} aria-hidden="true" />
+              <span>{material.author_name}</span>
             </div>
-            {material.read_count > 0 && (
-              <div className="flex items-center gap-2">
-                <Eye size={16} aria-hidden="true" />
-                <span>{material.read_count} reads</span>
-              </div>
-            )}
-            <ReadingTime content={material.rich_content || material.content} />
+          )}
+          <div className="flex items-center gap-2">
+            <Calendar size={16} aria-hidden="true" />
+            <span>{new Date(material.published_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
           </div>
+          {material.read_count > 0 && (
+            <div className="flex items-center gap-2">
+              <Eye size={16} aria-hidden="true" />
+              <span>{material.read_count} reads</span>
+            </div>
+          )}
+          <ReadingTime content={material.rich_content || material.content} />
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         {error && (
           <ErrorDisplay
             message={error}
@@ -322,7 +345,7 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
               alt={material.title}
               variant="hero"
               className="w-full"
-              priority={false}
+              priority={true}
             />
           </div>
         )}
@@ -332,7 +355,7 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
             <div className="academic-card p-8 md:p-12 mb-12">
               {(material.rich_content || material.content) ? (
                 <div className="academic-prose max-w-none">
-                  <div dangerouslySetInnerHTML={{ __html: material.rich_content || material.content }} />
+                  <div dangerouslySetInnerHTML={{ __html: enhancedContent }} />
                 </div>
               ) : (
                 <div className="text-center py-6">

@@ -57,48 +57,54 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
           onClick={() => insertFormatting('<strong>', '</strong>')}
           className="p-2 hover:bg-slate-200 rounded transition-colors"
           title="Bold"
+          aria-label="Bold text"
         >
-          <Bold size={18} />
+          <Bold size={18} aria-hidden="true" />
         </button>
         <button
           type="button"
           onClick={() => insertFormatting('<em>', '</em>')}
           className="p-2 hover:bg-slate-200 rounded transition-colors"
           title="Italic"
+          aria-label="Italic text"
         >
-          <Italic size={18} />
+          <Italic size={18} aria-hidden="true" />
         </button>
         <button
           type="button"
           onClick={() => insertFormatting('<ul>\n<li>', '</li>\n</ul>')}
           className="p-2 hover:bg-slate-200 rounded transition-colors"
           title="Bullet List"
+          aria-label="Insert bullet list"
         >
-          <List size={18} />
+          <List size={18} aria-hidden="true" />
         </button>
         <button
           type="button"
           onClick={() => insertFormatting('<ol>\n<li>', '</li>\n</ol>')}
           className="p-2 hover:bg-slate-200 rounded transition-colors"
           title="Numbered List"
+          aria-label="Insert numbered list"
         >
-          <ListOrdered size={18} />
+          <ListOrdered size={18} aria-hidden="true" />
         </button>
         <button
           type="button"
           onClick={() => setShowLinkInput(!showLinkInput)}
           className="p-2 hover:bg-slate-200 rounded transition-colors"
           title="Insert Link"
+          aria-label="Insert link"
         >
-          <LinkIcon size={18} />
+          <LinkIcon size={18} aria-hidden="true" />
         </button>
         <button
           type="button"
           onClick={() => setShowImageInput(!showImageInput)}
           className="p-2 hover:bg-slate-200 rounded transition-colors"
           title="Insert Image"
+          aria-label="Insert image"
         >
-          <ImageIcon size={18} />
+          <ImageIcon size={18} aria-hidden="true" />
         </button>
       </div>
 

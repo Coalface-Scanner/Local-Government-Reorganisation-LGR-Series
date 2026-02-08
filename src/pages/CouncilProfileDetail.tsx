@@ -1,6 +1,7 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { MapPin, Users, Building2, Home, TrendingUp, AlertCircle, CheckCircle, ArrowLeft, Calendar } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
+import PageBanner from '../components/PageBanner';
 import { getCouncilBySlug, surreyCouncils } from '../data/surreyCouncils';
 import FAQSection from '../components/FAQSection';
 import LastUpdated from '../components/LastUpdated';
@@ -11,18 +12,19 @@ import CouncilContentLinks from '../components/CouncilContentLinks';
 
 export default function CouncilProfileDetail() {
   const { slug } = useParams<{ slug: string }>();
+  const location = useLocation();
   const council = slug ? getCouncilBySlug(slug) : undefined;
 
   if (!council) {
     return (
       <CouncilProfilesPasswordProtection>
-        <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
+        <div className="min-h-screen bg-academic-cream flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-3xl font-black text-neutral-900 mb-4">Council Not Found</h1>
-            <p className="text-neutral-600 mb-6">The council profile you're looking for doesn't exist.</p>
+            <h1 className="text-3xl font-black text-academic-charcoal mb-4 font-display">Council Not Found</h1>
+            <p className="text-academic-neutral-600 mb-6 font-serif">The council profile you're looking for doesn't exist.</p>
             <Link
               to="/council-profiles"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-teal-700 text-white font-bold rounded-lg hover:bg-teal-800 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-teal-700 text-white font-bold rounded-lg hover:bg-teal-800 transition-colors font-display"
             >
               <ArrowLeft size={18} />
               Back to Council Profiles
@@ -70,7 +72,7 @@ export default function CouncilProfileDetail() {
 
   return (
     <CouncilProfilesPasswordProtection>
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-academic-cream">
       <MetaTags
         title={(() => {
           const title = `${council.name} Profile - Surrey Council Profiles`;
@@ -105,60 +107,56 @@ export default function CouncilProfileDetail() {
         areaServed={[council.name.replace(' Council', '')]}
         url={`/council-profiles/${council.slug}`}
       />
+      <PageBanner
+        heroLabel={council.type ? council.type.toUpperCase() : 'SURREY COUNCIL'}
+        heroTitle={council.name.replace(' Council', '')}
+        heroSubtitle={council.description || undefined}
+        currentPath={location.pathname}
+      />
 
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="flex items-center justify-between mb-6">
           <Breadcrumbs 
             items={[
               { label: 'Council Profiles', path: '/council-profiles' },
               { label: council.name.replace(' Council', '') }
             ]}
-            className="mb-6"
+            className="text-academic-neutral-600"
           />
           <Link
             to="/council-profiles"
-            className="inline-flex items-center gap-2 text-sm font-bold text-teal-700 hover:text-teal-900 mb-6 transition-colors"
+            className="inline-flex items-center gap-2 text-sm font-bold text-teal-700 hover:text-teal-800 transition-colors font-display"
           >
             <ArrowLeft size={16} />
             Back to Council Profiles
           </Link>
-          <div className="flex flex-wrap items-center gap-3 mb-6">
-            <span className={`px-4 py-2 text-sm font-bold rounded-full border ${getTypeColor(council.type)}`}>
-              {council.type}
-            </span>
-            {council.futureUnitary && council.futureUnitary !== 'County' && (
-              <span className={`px-4 py-2 text-sm font-bold rounded-full border ${getUnitaryColor(council.futureUnitary)}`}>
-                Future: {council.futureUnitary} Unitary
-              </span>
-            )}
-          </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-neutral-900 leading-[0.95] mb-4">
-            {council.name.replace(' Council', '')}
-          </h1>
-          <p className="text-xl text-neutral-600 leading-relaxed max-w-3xl">
-            {council.description}
-          </p>
         </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="flex flex-wrap items-center gap-3 mb-6">
+          <span className={`px-4 py-2 text-sm font-bold rounded-full border font-display ${getTypeColor(council.type)}`}>
+            {council.type}
+          </span>
+          {council.futureUnitary && council.futureUnitary !== 'County' && (
+            <span className={`px-4 py-2 text-sm font-bold rounded-full border font-display ${getUnitaryColor(council.futureUnitary)}`}>
+              Future: {council.futureUnitary} Unitary
+            </span>
+          )}
+        </div>
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Key Statistics */}
             {council.keyStats && (
-              <section className="bg-white rounded-xl p-8 shadow-sm border border-neutral-200">
-                <h2 className="text-2xl font-black text-neutral-900 mb-6 flex items-center gap-2">
+              <section className="bg-white rounded-xl p-8 shadow-sm border border-academic-neutral-200 academic-card">
+                <h2 className="text-2xl font-black text-academic-charcoal mb-6 flex items-center gap-2 font-display">
                   <TrendingUp className="text-teal-700" size={24} />
                   Key Statistics
                 </h2>
                 <div className="grid md:grid-cols-2 gap-6">
                   {council.keyStats.map((stat, index) => (
                     <div key={index} className="border-l-4 border-teal-700 pl-4">
-                      <div className="text-sm font-medium text-neutral-600 mb-1">{stat.label}</div>
-                      <div className="text-2xl font-black text-neutral-900">{stat.value}</div>
+                      <div className="text-sm font-medium text-academic-neutral-600 mb-1 font-serif">{stat.label}</div>
+                      <div className="text-2xl font-black text-academic-charcoal font-display">{stat.value}</div>
                     </div>
                   ))}
                 </div>
@@ -167,8 +165,8 @@ export default function CouncilProfileDetail() {
 
             {/* Demographics */}
             {council.demographics && (
-              <section className="bg-white rounded-xl p-8 shadow-sm border border-neutral-200">
-                <h2 className="text-2xl font-black text-neutral-900 mb-6 flex items-center gap-2">
+              <section className="bg-white rounded-xl p-8 shadow-sm border border-academic-neutral-200 academic-card">
+                <h2 className="text-2xl font-black text-academic-charcoal mb-6 flex items-center gap-2 font-display">
                   <Users className="text-teal-700" size={24} />
                   Demographics
                 </h2>
@@ -207,16 +205,16 @@ export default function CouncilProfileDetail() {
                   <div className="space-y-4">
                     {council.demographics.ageGroups.map((group, index) => (
                       <div key={index}>
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-sm font-medium text-neutral-700">{group.label}</span>
-                          <span className="text-sm font-bold text-neutral-900">{group.percentage}%</span>
-                        </div>
-                        <div className="w-full bg-neutral-200 rounded-full h-4">
-                          <div 
-                            className="bg-gradient-to-r from-teal-600 to-teal-700 h-4 rounded-full transition-all"
-                            style={{ width: `${(group.percentage / maxDemographic) * 100}%` }}
-                          ></div>
-                        </div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium text-academic-neutral-700 font-serif">{group.label}</span>
+                      <span className="text-sm font-bold text-academic-charcoal font-display">{group.percentage}%</span>
+                    </div>
+                    <div className="w-full bg-academic-neutral-200 rounded-full h-4">
+                      <div 
+                        className="bg-gradient-to-r from-teal-600 to-teal-700 h-4 rounded-full transition-all"
+                        style={{ width: `${(group.percentage / maxDemographic) * 100}%` }}
+                      ></div>
+                    </div>
                       </div>
                     ))}
                   </div>

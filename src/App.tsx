@@ -1,13 +1,14 @@
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams } from 'react-router-dom';
-import { useEffect, lazy, Suspense } from 'react';
-import Navigation from './components/Navigation';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import Footer from './components/Footer';
+import StayInformedBanner from './components/StayInformedBanner';
 import CookieBanner from './components/CookieBanner';
 import ErrorBoundary from './components/ErrorBoundary';
 import BackToTop from './components/BackToTop';
 import KeyboardShortcuts from './components/KeyboardShortcuts';
 import SkipLink from './components/SkipLink';
 import { AuthProvider } from './contexts/AuthContext';
+import { trackPageView } from './utils/analytics';
 
 // Lazy load pages for code splitting - improves initial load time
 const Home = lazy(() => import('./pages/Home'));
@@ -40,6 +41,7 @@ const Topics = lazy(() => import('./pages/Topics'));
 const Tools = lazy(() => import('./pages/Tools'));
 const LGRHub = lazy(() => import('./pages/LGRHub'));
 const FactsAndData = lazy(() => import('./pages/FactsAndData'));
+const Reorganisations = lazy(() => import('./pages/Reorganisations'));
 
 // Admin pages - lazy loaded (less frequently accessed)
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
@@ -58,13 +60,11 @@ const FurtherReading = lazy(() => import('./pages/facts/FurtherReading'));
 const Councilopedia = lazy(() => import('./pages/facts/Councilopedia'));
 const BeginnersGuide = lazy(() => import('./pages/facts/BeginnersGuide'));
 const WhatIsLGR = lazy(() => import('./pages/facts/WhatIsLGR'));
-const LGRGlossary = lazy(() => import('./pages/facts/LGRGlossary'));
 const LGRTimeline = lazy(() => import('./pages/facts/LGRTimeline'));
 const CouncilCases = lazy(() => import('./pages/facts/CouncilCases'));
 
 // About sub-pages - lazy loaded
 const About = lazy(() => import('./pages/about/About'));
-const AboutEditor = lazy(() => import('./pages/about/Editor'));
 const AboutMethodology = lazy(() => import('./pages/about/Methodology'));
 const AboutContribute = lazy(() => import('./pages/about/Contribute'));
 const AboutCoalface = lazy(() => import('./pages/about/Coalface'));
@@ -80,13 +80,66 @@ const GovernanceAndReform = lazy(() => import('./pages/topics/GovernanceAndRefor
 const DemocraticLegitimacy = lazy(() => import('./pages/topics/DemocraticLegitimacy'));
 const StatecraftAndSystemDesign = lazy(() => import('./pages/topics/StatecraftAndSystemDesign'));
 
+// Glossary pages - Next.js-style structure (lazy loaded)
+const Glossary = lazy(() => import('./app/glossary/page'));
+const GlossaryTerm = lazy(() => import('./app/glossary/[slug]/page'));
+
+// 404 page - lazy loaded
+const NotFound = lazy(() => import('./pages/NotFound'));
+
 // Loading component for Suspense
 function PageLoader() {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    // Simulate progress bar filling up
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          return 100;
+        }
+        // Accelerate then slow down near the end for realistic feel
+        const increment = prev < 70 ? 2 + Math.random() * 3 : 0.5 + Math.random() * 1;
+        return Math.min(prev + increment, 100);
+      });
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-academic-cream flex items-center justify-center">
-      <div className="text-center">
-        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-teal-700 mb-4"></div>
-        <p className="text-academic-neutral-600 font-serif">Loading...</p>
+    <div className="min-h-screen bg-academic-cream flex items-center justify-center px-4">
+      <div className="text-center w-full max-w-md">
+        {/* LGR Logo */}
+        <div className="mb-8 flex justify-center animate-fade-in">
+          <img 
+            src="/lgr.png" 
+            alt="LGR Series Logo" 
+            className="h-24 w-auto object-contain drop-shadow-sm"
+            loading="eager"
+            fetchPriority="high"
+            decoding="sync"
+          />
+        </div>
+
+        {/* Progress Bar Container */}
+        <div className="mb-4">
+          <div className="w-full bg-academic-neutral-200 rounded-full h-3 overflow-hidden shadow-inner border border-academic-neutral-300/50">
+            <div
+              className="h-full bg-gradient-to-r from-teal-600 via-teal-700 to-teal-800 rounded-full transition-all duration-300 ease-out relative overflow-hidden"
+              style={{ width: `${progress}%` }}
+            >
+              {/* Shimmer effect - sliding highlight */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Progress Percentage */}
+        <p className="text-academic-neutral-600 font-serif text-sm font-medium">
+          {Math.round(progress)}%
+        </p>
       </div>
     </div>
   );
@@ -97,6 +150,8 @@ function ScrollToTop() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    // Track page view for Google Analytics
+    trackPageView(pathname, document.title);
   }, [pathname]);
 
   return null;
@@ -124,6 +179,14 @@ function ArticleViewWrapper() {
   };
 
   return <ArticleView slug={slug} onNavigate={handleNavigate} />;
+}
+
+function GlossaryWrapper() {
+  return <Glossary />;
+}
+
+function GlossaryTermWrapper() {
+  return <GlossaryTerm />;
 }
 
 function PageWrapper({ children }: { children: (onNavigate: (page: string, data?: unknown) => void) => JSX.Element }) {
@@ -156,7 +219,6 @@ function AppContent() {
     <div className="min-h-screen bg-academic-cream flex flex-col">
       <SkipLink />
       <KeyboardShortcuts />
-      <Navigation onNavigate={handleNavigate} currentPage={getCurrentPage()} />
       <main id="main-content" className="flex-grow">
         <Suspense fallback={<PageLoader />}>
           <Routes>
@@ -175,7 +237,6 @@ function AppContent() {
             <Route path="/facts/councilopedia/beginners-guide" element={<BeginnersGuide />} />
             <Route path="/facts/what-is-lgr" element={<WhatIsLGR />} />
             <Route path="/what-is-lgr" element={<WhatIsLGR />} />
-            <Route path="/facts/lgr-glossary" element={<LGRGlossary />} />
             <Route path="/facts/lgr-timeline" element={<LGRTimeline />} />
             <Route path="/facts/council-cases" element={<CouncilCases />} />
             <Route path="/facts/:slug" element={<FactDetail />} />
@@ -183,11 +244,11 @@ function AppContent() {
             <Route path="/roadmap" element={<PageWrapper>{(nav) => <JourneyMap onNavigate={nav} />}</PageWrapper>} />
             <Route path="/lgr-hub" element={<PageWrapper>{(nav) => <LGRHub onNavigate={nav} />}</PageWrapper>} />
             <Route path="/facts-and-data" element={<PageWrapper>{(nav) => <FactsAndData onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/reorganisations" element={<PageWrapper>{(nav) => <Reorganisations onNavigate={nav} />}</PageWrapper>} />
             <Route path="/sitemap.xml" element={<Sitemap />} />
             <Route path="/lessons" element={<PageWrapper>{(nav) => <Lessons onNavigate={nav} />}</PageWrapper>} />
             <Route path="/reasons" element={<PageWrapper>{(nav) => <Reasons onNavigate={nav} />}</PageWrapper>} />
             <Route path="/about" element={<PageWrapper>{(nav) => <About onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/about/editor" element={<PageWrapper>{(nav) => <AboutEditor onNavigate={nav} />}</PageWrapper>} />
             <Route path="/about/methodology" element={<PageWrapper>{(nav) => <AboutMethodology onNavigate={nav} />}</PageWrapper>} />
             <Route path="/about/contribute" element={<PageWrapper>{(nav) => <AboutContribute onNavigate={nav} />}</PageWrapper>} />
             <Route path="/about/coalface" element={<PageWrapper>{(nav) => <AboutCoalface onNavigate={nav} />}</PageWrapper>} />
@@ -218,13 +279,17 @@ function AppContent() {
             <Route path="/topics/democratic-legitimacy" element={<PageWrapper>{(nav) => <DemocraticLegitimacy onNavigate={nav} />}</PageWrapper>} />
             <Route path="/topics/statecraft-and-system-design" element={<PageWrapper>{(nav) => <StatecraftAndSystemDesign onNavigate={nav} />}</PageWrapper>} />
             <Route path="/tools" element={<PageWrapper>{(nav) => <Tools onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/glossary" element={<GlossaryWrapper />} />
+            <Route path="/glossary/:slug" element={<GlossaryTermWrapper />} />
             <Route path="/admin/login" element={<PageWrapper>{(nav) => <AdminLogin onNavigate={nav} />}</PageWrapper>} />
             <Route path="/admin/dashboard" element={<PageWrapper>{(nav) => <AdminDashboard onNavigate={nav} />}</PageWrapper>} />
             <Route path="/admin/articles/login" element={<PageWrapper>{(nav) => <AdminArticleLogin onNavigate={nav} />}</PageWrapper>} />
             <Route path="/admin/articles" element={<PageWrapper>{(nav) => <AdminArticles onNavigate={nav} />}</PageWrapper>} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
       </main>
+      <StayInformedBanner />
       <Footer onNavigate={handleNavigate} />
       <CookieBanner />
       <BackToTop />

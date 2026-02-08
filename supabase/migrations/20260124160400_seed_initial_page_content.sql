@@ -27,7 +27,7 @@ VALUES
   ('contact', 'form_description', NULL, 'Fill out the form below and we''ll get back to you', 5),
   ('contact', 'card_editorial_title', NULL, 'Editorial Team', 6),
   ('contact', 'card_editorial_description', NULL, 'For editorial inquiries, research questions, or to contribute case studies:', 7),
-  ('contact', 'card_editorial_email', NULL, 'editor@localgovernmentreorganisation.co.uk', 8),
+  ('contact', 'card_editorial_email', NULL, 'editor@localgovernmentreorganisation.com', 8),
   ('contact', 'card_subscribe_title', NULL, 'Subscribe', 9),
   ('contact', 'card_subscribe_description', NULL, 'Receive new insights as they''re published, plus access to case material and the 100 Day Playbook:', 10),
   ('contact', 'card_subscribe_link', NULL, 'Subscribe to The Dispatch', 11)
