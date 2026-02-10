@@ -1,9 +1,9 @@
-import { ArrowRight, Calendar, BookOpen, Headphones, Route } from 'lucide-react';
+import { Calendar, BookOpen, Headphones, Route } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
 import MetaTags from '../components/MetaTags';
 import CollectionPageStructuredData from '../components/CollectionPageStructuredData';
 import PageBanner from '../components/PageBanner';
-import LastUpdated from '../components/LastUpdated';
+import ServiceCard from '../components/ServiceCard';
 
 interface LGRHubProps {
   onNavigate: (page: string, slug?: string) => void;
@@ -74,49 +74,27 @@ export default function LGRHub({ onNavigate }: LGRHubProps) {
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {hubSections.map((section) => {
-            const Icon = section.icon;
-            return (
-              <button
-                key={section.id}
-                onClick={() => {
-                  if (section.route === '/lgr-hub') {
-                    // Already on hub page
-                    return;
-                  }
-                  onNavigate(section.route.replace('/', ''));
-                }}
-                className={`group academic-card p-6 text-left transition-all hover:shadow-xl hover:scale-[1.02] duration-300 ${
-                  section.id === 'overview' ? 'cursor-default' : 'cursor-pointer'
-                }`}
-              >
-                <div className={`bg-gradient-to-br ${section.color} p-6 text-white min-h-[180px] flex flex-col justify-between mb-4 rounded-lg`}>
-                  <div className="w-12 h-12 bg-white/20 flex items-center justify-center mb-4 transition-transform rounded-lg group-hover:scale-110">
-                    <Icon className="text-white" size={28} />
-                  </div>
-                  <h2 className="text-academic-lg md:text-academic-xl font-display font-bold text-white leading-tight">
-                    {section.title}
-                  </h2>
-                </div>
-                <p className="text-academic-sm text-academic-neutral-700 mb-4 font-serif leading-relaxed">
-                  {section.description}
-                </p>
-                {section.id !== 'overview' && (
-                  <div className="flex items-center gap-2 text-teal-700 font-display font-semibold group-hover:gap-3 transition-all">
-                    <span>Explore</span>
-                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                  </div>
-                )}
-              </button>
-            );
-          })}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 items-stretch">
+          {hubSections.map((section) => (
+            <ServiceCard
+              key={section.id}
+              id={section.id}
+              title={section.title}
+              description={section.description}
+              icon={section.icon}
+              color={section.color}
+              route={section.route === '/lgr-hub' ? undefined : section.route}
+              asButton={section.id === 'overview'}
+              onClick={section.id === 'overview' ? undefined : () => onNavigate(section.route.replace('/', ''))}
+              showExplore={section.id !== 'overview'}
+            />
+          ))}
         </div>
 
         <div className="max-w-2xl mx-auto mb-12">
           <div className="bg-teal-800 text-white p-8">
             <h3 className="text-academic-xl font-display font-bold text-white mb-4">
-              The Dispatch
+              LGR Series Newsletter
             </h3>
             <p className="text-academic-sm text-white mb-5 font-serif">
               Get the LGR Series directly in your inbox. No fluff, just deep analysis.
@@ -131,7 +109,6 @@ export default function LGRHub({ onNavigate }: LGRHubProps) {
         </div>
       </div>
 
-      <LastUpdated />
     </div>
   );
 }

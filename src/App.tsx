@@ -63,6 +63,11 @@ const WhatIsLGR = lazy(() => import('./pages/facts/WhatIsLGR'));
 const LGRTimeline = lazy(() => import('./pages/facts/LGRTimeline'));
 const CouncilCases = lazy(() => import('./pages/facts/CouncilCases'));
 
+// Lessons sub-pages - lazy loaded
+const LessonsInsights = lazy(() => import('./pages/lessons/Insights'));
+const LessonsCaseStudies = lazy(() => import('./pages/lessons/CaseStudies'));
+const LessonsBestPractices = lazy(() => import('./pages/lessons/BestPractices'));
+
 // About sub-pages - lazy loaded
 const About = lazy(() => import('./pages/about/About'));
 const AboutMethodology = lazy(() => import('./pages/about/Methodology'));
@@ -246,6 +251,9 @@ function AppContent() {
             <Route path="/facts-and-data" element={<PageWrapper>{(nav) => <FactsAndData onNavigate={nav} />}</PageWrapper>} />
             <Route path="/reorganisations" element={<PageWrapper>{(nav) => <Reorganisations onNavigate={nav} />}</PageWrapper>} />
             <Route path="/sitemap.xml" element={<Sitemap />} />
+            <Route path="/lessons/insights" element={<PageWrapper>{(nav) => <LessonsInsights />}</PageWrapper>} />
+            <Route path="/lessons/case-studies" element={<PageWrapper>{(nav) => <LessonsCaseStudies />}</PageWrapper>} />
+            <Route path="/lessons/best-practices" element={<PageWrapper>{(nav) => <LessonsBestPractices />}</PageWrapper>} />
             <Route path="/lessons" element={<PageWrapper>{(nav) => <Lessons onNavigate={nav} />}</PageWrapper>} />
             <Route path="/reasons" element={<PageWrapper>{(nav) => <Reasons onNavigate={nav} />}</PageWrapper>} />
             <Route path="/about" element={<PageWrapper>{(nav) => <About onNavigate={nav} />}</PageWrapper>} />

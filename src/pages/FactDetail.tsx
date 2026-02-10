@@ -4,7 +4,6 @@ import { supabase } from '../lib/supabase';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import ArticleStructuredData from '../components/ArticleStructuredData';
-import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import Breadcrumbs from '../components/Breadcrumbs';
 import { ArrowLeft, AlertCircle, Users, DollarSign, FileText, CheckCircle, type LucideIcon } from 'lucide-react';
@@ -273,7 +272,6 @@ export default function FactDetail() {
       </div>
 
       <FAQSection page="facts" />
-      <LastUpdated />
     </div>
   );
 }

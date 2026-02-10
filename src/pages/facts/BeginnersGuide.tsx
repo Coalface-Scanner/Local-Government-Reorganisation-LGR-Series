@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import MetaTags from '../../components/MetaTags';
-import LastUpdated from '../../components/LastUpdated';
+import PageBanner from '../../components/PageBanner';
 import FAQSection from '../../components/FAQSection';
 import ElectoralSystemsMap from '../../components/ElectoralSystemsMap';
 import { 
@@ -8,10 +8,11 @@ import {
   Scale, FileText, Home, Gavel, Globe, CheckCircle2,
   AlertCircle, Info, ChevronRight, List, Sparkles
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function BeginnersGuide() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeSection, setActiveSection] = useState('');
 
   useEffect(() => {
@@ -71,37 +72,31 @@ export default function BeginnersGuide() {
   ];
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-academic-cream">
       <MetaTags
         title="Beginners Guide - Councilopedia"
         description="A comprehensive introduction to UK government structure, local councils, and electoral systems. Learn how government works and how councillors are elected."
         keywords="UK government structure, local councils, electoral systems, how government works, councillor elections, devolution"
       />
-      
-      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <button
-            onClick={() => navigate('/facts/councilopedia')}
-            className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-3 group"
-          >
-            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-            Back to Councilopedia
-          </button>
-          <div className="border-l-4 border-teal-700 pl-6 mb-3">
-            <div className="text-xs font-bold tracking-widest text-teal-700 mb-1.5">
-              BEGINNERS GUIDE
-            </div>
-          </div>
-          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-3">
-            A Beginners{' '}
-            <span className="text-teal-700 font-serif italic">
-              Guide
-            </span>
-          </h1>
-          <p className="text-xl text-neutral-600 leading-relaxed max-w-3xl">
-            Understanding UK government structure, local councils, and how councillors are elected.
-          </p>
-        </div>
+      <PageBanner
+        heroLabel="FACTS & DATA"
+        heroTitle="A Beginners Guide"
+        heroSubtitle="An introduction to UK government structure, local councils, and how councillors are elected. Learn the basics of governance and electoral systems."
+        currentPath={location.pathname}
+      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <button
+          onClick={() => navigate('/facts/councilopedia')}
+          className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
+        >
+          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+          Back to Councilopedia
+        </button>
+      </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p className="text-xl text-academic-neutral-700 leading-relaxed max-w-3xl mb-8">
+          Understanding UK government structure, local councils, and how councillors are elected.
+        </p>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -703,7 +698,6 @@ export default function BeginnersGuide() {
       </div>
 
       <FAQSection page="facts" />
-      <LastUpdated />
     </div>
   );
 }

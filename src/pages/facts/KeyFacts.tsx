@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import MetaTags from '../../components/MetaTags';
-import LastUpdated from '../../components/LastUpdated';
+import PageBanner from '../../components/PageBanner';
 import FAQSection from '../../components/FAQSection';
 import DatasetStructuredData from '../../components/DatasetStructuredData';
 import RelatedContent from '../../components/RelatedContent';
 import { ArrowLeft, Users, DollarSign, FileText, CheckCircle, AlertCircle, ArrowRight, type LucideIcon } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface Fact {
   id: string;
@@ -18,6 +18,7 @@ interface Fact {
 
 export default function KeyFacts() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [facts, setFacts] = useState<Fact[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -62,7 +63,7 @@ export default function KeyFacts() {
     : 'https://localgovernmentreorganisation.co.uk';
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-academic-cream">
       <MetaTags
         title="Key Facts - Facts & Data"
         description="Evidence-based analysis of local government reorganisation outcomes, including workforce, financial performance, service delivery, and democratic outcomes."
@@ -79,33 +80,21 @@ export default function KeyFacts() {
           url: baseUrl
         }}
       />
-      
-      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <button
-            onClick={() => navigate('/facts')}
-            className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
-          >
-            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-            Back to Facts & Data
-          </button>
-          <div className="border-l-4 border-teal-700 pl-6 mb-6">
-            <div className="text-xs font-bold tracking-widest text-teal-700 mb-3">
-              EVIDENCE-BASED ANALYSIS
-            </div>
-          </div>
-          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-3">
-            Key{' '}
-            <span className="text-teal-700 font-serif italic">
-              Facts
-            </span>
-          </h1>
-          <p className="text-xl text-neutral-600 leading-relaxed max-w-3xl">
-            Evidence from recent reorganisations across England. What recent experience shows and what this means for future reorganisations.
-          </p>
-        </div>
+      <PageBanner
+        heroLabel="FACTS & DATA"
+        heroTitle="Key Facts"
+        heroSubtitle="Evidence from recent reorganisations across England. What recent experience shows and what this means for future reorganisations."
+        currentPath={location.pathname}
+      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <button
+          onClick={() => navigate('/facts')}
+          className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
+        >
+          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+          Back to Facts & Data
+        </button>
       </div>
-
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {loading ? (
           <div className="text-center py-6 text-slate-600">Loading facts...</div>
@@ -169,7 +158,6 @@ export default function KeyFacts() {
       </div>
 
       <FAQSection page="facts" />
-      <LastUpdated />
     </div>
   );
 }

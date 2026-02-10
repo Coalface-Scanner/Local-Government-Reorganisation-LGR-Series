@@ -1,7 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import { useLocation } from 'react-router-dom';
-import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
 import CollectionPageStructuredData from '../components/CollectionPageStructuredData';
@@ -697,7 +696,6 @@ export default function Materials({ onNavigate }: MaterialsProps) {
       <FAQSection page="materials" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <LastUpdated />
       </div>
     </div>
   );

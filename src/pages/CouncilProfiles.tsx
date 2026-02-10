@@ -4,7 +4,6 @@ import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import { surreyCouncils } from '../data/surreyCouncils';
 import FAQSection from '../components/FAQSection';
-import LastUpdated from '../components/LastUpdated';
 import CouncilProfilesPasswordProtection from '../components/CouncilProfilesPasswordProtection';
 
 export default function CouncilProfiles() {
@@ -213,7 +212,6 @@ export default function CouncilProfiles() {
       </div>
 
       <FAQSection page="council-profiles" />
-      <LastUpdated />
     </div>
     </CouncilProfilesPasswordProtection>
   );

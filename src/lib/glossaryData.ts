@@ -150,6 +150,92 @@ export const glossaryTerms: GlossaryTerm[] = [
     category: 'Timeline',
     relatedLink: '/100days',
     lastUpdated: '2026-01-15'
+  },
+  {
+    term: 'Section 114',
+    slug: 'section-114',
+    definition: 'A notice under Section 114 of the Local Government Finance Act 1988 that a local authority cannot balance its budget. Issuing a Section 114 effectively declares the council in financial crisis and restricts non-essential spending. It can influence perceptions of governance and may be relevant in reorganisation discussions.',
+    relatedTerms: ['local-government-reorganisation-lgr'],
+    category: 'Governance',
+    lastUpdated: '2026-02-10'
+  },
+  {
+    term: 'Combined Authority',
+    slug: 'combined-authority',
+    definition: 'A legal body that enables a group of local authorities to work together on transport, economic development, and regeneration. Combined authorities often have an elected mayor and can receive devolved powers from central government. They exist alongside (and sometimes overlap with) LGR proposals.',
+    relatedTerms: ['devolution', 'local-government-reorganisation-lgr'],
+    category: 'Core Concepts',
+    synonyms: ['Combined authorities'],
+    lastUpdated: '2026-02-10'
+  },
+  {
+    term: 'Elected Mayor',
+    slug: 'elected-mayor',
+    definition: 'A directly elected mayor who leads a local authority or combined authority. In England, some councils and most combined authorities have elected mayors with executive powers. Devolution deals often require the creation of an elected mayor for the combined authority.',
+    relatedTerms: ['combined-authority', 'devolution'],
+    category: 'Governance',
+    synonyms: ['Directly elected mayor'],
+    lastUpdated: '2026-02-10'
+  },
+  {
+    term: 'Scrutiny',
+    slug: 'scrutiny',
+    definition: 'The process by which councillors hold the executive (leader, cabinet, or mayor) to account. Scrutiny committees examine decisions, policies, and performance. Effective scrutiny is important for democratic legitimacy in both existing councils and new unitary authorities.',
+    relatedTerms: ['lame-duck-councillors', 'shadow-authority'],
+    category: 'Governance',
+    lastUpdated: '2026-02-10'
+  },
+  {
+    term: 'Leader of the Council',
+    slug: 'leader-of-the-council',
+    definition: 'The councillor who leads the ruling political group and typically holds executive power in a leader-and-cabinet model. The leader is chosen by the majority party or coalition, not directly elected by the public in most English councils.',
+    relatedTerms: ['cabinet', 'scrutiny'],
+    category: 'Governance',
+    synonyms: ['Council leader', 'Leader'],
+    lastUpdated: '2026-02-10'
+  },
+  {
+    term: 'Cabinet',
+    slug: 'cabinet',
+    definition: 'In local government, the small group of councillors (typically from the ruling party) who make key executive decisions. The cabinet is led by the leader of the council (or elected mayor) and is held to account by scrutiny committees.',
+    relatedTerms: ['leader-of-the-council', 'scrutiny'],
+    category: 'Governance',
+    lastUpdated: '2026-02-10'
+  },
+  {
+    term: 'Single Transferable Vote',
+    slug: 'single-transferable-vote',
+    definition: 'A proportional voting system where voters rank candidates. Surplus votes and eliminated candidates are redistributed according to preferences. STV is used in Scottish local elections and some other contexts but not currently for English local councils.',
+    relatedTerms: [],
+    category: 'Governance',
+    synonyms: ['STV'],
+    lastUpdated: '2026-02-10'
+  },
+  {
+    term: 'First-Past-the-Post',
+    slug: 'first-past-the-post',
+    definition: 'A voting system where the candidate with the most votes in a ward or constituency wins. Used for most local council elections in England. It can produce results where the share of seats does not match the share of votes across the authority.',
+    relatedTerms: [],
+    category: 'Governance',
+    synonyms: ['FPTP', 'First past the post'],
+    lastUpdated: '2026-02-10'
+  },
+  {
+    term: 'Boundary Review',
+    slug: 'boundary-review',
+    definition: 'A process to assess and change electoral boundaries (wards or divisions) within or across local authorities. Boundary reviews can accompany LGR to define the new unitary council areas and ward structures, or occur independently by the Local Government Boundary Commission.',
+    relatedTerms: ['local-government-reorganisation-lgr', 'shadow-elections'],
+    category: 'Process',
+    lastUpdated: '2026-02-10'
+  },
+  {
+    term: 'Structural Change',
+    slug: 'structural-change',
+    definition: 'A change to the number, boundaries, or type of local authorities in an area. Local government reorganisation is a form of structural change. The term is often used in legislation and government guidance (e.g. structural change orders).',
+    relatedTerms: ['local-government-reorganisation-lgr', 'reorganisation-proposal'],
+    category: 'Process',
+    synonyms: ['Structural changes'],
+    lastUpdated: '2026-02-10'
   }
 ];
 

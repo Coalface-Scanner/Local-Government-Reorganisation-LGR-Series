@@ -4,7 +4,6 @@ import { useLocation } from 'react-router-dom';
 import ErrorDisplay from '../components/ErrorDisplay';
 import { Calendar } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
-import LastUpdated from '../components/LastUpdated';
 import CollectionPageStructuredData from '../components/CollectionPageStructuredData';
 import PageBanner from '../components/PageBanner';
 import OptimizedImage from '../components/OptimizedImage';
@@ -235,7 +234,6 @@ export default function Insights({ onNavigate }: InsightsProps) {
         )}
       </div>
 
-      <LastUpdated />
     </div>
   );
 }

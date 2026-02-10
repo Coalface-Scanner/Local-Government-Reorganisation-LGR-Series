@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Chart } from 'chart.js/auto';
 import MetaTags from '../components/MetaTags';
+import PageBanner from '../components/PageBanner';
 import { X, Sparkles, CheckCircle2, BarChart3, Zap, BookOpen, MapPin, Share2, ArrowLeft, Link as LinkIcon } from 'lucide-react';
 import ShareButtons from '../components/ShareButtons';
 import './SurreyElectionSimulator.css';
@@ -625,50 +626,35 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
     return Object.values(simData.composition).reduce((a, b) => a + b, 0);
   };
 
+  const heroTitle = currentHash === 'aggregate' ? 'Current Aggregate Totals' : currentHash === 'existing' ? 'Existing Councils' : 'Election Simulator';
+  const heroSubtitle = currentHash === 'aggregate'
+    ? 'Mathematically combined district councillor totals showing the current composition from existing districts.'
+    : currentHash === 'existing'
+      ? 'Reference data for Surrey County Council and all district councils showing current compositions and party control.'
+      : 'Interactive seat planner for Surrey\'s local government reorganisation. Model election outcomes for East and West Surrey unitary authorities.';
+
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-academic-cream">
       <MetaTags
         title="Surrey Election Simulator - LGR Modeller"
         description="Interactive seat planner for Surrey's local government reorganisation. Model election outcomes for East and West Surrey unitary authorities."
         keywords="Surrey election simulator, Surrey LGR modeller, election planning, Surrey reorganisation"
       />
-
-      {/* Header */}
-      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <button
-            onClick={() => navigate('/surrey/election-tracker')}
-            className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-3 group"
-          >
-            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-            Back to Election Tracker
-          </button>
-          <div className="border-l-4 border-teal-700 pl-6 mb-3">
-            <div className="text-xs font-bold tracking-widest text-teal-700 mb-1.5">
-              SURREY ELECTION TRACKER
-            </div>
-          </div>
-          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-3">
-            {currentHash === 'aggregate' ? (
-              <>Current Aggregate{' '}<span className="text-teal-700 font-serif italic">Totals</span></>
-            ) : currentHash === 'existing' ? (
-              <>Existing{' '}<span className="text-teal-700 font-serif italic">Councils</span></>
-            ) : (
-              <>Election{' '}<span className="text-teal-700 font-serif italic">Simulator</span></>
-            )}
-          </h1>
-          <p className="text-xl text-neutral-600 leading-relaxed max-w-3xl">
-            {currentHash === 'aggregate' ? (
-              'Mathematically combined district councillor totals showing the current composition from existing districts.'
-            ) : currentHash === 'existing' ? (
-              'Reference data for Surrey County Council and all district councils showing current compositions and party control.'
-            ) : (
-              'Interactive seat planner for Surrey\'s local government reorganisation. Model election outcomes for East and West Surrey unitary authorities.'
-            )}
-          </p>
-        </div>
+      <PageBanner
+        heroLabel="FOCUS: SURREY"
+        heroTitle={heroTitle}
+        heroSubtitle={heroSubtitle}
+        currentPath={location.pathname}
+      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <button
+          onClick={() => navigate('/surrey/election-tracker')}
+          className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
+        >
+          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+          Back to Election Tracker
+        </button>
       </div>
-
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-10">
         {/* SECTION 1: AGGREGATE */}

@@ -1,9 +1,10 @@
 'use client';
 
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { getGlossaryTerm, generateMetadata } from '../../../lib/glossaryData';
 import GlossaryTermClient from '../../../components/glossary/GlossaryTermClient';
 import MetaTags from '../../../components/MetaTags';
+import PageBanner from '../../../components/PageBanner';
 import Breadcrumbs from '../../../components/Breadcrumbs';
 import DefinedTermSchema from '../../../components/glossary/DefinedTermSchema';
 import { ArrowLeft } from 'lucide-react';
@@ -42,6 +43,8 @@ export default function GlossaryTermPage() {
   // Generate metadata (Next.js Metadata API pattern)
   const metadata = generateMetadata(term);
 
+  const location = useLocation();
+
   return (
     <>
       <MetaTags 
@@ -51,29 +54,26 @@ export default function GlossaryTermPage() {
       />
       <DefinedTermSchema term={term} />
       <div className="min-h-screen bg-academic-cream">
-        {/* Header */}
-        <div className="bg-academic-warm py-8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <Breadcrumbs 
-              items={[
-                { label: 'Glossary', path: '/glossary' },
-                { label: term.term }
-              ]} 
-            />
-            <button
-              onClick={() => navigate('/glossary')}
-              className="flex items-center gap-2 text-teal-700 hover:text-teal-800 font-display font-medium mb-6 group"
-            >
-              <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-              Back to Glossary
-            </button>
-            <div className="academic-section-header mb-6">
-              <div className="academic-section-label">GLOSSARY</div>
-              <h1 className="text-academic-5xl md:text-academic-6xl font-serif font-bold text-academic-charcoal leading-[1.1]">
-                {term.term}
-              </h1>
-            </div>
-          </div>
+        <PageBanner
+          heroLabel="GLOSSARY"
+          heroTitle={term.term}
+          heroSubtitle={term.category ? `Category: ${term.category}` : undefined}
+          currentPath={location.pathname}
+        />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <Breadcrumbs 
+            items={[
+              { label: 'Glossary', path: '/glossary' },
+              { label: term.term }
+            ]} 
+          />
+          <button
+            onClick={() => navigate('/glossary')}
+            className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
+          >
+            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+            Back to Glossary
+          </button>
         </div>
 
         {/* Content */}

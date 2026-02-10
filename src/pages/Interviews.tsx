@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
-import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
@@ -444,7 +443,7 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
               <PageNavigation items={navItems} />
               <div className="bg-teal-800 text-white p-6">
                 <h3 className="text-xl font-black text-white mb-3">
-                  The Dispatch
+                  LGR Series Newsletter
                 </h3>
                 <p className="text-sm text-white mb-4">
                   Get the LGR Series directly in your inbox. No fluff, just deep analysis.
@@ -513,7 +512,6 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
         </div>
       </div>
 
-      <LastUpdated />
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
-import LastUpdated from '../../components/LastUpdated';
 import OptimizedImage from '../../components/OptimizedImage';
 
 interface ContributorsProps {
@@ -278,7 +277,6 @@ export default function Contributors({ onNavigate: _onNavigate }: ContributorsPr
         </div>
       </div>
 
-      <LastUpdated />
     </div>
   );
 }

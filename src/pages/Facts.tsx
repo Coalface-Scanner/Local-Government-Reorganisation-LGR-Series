@@ -1,10 +1,10 @@
 import MetaTags from '../components/MetaTags';
-import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import CollectionPageStructuredData from '../components/CollectionPageStructuredData';
 import PageBanner from '../components/PageBanner';
-import { Calendar, MapPin, HelpCircle, CheckCircle, FileText, BookOpen, ArrowRight, Route, type LucideIcon } from 'lucide-react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import ServiceCard from '../components/ServiceCard';
+import { Calendar, MapPin, HelpCircle, CheckCircle, FileText, BookOpen, Route, type LucideIcon } from 'lucide-react';
+import { useLocation, Link } from 'react-router-dom';
 import { useScrollDepthTracking } from '../hooks/useScrollDepthTracking';
 import { useTimeOnPageTracking } from '../hooks/useTimeOnPageTracking';
 
@@ -106,7 +106,6 @@ const serviceCards: ServiceCard[] = [
 ];
 
 export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
-  const navigate = useNavigate();
   const location = useLocation();
 
   // Track scroll depth and time on page
@@ -141,58 +140,24 @@ export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 items-stretch">
-          {serviceCards.map((card) => {
-            const Icon = card.icon;
-            const isDisabled = card.disabled;
-            return (
-              <div
-                key={card.id}
-                onClick={isDisabled ? undefined : () => navigate(card.route)}
-                className={`group academic-card overflow-hidden transition-all duration-300 text-left h-full flex flex-col ${
-                  isDisabled
-                    ? 'bg-academic-warm border-academic-neutral-300 cursor-not-allowed opacity-60'
-                    : 'cursor-pointer hover:border-teal-700'
-                }`}
-              >
-                <div className={`bg-gradient-to-br ${card.color} p-6 md:p-8 text-white min-h-[180px] flex flex-col justify-between ${isDisabled ? 'opacity-50' : ''}`}>
-                  <div className={`w-12 h-12 md:w-14 md:h-14 bg-white/20 flex items-center justify-center mb-4 transition-transform rounded-lg flex-shrink-0 ${isDisabled ? '' : 'group-hover:scale-110'}`}>
-                    <Icon className="text-white" size={28} />
-                  </div>
-                  <div className="flex-1 flex flex-col justify-end min-h-0">
-                    <h2 className="text-academic-lg md:text-academic-xl font-display font-bold text-white leading-tight overflow-hidden" style={{
-                      display: '-webkit-box',
-                      WebkitLineClamp: 3,
-                      WebkitBoxOrient: 'vertical'
-                    }}>{card.title}</h2>
-                    {isDisabled && (
-                      <p className="text-academic-sm text-white/80 mt-2 italic font-serif">Coming soon</p>
-                    )}
-                  </div>
-                </div>
-                <div className="p-6 md:p-8 flex-1 flex flex-col min-h-0">
-                  <p className={`leading-relaxed mb-4 flex-1 font-serif text-academic-sm md:text-academic-base overflow-hidden ${isDisabled ? 'text-academic-neutral-500' : 'text-academic-neutral-700'}`} style={{
-                    display: '-webkit-box',
-                    WebkitLineClamp: 4,
-                    WebkitBoxOrient: 'vertical'
-                  }}>
-                    {card.description}
-                  </p>
-                  {!isDisabled && (
-                    <div className="flex items-center gap-2 text-teal-700 font-display font-semibold group-hover:gap-3 transition-all mt-auto pt-2">
-                      <span>Explore</span>
-                      <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
+          {serviceCards.map((card) => (
+            <ServiceCard
+              key={card.id}
+              id={card.id}
+              title={card.title}
+              description={card.description}
+              icon={card.icon}
+              color={card.color}
+              route={card.route}
+              disabled={card.disabled}
+            />
+          ))}
         </div>
 
         <div className="max-w-2xl mx-auto">
           <div className="bg-teal-800 text-white p-8">
             <h3 className="text-academic-xl font-display font-bold text-white mb-4">
-              The Dispatch
+              LGR Series Newsletter
             </h3>
             <p className="text-academic-sm text-white mb-5 font-serif">
               Get the LGR Series directly in your inbox. No fluff, just deep analysis.
@@ -208,7 +173,6 @@ export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
       </div>
 
       <FAQSection page="facts" />
-      <LastUpdated />
     </div>
   );
 }

@@ -4,7 +4,6 @@ import { ChevronDown, User, FileText, MessageSquare, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import PageNavigation from '../components/PageNavigation';
 import PageBanner from '../components/PageBanner';
-import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
 
@@ -365,7 +364,7 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
               <PageNavigation items={navItems} />
               <div className="bg-teal-800 text-white p-6">
                 <h3 className="text-xl font-black text-white mb-3">
-                  The Dispatch
+                  LGR Series Newsletter
                 </h3>
                 <p className="text-sm text-white mb-4">
                   Get the LGR Series directly in your inbox. No fluff, just deep analysis.
@@ -410,7 +409,6 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
 
       <FAQSection page="reasons" />
 
-      <LastUpdated />
     </div>
   );
 }

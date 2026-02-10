@@ -4,7 +4,6 @@ import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import { getCouncilBySlug, surreyCouncils } from '../data/surreyCouncils';
 import FAQSection from '../components/FAQSection';
-import LastUpdated from '../components/LastUpdated';
 import CouncilProfilesPasswordProtection from '../components/CouncilProfilesPasswordProtection';
 import Breadcrumbs from '../components/Breadcrumbs';
 import LocalPlaceStructuredData from '../components/LocalPlaceStructuredData';
@@ -404,7 +403,6 @@ export default function CouncilProfileDetail() {
       <CouncilContentLinks councilName={council.name.replace(' Council', '')} maxItems={6} />
 
       <FAQSection page="council-profile" />
-      <LastUpdated />
     </div>
     </CouncilProfilesPasswordProtection>
   );

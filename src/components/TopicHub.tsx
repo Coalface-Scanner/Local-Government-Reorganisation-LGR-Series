@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import PageBanner from './PageBanner';
 import { supabase } from '../lib/supabase';
 import OptimizedImage from './OptimizedImage';
 import FollowTopic from './FollowTopic';
 import Breadcrumbs from './Breadcrumbs';
 import FAQSection from './FAQSection';
-import LastUpdated from './LastUpdated';
 import { useTopicPage } from '../hooks/useTopicPage';
 
 interface Article {
@@ -60,16 +60,12 @@ export default function TopicHub({
         return { name: themeMap[slug] || slug, slug };
       })
     : propRelatedThemes;
+  const location = useLocation();
   const [pillarArticle, setPillarArticle] = useState<Article | null>(null);
   const [relatedArticles, setRelatedArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const BANNER_IMAGES: Record<string, { src: string; position: string }> = {
-    'democratic-legitimacy': { src: '/Democracy_Banner_Image.jpg', position: 'center' },
-    'governance-and-reform': { src: '/Governance_Banner_Image.jpg', position: 'center bottom' },
-    'statecraft-and-system-design': { src: '/Statecraft_Banner_Image.jpg', position: 'center' },
-  };
-  const banner = BANNER_IMAGES[themeSlug];
+  const heroSubtitle = description ? description.split(/\n\n+/).filter(Boolean)[0]?.slice(0, 200) || undefined : undefined;
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -190,47 +186,32 @@ export default function TopicHub({
 
   return (
     <div className="min-h-screen bg-academic-cream">
-      {/* Hero Section */}
-      <section className="relative bg-academic-warm py-12 lg:py-16 overflow-hidden">
-        {banner && (
-          // Inline styles necessary for dynamic CSS custom properties (banner image URL and position vary by theme)
-          <div
-            className="absolute inset-0 bg-cover opacity-30 topic-banner-bg"
-            style={{
-              '--banner-image': `url(${banner.src})`,
-              '--banner-position': banner.position,
-            } as React.CSSProperties & { '--banner-image': string; '--banner-position': string }}
-            aria-hidden="true"
-          />
-        )}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Breadcrumbs
-            items={[
-              { label: 'LGR Hub', path: '/' },
-              { label: 'Topics', path: '/topics' },
-              { label: displayThemeName }
-            ]}
-            className="mb-6"
-          />
-
-          <div className="max-w-4xl">
-            <div className="academic-section-label mb-4">Core Theme</div>
-            <h1 className="text-academic-4xl md:text-academic-5xl font-display font-black text-academic-charcoal leading-[1.1] mb-4">
-              {displayThemeName}
-            </h1>
-            {description && (
-              <div className="rounded-lg bg-white/80 backdrop-blur-sm px-6 py-5 mb-6 shadow-sm border border-academic-neutral-200/60">
-                <div className="text-academic-lg md:text-academic-xl text-academic-charcoal leading-loose font-serif space-y-5 max-w-3xl">
-                  {description.split(/\n\n+/).filter(Boolean).map((para, i) => (
-                    <p key={i}>{para}</p>
-                  ))}
-                </div>
-              </div>
-            )}
+      <PageBanner
+        heroLabel="TOPICS"
+        heroTitle={displayThemeName}
+        heroSubtitle={heroSubtitle}
+        currentPath={location.pathname}
+      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <Breadcrumbs
+          items={[
+            { label: 'LGR Hub', path: '/' },
+            { label: 'Topics', path: '/topics' },
+            { label: displayThemeName }
+          ]}
+          className="mb-4"
+        />
+        {description && (
+          <div className="rounded-lg bg-white/80 backdrop-blur-sm px-6 py-5 mb-4 shadow-sm border border-academic-neutral-200/60 max-w-4xl">
+            <div className="text-academic-lg md:text-academic-xl text-academic-charcoal leading-loose font-serif space-y-5 max-w-3xl">
+              {description.split(/\n\n+/).filter(Boolean).map((para, i) => (
+                <p key={i}>{para}</p>
+              ))}
+            </div>
             <FollowTopic topic={displayThemeName} topicSlug={themeSlug} />
           </div>
-        </div>
-      </section>
+        )}
+      </div>
 
       {/* Questions – Primary and Secondary side by side */}
       {(keyQuestion || secondaryQuestions.length > 0) && (
@@ -440,7 +421,6 @@ export default function TopicHub({
       {/* FAQ Section */}
       <FAQSection page={`topics-${themeSlug}`} />
 
-      <LastUpdated />
     </div>
   );
 }

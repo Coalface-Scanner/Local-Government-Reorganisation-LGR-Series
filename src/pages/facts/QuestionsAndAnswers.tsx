@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import MetaTags from '../../components/MetaTags';
-import LastUpdated from '../../components/LastUpdated';
+import PageBanner from '../../components/PageBanner';
 import FAQSection from '../../components/FAQSection';
 import { ArrowLeft, Search, ChevronDown } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface FAQItem {
   question: string;
@@ -167,6 +167,7 @@ const stripHtml = (html: string): string => {
 
 export default function QuestionsAndAnswers() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [activeItem, setActiveItem] = useState<number | null>(null);
@@ -230,39 +231,27 @@ export default function QuestionsAndAnswers() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-academic-cream">
       <MetaTags
         title="Questions & Answers - Facts & Data"
         description="Comprehensive FAQ covering all aspects of Local Government Reorganisation (LGR) in England, including timelines, processes, finance, governance, and service impacts."
         keywords="LGR FAQ, local government reorganisation questions, unitary authority FAQ, LGR answers, reorganisation FAQ"
       />
-      
-      <div className="bg-gradient-to-r from-teal-700 via-teal-400 to-teal-100 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <button
-            onClick={() => navigate('/facts')}
-            className="flex items-center gap-2 text-white/90 hover:text-white font-display font-medium mb-8 group"
-          >
-            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-            Back to Facts & Data
-          </button>
-          <div className="mb-6">
-            <div className="text-xs font-bold tracking-widest text-white/80 mb-1.5">
-              QUESTIONS & ANSWERS
-            </div>
-          </div>
-          <h1 className="text-5xl md:text-6xl font-black text-white leading-[0.95] mb-3">
-            Questions &{' '}
-            <span className="text-white/90 font-serif italic">
-              Answers
-            </span>
-          </h1>
-          <p className="text-xl text-white/90 leading-relaxed max-w-3xl">
-            Comprehensive guide to structural reforms in England. Search and filter frequently asked questions about Local Government Reorganisation.
-          </p>
-        </div>
+      <PageBanner
+        heroLabel="FACTS & DATA"
+        heroTitle="Questions & Answers"
+        heroSubtitle="Comprehensive guide to structural reforms in England. Search and filter frequently asked questions about Local Government Reorganisation."
+        currentPath={location.pathname}
+      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <button
+          onClick={() => navigate('/facts')}
+          className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
+        >
+          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+          Back to Facts & Data
+        </button>
       </div>
-
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
           {/* Search Bar */}
@@ -354,7 +343,6 @@ export default function QuestionsAndAnswers() {
       </div>
 
       <FAQSection page="facts" />
-      <LastUpdated />
     </div>
   );
 }

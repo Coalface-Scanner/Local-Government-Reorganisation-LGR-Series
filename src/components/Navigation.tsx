@@ -104,7 +104,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
 
 
   const navItems = [
-    { id: 'lgr-hub', label: 'LGR HUB', path: '/lgr-hub' },
+    { id: 'lgr-hub', label: 'LGR HUB', path: '/' },
     { id: 'topics', label: 'TOPICS', path: '/topics' },
     { id: 'insights', label: 'INSIGHTS', path: '/insights' },
     { id: 'facts', label: 'FACTS & DATA', path: '/facts-and-data' },
@@ -359,7 +359,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
                   {lgrHubDropdownOpen && (
                     <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 bg-white/95 backdrop-blur-sm rounded-lg shadow-xl border border-neutral-200/50 py-2 min-w-[200px] z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                       <Link
-                        to="/lgr-hub"
+                        to="/"
                         className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
                           location.pathname === '/lgr-hub' || location.pathname === '/'
                             ? 'text-teal-600 bg-teal-50'
@@ -901,7 +901,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
                       {lgrHubMobileExpanded && (
                         <div className="bg-academic-warm border-b border-academic-neutral-200">
                           <Link
-                            to="/lgr-hub"
+                            to="/"
                             onClick={handleNavClick}
                             className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
                               location.pathname === '/lgr-hub' || location.pathname === '/'

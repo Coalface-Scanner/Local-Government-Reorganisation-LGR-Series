@@ -892,6 +892,12 @@
   opacity: 1;
 }
 
+/* Service card header - fixed height so all service cards align site-wide */
+.service-card-header {
+  height: 11.25rem; /* 180px */
+  min-height: 11.25rem;
+}
+
 /* Button Styling - Academic */
 .academic-button {
   @apply font-display font-semibold px-6 py-3;
@@ -2704,7 +2710,7 @@ nav img.lgr-highred-logo[src*="LGR_HighRed_Logo"],
   display: block !important;
 }
 
-/* Prevent hyphenated words from breaking across lines in hero banner */
+/* Hero banner text – readability over photo background */
 .hero-banner-text {
   /* Disable automatic hyphenation completely */
   hyphens: none !important;
@@ -2721,6 +2727,14 @@ nav img.lgr-highred-logo[src*="LGR_HighRed_Logo"],
   
   /* Additional protection: prevent text from breaking mid-word */
   white-space: normal !important;
+  
+  /* Legibility over busy background: soft shadow + slight outline */
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.35),
+    0 2px 8px rgba(0, 0, 0, 0.25),
+    0 0 1px rgba(0, 0, 0, 0.5);
+  line-height: 1.35;
+  letter-spacing: 0.01em;
 }
 
 /* Prevent breaking within hyphenated words (words with hyphens like "re-organisation") */

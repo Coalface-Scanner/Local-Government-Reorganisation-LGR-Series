@@ -65,6 +65,13 @@ export function getSecondaryNavItemsForPrimaryNav(primaryNavId: string, pathname
         { label: 'ELECTION TRACKER', path: '/surrey/election-tracker', active: fullPath.startsWith('/surrey/election-tracker') },
         { label: 'COUNCIL PROFILES', path: '/council-profiles', active: fullPath.startsWith('/council-profiles') },
       ];
+
+    case 'lessons':
+      return [
+        { label: 'OVERVIEW', path: '/lessons', active: fullPath === '/lessons' },
+        { label: 'INSIGHTS', path: '/lessons/insights', active: fullPath === '/lessons/insights' },
+        { label: 'CASE GROUNDED LESSONS', path: '/lessons/case-studies', active: fullPath === '/lessons/case-studies' },
+      ];
     
     case 'about':
       return [
@@ -147,12 +154,13 @@ export function getSecondaryNavItems(pathname: string): NavItem[] {
     ];
   }
 
-  // Lessons page
+  // Lessons page (hub and sub-pages)
   if (basePath === 'lessons') {
     return [
-      { label: 'OVERVIEW', path: '/lessons', active: true },
-      { label: 'CASE STUDIES', path: '/lessons' },
-      { label: 'BEST PRACTICES', path: '/lessons' },
+      { label: 'OVERVIEW', path: '/lessons', active: fullPath === '/lessons' },
+      { label: 'INSIGHTS', path: '/lessons/insights', active: fullPath === '/lessons/insights' },
+      { label: 'CASE GROUNDED LESSONS', path: '/lessons/case-studies', active: fullPath === '/lessons/case-studies' },
+      { label: 'BEST PRACTICES', path: '/lessons/best-practices', active: fullPath === '/lessons/best-practices' },
     ];
   }
 
@@ -251,9 +259,10 @@ export function getPrimaryNavItems(pathname: string): NavItem[] {
   // Lessons page primary nav
   if (basePath === 'lessons') {
     return [
-      { label: 'Overview', path: '/lessons', active: true },
-      { label: 'Case Studies', path: '/lessons' },
-      { label: 'Best Practices', path: '/lessons' },
+      { label: 'Overview', path: '/lessons', active: fullPath === '/lessons' },
+      { label: 'Insights', path: '/lessons/insights', active: fullPath === '/lessons/insights' },
+      { label: 'Case Grounded Lessons', path: '/lessons/case-studies', active: fullPath === '/lessons/case-studies' },
+      { label: 'Best Practices', path: '/lessons/best-practices', active: fullPath === '/lessons/best-practices' },
     ];
   }
 

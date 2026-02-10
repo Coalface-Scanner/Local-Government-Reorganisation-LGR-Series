@@ -89,7 +89,7 @@ export default function PageBanner({
   
   // Determine which primary nav items have dropdowns
   const hasDropdown = (navId: string): boolean => {
-    return ['lgr-hub', 'topics', 'insights', 'facts', 'surrey', 'about'].includes(navId);
+    return ['lgr-hub', 'topics', 'insights', 'facts', 'lessons', 'surrey', 'about'].includes(navId);
   };
   
   // Get nav ID from label/path
@@ -99,6 +99,7 @@ export default function PageBanner({
     if (labelLower.includes('topics') || path.includes('topics')) return 'topics';
     if (labelLower.includes('insights') || path.includes('insights')) return 'insights';
     if (labelLower.includes('facts') || path.includes('facts')) return 'facts';
+    if (labelLower.includes('lessons') || path.includes('lessons')) return 'lessons';
     if (labelLower.includes('surrey') || path.includes('surrey')) return 'surrey';
     if (labelLower.includes('about') || path.includes('about')) return 'about';
     return '';
@@ -111,6 +112,7 @@ export default function PageBanner({
     if (current.startsWith('/topics')) return 'topics';
     if (current.startsWith('/insights') || current.startsWith('/news') || current.startsWith('/podcast') || current.startsWith('/interviews')) return 'insights';
     if (current.startsWith('/facts') || current.startsWith('/facts-and-data') || current.startsWith('/materials') || current.startsWith('/councils') || current.startsWith('/glossary')) return 'facts';
+    if (current.startsWith('/lessons')) return 'lessons';
     if (current.startsWith('/surrey')) return 'surrey';
     if (current.startsWith('/about') || current.startsWith('/contact') || current.startsWith('/editor')) return 'about';
     return null;
@@ -440,7 +442,7 @@ export default function PageBanner({
       >
         {/* Gradient overlay with transparency */}
         <div 
-          className={`absolute inset-0 ${isHomepage ? 'bg-gradient-to-r from-teal-700/80 via-cyan-700/80 to-teal-800/80' : 'bg-gradient-to-r from-teal-700 via-cyan-700 to-teal-800'}`}
+          className={`absolute inset-0 ${isHomepage ? 'bg-gradient-to-r from-teal-800/85 via-cyan-800/85 to-teal-900/85' : 'bg-gradient-to-r from-teal-700 via-cyan-700 to-teal-800'}`}
         />
         {/* Subtle background pattern */}
         <div 
@@ -453,8 +455,8 @@ export default function PageBanner({
         <div className={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${isHomepage ? 'py-6 sm:py-8 md:py-10 lg:py-12' : 'py-3 sm:py-4 md:py-5 lg:py-6'}`}>
           <div className={isHomepage ? 'max-w-2xl' : 'max-w-4xl'}>
             {isHomepage ? (
-              <p className="text-white text-xl sm:text-2xl md:text-3xl lg:text-4xl font-display font-semibold leading-tight text-left hero-banner-text" style={{ fontWeight: 500, hyphens: 'none', WebkitHyphens: 'none', MozHyphens: 'none', msHyphens: 'none' }}>
-                {wrapHyphenatedWords('LGR Series offers independent analysis of local government reorganisation, governance models & service outcomes in England, with recommendations to keep')}{' '}
+              <p className="text-white text-xl sm:text-2xl md:text-3xl lg:text-4xl font-display font-semibold text-left hero-banner-text" style={{ fontWeight: 500, hyphens: 'none', WebkitHyphens: 'none', MozHyphens: 'none', msHyphens: 'none' }}>
+                {wrapHyphenatedWords('The LGR Series offers independent analysis of local government reorganisation, governance models & service outcomes in England, with recommendations to keep')}{' '}
                 <span className="bg-white/20 px-2 py-1 rounded font-bold">residents</span>
                 {' '}&{' '}
                 <span className="bg-white/20 px-2 py-1 rounded font-bold">local decision makers</span>

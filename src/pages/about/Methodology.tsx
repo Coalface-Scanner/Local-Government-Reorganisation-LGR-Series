@@ -2,7 +2,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
-import LastUpdated from '../../components/LastUpdated';
 import { useAboutPage } from '../../hooks/useAboutPage';
 
 interface MethodologyProps {
@@ -116,7 +115,7 @@ export default function Methodology({ onNavigate: _onNavigate }: MethodologyProp
             <div className="sticky top-24 space-y-6">
               <div className="bg-white p-6 border border-academic-neutral-300 rounded-sm shadow-sm">
                 <h3 className="text-academic-xl font-display font-black text-academic-charcoal mb-3">
-                  The Dispatch
+                  LGR Series Newsletter
                 </h3>
                 <p className="text-academic-sm text-academic-neutral-700 mb-4 font-serif">
                   Get the LGR Series directly in your inbox. No fluff, just deep analysis.
@@ -171,7 +170,6 @@ export default function Methodology({ onNavigate: _onNavigate }: MethodologyProp
         </div>
       </div>
 
-      <LastUpdated />
     </div>
   );
 }

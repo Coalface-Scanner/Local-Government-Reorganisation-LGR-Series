@@ -1,5 +1,5 @@
 import MetaTags from '../../components/MetaTags';
-import LastUpdated from '../../components/LastUpdated';
+import PageBanner from '../../components/PageBanner';
 import FAQSection from '../../components/FAQSection';
 import ArticleStructuredData from '../../components/ArticleStructuredData';
 import InBriefSection from '../../components/InBriefSection';
@@ -7,10 +7,11 @@ import {
   ArrowLeft, BookOpen, Calendar, MapPin, Building2, Users,
   ChevronRight, Target
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function WhatIsLGR() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const relatedResources = [
     {
@@ -68,28 +69,21 @@ export default function WhatIsLGR() {
         updatedDate={currentDate}
         slug="what-is-lgr"
       />
-      
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <button
-            onClick={() => navigate('/facts')}
-            className="flex items-center gap-2 text-teal-700 hover:text-teal-800 font-display font-medium mb-8 group"
-          >
-            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-            Back to Facts & Data
-          </button>
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">LGR SERIES HUB</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              What is Local Government{' '}
-              <span className="text-teal-700 font-serif italic">
-                Reorganisation? (LGR)
-              </span>
-            </h1>
-          </div>
-        </div>
+      <PageBanner
+        heroLabel="FACTS & DATA"
+        heroTitle="What is Local Government Reorganisation? (LGR)"
+        heroSubtitle="The process of restructuring local government in England, typically creating unitary authorities. Learn about LGR governance, timetable, and how reorganisation works."
+        currentPath={location.pathname}
+      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <button
+          onClick={() => navigate('/facts')}
+          className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
+        >
+          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+          Back to Facts & Data
+        </button>
       </div>
-
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* In Brief Section - Optimized for Featured Snippets */}
         <InBriefSection content="Local Government Reorganisation (LGR) is the process of restructuring local government structures in England, typically merging district and county councils to create unitary authorities. LGR aims to simplify governance, improve service delivery, and enable strategic decision-making at the right scale. The process involves shadow authorities, elections, and a transition period before the new unitary councils take full control on vesting day." />
@@ -204,7 +198,6 @@ export default function WhatIsLGR() {
         {/* FAQ Section */}
         <FAQSection page="what-is-lgr" />
 
-        <LastUpdated />
       </div>
     </div>
   );

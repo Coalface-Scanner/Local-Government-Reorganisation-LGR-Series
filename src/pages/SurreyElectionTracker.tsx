@@ -1,6 +1,7 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Sparkles, TrendingUp, BookOpen, ArrowRight, MapPin, ArrowLeft } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
+import PageBanner from '../components/PageBanner';
 
 interface SurreyElectionTrackerProps {
   onNavigate: (page: string, data?: unknown) => void;
@@ -8,6 +9,7 @@ interface SurreyElectionTrackerProps {
 
 export default function SurreyElectionTracker({ onNavigate: _onNavigate }: SurreyElectionTrackerProps) {
   const navigate = useNavigate();
+  const location = useLocation();
   const serviceCards = [
     {
       id: 'aggregate',
@@ -39,39 +41,30 @@ export default function SurreyElectionTracker({ onNavigate: _onNavigate }: Surre
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
+    <div className="min-h-screen bg-academic-cream">
       <MetaTags
         title="Surrey Election Tracker - LGR Modeller"
         description="Interactive tools for modelling Surrey's local government reorganisation. View aggregate totals, simulate election outcomes, and explore reference data."
         keywords="Surrey election tracker, Surrey LGR modeller, election simulation, Surrey reorganisation, election planning"
       />
-
-      {/* Hero Section */}
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <button
-            onClick={() => navigate('/surrey')}
-            className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-4 group"
-          >
-            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-            Back to Surrey
-          </button>
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">SURREY LGR</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              Election{' '}
-              <span className="text-teal-700 font-serif italic">Tracker</span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              Interactive tools for modelling Surrey's local government reorganisation. Explore aggregate totals, simulate election outcomes, and review reference data for East and West Surrey unitary authorities.
-            </p>
-          </div>
-        </div>
+      <PageBanner
+        heroLabel="FOCUS: SURREY"
+        heroTitle="Election Tracker"
+        heroSubtitle="Interactive tools for modelling Surrey's local government reorganisation. Explore aggregate totals, simulate election outcomes, and review reference data for East and West Surrey unitary authorities."
+        currentPath={location.pathname}
+      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <button
+          onClick={() => navigate('/surrey')}
+          className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
+        >
+          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+          Back to Surrey
+        </button>
       </div>
-
       {/* Service Cards */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 items-stretch">
           {serviceCards.map((card) => {
             const Icon = card.icon;
             const isMainCard = card.id === 'simulator';
@@ -85,32 +78,32 @@ export default function SurreyElectionTracker({ onNavigate: _onNavigate }: Surre
                     : 'border-slate-200/50 bg-white/80 hover:border-teal-400'
                 }`}
               >
-                <div className={`bg-gradient-to-br ${card.color} ${isMainCard ? 'p-10' : 'p-8'} text-white relative overflow-hidden`}>
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
+                <div className={`service-card-header flex-shrink-0 bg-gradient-to-br ${card.color} p-6 md:p-8 text-white relative overflow-hidden flex flex-col justify-between`}>
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16" aria-hidden />
                   {isMainCard && (
                     <div className="absolute top-4 right-4 px-3 py-1 bg-yellow-400/90 backdrop-blur-sm rounded-full text-xs font-black uppercase tracking-wider text-neutral-900 border-2 border-white/50 shadow-lg">
                       Main Tool
                     </div>
                   )}
-                  <div className="relative z-10">
-                    <div className={`${isMainCard ? 'w-20 h-20' : 'w-16 h-16'} bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110 shadow-lg`}>
-                      <Icon className="text-white" size={isMainCard ? 40 : 32} />
+                  <div className="relative z-10 flex flex-col flex-1 min-h-0">
+                    <div className="w-12 h-12 md:w-14 md:h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110 shadow-lg flex-shrink-0">
+                      <Icon className="text-white" size={28} />
                     </div>
-                    <div className="flex items-center gap-2 mb-2">
-                      <h2 className={`${isMainCard ? 'text-3xl' : 'text-2xl'} font-black leading-tight`}>{card.title}</h2>
-                    </div>
-                    <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs font-bold uppercase tracking-wider text-white/90 border border-white/30">
+                    <h2 className="text-academic-lg md:text-academic-xl font-display font-bold text-white leading-tight line-clamp-3 flex-1 min-h-0">
+                      {card.title}
+                    </h2>
+                    <span className="inline-block mt-2 px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs font-bold uppercase tracking-wider text-white/90 border border-white/30 w-fit">
                       {card.badge}
                     </span>
                   </div>
                 </div>
-                <div className={`${isMainCard ? 'p-8' : 'p-6'} flex-1 flex flex-col ${isMainCard ? 'bg-gradient-to-br from-white/60 to-yellow-50/40' : 'bg-white/50'} backdrop-blur-sm`}>
-                  <p className={`leading-relaxed mb-6 flex-1 ${isMainCard ? 'text-slate-800 text-lg' : 'text-slate-700'}`}>
+                <div className={`p-6 md:p-8 flex-1 flex flex-col min-h-0 ${isMainCard ? 'bg-gradient-to-br from-white/60 to-yellow-50/40' : 'bg-white/50'} backdrop-blur-sm`}>
+                  <p className={`leading-relaxed mb-4 flex-1 font-serif text-academic-sm md:text-academic-base line-clamp-4 overflow-hidden ${isMainCard ? 'text-slate-800' : 'text-slate-700'}`}>
                     {card.description}
                   </p>
-                  <div className={`flex items-center gap-2 ${isMainCard ? 'text-yellow-600' : 'text-teal-600'} font-semibold group-hover:gap-3 transition-all`}>
+                  <div className={`flex items-center gap-2 ${isMainCard ? 'text-yellow-600' : 'text-teal-600'} font-semibold group-hover:gap-3 transition-all mt-auto pt-2`}>
                     <span>{isMainCard ? 'Launch Simulator' : 'Explore'}</span>
-                    <ArrowRight size={isMainCard ? 20 : 18} className="group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
               </Link>

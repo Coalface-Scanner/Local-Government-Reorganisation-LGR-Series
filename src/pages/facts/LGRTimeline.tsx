@@ -1,13 +1,14 @@
 import MetaTags from '../../components/MetaTags';
-import LastUpdated from '../../components/LastUpdated';
+import PageBanner from '../../components/PageBanner';
 import Timeline from '../../components/Timeline';
 import { 
   ArrowLeft, Calendar, Route, BookOpen, MapPin
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function LGRTimeline() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <div className="min-h-screen bg-academic-cream">
@@ -16,31 +17,21 @@ export default function LGRTimeline() {
         description="Comprehensive timeline of Local Government Reorganisation (LGR) processes for 2026. Key dates including shadow elections, vesting days, and the LGR timetable 2026 roadmap."
         keywords="LGR timetable 2026, Local Government Reorganisation timeline, shadow elections 2026, vesting day, LGR roadmap, reorganisation timeline, unitary authority timeline"
       />
-      
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <button
-            onClick={() => navigate('/facts')}
-            className="flex items-center gap-2 text-teal-700 hover:text-teal-800 font-display font-medium mb-8 group"
-          >
-            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-            Back to Facts & Data
-          </button>
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">LGR SERIES</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              Local Government Reorganisation{' '}
-              <span className="text-teal-700 font-serif italic">
-                Timeline 2026
-              </span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              Comprehensive timeline of Local Government Reorganisation (LGR) processes, key dates, and milestones for 2026. Track shadow elections, vesting days, and the LGR timetable roadmap.
-            </p>
-          </div>
-        </div>
+      <PageBanner
+        heroLabel="FACTS & DATA"
+        heroTitle="LGR Timeline 2026"
+        heroSubtitle="Comprehensive timeline of LGR processes, key dates, and milestones. Track shadow elections, vesting days, and the LGR timetable roadmap."
+        currentPath={location.pathname}
+      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <button
+          onClick={() => navigate('/facts')}
+          className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
+        >
+          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+          Back to Facts & Data
+        </button>
       </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* In Brief Section */}
         <div className="academic-card p-8 mb-12 bg-teal-50 border-l-4 border-teal-700">
@@ -194,7 +185,6 @@ export default function LGRTimeline() {
           </div>
         </div>
 
-        <LastUpdated />
       </div>
     </div>
   );

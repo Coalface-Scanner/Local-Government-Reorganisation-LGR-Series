@@ -1,5 +1,4 @@
 import SubscriptionForm from '../components/SubscriptionForm';
-import LastUpdated from '../components/LastUpdated';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import { Mail, FileText, Bell, ArrowRight } from 'lucide-react';
@@ -28,9 +27,9 @@ export default function Subscribe({ onNavigate }: SubscribeProps) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <MetaTags
-        title="Subscribe - The Dispatch Newsletter"
-        description="Subscribe to The Dispatch for weekly insights on local government reorganisation. Get notified about new articles, exclusive content, and case studies."
-        keywords="LGR newsletter, subscribe to LGR series, weekly insights, local government reorganisation updates, dispatch newsletter"
+        title="Subscribe - LGR Series Newsletter"
+        description="Subscribe to the LGR Series Newsletter for weekly insights on local government reorganisation. Get notified about new articles, exclusive content, and case studies."
+        keywords="LGR newsletter, subscribe to LGR series, weekly insights, local government reorganisation updates, LGR series newsletter"
       />
       <PageBanner
         heroLabel={heroLabel?.content || 'STAY INFORMED'}
@@ -100,7 +99,7 @@ export default function Subscribe({ onNavigate }: SubscribeProps) {
               <div className="sticky top-24 space-y-5">
                 <div className="bg-teal-800 text-white p-5">
                   <h3 className="text-xl font-black text-white mb-3">
-                    The Dispatch
+                    LGR Series Newsletter
                   </h3>
                   <p className="text-sm text-white mb-4">
                     Get the LGR Series directly in your inbox. No fluff, just deep analysis.
@@ -139,7 +138,6 @@ export default function Subscribe({ onNavigate }: SubscribeProps) {
         </div>
       </section>
 
-      <LastUpdated />
     </div>
   );
 }

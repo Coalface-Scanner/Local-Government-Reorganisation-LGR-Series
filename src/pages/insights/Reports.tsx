@@ -4,7 +4,6 @@ import { supabase } from '../../lib/supabase';
 import { Calendar, Download, ExternalLink } from 'lucide-react';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
-import LastUpdated from '../../components/LastUpdated';
 import CollectionPageStructuredData from '../../components/CollectionPageStructuredData';
 import OptimizedImage from '../../components/OptimizedImage';
 import MembersPasswordProtection from '../../components/MembersPasswordProtection';
@@ -245,7 +244,6 @@ export default function Reports({ onNavigate }: ReportsProps) {
         )}
         </div>
 
-        <LastUpdated />
       </div>
     </MembersPasswordProtection>
   );

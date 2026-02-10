@@ -1,5 +1,4 @@
 import { useLocation, Link } from 'react-router-dom';
-import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
@@ -23,7 +22,7 @@ export default function Surrey({ onNavigate }: SurreyProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-academic-cream">
       <MetaTags
         title="Surrey LGR Timetable 2026 - Analysis & Transition Guide"
         description="Detailed analysis of Surrey's local government reorganisation and LGR timetable 2026. Risks, opportunities, and practical guidance for the transition to East and West Surrey unitary authorities. Part of the LGR Series."
@@ -227,7 +226,7 @@ export default function Surrey({ onNavigate }: SurreyProps) {
               <PageNavigation items={navItems} />
               <div className="bg-teal-800 text-white p-5">
                 <h3 className="text-xl font-black text-white mb-3">
-                  The Dispatch
+                  LGR Series Newsletter
                 </h3>
                 <p className="text-sm text-white mb-4">
                   Get the LGR Series directly in your inbox. No fluff, just deep analysis.
@@ -272,7 +271,6 @@ export default function Surrey({ onNavigate }: SurreyProps) {
 
       <FAQSection page="surrey" />
 
-      <LastUpdated />
     </div>
   );
 }

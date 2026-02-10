@@ -99,7 +99,7 @@ export default function Contact({ onNavigate }: ContactProps) {
                   onClick={() => onNavigate('subscribe')}
                   className="inline-flex items-center gap-2 text-teal-700 font-display font-bold hover:text-teal-800 transition-colors text-academic-base"
                 >
-                  {cardSubscribeLink?.content || 'Subscribe to The Dispatch'}
+                  {cardSubscribeLink?.content || 'Subscribe to the LGR Series Newsletter'}
                   <ArrowRight size={16} />
                 </button>
               </div>
@@ -171,7 +171,7 @@ export default function Contact({ onNavigate }: ContactProps) {
             <div className="sticky top-24 space-y-6">
               <div className="bg-white p-6 border border-academic-neutral-300 rounded-sm shadow-sm">
                 <h3 className="text-academic-xl font-display font-black text-academic-charcoal mb-3">
-                  The Dispatch
+                  LGR Series Newsletter
                 </h3>
                 <p className="text-academic-sm text-academic-neutral-700 mb-4 font-serif">
                   Get the LGR Series directly in your inbox. No fluff, just deep analysis.

@@ -2,7 +2,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { User, FileText, MessageSquare, Info, ArrowRight } from 'lucide-react';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
-import LastUpdated from '../../components/LastUpdated';
 import FAQSection from '../../components/FAQSection';
 import OrganizationStructuredData from '../../components/OrganizationStructuredData';
 
@@ -237,7 +236,7 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
             <div className="sticky top-24 space-y-6">
               <div className="bg-white p-6 border border-academic-neutral-300 rounded-sm shadow-sm">
                 <h3 className="text-academic-xl font-display font-black text-academic-charcoal mb-3">
-                  The Dispatch
+                  LGR Series Newsletter
                 </h3>
                 <p className="text-academic-sm text-academic-neutral-700 mb-4 font-serif">
                   Get the LGR Series directly in your inbox. No fluff, just deep analysis.
@@ -281,7 +280,6 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
       </div>
 
       <FAQSection page="reasons" />
-      <LastUpdated />
     </div>
   );
 }

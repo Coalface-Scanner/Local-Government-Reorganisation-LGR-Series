@@ -1,11 +1,11 @@
 import MetaTags from '../../components/MetaTags';
-import LastUpdated from '../../components/LastUpdated';
+import PageBanner from '../../components/PageBanner';
 import CollectionPageStructuredData from '../../components/CollectionPageStructuredData';
 import { 
   ArrowLeft, MapPin, Building2, Calendar, FileText,
   ChevronRight
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface CouncilCase {
   name: string;
@@ -20,6 +20,7 @@ interface CouncilCase {
 
 export default function CouncilCases() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const councilCases: CouncilCase[] = [
     {
@@ -97,31 +98,21 @@ export default function CouncilCases() {
           url: case_.link || `/facts/council-cases#${case_.name.toLowerCase().replace(/\s+/g, '-')}`
         }))}
       />
-      
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <button
-            onClick={() => navigate('/facts')}
-            className="flex items-center gap-2 text-teal-700 hover:text-teal-800 font-display font-medium mb-8 group"
-          >
-            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-            Back to Facts & Data
-          </button>
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">LGR SERIES</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              Local Government Reorganisation{' '}
-              <span className="text-teal-700 font-serif italic">
-                Council Cases
-              </span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              Case studies of councils involved in Local Government Reorganisation (LGR), including recent reorganisations and those in progress. Learn from Dorset, Buckinghamshire, Somerset, North Yorkshire, Cumbria, and Surrey.
-            </p>
-          </div>
-        </div>
+      <PageBanner
+        heroLabel="FACTS & DATA"
+        heroTitle="Council Cases"
+        heroSubtitle="Case studies of councils involved in LGR, including recent reorganisations and those in progress. Learn from Dorset, Buckinghamshire, Somerset, North Yorkshire, Cumbria, and Surrey."
+        currentPath={location.pathname}
+      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <button
+          onClick={() => navigate('/facts')}
+          className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
+        >
+          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+          Back to Facts & Data
+        </button>
       </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* In Brief Section */}
         <div className="academic-card p-8 mb-12 bg-teal-50 border-l-4 border-teal-700">
@@ -276,7 +267,6 @@ export default function CouncilCases() {
           </div>
         </div>
 
-        <LastUpdated />
       </div>
     </div>
   );

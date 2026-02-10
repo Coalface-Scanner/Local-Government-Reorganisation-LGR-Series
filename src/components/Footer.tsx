@@ -23,7 +23,7 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
         {/* Main Footer Content */}
         <div className="py-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-6">
           {/* Brand Section */}
-          <div>
+          <div className="text-center">
             <a
               href="https://coalfaceengagement.co.uk"
               target="_blank"
@@ -42,8 +42,7 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
               />
             </a>
             <p className="text-academic-xs text-academic-neutral-200 leading-relaxed font-serif mb-4">
-              Independent insight<br />
-              by <a href="https://coalfaceengagement.co.uk" target="_blank" rel="noopener noreferrer" className="text-teal-400 hover:text-teal-300 transition-colors">COALFACE</a>
+              Independent insight by <a href="https://coalfaceengagement.co.uk" target="_blank" rel="noopener noreferrer" className="text-teal-400 hover:text-teal-300 transition-colors whitespace-nowrap">COALFACE</a>
             </p>
             {/* Social Media Links */}
             <ul className="flex items-center gap-3" aria-label="Social media links">

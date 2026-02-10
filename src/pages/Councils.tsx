@@ -9,7 +9,7 @@ export default function Councils() {
   const location = useLocation();
   
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-academic-cream">
       <MetaTags
         title="UK Councils Map - Interactive Authority Directory"
         description="Interactive map of Local Authority Districts across England, Scotland, Wales, and Northern Ireland. Explore council boundaries, profiles, and reorganisation status."
@@ -32,7 +32,7 @@ export default function Councils() {
         currentPath={location.pathname}
       />
       <div className="bg-white border-b border-gray-200">
-        <div className="container mx-auto px-6 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <section>
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Local Authority Districts by Region</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
@@ -85,7 +85,7 @@ export default function Councils() {
       </main>
 
       <div className="bg-white border-t border-gray-200 py-4">
-        <div className="container mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-sm text-gray-500 text-center">
             Data source:{' '}
             <a

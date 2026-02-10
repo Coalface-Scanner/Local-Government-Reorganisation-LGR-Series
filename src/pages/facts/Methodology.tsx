@@ -1,43 +1,35 @@
 import MetaTags from '../../components/MetaTags';
-import LastUpdated from '../../components/LastUpdated';
+import PageBanner from '../../components/PageBanner';
 import FAQSection from '../../components/FAQSection';
 import { ArrowLeft } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function Methodology() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-academic-cream">
       <MetaTags
         title="Methodology - Facts & Data"
         description="How the Local Government Reorganisation Series analysis has been developed, including evidence base, approach, and limitations."
         keywords="LGR methodology, reorganisation analysis, evidence gathering, research methods"
       />
-      
-      <div className="relative bg-gradient-to-b from-teal-50 to-white py-8">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <button
-            onClick={() => navigate('/facts')}
-            className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-3 group"
-          >
-            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-            Back to Facts & Data
-          </button>
-          <div className="border-l-4 border-teal-700 pl-6 mb-3">
-            <div className="text-xs font-bold tracking-widest text-teal-700 mb-1.5">
-              RESEARCH METHODOLOGY
-            </div>
-          </div>
-          <h1 className="text-5xl md:text-6xl font-black text-neutral-900 leading-[0.95] mb-3">
-            Methodology
-          </h1>
-          <p className="text-xl text-neutral-600 leading-relaxed max-w-3xl">
-            How this analysis has been developed and the evidence base that informs it.
-          </p>
-        </div>
+      <PageBanner
+        heroLabel="FACTS & DATA"
+        heroTitle="Methodology"
+        heroSubtitle="How this analysis has been developed and the evidence base that informs it."
+        currentPath={location.pathname}
+      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <button
+          onClick={() => navigate('/facts')}
+          className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
+        >
+          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+          Back to Facts & Data
+        </button>
       </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-white rounded-2xl p-8 md:p-12 shadow-lg border border-slate-200 space-y-8 text-slate-700">
           <div>
@@ -125,7 +117,6 @@ export default function Methodology() {
       </div>
 
       <FAQSection page="facts" />
-      <LastUpdated />
     </div>
   );
 }

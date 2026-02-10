@@ -529,7 +529,7 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
                 <PageNavigation items={navItems} />
                 <div className="bg-teal-800 text-white p-5">
                   <h3 className="text-xl font-black text-white mb-3">
-                    The Dispatch
+                    LGR Series Newsletter
                   </h3>
                   <p className="text-sm text-white mb-4">
                     Get the LGR Series directly in your inbox. No fluff, just deep analysis.

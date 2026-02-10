@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, Linkedin, ExternalLink } from 'lucide-react';
 import MetaTags from '../../components/MetaTags';
 import OptimizedImage from '../../components/OptimizedImage';
-import LastUpdated from '../../components/LastUpdated';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import { useAboutPage } from '../../hooks/useAboutPage';
 
@@ -222,7 +221,7 @@ export default function RowanCole({ onNavigate: _onNavigate }: RowanColeProps) {
             <div className="sticky top-24 space-y-6">
               <div className="bg-white p-6 border border-academic-neutral-300 rounded-sm shadow-sm">
                 <h3 className="text-academic-xl font-display font-black text-academic-charcoal mb-3">
-                  The Dispatch
+                  LGR Series Newsletter
                 </h3>
                 <p className="text-academic-sm text-academic-neutral-700 mb-4 font-serif">
                   Get the LGR Series directly in your inbox. No fluff, just deep analysis.
@@ -277,7 +276,6 @@ export default function RowanCole({ onNavigate: _onNavigate }: RowanColeProps) {
         </div>
       </div>
 
-      <LastUpdated />
     </div>
   );
 }
