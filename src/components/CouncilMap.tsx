@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -159,8 +160,8 @@ export default function CouncilMap() {
   }, []);
 
   return (
-    <div className="relative w-full h-full">
-      <div ref={mapRef} className="w-full h-full" />
+    <div className="relative w-full h-full min-h-[500px]">
+      <div ref={mapRef} className="w-full h-full min-h-[500px]" />
 
       {loading && (
         <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-40">
@@ -172,8 +173,17 @@ export default function CouncilMap() {
       )}
 
       {error && (
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded max-w-md z-50">
-          {error}
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-academic-cream p-6 z-50">
+          <p className="text-academic-charcoal font-serif mb-4 text-center max-w-md">{error}</p>
+          <Link
+            to="/council-profiles"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-teal-700 text-white font-display font-semibold rounded-lg hover:bg-teal-800 transition-colors"
+          >
+            Browse council profiles by region
+          </Link>
+          <p className="text-academic-neutral-600 text-sm mt-4 text-center">
+            England, Scotland, Wales and Northern Ireland council overviews.
+          </p>
         </div>
       )}
 

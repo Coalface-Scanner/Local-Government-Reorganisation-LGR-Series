@@ -33,7 +33,7 @@ const hubCards: HubCard[] = [
   },
   {
     id: 'case-studies',
-    title: 'Case Grounded Lessons',
+    title: 'Case Based Insights',
     description: 'In-depth case studies from North and West Northamptonshire, Somerset, and Dorset. Rescue reorganisation, efficiency mergers, and stability with policy inertia.',
     icon: Building2,
     color: 'from-emerald-500 to-teal-600',

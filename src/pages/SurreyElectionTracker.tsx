@@ -89,7 +89,7 @@ export default function SurreyElectionTracker({ onNavigate: _onNavigate }: Surre
                     <div className="w-12 h-12 md:w-14 md:h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110 shadow-lg flex-shrink-0">
                       <Icon className="text-white" size={28} />
                     </div>
-                    <h2 className="text-academic-lg md:text-academic-xl font-display font-bold text-white leading-tight line-clamp-3 flex-1 min-h-0">
+                    <h2 className="text-lg md:text-xl font-display font-bold text-white leading-tight line-clamp-3 flex-1 min-h-0 [text-shadow:0_1px_2px_rgba(0,0,0,0.35),0_2px_8px_rgba(0,0,0,0.25)]">
                       {card.title}
                     </h2>
                     <span className="inline-block mt-2 px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs font-bold uppercase tracking-wider text-white/90 border border-white/30 w-fit">

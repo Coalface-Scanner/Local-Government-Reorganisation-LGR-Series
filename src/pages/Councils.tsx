@@ -78,8 +78,8 @@ export default function Councils() {
         </div>
       </div>
 
-      <main className="flex-1 relative">
-        <div className="absolute inset-0">
+      <main className="flex-1 relative min-h-[500px]">
+        <div className="absolute inset-0 min-h-[500px]">
           <CouncilMap />
         </div>
       </main>

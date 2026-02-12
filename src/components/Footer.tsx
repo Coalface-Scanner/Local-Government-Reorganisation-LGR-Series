@@ -162,6 +162,16 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
                 </Link>
               </li>
               <li>
+                <Link to="/editor/rowan-cole" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
+                  Editor
+                </Link>
+              </li>
+              <li>
+                <Link to="/about/methodology" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
+                  Methodology
+                </Link>
+              </li>
+              <li>
                 <Link to="/about/contributors" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
                   Contributors
                 </Link>

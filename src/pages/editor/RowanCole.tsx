@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ArrowLeft, Linkedin, ExternalLink } from 'lucide-react';
 import MetaTags from '../../components/MetaTags';
+import PageBanner from '../../components/PageBanner';
 import OptimizedImage from '../../components/OptimizedImage';
-import Breadcrumbs from '../../components/Breadcrumbs';
 import { useAboutPage } from '../../hooks/useAboutPage';
 
 interface RowanColeProps {
@@ -11,7 +11,8 @@ interface RowanColeProps {
 
 export default function RowanCole({ onNavigate: _onNavigate }: RowanColeProps) {
   const { page: cmsPage, loading } = useAboutPage('editor');
-  
+  const location = useLocation();
+
   return (
     <div className="bg-academic-cream min-h-screen">
       <MetaTags
@@ -22,34 +23,23 @@ export default function RowanCole({ onNavigate: _onNavigate }: RowanColeProps) {
         ogDescription="Evidence-based governance analysis supporting local authority leaders and officers through risk-managed transitions, service integration, and stronger public accountability."
         ogImage="/rowan-cole-editor-lgr-series.jpg"
       />
-      
-      <div className="relative bg-academic-warm py-8 overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Breadcrumbs 
-            items={[
-              { label: 'About', path: '/about' },
-              { label: 'Rowan Cole' }
-            ]}
-            className="mb-6"
-          />
-          <div className="academic-section-header mb-6">
-            <div className="academic-section-label">EDITOR</div>
-            <h1 className="text-academic-5xl md:text-academic-6xl font-display font-black text-academic-charcoal leading-[1.1] mb-3">
-              Rowan{' '}
-              <span className="text-teal-700 font-serif italic">
-                Cole
-              </span>
-            </h1>
-            <p className="text-academic-xl text-academic-neutral-700 leading-relaxed max-w-3xl font-serif">
-              Editor of the LGR Series and LGR strategist specialising in public sector strategy, evidence-based governance analysis, and stronger accountability for local authorities.
-            </p>
-          </div>
-        </div>
-      </div>
+
+      <PageBanner
+        heroLabel="ABOUT"
+        heroTitle="Rowan Cole"
+        heroSubtitle="Editor of the LGR Series and LGR strategist specialising in public sector strategy, evidence-based governance analysis, and stronger accountability for local authorities."
+        currentPath={location.pathname}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
+            {/* Breadcrumb */}
+            <nav className="flex items-center gap-2 text-academic-sm text-academic-neutral-600">
+              <Link to="/about" className="hover:text-teal-700 transition-colors">About</Link>
+              <span>/</span>
+              <span className="text-academic-neutral-900">Rowan Cole</span>
+            </nav>
             {/* Editor Profile */}
             <section className="academic-card p-8 md:p-10">
               <div className="space-y-6">
