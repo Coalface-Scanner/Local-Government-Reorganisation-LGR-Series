@@ -193,7 +193,7 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
           <div class="header-section">
             <h1>The First 100 Days:<br><span class="subtitle">A Playbook for Unitary Transition</span></h1>
             <p>Drawing on evidence from recent reorganisations, this playbook identifies critical actions for new unitary authorities in their first 100 days. It examines the governance, planning, and political challenges that emerge during transition and provides a framework for managing them.</p>
-            <p style="margin-top: 1em; font-size: 0.9em; color: #6b7280;">LGR Series | Published ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+            <p style="margin-top: 1em; font-size: 0.9em; color: #6b7280;">LGRI | Published ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
           </div>
           
           <h2>Why The First 100 Days Matter</h2>
@@ -268,7 +268,7 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
           </ul>
           
           <div class="footer-note">
-            <p><strong>LGR Series</strong> | A COALFACE Insight Project</p>
+            <p><strong>LGRI</strong> | A COALFACE Insight Project</p>
             <p>For more resources and analysis, visit: ${window.location.origin}</p>
             <p style="margin-top: 1em;">© ${new Date().getFullYear()} COALFACE Insights. All rights reserved.</p>
           </div>
@@ -301,9 +301,9 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
   return (
     <div className="bg-academic-cream min-h-screen">
       <MetaTags
-        title="LGR Series: The First 100 Days Playbook"
-        description="Strategic framework for managing the critical first 100 days of Local Government Reorganisation (LGR) unitary transition. Evidence-based guidance on LGR governance, priorities, risks, and success factors from the LGR Series."
-        keywords="LGR Series, Local Government Reorganisation playbook, unitary transition, first 100 days, LGR implementation, LGR governance, council transition plan, reorganisation playbook"
+        title="LGRI: The First 100 Days Playbook"
+        description="Strategic framework for managing the critical first 100 days of Local Government Reorganisation (LGR) unitary transition. Evidence-based guidance on LGR governance, priorities, risks, and success factors from the LGRI."
+        keywords="LGRI, Local Government Reorganisation playbook, unitary transition, first 100 days, LGR implementation, LGR governance, council transition plan, reorganisation playbook"
       />
       <PageBanner
         heroLabel="RESEARCH SERIES"
@@ -312,7 +312,7 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
         currentPath={location.pathname}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="layout-container layout-content-sub">
         <InBriefSection content="The first 100 days after vesting day are critical for new unitary authorities created through Local Government Reorganisation (LGR). This playbook draws on evidence from recent reorganisations to identify key priorities: establishing governance structures, managing service integration, addressing councillor transitions, and maintaining democratic legitimacy. Effective LGR governance during this period sets the foundation for long-term success." />
         <div className="flex flex-wrap gap-4 mb-6">
           <button
@@ -342,7 +342,7 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
       </div>
 
       <article className="bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="layout-container layout-content-sub">
           <div className="grid lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
               <div className="prose prose-lg max-w-none">
@@ -527,17 +527,12 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
             <div className="lg:col-span-1">
               <div className="sticky top-24 space-y-5">
                 <PageNavigation items={navItems} />
-                <div className="bg-teal-800 text-white p-5">
-                  <h3 className="text-xl font-black text-white mb-3">
-                    LGR Series Newsletter
-                  </h3>
-                  <p className="text-sm text-white mb-4">
-                    Get the LGR Series directly in your inbox. No fluff, just deep analysis.
+                <div className="lgr-insights-cta">
+                  <h3 className="lgr-insights-cta__title">LGR Insights & Updates</h3>
+                  <p className="lgr-insights-cta__body">
+                    Receive our regular update direct to your inbox. Subscribe here.
                   </p>
-                  <Link
-                    to="/subscribe"
-                    className="inline-block bg-white text-teal-700 px-6 py-3 rounded-lg font-display font-bold text-sm uppercase tracking-wider hover:bg-teal-50 transition-colors"
-                  >
+                  <Link to="/subscribe" className="lgr-insights-cta__btn">
                     Subscribe
                   </Link>
                 </div>
@@ -574,7 +569,7 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
       </article>
 
       <aside className="bg-neutral-100 border-t border-neutral-200 py-6">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="layout-container">
           <h3 className="text-2xl font-black text-neutral-900 mb-6">
             Related Resources
           </h3>
@@ -608,7 +603,7 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
       <FAQSection page="hundred-days" />
 
       {/* Related Resources - Cross-Links */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="layout-container layout-content-sub">
         <div className="academic-card p-8 bg-teal-50 border-l-4 border-teal-700">
           <h2 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-6">
             Explore Related Resources

@@ -109,7 +109,7 @@ export default function LessonsInsights() {
         currentPath={location.pathname}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="layout-container layout-content-sub">
         <button
           onClick={() => navigate('/lessons')}
           className="flex items-center gap-2 text-teal-700 hover:text-teal-800 font-display font-medium mb-8 group"
@@ -250,10 +250,10 @@ export default function LessonsInsights() {
 
           <div className="lg:col-span-1">
             <div className="sticky top-24 space-y-6">
-              <div className="bg-teal-800 text-white p-8">
-                <h3 className="text-academic-xl font-display font-bold text-white mb-4">LGR Series Newsletter</h3>
-                <p className="text-academic-sm text-white mb-5 font-serif">Get the LGR Series directly in your inbox. No fluff, just deep analysis.</p>
-                <Link to="/subscribe" className="inline-block bg-white text-teal-700 px-6 py-3 rounded-lg font-display font-bold text-sm uppercase tracking-wider hover:bg-teal-50 transition-colors">Subscribe</Link>
+              <div className="lgr-insights-cta">
+                <h3 className="lgr-insights-cta__title">LGR Insights & Updates</h3>
+                <p className="lgr-insights-cta__body">Receive our regular update direct to your inbox. Subscribe here.</p>
+                <Link to="/subscribe" className="lgr-insights-cta__btn">Subscribe</Link>
               </div>
               <div className="academic-card p-8">
                 <h4 className="font-display font-bold text-academic-charcoal mb-6 text-academic-sm tracking-wider border-b-2 border-academic-neutral-300 pb-4">RELATED</h4>
@@ -268,7 +268,7 @@ export default function LessonsInsights() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="layout-container">
         <RelatedContent currentSlug="lessons" contentType="fact" maxItems={6} />
       </div>
 

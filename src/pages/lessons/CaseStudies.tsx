@@ -6,6 +6,7 @@ import RelatedContent from '../../components/RelatedContent';
 import { ArrowLeft, CheckCircle2, XCircle, HelpCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import { caseStudiesData, SERVICE_AREAS, type ServiceOutcomeType } from './caseStudiesData';
 import { useScrollDepthTracking } from '../../hooks/useScrollDepthTracking';
+import FAQSection from '../../components/FAQSection';
 import { useTimeOnPageTracking } from '../../hooks/useTimeOnPageTracking';
 
 function OutcomeIcon({ outcome }: { outcome: ServiceOutcomeType }) {
@@ -42,7 +43,7 @@ export default function LessonsCaseStudies() {
         currentPath={location.pathname}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="layout-container layout-content-sub">
         <button
           onClick={() => navigate('/lessons')}
           className="flex items-center gap-2 text-teal-700 hover:text-teal-800 font-display font-medium mb-8 group"
@@ -180,10 +181,11 @@ export default function LessonsCaseStudies() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="layout-container">
         <RelatedContent currentSlug="lessons" contentType="fact" maxItems={6} />
       </div>
 
+      <FAQSection page="lessons" />
     </div>
   );
 }

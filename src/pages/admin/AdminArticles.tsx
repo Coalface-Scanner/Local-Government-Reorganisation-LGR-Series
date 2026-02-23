@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
-import { Plus, Edit2, Trash2, Eye, Save, X, LogOut, FileText, MessageSquare, Upload, Info, AlertCircle } from 'lucide-react';
-import { useAdminAuth } from '../../contexts/AdminAuthContext';
+import { useState, useEffect } from 'react';
+import { Plus, Edit2, Trash2, Eye, Save, X, LogOut, FileText, MessageSquare, AlertCircle } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
 import ArticleEditor from '../../components/ArticleEditor';
 import ArticleQAEditor from './ArticleQAEditor';
@@ -11,6 +11,8 @@ import ImageUpload from '../../components/admin/ImageUpload';
 import HelpTooltip from '../../components/admin/HelpTooltip';
 import { validateArticle, getFieldError, ValidationError } from '../../utils/validation';
 import { useNavigate } from 'react-router-dom';
+import { isAdminUser } from '../../lib/adminAccess';
+import { sanitizeHtmlContent } from '../../lib/htmlSanitizer';
 
 interface Article {
   id: string;
@@ -47,15 +49,43 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
   const [previewMode, setPreviewMode] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [adminChecked, setAdminChecked] = useState(false);
+  const [hasAdminAccess, setHasAdminAccess] = useState(false);
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
   const [managingQA, setManagingQA] = useState<string | null>(null);
-  const { logout, isAuthenticated } = useAdminAuth();
+  const { user, loading: authLoading, signOut } = useAuth();
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      onNavigate('admin/articles/login');
+    if (!authLoading && !user) {
+      onNavigate('admin/login');
     }
-  }, [isAuthenticated, onNavigate]);
+  }, [authLoading, onNavigate, user]);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function checkAdminAccess() {
+      if (authLoading) return;
+      if (!user) {
+        setAdminChecked(true);
+        setHasAdminAccess(false);
+        return;
+      }
+
+      const allowed = await isAdminUser(user);
+      if (!cancelled) {
+        setHasAdminAccess(allowed);
+        setAdminChecked(true);
+        if (!allowed) {
+          await signOut();
+          onNavigate('admin/login');
+        }
+      }
+    }
+    checkAdminAccess();
+    return () => {
+      cancelled = true;
+    };
+  }, [authLoading, onNavigate, signOut, user]);
 
   useEffect(() => {
     fetchArticles();
@@ -165,7 +195,7 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
         title: editingArticle.title,
         slug: editingArticle.slug,
         excerpt: editingArticle.excerpt || null,
-        body: editingArticle.body || null,
+        body: sanitizeHtmlContent(editingArticle.body || ''),
         featured_image: editingArticle.featured_image || null,
         status,
         published_date: editingArticle.published_date || null, // Will be set in save logic if needed
@@ -311,16 +341,19 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
   };
 
   const handleLogout = () => {
-    logout();
-    navigate('/');
+    signOut().finally(() => navigate('/'));
   };
 
-  if (loading) {
+  if (loading || authLoading || !adminChecked) {
     return (
       <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
         <div className="text-neutral-600">Loading...</div>
       </div>
     );
+  }
+
+  if (!hasAdminAccess) {
+    return null;
   }
 
   if (editingArticle) {
@@ -406,7 +439,7 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                 )}
                 <div
                   className="article-content"
-                  dangerouslySetInnerHTML={{ __html: editingArticle.body || '' }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeHtmlContent(editingArticle.body || '') }}
                 />
               </article>
             </div>

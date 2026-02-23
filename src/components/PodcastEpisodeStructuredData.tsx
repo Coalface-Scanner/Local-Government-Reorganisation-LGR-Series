@@ -39,19 +39,19 @@ export default function PodcastEpisodeStructuredData({
     "description": description,
     "partOfSeries": {
       "@type": "PodcastSeries",
-      "name": "LGR Series Interviews",
+      "name": "LGRI Interviews",
       "description": "In-depth interviews with council leaders, officers, and practitioners on Local Government Reorganisation (LGR) and LGR governance.",
       "publisher": {
         "@type": "Organization",
-        "name": "LGR Series",
-        "alternateName": ["LGR Series by COALFACE", "COALFACE"],
+        "name": "LGRI",
+        "alternateName": ["LGRI by COALFACE", "LGR Series", "COALFACE"],
         "legalName": "Coalface Engagement Ltd"
       }
     },
     "publisher": {
       "@type": "Organization",
-      "name": "LGR Series",
-      "alternateName": ["LGR Series by COALFACE", "COALFACE"],
+      "name": "LGRI",
+      "alternateName": ["LGRI by COALFACE", "LGR Series", "COALFACE"],
       "legalName": "Coalface Engagement Ltd"
     }
   };

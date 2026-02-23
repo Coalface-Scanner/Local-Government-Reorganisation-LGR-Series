@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { LogIn } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { isAdminUser } from '../../lib/adminAccess';
+import { supabase } from '../../lib/supabase';
 
 interface AdminLoginProps {
   onNavigate: (page: string) => void;
@@ -13,13 +15,25 @@ export default function AdminLogin({ onNavigate }: AdminLoginProps) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn, user } = useAuth();
+  const { signIn, signOut, user } = useAuth();
 
   useEffect(() => {
-    if (user) {
-      onNavigate('admin/dashboard');
+    let cancelled = false;
+    async function handleExistingSession() {
+      if (!user) return;
+      const isAdmin = await isAdminUser(user);
+      if (cancelled) return;
+      if (isAdmin) {
+        onNavigate('admin/dashboard');
+      } else {
+        await signOut();
+      }
     }
-  }, [user, onNavigate]);
+    handleExistingSession();
+    return () => {
+      cancelled = true;
+    };
+  }, [onNavigate, signOut, user]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,6 +46,15 @@ export default function AdminLogin({ onNavigate }: AdminLoginProps) {
       setError('Invalid email or password');
       setLoading(false);
     } else {
+      const { data } = await supabase.auth.getUser();
+      const isAdmin = await isAdminUser(data.user ?? user);
+      if (!isAdmin) {
+        await signOut();
+        setError('This account does not have CMS admin access.');
+        setLoading(false);
+        return;
+      }
+
       onNavigate('admin/dashboard');
     }
   };

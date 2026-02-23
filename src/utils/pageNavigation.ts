@@ -1,90 +1,80 @@
 import { NavItem } from '../components/PageBanner';
 
-// Standard primary navigation items (same as old Navigation component)
-// Primary nav items link to their hub pages, except Glossary which links directly
+// Standard primary navigation items – six hubs (green bar)
 export function getStandardPrimaryNavItems(): NavItem[] {
   return [
-    { label: 'LGR HUB', path: '/lgr-hub' },
-    { label: 'TOPICS', path: '/topics' },
+    { label: 'LEARN', path: '/learn' },
+    { label: 'DISCOVER', path: '/discover' },
+    { label: 'RESEARCH', path: '/research' },
     { label: 'INSIGHTS', path: '/insights' },
-    { label: 'FACTS & DATA', path: '/facts-and-data' },
-    { label: 'GLOSSARY', path: '/glossary' }, // Glossary links directly, not to a hub
-    { label: 'LESSONS', path: '/lessons' },
-    { label: 'FOCUS: SURREY', path: '/surrey/hub' },
+    { label: 'TOOLS', path: '/tools' },
     { label: 'ABOUT', path: '/about' },
   ];
 }
 
-// Get secondary nav items for a specific primary nav item (dropdown content)
+// Get secondary nav items for a specific primary nav item (grey bar – sub-pages)
 export function getSecondaryNavItemsForPrimaryNav(primaryNavId: string, pathname: string): NavItem[] {
   const fullPath = pathname;
-  
+
   switch (primaryNavId) {
-    case 'lgr-hub':
+    case 'learn':
       return [
-        { label: 'OVERVIEW', path: '/lgr-hub', active: fullPath === '/lgr-hub' || fullPath === '/' },
-        { label: 'ROADMAP', path: '/roadmap' },
-        { label: 'TOOLS', path: '/tools' },
-        { label: 'PODCAST', path: '/podcast' },
-        { label: '100 DAYS PLAYBOOK', path: '/100days' },
-      ];
-    
-    case 'topics':
-      return [
-        { label: 'GOVERNANCE', path: '/topics/governance-and-reform', active: fullPath === '/topics/governance-and-reform' },
-        { label: 'DEMOCRACY', path: '/topics/democratic-legitimacy', active: fullPath === '/topics/democratic-legitimacy' },
-        { label: 'STATECRAFT', path: '/topics/statecraft-and-system-design', active: fullPath === '/topics/statecraft-and-system-design' },
-        { label: 'BY GEOGRAPHY', path: '/topics' },
-      ];
-    
-    case 'insights':
-      return [
-        { label: 'ALL INSIGHTS', path: '/insights', active: fullPath === '/insights' },
-        { label: 'ARTICLES', path: '/insights', active: fullPath.startsWith('/insights/') && !fullPath.startsWith('/insights/reports') },
-        { label: 'REPORTS', path: '/insights/reports', active: fullPath.startsWith('/insights/reports') },
-        { label: 'NEWS', path: '/news', active: fullPath.startsWith('/news') },
-        { label: 'PODCAST', path: '/podcast', active: fullPath.startsWith('/podcast') || fullPath.startsWith('/interviews') },
-        { label: 'LIBRARY', path: '/library', active: fullPath === '/library' },
-      ];
-    
-    case 'facts':
-      return [
-        { label: 'KEY FACTS', path: '/facts', active: fullPath.startsWith('/facts') && !fullPath.startsWith('/facts-and-data') },
-        { label: 'FACTS & DATA', path: '/facts-and-data', active: fullPath === '/facts-and-data' },
-        { label: 'MATERIALS & DATASETS', path: '/materials', active: fullPath.startsWith('/materials') },
-        { label: 'COUNCIL MAP & PROFILES', path: '/councils', active: fullPath.startsWith('/councils') },
-        { label: 'COUNCIL PROFILES', path: '/council-profiles', active: fullPath.startsWith('/council-profiles') },
-        { label: 'REORGANISATIONS', path: '/reorganisations', active: fullPath.startsWith('/reorganisations') },
+        { label: 'LEARN', path: '/learn', active: fullPath === '/learn' },
+        { label: 'WHAT IS LGR', path: '/what-is-lgr', active: fullPath.startsWith('/what-is-lgr') },
+        { label: 'BEGINNERS GUIDE', path: '/beginners-guide', active: fullPath.startsWith('/beginners-guide') },
+        { label: 'QUESTIONS & ANSWERS', path: '/questions-and-answers', active: fullPath.startsWith('/questions-and-answers') },
         { label: 'GLOSSARY', path: '/glossary', active: fullPath.startsWith('/glossary') },
-      ];
-    
-    case 'surrey':
-      return [
-        { label: 'OVERVIEW', path: '/surrey', active: fullPath === '/surrey' },
-        { label: 'SURREY HUB', path: '/surrey/hub', active: fullPath.startsWith('/surrey/hub') },
-        { label: 'ELECTION TRACKER', path: '/surrey/election-tracker', active: fullPath.startsWith('/surrey/election-tracker') },
-        { label: 'COUNCIL PROFILES', path: '/council-profiles', active: fullPath.startsWith('/council-profiles') },
+        { label: 'FIRST 100 DAYS', path: '/first-100-days', active: fullPath.startsWith('/first-100-days') },
       ];
 
-    case 'lessons':
+    case 'discover':
       return [
-        { label: 'OVERVIEW', path: '/lessons', active: fullPath === '/lessons' },
-        { label: 'INSIGHTS', path: '/lessons/insights', active: fullPath === '/lessons/insights' },
-        { label: 'CASE GROUNDED LESSONS', path: '/lessons/case-studies', active: fullPath === '/lessons/case-studies' },
+        { label: 'DISCOVER', path: '/discover', active: fullPath === '/discover' },
+        { label: 'TOPICS', path: '/topics', active: fullPath.startsWith('/topics') },
+        { label: 'REORGANISATIONS', path: '/reorganisations', active: fullPath.startsWith('/reorganisations') },
+        { label: 'COUNCILS MAP', path: '/councils', active: fullPath.startsWith('/councils') },
+        { label: 'COUNCIL PROFILES', path: '/council-profiles', active: fullPath.startsWith('/council-profiles') },
+        { label: 'SURREY', path: '/surrey', active: fullPath.startsWith('/surrey') },
       ];
-    
+
+    case 'research':
+      return [
+        { label: 'RESEARCH', path: '/research', active: fullPath === '/research' },
+        { label: 'FACTS & DATA', path: '/facts-and-data', active: fullPath === '/facts-and-data' },
+        { label: 'KEY FACTS', path: '/facts/key-facts', active: fullPath.startsWith('/facts/key-facts') },
+        { label: 'LIBRARY', path: '/library', active: fullPath.startsWith('/library') },
+        { label: 'LESSONS', path: '/lessons', active: fullPath.startsWith('/lessons') },
+      ];
+
+    case 'insights':
+      return [
+        { label: 'INSIGHTS', path: '/insights', active: fullPath === '/insights' },
+        { label: 'REPORTS', path: '/insights/reports', active: fullPath.startsWith('/insights/reports') },
+        { label: 'ARTICLES', path: '/insights', active: fullPath.startsWith('/insights/') && !fullPath.startsWith('/insights/reports') },
+        { label: 'NEWS', path: '/news', active: fullPath.startsWith('/news') },
+        { label: 'PODCAST', path: '/podcast', active: fullPath.startsWith('/podcast') || fullPath.startsWith('/interviews') },
+      ];
+
+    case 'tools':
+      return [
+        { label: 'TOOLS', path: '/tools', active: fullPath === '/tools' },
+        { label: 'ROADMAP', path: '/roadmap', active: fullPath.startsWith('/roadmap') },
+        { label: 'LIBRARY', path: '/library', active: fullPath.startsWith('/library') },
+        { label: 'SURREY ELECTION TOOLS', path: '/surrey/election-tracker', active: fullPath.startsWith('/surrey/election-tracker') },
+        { label: 'FIRST 100 DAYS', path: '/first-100-days', active: fullPath.startsWith('/first-100-days') },
+      ];
+
     case 'about':
       return [
-        { label: 'ABOUT THE LGR SERIES', path: '/about', active: fullPath === '/about' },
-        { label: 'EDITOR PROFILE', path: '/editor/rowan-cole', active: fullPath === '/editor/rowan-cole' },
+        { label: 'ABOUT', path: '/about', active: fullPath === '/about' },
+        { label: 'OVERVIEW', path: '/about/overview', active: fullPath === '/about/overview' },
+        { label: 'LEADERSHIP', path: '/about/leadership', active: fullPath.startsWith('/about/leadership') },
         { label: 'CONTRIBUTORS', path: '/about/contributors', active: fullPath === '/about/contributors' },
         { label: 'CONTRIBUTE', path: '/about/contribute', active: fullPath === '/about/contribute' },
-        { label: 'ABOUT COALFACE', path: '/about/coalface', active: fullPath === '/about/coalface' },
         { label: 'METHODOLOGY', path: '/about/methodology', active: fullPath === '/about/methodology' },
         { label: 'CONTACT', path: '/contact', active: fullPath === '/contact' },
-        { label: 'SUBSCRIBE', path: '/subscribe', active: fullPath === '/subscribe' },
       ];
-    
+
     default:
       return [];
   }
@@ -137,8 +127,11 @@ export function getSecondaryNavItems(pathname: string): NavItem[] {
   // About page
   if (basePath === 'about') {
     return [
-      { label: 'OVERVIEW', path: '/about', active: fullPath === '/about' },
+      { label: 'ABOUT', path: '/about', active: fullPath === '/about' },
+      { label: 'OVERVIEW', path: '/about/overview', active: fullPath === '/about/overview' },
+      { label: 'LEADERSHIP', path: '/about/leadership', active: fullPath.startsWith('/about/leadership') },
       { label: 'CONTRIBUTORS', path: '/about/contributors', active: fullPath === '/about/contributors' },
+      { label: 'CONTRIBUTE', path: '/about/contribute', active: fullPath === '/about/contribute' },
       { label: 'METHODOLOGY', path: '/about/methodology', active: fullPath === '/about/methodology' },
       { label: 'CONTACT', path: '/contact' },
     ];
@@ -289,8 +282,11 @@ export function getPrimaryNavItems(pathname: string): NavItem[] {
   // About page primary nav
   if (basePath === 'about') {
     return [
-      { label: 'Overview', path: '/about', active: fullPath === '/about' },
+      { label: 'About', path: '/about', active: fullPath === '/about' },
+      { label: 'Overview', path: '/about/overview', active: fullPath === '/about/overview' },
+      { label: 'Leadership', path: '/about/leadership', active: fullPath.startsWith('/about/leadership') },
       { label: 'Contributors', path: '/about/contributors', active: fullPath === '/about/contributors' },
+      { label: 'Contribute', path: '/about/contribute', active: fullPath === '/about/contribute' },
       { label: 'Methodology', path: '/about/methodology', active: fullPath === '/about/methodology' },
       { label: 'Contact', path: '/contact' },
     ];

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 interface MetaTagsProps {
   title: string;
   description: string;
-  keywords?: string;
+  keywords?: string | string[];
   ogType?: string;
   ogImage?: string;
   ogImageWidth?: number;
@@ -22,6 +22,18 @@ interface MetaTagsProps {
   };
 }
 
+function toMetaContent(value: unknown): string {
+  if (typeof value === 'string') return value;
+  if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => (typeof item === 'string' ? item : ''))
+      .filter(Boolean)
+      .join(', ');
+  }
+  return '';
+}
+
 export default function MetaTags({
   title,
   description,
@@ -30,14 +42,14 @@ export default function MetaTags({
   ogImage = '/LGR-Series-Tumbnail.jpg',
   ogImageWidth = 600,
   ogImageHeight = 350,
-  ogImageAlt = 'Local Government Reorganisation Series banner',
+  ogImageAlt = 'LGRI banner',
   ogTitle,
   ogDescription,
   noindex = false,
   canonical,
   article
 }: MetaTagsProps) {
-  const fullTitle = `${title} | LGR Series by COALFACE`;
+  const fullTitle = `${title} | LGRI by COALFACE`;
   const finalOgTitle = ogTitle || fullTitle;
   const finalOgDescription = ogDescription || description;
   
@@ -76,29 +88,30 @@ export default function MetaTags({
     const fullOgImage = ogImage.startsWith('http') ? ogImage : `${baseUrl}${ogImage}`;
 
     const metaTags: Array<{ name?: string; property?: string; content: string }> = [
-      { name: 'description', content: description },
-      { property: 'og:title', content: finalOgTitle },
-      { property: 'og:description', content: finalOgDescription },
-      { property: 'og:type', content: ogType },
-      { property: 'og:url', content: canonicalUrl },
-      { property: 'og:image', content: fullOgImage },
-      { property: 'og:image:width', content: ogImageWidth.toString() },
-      { property: 'og:image:height', content: ogImageHeight.toString() },
-      { property: 'og:image:alt', content: ogImageAlt },
-      { property: 'og:site_name', content: 'LGR Series by COALFACE' },
+      { name: 'description', content: toMetaContent(description) },
+      { property: 'og:title', content: toMetaContent(finalOgTitle) },
+      { property: 'og:description', content: toMetaContent(finalOgDescription) },
+      { property: 'og:type', content: toMetaContent(ogType) },
+      { property: 'og:url', content: toMetaContent(canonicalUrl) },
+      { property: 'og:image', content: toMetaContent(fullOgImage) },
+      { property: 'og:image:width', content: toMetaContent(ogImageWidth) },
+      { property: 'og:image:height', content: toMetaContent(ogImageHeight) },
+      { property: 'og:image:alt', content: toMetaContent(ogImageAlt) },
+      { property: 'og:site_name', content: 'LGRI' },
       { property: 'og:locale', content: 'en_GB' },
       { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: finalOgTitle },
-      { name: 'twitter:description', content: finalOgDescription },
-      { name: 'twitter:image', content: fullOgImage },
+      { name: 'twitter:title', content: toMetaContent(finalOgTitle) },
+      { name: 'twitter:description', content: toMetaContent(finalOgDescription) },
+      { name: 'twitter:image', content: toMetaContent(fullOgImage) },
       { name: 'geo.region', content: 'GB' },
       { name: 'geo.placename', content: 'United Kingdom' },
       { name: 'geo.position', content: '51.5074;-0.1278' },
       { name: 'ICBM', content: '51.5074, -0.1278' },
     ];
 
-    if (keywords) {
-      metaTags.push({ name: 'keywords', content: keywords });
+    const normalizedKeywords = toMetaContent(keywords);
+    if (normalizedKeywords) {
+      metaTags.push({ name: 'keywords', content: normalizedKeywords });
     }
 
     // Add robots meta tag
@@ -110,20 +123,23 @@ export default function MetaTags({
 
     if (article) {
       if (article.publishedTime) {
-        metaTags.push({ property: 'article:published_time', content: article.publishedTime });
+        metaTags.push({ property: 'article:published_time', content: toMetaContent(article.publishedTime) });
       }
       if (article.modifiedTime) {
-        metaTags.push({ property: 'article:modified_time', content: article.modifiedTime });
+        metaTags.push({ property: 'article:modified_time', content: toMetaContent(article.modifiedTime) });
       }
       if (article.author) {
-        metaTags.push({ property: 'article:author', content: article.author });
+        metaTags.push({ property: 'article:author', content: toMetaContent(article.author) });
       }
       if (article.section) {
-        metaTags.push({ property: 'article:section', content: article.section });
+        metaTags.push({ property: 'article:section', content: toMetaContent(article.section) });
       }
       if (article.tags) {
         article.tags.forEach(tag => {
-          metaTags.push({ property: 'article:tag', content: tag });
+          const safeTag = toMetaContent(tag);
+          if (safeTag) {
+            metaTags.push({ property: 'article:tag', content: safeTag });
+          }
         });
       }
     }
@@ -142,7 +158,7 @@ export default function MetaTags({
         document.head.appendChild(element);
       }
 
-      element.setAttribute('content', content);
+      element.setAttribute('content', toMetaContent(content));
     });
 
     let canonicalLink = document.querySelector('link[rel="canonical"]');

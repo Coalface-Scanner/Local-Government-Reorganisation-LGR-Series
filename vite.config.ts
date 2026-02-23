@@ -1,12 +1,41 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
+import { execSync } from 'node:child_process';
+
+// Opens the dev server URL in the default browser (works from Cursor/IDE where open: true often doesn't)
+function openBrowserPlugin() {
+  return {
+    name: 'open-browser',
+    configureServer(server: { httpServer?: { once: (e: string, fn: () => void) => void; address: () => { port: number } | null } }) {
+      const httpServer = server.httpServer;
+      if (!httpServer) return;
+      httpServer.once('listening', () => {
+        const addr = httpServer.address();
+        const port = addr && typeof addr === 'object' ? addr.port : 5173;
+        const url = `http://localhost:${port}/`;
+        try {
+          execSync(`open "${url}"`, { stdio: 'ignore' });
+        } catch {
+          console.log(`  ➜  Open in browser: ${url}`);
+        }
+      });
+    },
+  };
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [openBrowserPlugin(), react(), tailwindcss()],
+  esbuild: {
+    drop: ['console', 'debugger'], // Remove console.log in production
+  },
   optimizeDeps: {
-    exclude: ['lucide-react'],
+    include: ['lucide-react', 'react-router-dom'],
+  },
+  server: {
+    port: 5173,
+    strictPort: false,
   },
   build: {
     // Code splitting optimization
@@ -43,21 +72,9 @@ export default defineConfig({
     },
     // Chunk size warning limit (increase since we're splitting)
     chunkSizeWarningLimit: 600,
-    // Minify for production
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true, // Remove console.log in production
-        drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info'], // Remove specific console methods
-      },
-    },
+    // Minify for production (esbuild is much faster than terser)
+    minify: 'esbuild',
     // Source maps for production (optional - set to false for smaller builds)
     sourcemap: false,
-  },
-  // Performance optimizations
-  server: {
-    // Enable HTTP/2
-    http2: false, // Set to true if your server supports it
   },
 });

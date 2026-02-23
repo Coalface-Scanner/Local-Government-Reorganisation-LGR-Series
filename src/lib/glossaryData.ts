@@ -236,6 +236,31 @@ export const glossaryTerms: GlossaryTerm[] = [
     category: 'Process',
     synonyms: ['Structural changes'],
     lastUpdated: '2026-02-10'
+  },
+  {
+    term: 'Structural Change Order',
+    slug: 'structural-change-order',
+    definition: 'The statutory instrument that gives legal effect to a local government reorganisation in England. Made by the Secretary of State, it sets out the creation of new unitary authorities, the dissolution of existing county and district councils, and the vesting day when the new structure takes effect.',
+    relatedTerms: ['structural-change', 'local-government-reorganisation-lgr', 'secretary-of-state', 'vesting-day'],
+    category: 'Process',
+    lastUpdated: '2026-02-20'
+  },
+  {
+    term: 'Secretary of State',
+    slug: 'secretary-of-state',
+    definition: 'The UK government minister responsible for local government (currently the Secretary of State for Levelling Up, Housing and Communities) who decides whether to make a structural change order and thereby approve a reorganisation. Proposals are submitted to the Secretary of State, who may consult and then lay the order before Parliament.',
+    relatedTerms: ['structural-change-order', 'reorganisation-proposal'],
+    category: 'Governance',
+    lastUpdated: '2026-02-20'
+  },
+  {
+    term: 'Councillor',
+    slug: 'councillor',
+    definition: 'An elected member of a local council. Councillors represent wards or divisions, vote in full council and committees, and in many councils form the cabinet or hold the leader role. In a reorganisation, councillors may be elected to the new shadow authority before vesting day.',
+    relatedTerms: ['shadow-authority', 'leader-of-the-council', 'scrutiny', 'lame-duck-councillors'],
+    category: 'Governance',
+    synonyms: ['Councillors'],
+    lastUpdated: '2026-02-20'
   }
 ];
 

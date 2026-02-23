@@ -16,17 +16,17 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
       id: 'overview',
       title: 'About This Research Programme',
       icon: <Info size={24} className="text-teal-700" />,
-      description: 'The LGR Series is a dedicated research and analysis programme examining the 2024-2025 wave of English local government reorganisation, with particular focus on its implications for planning, governance, and development delivery.',
+      description: 'The LGRI is a dedicated research and analysis programme examining the 2024-2025 wave of English local government reorganisation, with particular focus on its implications for planning, governance, and development delivery.',
       link: '/about',
       linkText: 'Learn more'
     },
     {
-      id: 'editor',
-      title: "Editor's Letter & Editorial Team",
+      id: 'leadership',
+      title: 'Leadership',
       icon: <User size={24} className="text-teal-700" />,
-      description: 'Meet the editor and read the editorial letter introducing the LGR Series and its mission.',
-      link: '/editor/rowan-cole',
-      linkText: 'Read the letter'
+      description: 'Meet the leadership behind the LGRI: editorial accountability, research support and partner organisations. View profiles and full biographies.',
+      link: '/about/leadership',
+      linkText: 'Meet the team'
     },
     {
       id: 'methodology',
@@ -40,7 +40,7 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
       id: 'contribute',
       title: 'How to Contribute',
       icon: <MessageSquare size={24} className="text-teal-700" />,
-      description: 'Get involved in the LGR Series by sharing your experience, suggesting topics, or providing data.',
+      description: 'Get involved in the LGRI by sharing your experience, suggesting topics, or providing data.',
       link: '/about/contribute',
       linkText: 'Get involved'
     },
@@ -48,7 +48,7 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
       id: 'coalface',
       title: 'About COALFACE',
       icon: <Info size={24} className="text-teal-700" />,
-      description: 'Learn about COALFACE, the research and engagement practice behind the LGR Series.',
+      description: 'Learn about COALFACE, the research and engagement practice behind the LGRI.',
       link: '/about/coalface',
       linkText: 'About COALFACE'
     }
@@ -57,20 +57,20 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
   return (
     <div className="bg-academic-cream min-h-screen">
       <MetaTags
-        title="About the LGR Series - Research Programme Overview"
-        description="Learn about the LGR Series research programme examining local government reorganisation and its implications for planning, governance, and development delivery."
-        keywords="LGR series, local government reorganisation, council reform research, COALFACE insights, research programme"
+        title="About the LGRI - Research Programme Overview"
+        description="Learn about the LGRI research programme examining local government reorganisation and its implications for planning, governance, and development delivery."
+        keywords="LGRI, local government reorganisation, council reform research, COALFACE insights, research programme"
       />
       <OrganizationStructuredData />
       
       <PageBanner
         heroLabel="ABOUT"
-        heroTitle="About the LGR Series"
-        heroSubtitle="A dedicated research programme examining local government reorganisation and its impact on planning, governance, and development delivery."
+        heroTitle="About the LGRI"
+        heroSubtitle="The LGRI was first established as the LGR Series by Coalface in 2025, it has since expanded into a dedicated research programme examining local government reorganisation and its impact on planning, governance, and development delivery, attracting academic and corporate partners who share the same aspirations for LGR to be a success."
         currentPath={location.pathname}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="layout-container layout-content-sub">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
             {/* Our Mission Section */}
@@ -85,13 +85,13 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
               </div>
               <div className="academic-prose space-y-4">
                 <p>
-                  The LGR Series provides independent, governance led insight into local government reorganisation and devolution, with a clear focus on democratic leadership and community confidence.
+                  The LGRI provides independent, governance led insight into local government reorganisation and devolution, with a clear focus on democratic leadership and community confidence.
                 </p>
                 <p>
-                  It examines what works, what fails, and how changes in power, accountability and decision making shape the ability of elected representatives and communities to influence outcomes. The Series explores the implications for political leadership, planning, housing and service delivery, public trust and local economic decision making.
+                  It examines what works, what fails, and how changes in power, accountability and decision making shape the ability of elected representatives and communities to influence outcomes. The Initiative explores the implications for political leadership, planning, housing and service delivery, public trust and local economic decision making.
                 </p>
                 <p>
-                  The Series is informed by the Editor's experience as an elected councillor and as a council officer, offering practical insight into how governance change is experienced by those accountable to communities and those responsible for delivery. It is intended to support reform that works in practice, strengthens democratic authority, and is capable of commanding public confidence rather than existing only on paper.
+                  The Initiative is informed by the Editor's experience as an elected councillor and as a council officer, offering practical insight into how governance change is experienced by those accountable to communities and those responsible for delivery. It is intended to support reform that works in practice, strengthens democratic authority, and is capable of commanding public confidence rather than existing only on paper.
                 </p>
               </div>
             </section>
@@ -103,10 +103,10 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
               </h2>
               <div className="academic-prose space-y-4">
                 <p>
-                  The LGR Series is a dedicated research and analysis programme examining the current wave of English local government reorganisation, initiated in 2024.
+                  The LGRI is a dedicated research and analysis programme examining the current wave of English local government reorganisation, initiated in 2024.
                 </p>
                 <p>
-                  It explores one of the most significant structural changes to local government in a generation, focusing on how new council arrangements affect governance, democratic legitimacy and delivery in practice. The Series is intended to support authorities, practitioners and stakeholders to understand both the opportunities created by reorganisation and the risks that can undermine confidence, performance and trust if governance is not designed and exercised well.
+                  It explores one of the most significant structural changes to local government in a generation, focusing on how new council arrangements affect governance, democratic legitimacy and delivery in practice. The Initiative is intended to support authorities, practitioners and stakeholders to understand both the opportunities created by reorganisation and the risks that can undermine confidence, performance and trust if governance is not designed and exercised well.
                 </p>
                 <p>
                   The analysis prioritises how reorganised councils operate in reality rather than in theory, using planning, development and service delivery as critical test cases for decision making under political, financial and organisational pressure.
@@ -121,7 +121,7 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
               </h2>
               <div className="academic-prose space-y-4">
                 <p className="text-academic-xl font-serif italic text-academic-charcoal font-medium">
-                  At its core, the LGR Series is driven by a single question:
+                  At its core, the LGRI is driven by a single question:
                 </p>
                 <div className="bg-teal-50 border-l-4 border-teal-600 pl-6 pr-6 py-4 my-6">
                   <p className="text-academic-xl font-serif font-semibold text-academic-charcoal leading-relaxed">
@@ -132,7 +132,7 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
                   Local government reorganisation is often framed in terms of efficiency, resilience and strategic capacity. Far less attention is given to how changes in scale, structure and executive power affect democratic leadership, community influence and the quality of decision making in practice.
                 </p>
                 <p>
-                  This question reflects a deliberate choice. The Series does not treat reorganisation as a purely technical exercise, nor does it assume that larger authorities automatically govern better. Instead, it examines whether new council arrangements enhance or dilute the ability of elected representatives to lead with authority, and whether communities retain meaningful routes to influence decisions that affect their places.
+                  This question reflects a deliberate choice. The Initiative does not treat reorganisation as a purely technical exercise, nor does it assume that larger authorities automatically govern better. Instead, it examines whether new council arrangements enhance or dilute the ability of elected representatives to lead with authority, and whether communities retain meaningful routes to influence decisions that affect their places.
                 </p>
               </div>
             </section>
@@ -144,7 +144,7 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
               </h2>
               <div className="academic-prose space-y-6">
                 <p>
-                  The three core themes of the LGR Series act as analytical lenses on this central question.
+                  The three core themes of the LGRI act as analytical lenses on this central question.
                 </p>
                 
                 <div className="space-y-6">
@@ -192,7 +192,7 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
                 </div>
 
                 <p className="mt-6">
-                  Taken together, these themes allow the Series to move beyond abstract debate and assess reorganisation on its real test: whether it improves the capacity of councils to govern democratically and deliver effectively in the environments they now operate in.
+                  Taken together, these themes allow the Initiative to move beyond abstract debate and assess reorganisation on its real test: whether it improves the capacity of councils to govern democratically and deliver effectively in the environments they now operate in.
                 </p>
               </div>
             </section>
@@ -236,10 +236,10 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
             <div className="sticky top-24 space-y-6">
               <div className="bg-white p-6 border border-academic-neutral-300 rounded-sm shadow-sm">
                 <h3 className="text-academic-xl font-display font-black text-academic-charcoal mb-3">
-                  LGR Series Newsletter
+                  LGR Insights & Updates
                 </h3>
                 <p className="text-academic-sm text-academic-neutral-700 mb-4 font-serif">
-                  Get the LGR Series directly in your inbox. No fluff, just deep analysis.
+                  Receive our regular update direct to your inbox. Subscribe here.
                 </p>
                 <Link
                   to="/subscribe"

@@ -4,6 +4,7 @@ import PageBanner from '../components/PageBanner';
 import { Mail, FileText, Bell, ArrowRight } from 'lucide-react';
 import { usePageContent } from '../hooks/usePageContent';
 import { useNavigate, useLocation } from 'react-router-dom';
+import FAQSection from '../components/FAQSection';
 
 interface SubscribeProps {
   onNavigate: (page: string) => void;
@@ -27,8 +28,8 @@ export default function Subscribe({ onNavigate }: SubscribeProps) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <MetaTags
-        title="Subscribe - LGR Series Newsletter"
-        description="Subscribe to the LGR Series Newsletter for weekly insights on local government reorganisation. Get notified about new articles, exclusive content, and case studies."
+        title="Subscribe - LGR Insights & Updates"
+        description="Receive our regular update direct to your inbox. Subscribe to LGR Insights & Updates for updates on local government reorganisation."
         keywords="LGR newsletter, subscribe to LGR series, weekly insights, local government reorganisation updates, LGR series newsletter"
       />
       <PageBanner
@@ -39,7 +40,7 @@ export default function Subscribe({ onNavigate }: SubscribeProps) {
       />
 
       <section className="py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="layout-container">
           <div className="grid lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-6">
               <div>
@@ -97,12 +98,10 @@ export default function Subscribe({ onNavigate }: SubscribeProps) {
 
             <div className="lg:col-span-1">
               <div className="sticky top-24 space-y-5">
-                <div className="bg-teal-800 text-white p-5">
-                  <h3 className="text-xl font-black text-white mb-3">
-                    LGR Series Newsletter
-                  </h3>
-                  <p className="text-sm text-white mb-4">
-                    Get the LGR Series directly in your inbox. No fluff, just deep analysis.
+                <div className="lgr-insights-cta">
+                  <h3 className="lgr-insights-cta__title">LGR Insights & Updates</h3>
+                  <p className="lgr-insights-cta__body">
+                    Receive our regular update direct to your inbox. Subscribe here.
                   </p>
                   <SubscriptionForm variant="compact" />
                 </div>
@@ -138,6 +137,7 @@ export default function Subscribe({ onNavigate }: SubscribeProps) {
         </div>
       </section>
 
+      <FAQSection page="subscribe" />
     </div>
   );
 }

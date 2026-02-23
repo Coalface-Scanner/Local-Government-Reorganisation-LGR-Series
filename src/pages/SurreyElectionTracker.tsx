@@ -2,6 +2,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Sparkles, TrendingUp, BookOpen, ArrowRight, MapPin, ArrowLeft } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
+import FAQSection from '../components/FAQSection';
 
 interface SurreyElectionTrackerProps {
   onNavigate: (page: string, data?: unknown) => void;
@@ -53,7 +54,7 @@ export default function SurreyElectionTracker({ onNavigate: _onNavigate }: Surre
         heroSubtitle="Interactive tools for modelling Surrey's local government reorganisation. Explore aggregate totals, simulate election outcomes, and review reference data for East and West Surrey unitary authorities."
         currentPath={location.pathname}
       />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="layout-container layout-content-sub">
         <button
           onClick={() => navigate('/surrey')}
           className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
@@ -63,7 +64,7 @@ export default function SurreyElectionTracker({ onNavigate: _onNavigate }: Surre
         </button>
       </div>
       {/* Service Cards */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="layout-container layout-content-sub">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 items-stretch">
           {serviceCards.map((card) => {
             const Icon = card.icon;
@@ -140,6 +141,7 @@ export default function SurreyElectionTracker({ onNavigate: _onNavigate }: Surre
           </div>
         </div>
       </div>
+      <FAQSection page="surrey" />
     </div>
   );
 }

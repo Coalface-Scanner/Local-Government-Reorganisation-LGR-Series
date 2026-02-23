@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useSearchParams, useLocation } from 'react-router-dom';
-import { Search as SearchIcon, Filter, MapPin, User, Tag, Calendar } from 'lucide-react';
+import { useSearchParams, useLocation, Link } from 'react-router-dom';
+import { Search as SearchIcon, Filter, MapPin, User, Tag, Calendar, Map } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import { trackSearch } from '../utils/analytics';
+import FAQSection from '../components/FAQSection';
 
 interface SearchResult {
   id: string;
@@ -364,7 +365,7 @@ export default function Search({ onNavigate }: SearchProps) {
   return (
     <div id="main-content" className="min-h-screen bg-academic-cream">
       <MetaTags
-        title="Search - LGR Series Library"
+        title="Search - LGRI Library"
         description="Search and browse all published articles, reports, data, and insights on local government reorganisation. Filter by type, region, category, or author."
         keywords="LGR search, local government reorganisation articles, council reform research, search library"
       />
@@ -374,7 +375,7 @@ export default function Search({ onNavigate }: SearchProps) {
         heroSubtitle="Search and browse all published articles, reports, data, and insights on local government reorganisation"
         currentPath={location.pathname}
       />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="layout-container layout-content-sub">
 
         <div className="bg-white rounded-2xl shadow-xl p-8 mb-8 academic-card">
             <div className="relative mb-6">
@@ -389,15 +390,24 @@ export default function Search({ onNavigate }: SearchProps) {
             />
           </div>
 
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center gap-2 text-academic-charcoal hover:text-teal-700 transition-colors mb-4 font-display font-medium"
-          >
-            <Filter className="w-5 h-5" />
-            <span>
-              {showFilters ? 'Hide Filters' : 'Show Filters'}
-            </span>
-          </button>
+          <div className="flex flex-wrap items-center gap-4 mb-4">
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className="flex items-center gap-2 text-academic-charcoal hover:text-teal-700 transition-colors font-display font-medium"
+            >
+              <Filter className="w-5 h-5" />
+              <span>
+                {showFilters ? 'Hide Filters' : 'Show Filters'}
+              </span>
+            </button>
+            <Link
+              to="/roadmap"
+              className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-display font-medium"
+            >
+              <Map className="w-5 h-5" />
+              View by journey milestone
+            </Link>
+          </div>
 
           {showFilters && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-6 bg-academic-warm rounded-xl">
@@ -561,6 +571,7 @@ export default function Search({ onNavigate }: SearchProps) {
           </div>
         )}
       </div>
+      <FAQSection page="library" />
     </div>
   );
 }

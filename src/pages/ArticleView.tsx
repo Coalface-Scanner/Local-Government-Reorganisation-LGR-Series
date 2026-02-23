@@ -7,16 +7,15 @@ import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import ArticleStructuredData from '../components/ArticleStructuredData';
 import ArticleQASection from '../components/ArticleQASection';
+import FAQSection from '../components/FAQSection';
 import OptimizedImage from '../components/OptimizedImage';
 import ReadingTime from '../components/ReadingTime';
-import TableOfContents from '../components/TableOfContents';
 import RelatedArticles from '../components/RelatedArticles';
+import { useSetSidebarTocFromContent } from '../contexts/SidebarTocContext';
 import RelatedContent from '../components/RelatedContent';
 import SeeAlsoSection from '../components/SeeAlsoSection';
 import ReadingProgress from '../components/ReadingProgress';
 import ErrorDisplay from '../components/ErrorDisplay';
-import Breadcrumbs from '../components/Breadcrumbs';
-import BreadcrumbStructuredData from '../components/BreadcrumbStructuredData';
 import Standfirst from '../components/Standfirst';
 import AuthorBio from '../components/AuthorBio';
 import PrintButton from '../components/PrintButton';
@@ -24,8 +23,9 @@ import ArticleNavigation from '../components/ArticleNavigation';
 import ContentTypeTag from '../components/ContentTypeTag';
 import { trackArticleView } from '../utils/analytics';
 import { ArrowLeft, Calendar } from 'lucide-react';
-import { retryWithBackoff, generateSlug, getThemeDisplayName, getThemeSlug } from '../lib/utils';
+import { retryWithBackoff, generateSlug, getThemeDisplayName, getThemeSlug, extractHeadings } from '../lib/utils';
 import { enhanceContentWithGlossaryLinks } from '../lib/glossaryLinks';
+import { sanitizeHtmlContent } from '../lib/htmlSanitizer';
 import { useScrollDepthTracking } from '../hooks/useScrollDepthTracking';
 import { useTimeOnPageTracking } from '../hooks/useTimeOnPageTracking';
 
@@ -65,6 +65,32 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
   // Track scroll depth and time on page
   useScrollDepthTracking();
   useTimeOnPageTracking();
+
+  // Global sidebar "On this page" from article body
+  useSetSidebarTocFromContent(article?.body ?? null);
+
+  // Add IDs to article headings for sidebar links
+  useEffect(() => {
+    if (!article?.body) return;
+    const extracted = extractHeadings(article.body);
+    const addIds = () => {
+      const el = document.querySelector('article#article-content');
+      if (!el) {
+        setTimeout(addIds, 100);
+        return;
+      }
+      extracted.forEach(({ id, text, level }) => {
+        const headings = Array.from(el.querySelectorAll(`h${level}`));
+        const h = headings.find((x) => x.textContent?.trim() === text && !(x as HTMLElement).id);
+        if (h && h instanceof HTMLElement) {
+          h.id = id;
+          h.style.scrollMarginTop = '80px';
+        }
+      });
+    };
+    const t = setTimeout(addIds, 200);
+    return () => clearTimeout(t);
+  }, [article?.body]);
 
   const fetchArticle = useCallback(async () => {
     setLoading(true);
@@ -134,7 +160,7 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
       linkClass: 'glossary-link text-teal-700 hover:text-teal-800 underline font-medium'
     });
     
-    return htmlContent;
+    return sanitizeHtmlContent(htmlContent);
   }, [article?.body]);
 
   if (loading) {
@@ -176,7 +202,7 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
 
   // Enhance title with geography when available, ensuring it stays under 70 chars total
   const getTitle = () => {
-    const maxTitleLength = 56; // 70 - 14 (" | LGR Series")
+    const maxTitleLength = 52; // 70 - 18 (" | LGRI")
     let title = article.title;
     
     // Add geography prefix if available and not already in title
@@ -267,7 +293,7 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
         ogImage={article.featured_image || undefined}
         article={{
           publishedTime: article.published_date || article.created_at,
-          author: article.author || 'LGR Series Editorial Team',
+          author: article.author || 'LGRI Editorial Team',
           section: article.theme || article.category || 'Insights',
           tags: [
             'LGR',
@@ -282,7 +308,7 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
       <ArticleStructuredData
         title={article.title}
         description={article.excerpt || ''}
-        author={article.author || "LGR Series Editorial Team"}
+        author={article.author || "LGRI Editorial Team"}
         publishedDate={article.published_date || article.created_at}
         updatedDate={article.updated_at}
         imageUrl={article.featured_image || undefined}
@@ -296,25 +322,11 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
         heroTitle={article.title}
         heroSubtitle={article.excerpt || undefined}
         currentPath={location.pathname}
+        breadcrumbCurrentLabel={article.title}
       />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <BreadcrumbStructuredData
-          items={[
-            { label: 'Home', path: '/' },
-            ...(article.theme ? [{ label: 'Topics', path: '/topics' }, { label: getThemeDisplayName(article.theme), path: `/topics/${getThemeSlug(article.theme)}` }] : [{ label: 'Insights', path: '/insights' }]),
-            { label: article.title }
-          ]}
-        />
         <div className="flex items-center justify-between mb-6">
-          <Breadcrumbs 
-            items={[
-              { label: 'Home', path: '/' },
-              ...(article.theme ? [{ label: 'Topics', path: '/topics' }, { label: getThemeDisplayName(article.theme), path: `/topics/${getThemeSlug(article.theme)}` }] : [{ label: 'Insights', path: '/insights' }]),
-              { label: article.title }
-            ]}
-            className="text-academic-neutral-600"
-          />
           <button
             onClick={() => onNavigate('insights')}
             className="flex items-center gap-2 text-teal-700 hover:text-teal-800 font-display font-medium group"
@@ -370,9 +382,8 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
           </div>
         )}
 
-        <div className="grid lg:grid-cols-4 gap-12">
-          <div className="lg:col-span-3">
-            <article className="editorial-layout academic-prose max-w-none" id="article-content">
+        <div>
+          <article className="editorial-layout academic-prose max-w-none" id="article-content">
               {/* Standfirst - Large introductory paragraph */}
               {article.excerpt && (
                 <Standfirst>
@@ -387,7 +398,7 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
               <div className="mt-16">
                 <AuthorBio
                   name={article.author}
-                  affiliation={article.theme ? `LGR Series - ${getThemeDisplayName(article.theme)}` : 'LGR Series'}
+                  affiliation={article.theme ? `LGRI - ${getThemeDisplayName(article.theme)}` : 'LGRI'}
                 />
               </div>
             )}
@@ -439,18 +450,12 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
               currentExcerpt={article.excerpt ?? undefined}
               maxItems={6}
             />
-          </div>
-
-          <aside className="lg:col-span-1">
-            <div className="sticky top-24">
-              <TableOfContents content={article.body} />
-            </div>
-          </aside>
         </div>
       </div>
 
       <ArticleQASection articleSlug={article.slug} />
 
+      <FAQSection page="insights" />
       <LastUpdated />
     </div>
   );

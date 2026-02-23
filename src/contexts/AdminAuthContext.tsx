@@ -21,16 +21,16 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = (password: string): boolean => {
+    if (import.meta.env.PROD) {
+      // Production must use Supabase-backed admin auth.
+      return false;
+    }
+
     // VITE_ADMIN_PASSWORD is optional - access it safely
     const adminPassword = (import.meta.env as { VITE_ADMIN_PASSWORD?: string }).VITE_ADMIN_PASSWORD;
 
     if (!adminPassword) {
-      // If admin password is not configured, allow access with any password
-      // This is intentional to allow the feature to work without configuration
-      // In production, you should set VITE_ADMIN_PASSWORD
-      setIsAuthenticated(true);
-      sessionStorage.setItem(ADMIN_SESSION_KEY, 'true');
-      return true;
+      return false;
     }
 
     if (password === adminPassword) {

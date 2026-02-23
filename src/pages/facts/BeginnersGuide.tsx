@@ -72,34 +72,37 @@ export default function BeginnersGuide() {
   ];
 
   return (
-    <div className="min-h-screen bg-academic-cream">
-      <MetaTags
-        title="Beginners Guide - Councilopedia"
-        description="A comprehensive introduction to UK government structure, local councils, and electoral systems. Learn how government works and how councillors are elected."
-        keywords="UK government structure, local councils, electoral systems, how government works, councillor elections, devolution"
-      />
+    <>
       <PageBanner
         heroLabel="FACTS & DATA"
         heroTitle="A Beginners Guide"
         heroSubtitle="An introduction to UK government structure, local councils, and how councillors are elected. Learn the basics of governance and electoral systems."
         currentPath={location.pathname}
       />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <button
-          onClick={() => navigate('/facts/councilopedia')}
-          className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
-        >
-          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-          Back to Councilopedia
-        </button>
+      <div data-page-nav className="bg-academic-cream">
+        <div className="layout-container py-1.5">
+          <button
+            onClick={() => navigate('/facts/councilopedia')}
+            className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
+          >
+            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+            Back to Councilopedia
+          </button>
+        </div>
       </div>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div data-page-main className="min-h-screen bg-academic-cream">
+        <MetaTags
+          title="Beginners Guide - Councilopedia"
+          description="A comprehensive introduction to UK government structure, local councils, and electoral systems. Learn how government works and how councillors are elected."
+          keywords="UK government structure, local councils, electoral systems, how government works, councillor elections, devolution"
+        />
+        <div className="layout-container">
         <p className="text-xl text-academic-neutral-700 leading-relaxed max-w-3xl mb-8">
           Understanding UK government structure, local councils, and how councillors are elected.
         </p>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="layout-container layout-content-sub">
         <div className="grid lg:grid-cols-4 gap-8">
           {/* Table of Contents Sidebar */}
           <aside className="lg:col-span-1">
@@ -695,9 +698,10 @@ export default function BeginnersGuide() {
             </section>
           </div>
         </div>
-      </div>
+        </div>
 
-      <FAQSection page="facts" />
-    </div>
+        <FAQSection page="facts" />
+      </div>
+    </>
   );
 }

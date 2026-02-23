@@ -11,14 +11,13 @@ import ReadingTime from '../components/ReadingTime';
 import TableOfContents from '../components/TableOfContents';
 import ReadingProgress from '../components/ReadingProgress';
 import ErrorDisplay from '../components/ErrorDisplay';
-import Breadcrumbs from '../components/Breadcrumbs';
-import BreadcrumbStructuredData from '../components/BreadcrumbStructuredData';
 import RelatedContent from '../components/RelatedContent';
 import SeeAlsoSection from '../components/SeeAlsoSection';
 import PrintButton from '../components/PrintButton';
 import { ArrowLeft, Download, ExternalLink, Calendar, User, Eye } from 'lucide-react';
 import { retryWithBackoff, getThemeDisplayName } from '../lib/utils';
 import { enhanceContentWithGlossaryLinks } from '../lib/glossaryLinks';
+import { sanitizeHtmlContent } from '../lib/htmlSanitizer';
 import { useScrollDepthTracking } from '../hooks/useScrollDepthTracking';
 import { useTimeOnPageTracking } from '../hooks/useTimeOnPageTracking';
 
@@ -158,7 +157,7 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
 
   // Enhance title with geography when available, ensuring it stays under 70 chars total
   const getTitle = () => {
-    const maxTitleLength = 56; // 70 - 14 (" | LGR Series")
+    const maxTitleLength = 52; // 70 - 18 (" | LGRI")
     let title = material.title;
     
     // Add geography prefix if available and not already in title
@@ -183,11 +182,11 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
   const enhancedContent = useMemo(() => {
     const content = material?.rich_content || material?.content;
     if (!content) return '';
-    return enhanceContentWithGlossaryLinks(content, {
+    return sanitizeHtmlContent(enhanceContentWithGlossaryLinks(content, {
       onlyFirstOccurrence: true,
       excludeSlugs: [],
       linkClass: 'glossary-link text-teal-700 hover:text-teal-800 underline font-medium'
-    });
+    }));
   }, [material?.rich_content, material?.content]);
 
   // Generate description from material description or content, including geography context (25-160 chars)
@@ -254,7 +253,7 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
       <ArticleStructuredData
         title={material.title}
         description={material.description}
-        author={material.author_name || material.author || "LGR Series Editorial Team"}
+        author={material.author_name || material.author || "LGRI Editorial Team"}
         publishedDate={material.published_date}
         updatedDate={material.updated_at}
         imageUrl={material.main_image_url || material.image_url || undefined}
@@ -267,23 +266,11 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
         heroTitle={material.title}
         heroSubtitle={material.description || undefined}
         currentPath={location.pathname}
+        breadcrumbCurrentLabel={material.title}
       />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <BreadcrumbStructuredData
-          items={[
-            { label: 'Materials', path: '/materials' },
-            { label: material.title }
-          ]}
-        />
         <div className="flex items-center justify-between mb-6">
-          <Breadcrumbs 
-            items={[
-              { label: 'Materials', path: '/materials' },
-              { label: material.title }
-            ]}
-            className="text-academic-neutral-600"
-          />
           <button
             onClick={() => onNavigate('materials')}
             className="flex items-center gap-2 text-teal-700 hover:text-teal-800 font-display font-medium group"

@@ -5,7 +5,6 @@ import PageBanner from '../components/PageBanner';
 import { getCouncilBySlug, surreyCouncils } from '../data/surreyCouncils';
 import FAQSection from '../components/FAQSection';
 import CouncilProfilesPasswordProtection from '../components/CouncilProfilesPasswordProtection';
-import Breadcrumbs from '../components/Breadcrumbs';
 import LocalPlaceStructuredData from '../components/LocalPlaceStructuredData';
 import CouncilContentLinks from '../components/CouncilContentLinks';
 
@@ -75,7 +74,7 @@ export default function CouncilProfileDetail() {
       <MetaTags
         title={(() => {
           const title = `${council.name} Profile - Surrey Council Profiles`;
-          const maxTitleLength = 56; // 70 - 14 (" | LGR Series")
+          const maxTitleLength = 52; // 70 - 18 (" | LGRI")
           return title.length > maxTitleLength ? title.substring(0, maxTitleLength - 3) + '...' : title;
         })()}
         description={(() => {
@@ -111,18 +110,12 @@ export default function CouncilProfileDetail() {
         heroTitle={council.name.replace(' Council', '')}
         heroSubtitle={council.description || undefined}
         currentPath={location.pathname}
+        breadcrumbCurrentLabel={council.name.replace(' Council', '')}
       />
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="layout-container layout-content-sub">
         <div className="flex items-center justify-between mb-6">
-          <Breadcrumbs 
-            items={[
-              { label: 'Council Profiles', path: '/council-profiles' },
-              { label: council.name.replace(' Council', '') }
-            ]}
-            className="text-academic-neutral-600"
-          />
           <Link
             to="/council-profiles"
             className="inline-flex items-center gap-2 text-sm font-bold text-teal-700 hover:text-teal-800 transition-colors font-display"

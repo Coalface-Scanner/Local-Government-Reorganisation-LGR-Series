@@ -19,7 +19,7 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
 
   return (
     <footer className="bg-academic-charcoal/95 text-academic-neutral-300 mt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="layout-container">
         {/* Main Footer Content */}
         <div className="py-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-6">
           {/* Brand Section */}
@@ -34,7 +34,7 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
                 src="/LGR-COALFACE-FOOTER-LOGO.png"
                 alt="COALFACE Insights"
                 loading="eager"
-                fetchPriority="high"
+                fetchpriority="high"
                 decoding="sync"
                 className="h-16 md:h-20 w-auto"
                 width={320}
@@ -105,7 +105,7 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
                 </Link>
               </li>
               <li>
-                <Link to="/100days" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
+                <Link to="/first-100-days" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
                   100 Days Playbook
                 </Link>
               </li>
@@ -158,11 +158,11 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
             <ul className="space-y-2 text-sm mb-4">
               <li>
                 <Link to="/about" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
-                  About the Series
+                  About the LGRI
                 </Link>
               </li>
               <li>
-                <Link to="/editor/rowan-cole" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
+                <Link to="/about/leadership/rowan-cole" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
                   Editor
                 </Link>
               </li>
@@ -193,6 +193,9 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
               </li>
             </ul>
             <div>
+              <p className="text-academic-xs text-academic-neutral-200 font-serif mb-2">
+                LGR Insights & Updates
+              </p>
               <Link
                 to="/subscribe"
                 className="inline-block bg-teal-700 hover:bg-teal-600 text-white px-4 py-2 rounded-md font-display font-semibold text-xs uppercase tracking-wider transition-colors"
@@ -253,17 +256,22 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
           </div>
 
           {/* Copyright */}
-          <div className="mt-4 pt-4 border-t border-academic-neutral-800 flex justify-between items-center">
-            <p className="text-xs text-academic-neutral-200 font-serif">
-              © {new Date().getFullYear()} Coalface Engagement Ltd. All rights reserved.
+          <div className="mt-4 pt-4 border-t border-academic-neutral-800 flex flex-col gap-1">
+            <div className="flex justify-between items-center">
+              <p className="text-xs text-academic-neutral-200 font-serif">
+                © {new Date().getFullYear()} Coalface Engagement Ltd. All rights reserved.
+              </p>
+              <Link 
+                to="/admin/login" 
+                className="text-academic-neutral-300 hover:text-academic-neutral-100 transition-colors text-xs"
+                aria-label="Admin login"
+              >
+                Admin
+              </Link>
+            </div>
+            <p className="text-xs text-academic-neutral-500 font-serif">
+              Formerly the LGR Series
             </p>
-            <Link 
-              to="/admin/login" 
-              className="text-academic-neutral-300 hover:text-academic-neutral-100 transition-colors text-xs"
-              aria-label="Admin login"
-            >
-              Admin
-            </Link>
           </div>
         </div>
       </div>

@@ -5,13 +5,16 @@
   "description": "Local Government Reorganisation (LGR) Insights Website - Expert analysis and insights on local government reorganisation in England",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "node ./node_modules/vite/bin/vite.js",
+    "open-local": "open http://localhost:5173",
     "prebuild": "node scripts/generate-sitemap.js",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "healthcheck": "npm run lint && npm run typecheck && npm run build",
+    "security:scan": "node src/lib/check-hardcoded-secrets.js",
+    "security:sanitize-content": "node src/lib/sanitize-cms-content.js",
     "upload-content": "node scripts/upload-content.js",
     "upload-facts": "node scripts/upload-facts.js",
     "import-substack": "node scripts/import-substack-rss.js",
@@ -20,7 +23,8 @@
     "generate-sitemap": "node scripts/generate-sitemap.js",
     "check:contrast": "node scripts/check-color-contrast.js",
     "test:performance": "node scripts/lighthouse-audit.js",
-    "audit:images": "node scripts/audit-images.js"
+    "audit:images": "node scripts/audit-images.js",
+    "crop-banner-logo": "node scripts/crop-banner-logo.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
@@ -48,6 +52,7 @@
     "eslint-plugin-react-refresh": "^0.4.11",
     "globals": "^17.0.0",
     "postcss": "^8.4.35",
+    "sharp": "^0.34.5",
     "terser": "^5.44.1",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.3.0",

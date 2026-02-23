@@ -4,8 +4,9 @@ import { ArrowRight, Building2, Vote, Palette } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import LoadingSkeleton from '../components/LoadingSkeleton';
-import Breadcrumbs from '../components/Breadcrumbs';
 import { supabase } from '../lib/supabase';
+import FAQSection from '../components/FAQSection';
+import { ContentContainer } from '../components/layout';
 
 interface TopicsProps {
   onNavigate: (page: string, slug?: string) => void;
@@ -161,7 +162,7 @@ export default function Topics({ onNavigate }: TopicsProps) {
   return (
     <div className="bg-academic-cream">
       <MetaTags
-        title="Topics - Core Themes | LGR Series"
+        title="Topics - Core Themes | LGRI"
         description="Explore our research organised around key themes: Governance and Reform, Democratic Legitimacy, and Statecraft and System Design. Each theme features pillar pieces, essays, briefs, and related analysis."
         keywords="local government reorganisation, governance, democratic legitimacy, statecraft, system design, council reform, LGR themes"
       />
@@ -173,9 +174,9 @@ export default function Topics({ onNavigate }: TopicsProps) {
         currentPath={location.pathname}
       />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <ContentContainer variant="hub">
         {/* Theme Cards Section */}
-        <section className="mb-12">
+        <section className="layout-section">
           {loadingThemes ? (
             <LoadingSkeleton variant="card" count={3} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" />
           ) : themes.length > 0 ? (
@@ -262,7 +263,7 @@ export default function Topics({ onNavigate }: TopicsProps) {
         </section>
 
         {/* Navigation Links */}
-        <section className="mb-12">
+        <section className="layout-section">
           <div className="academic-card p-8 bg-teal-50 border-l-4 border-teal-600">
             <h2 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-6">
               Explore More
@@ -285,7 +286,8 @@ export default function Topics({ onNavigate }: TopicsProps) {
             </div>
           </div>
         </section>
-      </div>
+      </ContentContainer>
+      <FAQSection page="topics" />
     </div>
   );
 }

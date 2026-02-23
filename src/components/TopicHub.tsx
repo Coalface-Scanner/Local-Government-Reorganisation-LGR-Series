@@ -5,7 +5,6 @@ import PageBanner from './PageBanner';
 import { supabase } from '../lib/supabase';
 import OptimizedImage from './OptimizedImage';
 import FollowTopic from './FollowTopic';
-import Breadcrumbs from './Breadcrumbs';
 import FAQSection from './FAQSection';
 import { useTopicPage } from '../hooks/useTopicPage';
 
@@ -191,16 +190,9 @@ export default function TopicHub({
         heroTitle={displayThemeName}
         heroSubtitle={heroSubtitle}
         currentPath={location.pathname}
+        breadcrumbCurrentLabel={displayThemeName}
       />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <Breadcrumbs
-          items={[
-            { label: 'LGR Hub', path: '/' },
-            { label: 'Topics', path: '/topics' },
-            { label: displayThemeName }
-          ]}
-          className="mb-4"
-        />
+      <div className="layout-container layout-content-sub">
         {description && (
           <div className="rounded-lg bg-white/80 backdrop-blur-sm px-6 py-5 mb-4 shadow-sm border border-academic-neutral-200/60 max-w-4xl">
             <div className="text-academic-lg md:text-academic-xl text-academic-charcoal leading-loose font-serif space-y-5 max-w-3xl">
@@ -216,7 +208,7 @@ export default function TopicHub({
       {/* Questions – Primary and Secondary side by side */}
       {(keyQuestion || secondaryQuestions.length > 0) && (
         <section className="py-12 lg:py-16 border-b border-academic-neutral-300">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="layout-container">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-8 items-stretch">
               {keyQuestion && (
                 <div className="bg-teal-50/80 border-l-4 border-teal-600 shadow-md rounded-r-lg pl-6 pr-8 py-6 ring-1 ring-teal-200/60 h-full flex flex-col justify-center">
@@ -244,7 +236,7 @@ export default function TopicHub({
       {/* Pillar Content Section */}
       {pillarArticle && (
         <section className="py-12 lg:py-16 border-b-2 border-teal-500">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="layout-container">
           <div className="academic-section-header mb-8">
             <div className="academic-section-label">PILLAR PIECE</div>
             <h2 className="text-academic-3xl font-display font-bold text-academic-charcoal tracking-tight">
@@ -294,7 +286,7 @@ export default function TopicHub({
 
       {/* Related Content Grid */}
       <section className="py-12 lg:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="layout-container">
           <div className="academic-section-header mb-8">
             <div className="academic-section-label">EXPLORE</div>
             <h2 className="text-academic-3xl font-display font-bold text-academic-charcoal tracking-tight">
@@ -360,7 +352,7 @@ export default function TopicHub({
 
       {/* Navigation Links */}
       <section className="py-12 lg:py-16 bg-academic-warm border-t border-academic-neutral-300">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="layout-container">
           <div className="academic-card p-8 bg-teal-50 border-l-4 border-teal-600">
             <h2 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-6">
               Explore More
@@ -395,7 +387,7 @@ export default function TopicHub({
       {/* Series Navigation */}
       {relatedThemes.length > 0 && (
         <section className="py-12 lg:py-16 bg-academic-warm border-t border-academic-neutral-300">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="layout-container">
             <div className="academic-section-header mb-8">
               <div className="academic-section-label">EXPLORE</div>
               <h2 className="text-academic-3xl font-display font-bold text-academic-charcoal tracking-tight">

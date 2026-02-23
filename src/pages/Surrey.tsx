@@ -25,7 +25,7 @@ export default function Surrey({ onNavigate }: SurreyProps) {
     <div className="min-h-screen bg-academic-cream">
       <MetaTags
         title="Surrey LGR Timetable 2026 - Analysis & Transition Guide"
-        description="Detailed analysis of Surrey's local government reorganisation and LGR timetable 2026. Risks, opportunities, and practical guidance for the transition to East and West Surrey unitary authorities. Part of the LGR Series."
+        description="Detailed analysis of Surrey's local government reorganisation and LGR timetable 2026. Risks, opportunities, and practical guidance for the transition to East and West Surrey unitary authorities. Part of the LGRI."
         keywords="Surrey reorganisation, Surrey LGR, LGR timetable 2026, Surrey reorganisation elections, East Surrey council, West Surrey council, Surrey devolution, Surrey unitary, Local Government Reorganisation Surrey"
       />
       <LocalPlaceStructuredData
@@ -54,7 +54,7 @@ export default function Surrey({ onNavigate }: SurreyProps) {
         currentPath={location.pathname}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="layout-container layout-content-sub">
         <InBriefSection content="Surrey is undergoing Local Government Reorganisation (LGR) to form East Surrey and West Surrey unitary authorities, with shadow elections scheduled for May 2026 and go-live in May 2027. This fast-tracked LGR timetable 2026 creates both opportunities and risks, particularly around planning decisions, councillor transitions, and governance during the transition period. Evidence from recent reorganisations suggests careful management of the first 100 days is critical for success." />
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-8">
@@ -224,17 +224,12 @@ export default function Surrey({ onNavigate }: SurreyProps) {
           <div className="lg:col-span-1">
             <div className="sticky top-24 space-y-5">
               <PageNavigation items={navItems} />
-              <div className="bg-teal-800 text-white p-5">
-                <h3 className="text-xl font-black text-white mb-3">
-                  LGR Series Newsletter
-                </h3>
-                <p className="text-sm text-white mb-4">
-                  Get the LGR Series directly in your inbox. No fluff, just deep analysis.
+              <div className="lgr-insights-cta">
+                <h3 className="lgr-insights-cta__title">LGR Insights & Updates</h3>
+                <p className="lgr-insights-cta__body">
+                  Receive our regular update direct to your inbox. Subscribe here.
                 </p>
-                <Link
-                  to="/subscribe"
-                  className="inline-block bg-white text-teal-700 px-6 py-3 rounded-lg font-display font-bold text-sm uppercase tracking-wider hover:bg-teal-50 transition-colors"
-                >
+                <Link to="/subscribe" className="lgr-insights-cta__btn">
                   Subscribe
                 </Link>
               </div>

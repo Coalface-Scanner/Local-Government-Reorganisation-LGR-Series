@@ -1,6 +1,6 @@
 # Glossary System - How to Add Terms
 
-This guide explains how to add new terms to the LGR Series glossary system.
+This guide explains how to add new terms to the LGRI glossary system.
 
 ## Quick Start
 

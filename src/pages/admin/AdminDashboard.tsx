@@ -19,6 +19,7 @@ import AboutPagesEditor from './AboutPagesEditor';
 import ContactPageEditor from './ContactPageEditor';
 import SubscribePageEditor from './SubscribePageEditor';
 import ArchiveManager from './ArchiveManager';
+import { isAdminUser } from '../../lib/adminAccess';
 
 interface AdminDashboardProps {
   onNavigate: (page: string) => void;
@@ -28,6 +29,8 @@ export default function AdminDashboard({ onNavigate }: AdminDashboardProps) {
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState('overview');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [adminChecked, setAdminChecked] = useState(false);
+  const [hasAdminAccess, setHasAdminAccess] = useState(false);
   const { user, signOut, loading } = useAuth();
 
   useEffect(() => {
@@ -36,12 +39,37 @@ export default function AdminDashboard({ onNavigate }: AdminDashboardProps) {
     }
   }, [user, loading, onNavigate]);
 
+  useEffect(() => {
+    let cancelled = false;
+    async function checkAdminAccess() {
+      if (loading) return;
+      if (!user) {
+        setAdminChecked(true);
+        setHasAdminAccess(false);
+        return;
+      }
+      const allowed = await isAdminUser(user);
+      if (!cancelled) {
+        setHasAdminAccess(allowed);
+        setAdminChecked(true);
+        if (!allowed) {
+          await signOut();
+          onNavigate('admin/login');
+        }
+      }
+    }
+    checkAdminAccess();
+    return () => {
+      cancelled = true;
+    };
+  }, [loading, onNavigate, signOut, user]);
+
   const handleSignOut = async () => {
     await signOut();
     navigate('/');
   };
 
-  if (loading) {
+  if (loading || !adminChecked) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-slate-600">Loading...</div>
@@ -49,7 +77,7 @@ export default function AdminDashboard({ onNavigate }: AdminDashboardProps) {
     );
   }
 
-  if (!user) {
+  if (!user || !hasAdminAccess) {
     return null;
   }
 

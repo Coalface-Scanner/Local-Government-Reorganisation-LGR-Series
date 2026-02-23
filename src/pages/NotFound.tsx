@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Building2, CheckCircle2, AlertTriangle } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
+import FAQSection from '../components/FAQSection';
 
 export default function NotFound() {
   const navigate = useNavigate();
@@ -92,6 +93,7 @@ export default function NotFound() {
           </div>
         </div>
 
+      <FAQSection page="general" />
         {/* Humor Modal */}
         {showModal && (
           <div 

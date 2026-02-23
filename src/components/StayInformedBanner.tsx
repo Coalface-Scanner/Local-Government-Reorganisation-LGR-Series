@@ -1,6 +1,5 @@
 import { useState, useId } from 'react';
 import { Link } from 'react-router-dom';
-import { supabase } from '../lib/supabase';
 import { trackSubscription } from '../utils/analytics';
 
 export default function StayInformedBanner() {
@@ -16,6 +15,7 @@ export default function StayInformedBanner() {
     setMessage(null);
 
     try {
+      const { supabase } = await import('../lib/supabase');
       // Check for existing subscription
       const { data: existingSubscription, error: checkError } = await supabase
         .from('subscriptions')
@@ -91,13 +91,13 @@ export default function StayInformedBanner() {
       
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-          {/* Text Content */}
+          {/* Text Content – match hero banner typography (font-display, font-black, tracking-wider) */}
           <div className="flex-1">
             <div className="text-white/90 text-xs sm:text-sm font-display font-bold uppercase tracking-wider mb-2">
               Stay Up To Date
             </div>
-            <div className="text-white text-lg sm:text-xl md:text-2xl font-display font-bold leading-tight">
-              Get the LGR Series directly in your inbox. No fluff, just deep analysis.
+            <div className="text-white text-xl sm:text-2xl md:text-3xl lg:text-4xl font-display font-black leading-[1.1] tracking-wider">
+              Receive our regular update direct to your inbox. Subscribe here.
             </div>
           </div>
 

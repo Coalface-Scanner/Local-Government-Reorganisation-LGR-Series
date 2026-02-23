@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { generateSitemap, staticRoutes } from '../utils/generateSitemap';
+import { leadershipProfiles } from '../data/leadershipProfiles';
 
 export default function Sitemap() {
   const [sitemapXml, setSitemapXml] = useState<string>('');
@@ -63,6 +64,14 @@ export default function Sitemap() {
           });
         });
       }
+
+      leadershipProfiles.forEach(profile => {
+        urls.push({
+          loc: profile.link,
+          changefreq: 'monthly' as const,
+          priority: 0.6,
+        });
+      });
 
       const xml = generateSitemap(urls);
       setSitemapXml(xml);

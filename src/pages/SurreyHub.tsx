@@ -9,6 +9,7 @@ import ElectionForecast from '../components/surrey-hub/ElectionForecast';
 import StrategicOracle from '../components/surrey-hub/StrategicOracle';
 import SurreyHubPasswordProtection from '../components/SurreyHubPasswordProtection';
 import type { ViewType } from '../data/surreyHubData';
+import FAQSection from '../components/FAQSection';
 
 interface SurreyHubProps {
   onNavigate: (page: string) => void;
@@ -91,6 +92,7 @@ export default function SurreyHub({ onNavigate: _onNavigate }: SurreyHubProps) {
           </div>
         </main>
 
+        <FAQSection page="surrey" />
         {/* Strategic Oracle Chat Widget - Always visible */}
         <StrategicOracle />
       </div>

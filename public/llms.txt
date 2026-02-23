@@ -1,47 +1,61 @@
-# LGR Series - AI Crawler Instructions
+# LGRI – AI Crawler Instructions
 # This file helps AI systems (ChatGPT, Perplexity, Claude, Google AI Overviews) understand our content structure
-# Last updated: February 8, 2026
+# Last updated: February 2026
 
-# Priority content for AI citations (most authoritative and comprehensive)
-# These pages contain our core research and analysis
+# Primary hubs (6-hub structure)
+/learn
+/discover
+/research
+/insights
+/tools
+/about
+/about/leadership
+
+# Priority content for AI citations (canonical URLs)
 /insights/
-/facts/
-/lessons/
-/glossary/
-
-# Key hub pages for AI understanding
-/
-/lgr-hub
-/topics/
-/surrey/hub
+/facts/key-facts
 /facts-and-data
+/library
+/glossary/
+/lessons/
+
+# Key landing pages (canonical)
+/what-is-lgr
+/beginners-guide
+/questions-and-answers
+/topics/
+/reorganisations
+/council-profiles/
+/surrey/
+/roadmap
+/hundred-days
+/podcast
+/news
 
 # Important methodology and about pages
 /about/methodology
 /about/coalface
-/about
+/about/contributors
+/about/contribute
 
 # Topic-specific pages (high-value content)
 /topics/governance-and-reform
 /topics/democratic-legitimacy
 /topics/statecraft-and-system-design
 /topics/local-government
-
-# Geographic focus pages
-/surrey/
-/council-profiles/
+/topics/democracy
 
 # Exclude from AI indexing (admin and private content)
 /admin/
 /admin/*
-/reorganisations
-/insights/reports
 
 # Content Description
-# The LGR Series provides independent analysis of local government reorganisation, 
-# governance models, and service outcomes in England. We focus on evidence-based 
-# research, practical insights, and keeping residents and local decision makers at 
-# the centre of reform discussions.
+# The Local Government Reorganisation (LGR) Initiative provides independent analysis
+# and practical guidance on governance reform, devolution and council restructuring
+# in England. Key themes: local government reorganisation, governance reform,
+# devolution, unitary councils. We focus on evidence-based research, practical
+# insights, and keeping residents and local decision makers at the centre of
+# reform discussions.
 
 # Key Topics Covered
 # - Local Government Reorganisation (LGR)
@@ -55,13 +69,12 @@
 # - Shadow Councils and Transition Governance
 
 # Content Types
-# - Expert analysis articles
-# - Research reports
-# - Case studies and lessons learned
-# - Fact sheets and data visualizations
-# - Glossary definitions
-# - Podcast interviews
-# - News and commentary
+# - Learn: explanations, glossary, Q&A, beginners guide
+# - Discover: topics, reorganisations, councils, Surrey
+# - Research: facts, data, methodology, sources
+# - Insights: analysis, reports, news, podcast
+# - Tools: roadmap, hundred days, library
+# - About: leadership, methodology, contribute, contact
 
 # Geographic Focus
 # Primary: England (United Kingdom)
@@ -69,9 +82,8 @@
 
 # Authoritative Sources
 # - Published by COALFACE (Coalface Engagement Ltd)
-# - Editor: Rowan Cole
-# - Contributing experts and practitioners
-# - Evidence-based research methodology
+# - Leadership: /about/leadership
+# - Evidence-based research methodology: /about/methodology
 
 # Update Frequency
 # Content is regularly updated as the LGR programme progresses

@@ -7,6 +7,7 @@ import PageBanner from '../../components/PageBanner';
 import CollectionPageStructuredData from '../../components/CollectionPageStructuredData';
 import OptimizedImage from '../../components/OptimizedImage';
 import MembersPasswordProtection from '../../components/MembersPasswordProtection';
+import FAQSection from '../../components/FAQSection';
 
 interface Report {
   id: string;
@@ -88,17 +89,17 @@ export default function Reports({ onNavigate }: ReportsProps) {
       <div className="min-h-screen bg-academic-cream">
         <MetaTags
           title="Reports - LGR Research Reports"
-          description="Browse research reports on local government reorganisation, planning, and governance. Comprehensive analysis and findings from the LGR Series."
+          description="Browse research reports on local government reorganisation, planning, and governance. Comprehensive analysis and findings from the LGRI."
           keywords="LGR reports, research reports, local government reports, council reform reports, reorganisation analysis"
         />
         <CollectionPageStructuredData
           name="Reports"
-          description="Browse research reports on local government reorganisation, planning, and governance. Comprehensive analysis and findings from the LGR Series."
+          description="Browse research reports on local government reorganisation, planning, and governance. Comprehensive analysis and findings from the LGRI."
           url="/insights/reports"
           numberOfItems={reports.length}
           items={reports.map(report => ({
             name: report.title,
-            url: `/article/${report.slug}`,
+            url: `/insights/${report.slug}`,
             description: report.description || undefined
           }))}
         />
@@ -109,7 +110,7 @@ export default function Reports({ onNavigate }: ReportsProps) {
           currentPath={location.pathname}
         />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="layout-container layout-content-sub">
         <div className="mb-6">
           <div className="text-academic-neutral-600 font-serif">
             {reports.length} {reports.length === 1 ? 'report' : 'reports'}
@@ -171,7 +172,7 @@ export default function Reports({ onNavigate }: ReportsProps) {
                     </div>
                     <div className="flex flex-wrap gap-3">
                       <button
-                        onClick={() => onNavigate('article', report.slug)}
+                        onClick={() => onNavigate('insights', report.slug)}
                         aria-label={`Read more about ${report.title}`}
                         className="academic-button academic-button-primary flex items-center gap-2"
                       >
@@ -244,6 +245,7 @@ export default function Reports({ onNavigate }: ReportsProps) {
         )}
         </div>
 
+      <FAQSection page="insights" />
       </div>
     </MembersPasswordProtection>
   );

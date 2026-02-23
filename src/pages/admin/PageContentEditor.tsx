@@ -3,6 +3,7 @@ import { Plus, Edit, Trash2, Save, X } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { updateSiteTimestamp } from '../../lib/updateTimestamp';
 import WYSIWYGEditor from '../../components/WYSIWYGEditor';
+import { sanitizeHtmlContent } from '../../lib/htmlSanitizer';
 
 interface PageContent {
   id: string;
@@ -56,6 +57,7 @@ export default function PageContentEditor() {
       .from('page_content')
       .insert([{
         ...formData,
+        content: sanitizeHtmlContent(formData.content),
         metadata: formData.metadata || {},
       }]);
 
@@ -74,6 +76,7 @@ export default function PageContentEditor() {
       .from('page_content')
       .update({
         ...formData,
+        content: sanitizeHtmlContent(formData.content),
         metadata: formData.metadata || {},
       })
       .eq('id', id);
@@ -258,7 +261,7 @@ export default function PageContentEditor() {
                 {item.title && (
                   <h3 className="text-xl font-semibold text-slate-900 mb-2">{item.title}</h3>
                 )}
-                <div className="text-slate-600 mb-3" dangerouslySetInnerHTML={{ __html: item.content.substring(0, 200) + (item.content.length > 200 ? '...' : '') }} />
+                <div className="text-slate-600 mb-3" dangerouslySetInnerHTML={{ __html: sanitizeHtmlContent(item.content.substring(0, 200) + (item.content.length > 200 ? '...' : '')) }} />
               </div>
               <div className="flex gap-2 ml-4">
                 <button

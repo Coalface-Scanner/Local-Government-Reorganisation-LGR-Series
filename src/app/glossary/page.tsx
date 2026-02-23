@@ -7,6 +7,7 @@ import GlossaryClient from '../../components/glossary/GlossaryClient';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import DefinedTermSetSchema from '../../components/glossary/DefinedTermSetSchema';
+import FAQSection from '../../components/FAQSection';
 
 /**
  * Glossary index page (Next.js App Router structure)
@@ -31,7 +32,7 @@ export default function GlossaryPage() {
 
   // Generate metadata (Next.js Metadata API pattern)
   const metadata = {
-    title: 'Glossary | LGR Series',
+    title: 'Glossary | LGRI',
     description: 'Comprehensive glossary of Local Government Reorganisation terms and definitions. Learn about shadow authorities, vesting day, unitary councils, and more key LGR concepts.',
     keywords: 'LGR glossary, Local Government Reorganisation terms, shadow authority definition, vesting day, unitary authority, LGR timetable, LGR governance terms'
   };
@@ -42,7 +43,7 @@ export default function GlossaryPage() {
       <DefinedTermSetSchema terms={allTerms} />
       <div className="min-h-screen bg-academic-cream">
         <PageBanner
-          heroLabel="LGR SERIES"
+          heroLabel="LGR INITIATIVE"
           heroTitle="Glossary"
           heroSubtitle="Key terms and definitions for understanding Local Government Reorganisation (LGR), LGR governance, and the reorganisation process."
           currentPath={location.pathname}
@@ -60,6 +61,7 @@ export default function GlossaryPage() {
           />
         </div>
       </div>
+      <FAQSection page="glossary" />
     </>
   );
 }

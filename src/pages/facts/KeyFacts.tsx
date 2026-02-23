@@ -76,7 +76,7 @@ export default function KeyFacts() {
         datePublished={facts.length > 0 ? facts[0]?.order_index ? new Date().toISOString() : undefined : undefined}
         url="/facts/key-facts"
         creator={{
-          name: 'LGR Series',
+          name: 'LGRI',
           url: baseUrl
         }}
       />
@@ -86,7 +86,7 @@ export default function KeyFacts() {
         heroSubtitle="Evidence from recent reorganisations across England. What recent experience shows and what this means for future reorganisations."
         currentPath={location.pathname}
       />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="layout-container layout-content-sub">
         <button
           onClick={() => navigate('/facts')}
           className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"

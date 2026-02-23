@@ -21,7 +21,7 @@ export default function FurtherReading() {
         heroSubtitle="Additional resources, reports, and publications on local government reorganisation and unitary authorities."
         currentPath={location.pathname}
       />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="layout-container layout-content-sub">
         <button
           onClick={() => navigate('/facts')}
           className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
@@ -30,7 +30,7 @@ export default function FurtherReading() {
           Back to Facts & Data
         </button>
       </div>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="layout-container layout-content-sub">
         <div className="bg-white rounded-2xl p-8 md:p-12 shadow-lg border border-slate-200 space-y-8">
           <div>
             <h2 className="text-2xl font-bold text-slate-900 mb-6">Recommended Resources</h2>
@@ -109,7 +109,7 @@ export default function FurtherReading() {
                   </li>
                   <li>
                     <a href="/insights" className="text-teal-600 hover:text-teal-700 underline">
-                      Insights from the LGR Series
+                      Insights from the LGRI
                     </a>
                     <p className="text-sm text-slate-600 mt-1">Expert perspectives and analysis</p>
                   </li>

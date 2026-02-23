@@ -62,8 +62,8 @@
     
     <!-- Preload critical resources -->
     <link rel="preload" as="image" href="/lgr.png" fetchpriority="high" />
-    <link rel="preload" as="image" href="/LGR_HighRed_Logo.png" fetchpriority="high" />
-    <link rel="preload" as="image" href="/polling_station.png" fetchpriority="high" />
+    <link rel="preload" as="image" href="/LGR-Banner-Masthead.png" fetchpriority="high" />
+    <link rel="preload" as="image" href="/polling-station-background.jpg" fetchpriority="high" />
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -71,18 +71,18 @@
     <meta name="theme-color" content="#0f766e" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="LGR Series" />
+    <meta name="apple-mobile-web-app-title" content="LGRI" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="format-detection" content="telephone=no" />
-    <title>Local Government Reorganisation | LGR Series</title>
+    <title>Local Government Reorganisation | LGRI</title>
     <meta name="description" content="Expert analysis and insights on Local Government Reorganisation (LGR) and devolution. Evidence-based research on council reform, unitary authorities, and LGR governance across England." />
-    <meta property="og:title" content="Local Government Reorganisation | LGR Series" />
+    <meta property="og:title" content="LGRI by COALFACE" />
     <meta property="og:description" content="Expert analysis and insights on Local Government Reorganisation (LGR) and devolution. Evidence-based research on council reform, unitary authorities, and LGR governance across England." />
-    <meta property="og:site_name" content="LGR Series by COALFACE" />
+    <meta property="og:site_name" content="LGRI" />
     <meta property="og:image" content="https://localgovernmentreorganisation.co.uk/LGR-Series-Tumbnail.jpg" />
     <meta property="og:image:width" content="600" />
     <meta property="og:image:height" content="350" />
-    <meta property="og:image:alt" content="Local Government Reorganisation Series banner" />
+    <meta property="og:image:alt" content="Local Government Reorganisation Initiative banner" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://localgovernmentreorganisation.co.uk" />
     <meta property="og:locale" content="en_GB" />
@@ -100,7 +100,6 @@
     <script type="module" src="/src/main.tsx"></script>
     <!-- ElevenLabs widget - Deferred for performance -->
     <script>
-      // Load ElevenLabs widget after page is interactive
       if ('requestIdleCallback' in window) {
         requestIdleCallback(function() {
           var convai = document.createElement('elevenlabs-convai');
@@ -113,14 +112,12 @@
           document.body.appendChild(script);
         });
       } else {
-        // Fallback for browsers without requestIdleCallback
         setTimeout(function() {
           var convai = document.createElement('elevenlabs-convai');
           convai.setAttribute('agent-id', 'agent_0601kdkcebt6erjbx8bv26x75c46');
           document.body.appendChild(convai);
           var script = document.createElement('script');
           script.async = true;
-          // Use TrustedScriptURL if available, otherwise fallback to direct assignment
           if (window.trustedTypes) {
             const trustedURL = window.trustedTypes.createPolicy('default', {
               createScriptURL: (url) => url

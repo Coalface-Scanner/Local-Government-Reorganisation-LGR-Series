@@ -397,9 +397,9 @@ export default function Home({ onNavigate }: HomeProps) {
   return (
     <div className="bg-academic-cream">
       <MetaTags
-        title="Local Government Reorganisation"
-        description="The definitive specialist source on Local Government Reorganisation (LGR) and LGR governance. Expert analysis, evidence-based research, and practical insights on local government reorganisation, LGR timetable 2026, and council reform across England."
-        keywords="LGR, Local Government Reorganisation, Local Government Reorganisation Series, LGR Series, LGR governance, LGR timetable 2026, council reform, English devolution, unitary authorities, council reorganisation, local government reform UK, local government reorganisation England, council restructuring, devolution England, local authority reorganisation"
+        title="Local Government Reorganisation Initiative | Governance & Devolution"
+        description="Independent analysis and practical guidance on local government reorganisation, governance reform and devolution, supporting the design of effective new unitary councils."
+        keywords="LGR, Local Government Reorganisation, LGRI, LGR governance, LGR timetable 2026, council reform, English devolution, unitary authorities, council reorganisation, local government reform UK, local government reorganisation England, council restructuring, devolution England, local authority reorganisation"
       />
       <OrganizationStructuredData />
       <WebSiteStructuredData />
@@ -410,7 +410,7 @@ export default function Home({ onNavigate }: HomeProps) {
         currentPath={location.pathname}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="layout-container layout-content-hub">
         {/* Article Grid Section */}
         {recentArticles.length > 0 && (
           <section className="mb-16">
@@ -600,7 +600,7 @@ export default function Home({ onNavigate }: HomeProps) {
                       All our materials
                     </h3>
                     <p className="text-white/90 text-academic-sm md:text-academic-base font-serif">
-                      Explore all research, insights, case studies, and resources from the LGR Series
+                      Explore all research, insights, case studies, and resources from the LGRI
                     </p>
                   </div>
                 </Link>
@@ -628,7 +628,7 @@ export default function Home({ onNavigate }: HomeProps) {
           )}
         </section>
 
-        {/* Meet LGR Series Section */}
+        {/* Meet LGRI Section */}
         <section className="mb-16">
           <div className="flex items-center justify-start mb-8 relative">
             <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-px bg-gradient-to-r from-teal-600 via-teal-600 to-transparent opacity-30"></div>
@@ -638,7 +638,7 @@ export default function Home({ onNavigate }: HomeProps) {
           </div>
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
             <Link
-              to="/editor/rowan-cole"
+              to="/about/leadership/rowan-cole"
               className="group relative overflow-hidden bg-gradient-to-br from-teal-800 via-teal-700 to-teal-800 p-6 rounded-lg transition-all duration-300 hover:scale-105 text-center min-h-[140px] flex flex-col justify-center"
               style={{
                 backgroundImage: "url('/rowan-cole-coalface-engagement-director-headshot-folded-arms.jpg')",
@@ -654,7 +654,7 @@ export default function Home({ onNavigate }: HomeProps) {
                   Our Team
                 </h3>
                 <p className="text-white/90 text-academic-xs font-serif">
-                  Learn about the people behind LGR Series
+                  Learn about the people behind the LGRI
                 </p>
               </div>
             </Link>
@@ -675,7 +675,7 @@ export default function Home({ onNavigate }: HomeProps) {
                   Contributors
                 </h3>
                 <p className="text-white/90 text-academic-xs font-serif">
-                  How to contribute to the LGR Series
+                  How to contribute to the LGRI
                 </p>
               </div>
             </Link>
@@ -708,7 +708,7 @@ export default function Home({ onNavigate }: HomeProps) {
                 About
               </h3>
               <p className="text-white/90 text-academic-xs font-serif">
-                Learn more about LGR Series
+                Learn more about the LGRI
               </p>
             </Link>
           </div>
@@ -801,7 +801,7 @@ export default function Home({ onNavigate }: HomeProps) {
                 alt="First 100 Days Podcast"
                 className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-[1.02]"
                 loading="eager"
-                fetchPriority="high"
+                fetchpriority="high"
                 decoding="async"
                 onError={(e) => {
                   // Fallback if image fails to load

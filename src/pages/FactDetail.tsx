@@ -5,9 +5,9 @@ import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import ArticleStructuredData from '../components/ArticleStructuredData';
 import FAQSection from '../components/FAQSection';
-import Breadcrumbs from '../components/Breadcrumbs';
 import { ArrowLeft, AlertCircle, Users, DollarSign, FileText, CheckCircle, type LucideIcon } from 'lucide-react';
 import { enhanceContentWithGlossaryLinks } from '../lib/glossaryLinks';
+import { sanitizeHtmlContent } from '../lib/htmlSanitizer';
 
 interface Fact {
   id: string;
@@ -123,11 +123,11 @@ export default function FactDetail() {
   // Enhance content with glossary links
   const enhancedContent = useMemo(() => {
     if (!fact?.content) return '';
-    return enhanceContentWithGlossaryLinks(fact.content, {
+    return sanitizeHtmlContent(enhanceContentWithGlossaryLinks(fact.content, {
       onlyFirstOccurrence: true,
       excludeSlugs: [],
       linkClass: 'glossary-link text-teal-700 hover:text-teal-800 underline font-medium'
-    });
+    }));
   }, [fact?.content]);
 
   const getDescription = () => {
@@ -156,41 +156,54 @@ export default function FactDetail() {
     let title = fact.title;
     if (fact.category) {
       const categoryTitle = `${fact.category}: ${fact.title}`;
-      const maxTitleLength = 56; // 70 - 14 (" | LGR Series")
+      const maxTitleLength = 52; // 70 - 18 (" | LGRI")
       if (categoryTitle.length <= maxTitleLength) {
         title = categoryTitle;
       }
     }
     
     const fullTitle = `${title} - Facts & Figures`;
-    const maxTitleLength = 56; // 70 - 14 (" | LGR Series")
+    const maxTitleLength = 52; // 70 - 18 (" | LGRI")
     return fullTitle.length > maxTitleLength ? fullTitle.substring(0, maxTitleLength - 3) + '...' : fullTitle;
   };
 
   return (
-    <div className="min-h-screen bg-academic-cream">
-      <MetaTags
-        title={getTitle()}
-        description={getDescription()}
-        keywords="local government, reorganisation, facts, LGR, evidence"
-        ogType="article"
-      />
-      <ArticleStructuredData
-        title={fact.title}
-        description={getDescription()}
-        author="LGR Series Editorial Team"
-        publishedDate={new Date().toISOString()}
-        imageUrl={undefined}
-        slug={generateSlug(fact.title)}
-      />
+    <>
       <PageBanner
         heroLabel={fact.category ? fact.category.toUpperCase() : 'FACTS & FIGURES'}
         heroTitle={fact.title}
         heroSubtitle={fact.category ? `${fact.category} insights on local government reorganisation` : undefined}
         currentPath={location.pathname}
+        breadcrumbCurrentLabel={fact.title}
       />
+      <div data-page-nav className="bg-academic-cream">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5">
+          <button
+            onClick={() => navigate('/facts')}
+            className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
+          >
+            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+            Back to Facts & Data
+          </button>
+        </div>
+      </div>
+      <div data-page-main className="min-h-screen bg-academic-cream">
+        <MetaTags
+          title={getTitle()}
+          description={getDescription()}
+          keywords="local government, reorganisation, facts, LGR, evidence"
+          ogType="article"
+        />
+        <ArticleStructuredData
+          title={fact.title}
+          description={getDescription()}
+          author="LGRI Editorial Team"
+          publishedDate={new Date().toISOString()}
+          imageUrl={undefined}
+          slug={generateSlug(fact.title)}
+        />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <article className="prose prose-lg max-w-none">
           <style>{`
             .prose h2 {
@@ -269,10 +282,10 @@ export default function FactDetail() {
             View All Facts
           </button>
         </div>
-      </div>
+        </div>
 
-      <FAQSection page="facts" />
-    </div>
+        <FAQSection page="facts" />
+      </div>
+    </>
   );
 }
-

@@ -4,7 +4,8 @@ import Timeline from '../../components/Timeline';
 import { 
   ArrowLeft, Calendar, Route, BookOpen, MapPin
 } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
+import FAQSection from '../../components/FAQSection';
 
 export default function LGRTimeline() {
   const navigate = useNavigate();
@@ -23,16 +24,26 @@ export default function LGRTimeline() {
         heroSubtitle="Comprehensive timeline of LGR processes, key dates, and milestones. Track shadow elections, vesting days, and the LGR timetable roadmap."
         currentPath={location.pathname}
       />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <button
-          onClick={() => navigate('/facts')}
-          className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
-        >
-          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-          Back to Facts & Data
-        </button>
+      <div className="layout-container layout-content-sub">
+        <div className="flex flex-wrap items-center gap-4 mb-6">
+          <button
+            onClick={() => navigate('/facts')}
+            className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium group"
+          >
+            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+            Back to Facts & Data
+          </button>
+          <span className="text-academic-neutral-500">|</span>
+          <Link
+            to="/roadmap"
+            className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium"
+          >
+            <MapPin size={18} aria-hidden="true" />
+            Prefer the visual journey map?
+          </Link>
+        </div>
       </div>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="layout-container layout-content-hub">
         {/* In Brief Section */}
         <div className="academic-card p-8 mb-12 bg-teal-50 border-l-4 border-teal-700">
           <div className="flex items-start gap-4">
@@ -185,6 +196,7 @@ export default function LGRTimeline() {
           </div>
         </div>
 
+      <FAQSection page="facts" />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState, lazy, Suspense } from 'react';
 import Footer from './components/Footer';
 import StayInformedBanner from './components/StayInformedBanner';
@@ -7,7 +7,9 @@ import ErrorBoundary from './components/ErrorBoundary';
 import BackToTop from './components/BackToTop';
 import KeyboardShortcuts from './components/KeyboardShortcuts';
 import SkipLink from './components/SkipLink';
+import PageLayout from './components/PageLayout';
 import { AuthProvider } from './contexts/AuthContext';
+import { SidebarTocProvider } from './contexts/SidebarTocContext';
 import { trackPageView } from './utils/analytics';
 
 // Lazy load pages for code splitting - improves initial load time
@@ -30,6 +32,7 @@ const Subscribe = lazy(() => import('./pages/Subscribe'));
 const Unsubscribe = lazy(() => import('./pages/Unsubscribe'));
 const HundredDays = lazy(() => import('./pages/HundredDays'));
 const Contact = lazy(() => import('./pages/Contact'));
+const Partnerships = lazy(() => import('./pages/Partnerships'));
 const News = lazy(() => import('./pages/News'));
 const ArticleView = lazy(() => import('./pages/ArticleView'));
 const FactDetail = lazy(() => import('./pages/FactDetail'));
@@ -42,6 +45,9 @@ const Tools = lazy(() => import('./pages/Tools'));
 const LGRHub = lazy(() => import('./pages/LGRHub'));
 const FactsAndData = lazy(() => import('./pages/FactsAndData'));
 const Reorganisations = lazy(() => import('./pages/Reorganisations'));
+const Learn = lazy(() => import('./pages/Learn'));
+const Discover = lazy(() => import('./pages/Discover'));
+const Research = lazy(() => import('./pages/Research'));
 
 // Admin pages - lazy loaded (less frequently accessed)
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
@@ -69,11 +75,14 @@ const LessonsCaseStudies = lazy(() => import('./pages/lessons/CaseStudies'));
 const LessonsBestPractices = lazy(() => import('./pages/lessons/BestPractices'));
 
 // About sub-pages - lazy loaded
-const About = lazy(() => import('./pages/about/About'));
+const AboutHub = lazy(() => import('./pages/about/AboutHub'));
+const AboutOverview = lazy(() => import('./pages/about/AboutOverview'));
 const AboutMethodology = lazy(() => import('./pages/about/Methodology'));
 const AboutContribute = lazy(() => import('./pages/about/Contribute'));
 const AboutCoalface = lazy(() => import('./pages/about/Coalface'));
 const AboutContributors = lazy(() => import('./pages/about/Contributors'));
+const Leadership = lazy(() => import('./pages/about/Leadership'));
+const LeadershipBio = lazy(() => import('./pages/about/LeadershipBio'));
 
 // Editor pages - lazy loaded
 const RowanCole = lazy(() => import('./pages/editor/RowanCole'));
@@ -92,24 +101,18 @@ const GlossaryTerm = lazy(() => import('./app/glossary/[slug]/page'));
 // 404 page - lazy loaded
 const NotFound = lazy(() => import('./pages/NotFound'));
 
-// Loading component for Suspense
+// Loading component for Suspense - fills quickly so the app doesn't feel stuck
 function PageLoader() {
   const [progress, setProgress] = useState(0);
-
   useEffect(() => {
-    // Simulate progress bar filling up
     const interval = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          return 100;
-        }
-        // Accelerate then slow down near the end for realistic feel
-        const increment = prev < 70 ? 2 + Math.random() * 3 : 0.5 + Math.random() * 1;
-        return Math.min(prev + increment, 100);
+        if (prev >= 95) return 95;
+        // Reach ~90% in under a second, then creep to 95%
+        const increment = prev < 85 ? 12 + Math.random() * 8 : 0.3 + Math.random() * 0.4;
+        return Math.min(prev + increment, 95);
       });
-    }, 50);
-
+    }, 40);
     return () => clearInterval(interval);
   }, []);
 
@@ -120,10 +123,10 @@ function PageLoader() {
         <div className="mb-8 flex justify-center animate-fade-in">
           <img 
             src="/lgr.png" 
-            alt="LGR Series Logo" 
+            alt="LGRI Logo" 
             className="h-24 w-auto object-contain drop-shadow-sm"
             loading="eager"
-            fetchPriority="high"
+            fetchpriority="high"
             decoding="sync"
           />
         </div>
@@ -186,6 +189,16 @@ function ArticleViewWrapper() {
   return <ArticleView slug={slug} onNavigate={handleNavigate} />;
 }
 
+// Redirect wrappers for canonical URLs (301-style in-app)
+function RedirectArticleToInsights() {
+  const { slug } = useParams<{ slug: string }>();
+  return <Navigate to={slug ? `/insights/${slug}` : '/insights'} replace />;
+}
+function RedirectLeadershipToAbout() {
+  const { slug } = useParams<{ slug: string }>();
+  return <Navigate to={slug ? `/about/leadership/${slug}` : '/about/leadership'} replace />;
+}
+
 function GlossaryWrapper() {
   return <Glossary />;
 }
@@ -213,7 +226,6 @@ function PageWrapper({ children }: { children: (onNavigate: (page: string, data?
 function AppContent() {
   const location = useLocation();
   const navigate = useNavigate();
-
   const handleNavigate = (page: string) => navigate(`/${page}`);
   const getCurrentPage = () => {
     const path = location.pathname.split('/')[1] || 'home';
@@ -221,31 +233,51 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen bg-academic-cream flex flex-col">
+    <div
+      className="min-h-screen bg-academic-cream flex flex-col"
+      style={{ minHeight: '100vh', backgroundColor: '#faf8f5' }}
+    >
       <SkipLink />
       <KeyboardShortcuts />
       <main id="main-content" className="flex-grow">
         <Suspense fallback={<PageLoader />}>
-          <Routes>
-            <Route path="/" element={<PageWrapper>{(nav) => <Home onNavigate={nav} />}</PageWrapper>} />
+          <SidebarTocProvider>
+            <Routes>
+              <Route element={<PageLayout />}>
+                <Route path="/" element={<PageWrapper>{(nav) => <Home onNavigate={nav} />}</PageWrapper>} />
+                <Route path="/learn" element={<PageWrapper>{(nav) => <Learn onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/discover" element={<PageWrapper>{(nav) => <Discover onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/research" element={<PageWrapper>{(nav) => <Research onNavigate={nav} />}</PageWrapper>} />
+            {/* Redirects to canonical URLs */}
+            <Route path="/article/:slug" element={<RedirectArticleToInsights />} />
+            <Route path="/facts" element={<Navigate to="/facts/key-facts" replace />} />
+            <Route path="/facts/facts" element={<Navigate to="/facts/key-facts" replace />} />
+            <Route path="/facts/what-is-lgr" element={<Navigate to="/what-is-lgr" replace />} />
+            <Route path="/facts/councilopedia/beginners-guide" element={<Navigate to="/beginners-guide" replace />} />
+            <Route path="/facts/questions-and-answers" element={<Navigate to="/questions-and-answers" replace />} />
+            <Route path="/materials" element={<Navigate to="/library" replace />} />
+            <Route path="/lgr-journey-2026" element={<Navigate to="/roadmap" replace />} />
+            <Route path="/100days" element={<Navigate to="/first-100-days" replace />} />
+            <Route path="/interviews" element={<Navigate to="/podcast" replace />} />
+            <Route path="/leadership" element={<Navigate to="/about/leadership" replace />} />
+            <Route path="/leadership/:slug" element={<RedirectLeadershipToAbout />} />
             <Route path="/library" element={<PageWrapper>{(nav) => <Search onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/materials" element={<PageWrapper>{(nav) => <Materials onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/facts" element={<PageWrapper>{(nav) => <Facts onNavigate={nav} />}</PageWrapper>} />
             <Route path="/facts/timescales" element={<Timescales />} />
             <Route path="/facts/councils-involved" element={<CouncilsInvolved />} />
             <Route path="/facts/key-facts" element={<KeyFacts />} />
-            <Route path="/facts/questions-and-answers" element={<QuestionsAndAnswers />} />
             <Route path="/facts/methodology" element={<Methodology />} />
             <Route path="/facts/sources" element={<Sources />} />
             <Route path="/facts/further-reading" element={<FurtherReading />} />
             <Route path="/facts/councilopedia" element={<Councilopedia />} />
-            <Route path="/facts/councilopedia/beginners-guide" element={<BeginnersGuide />} />
-            <Route path="/facts/what-is-lgr" element={<WhatIsLGR />} />
-            <Route path="/what-is-lgr" element={<WhatIsLGR />} />
             <Route path="/facts/lgr-timeline" element={<LGRTimeline />} />
             <Route path="/facts/council-cases" element={<CouncilCases />} />
             <Route path="/facts/:slug" element={<FactDetail />} />
-            <Route path="/lgr-journey-2026" element={<PageWrapper>{(nav) => <JourneyMap onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/what-is-lgr" element={<WhatIsLGR />} />
+            <Route path="/beginners-guide" element={<BeginnersGuide />} />
+            <Route path="/questions-and-answers" element={<QuestionsAndAnswers />} />
+            <Route path="/councilopedia" element={<Councilopedia />} />
+            <Route path="/hundred-days" element={<Navigate to="/first-100-days" replace />} />
+            <Route path="/first-100-days" element={<PageWrapper>{(nav) => <HundredDays onNavigate={nav} />}</PageWrapper>} />
             <Route path="/roadmap" element={<PageWrapper>{(nav) => <JourneyMap onNavigate={nav} />}</PageWrapper>} />
             <Route path="/lgr-hub" element={<PageWrapper>{(nav) => <LGRHub onNavigate={nav} />}</PageWrapper>} />
             <Route path="/facts-and-data" element={<PageWrapper>{(nav) => <FactsAndData onNavigate={nav} />}</PageWrapper>} />
@@ -256,19 +288,21 @@ function AppContent() {
             <Route path="/lessons/best-practices" element={<PageWrapper>{(nav) => <LessonsBestPractices />}</PageWrapper>} />
             <Route path="/lessons" element={<PageWrapper>{(nav) => <Lessons onNavigate={nav} />}</PageWrapper>} />
             <Route path="/reasons" element={<PageWrapper>{(nav) => <Reasons onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/about" element={<PageWrapper>{(nav) => <About onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/about" element={<PageWrapper>{(nav) => <AboutHub onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/about/overview" element={<PageWrapper>{(nav) => <AboutOverview onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/partnerships" element={<PageWrapper>{(nav) => <Partnerships />}</PageWrapper>} />
             <Route path="/about/methodology" element={<PageWrapper>{(nav) => <AboutMethodology onNavigate={nav} />}</PageWrapper>} />
             <Route path="/about/contribute" element={<PageWrapper>{(nav) => <AboutContribute onNavigate={nav} />}</PageWrapper>} />
             <Route path="/about/coalface" element={<PageWrapper>{(nav) => <AboutCoalface onNavigate={nav} />}</PageWrapper>} />
             <Route path="/about/contributors" element={<PageWrapper>{(nav) => <AboutContributors onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/editor/rowan-cole" element={<PageWrapper>{(nav) => <RowanCole onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/interviews" element={<PageWrapper>{(nav) => <Interviews onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/about/leadership" element={<PageWrapper>{(nav) => <Leadership onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/about/leadership/:slug" element={<LeadershipBio />} />
+            <Route path="/editor/rowan-cole" element={<Navigate to="/about/leadership/rowan-cole" replace />} />
             <Route path="/podcast" element={<PageWrapper>{(nav) => <Interviews onNavigate={nav} />}</PageWrapper>} />
             <Route path="/surrey" element={<PageWrapper>{(nav) => <Surrey onNavigate={nav} />}</PageWrapper>} />
             <Route path="/surrey/election-tracker" element={<PageWrapper>{(nav) => <SurreyElectionTracker onNavigate={nav} />}</PageWrapper>} />
             <Route path="/surrey/election-tracker/simulator" element={<PageWrapper>{(nav) => <SurreyElectionSimulator onNavigate={nav} />}</PageWrapper>} />
             <Route path="/surrey/hub" element={<PageWrapper>{(nav) => <SurreyHub onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/100days" element={<PageWrapper>{(nav) => <HundredDays onNavigate={nav} />}</PageWrapper>} />
             <Route path="/contact" element={<PageWrapper>{(nav) => <Contact onNavigate={nav} />}</PageWrapper>} />
             <Route path="/councils" element={<Councils />} />
             <Route path="/council-profiles" element={<CouncilProfiles />} />
@@ -276,7 +310,6 @@ function AppContent() {
             <Route path="/subscribe" element={<PageWrapper>{(nav) => <Subscribe onNavigate={nav} />}</PageWrapper>} />
             <Route path="/unsubscribe" element={<Unsubscribe />} />
             <Route path="/news" element={<News />} />
-            <Route path="/article/:slug" element={<ArticleWrapper />} />
             <Route path="/insights" element={<PageWrapper>{(nav) => <Insights onNavigate={nav} />}</PageWrapper>} />
             <Route path="/insights/reports" element={<PageWrapper>{(nav) => <Reports onNavigate={nav} />}</PageWrapper>} />
             <Route path="/insights/:slug" element={<ArticleViewWrapper />} />
@@ -293,8 +326,10 @@ function AppContent() {
             <Route path="/admin/dashboard" element={<PageWrapper>{(nav) => <AdminDashboard onNavigate={nav} />}</PageWrapper>} />
             <Route path="/admin/articles/login" element={<PageWrapper>{(nav) => <AdminArticleLogin onNavigate={nav} />}</PageWrapper>} />
             <Route path="/admin/articles" element={<PageWrapper>{(nav) => <AdminArticles onNavigate={nav} />}</PageWrapper>} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+                <Route path="*" element={<NotFound />} />
+              </Route>
+            </Routes>
+          </SidebarTocProvider>
         </Suspense>
       </main>
       <StayInformedBanner />

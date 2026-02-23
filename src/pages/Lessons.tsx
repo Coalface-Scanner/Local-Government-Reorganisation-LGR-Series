@@ -42,7 +42,7 @@ const hubCards: HubCard[] = [
   {
     id: 'best-practices',
     title: 'Best Practices',
-    description: 'Practical guidance drawn from the first wave of Local Government Reorganisation. Curated best practices, checklists and lessons from the LGR Series.',
+    description: 'Practical guidance drawn from the first wave of Local Government Reorganisation. Curated best practices, checklists and lessons from the LGRI.',
     icon: FileText,
     color: 'from-slate-500 to-slate-700',
     route: '/lessons/best-practices',
@@ -81,7 +81,7 @@ export default function Lessons({ onNavigate: _onNavigate }: LessonsProps) {
         currentPath={location.pathname}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="layout-container layout-content-hub">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 items-stretch">
           {hubCards.map((card) => (
             <ServiceCard

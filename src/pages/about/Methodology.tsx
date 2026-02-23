@@ -3,6 +3,8 @@ import { ArrowLeft } from 'lucide-react';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import { useAboutPage } from '../../hooks/useAboutPage';
+import FAQSection from '../../components/FAQSection';
+import { sanitizeHtmlContent } from '../../lib/htmlSanitizer';
 
 interface MethodologyProps {
   onNavigate: (page: string) => void;
@@ -15,8 +17,8 @@ export default function Methodology({ onNavigate: _onNavigate }: MethodologyProp
   return (
     <div className="bg-academic-cream min-h-screen">
       <MetaTags
-        title="Research Methodology - LGR Series"
-        description="Learn about the LGR Series research methodology, data sources, analytical framework, and quality standards."
+        title="Research Methodology - LGRI"
+        description="Learn about the LGRI research methodology, data sources, analytical framework, and quality standards."
         keywords="LGR methodology, research methodology, Council Scanner, data sources, analytical framework"
       />
       
@@ -27,30 +29,23 @@ export default function Methodology({ onNavigate: _onNavigate }: MethodologyProp
         currentPath={location.pathname}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="layout-container layout-content-sub">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-            {/* Breadcrumb */}
-            <nav className="flex items-center gap-2 text-academic-sm text-academic-neutral-600">
-              <Link to="/about" className="hover:text-teal-700 transition-colors">About</Link>
-              <span>/</span>
-              <span className="text-academic-neutral-900">Methodology</span>
-            </nav>
-
             {/* Research Approach */}
             <section className="academic-card p-8 md:p-10">
               <div className="academic-prose">
                 {loading ? (
                   <div className="text-center py-8 text-academic-neutral-600">Loading...</div>
                 ) : cmsPage ? (
-                  <div dangerouslySetInnerHTML={{ __html: cmsPage.content }} />
+                  <div dangerouslySetInnerHTML={{ __html: sanitizeHtmlContent(cmsPage.content) }} />
                 ) : (
                   <>
                     <h2 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-4">
                       Research Approach
                     </h2>
                     <p className="mb-6">
-                      The LGR Series is built on COALFACE's Council Scanner™ methodology, which provides systematic analysis of planning authority governance, decision-making patterns, and institutional behaviour across England.
+                      The LGRI is built on COALFACE's Council Scanner™ methodology, which provides systematic analysis of planning authority governance, decision-making patterns, and institutional behaviour across England.
                     </p>
 
                     <h3 className="text-academic-xl font-display font-bold text-academic-charcoal mb-3 mt-6">
@@ -115,10 +110,10 @@ export default function Methodology({ onNavigate: _onNavigate }: MethodologyProp
             <div className="sticky top-24 space-y-6">
               <div className="bg-white p-6 border border-academic-neutral-300 rounded-sm shadow-sm">
                 <h3 className="text-academic-xl font-display font-black text-academic-charcoal mb-3">
-                  LGR Series Newsletter
+                  LGR Insights & Updates
                 </h3>
                 <p className="text-academic-sm text-academic-neutral-700 mb-4 font-serif">
-                  Get the LGR Series directly in your inbox. No fluff, just deep analysis.
+                  Receive our regular update direct to your inbox. Subscribe here.
                 </p>
                 <Link
                   to="/subscribe"
@@ -140,7 +135,7 @@ export default function Methodology({ onNavigate: _onNavigate }: MethodologyProp
                     Overview
                   </Link>
                   <Link
-                    to="/editor/rowan-cole"
+                    to="/about/leadership/rowan-cole"
                     className="block px-3 py-2 text-academic-sm text-academic-neutral-700 hover:bg-teal-50 hover:text-teal-700 transition-colors rounded"
                   >
                     Editor Profile
@@ -170,6 +165,7 @@ export default function Methodology({ onNavigate: _onNavigate }: MethodologyProp
         </div>
       </div>
 
+      <FAQSection page="about" />
     </div>
   );
 }

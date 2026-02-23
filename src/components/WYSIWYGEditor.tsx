@@ -3,6 +3,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { Eye, Edit2 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { sanitizeHtmlContent } from '../lib/htmlSanitizer';
 
 interface WYSIWYGEditorProps {
   value: string;
@@ -480,7 +481,7 @@ export default function WYSIWYGEditor({ value, onChange, placeholder, className 
               Edit
             </button>
           </div>
-          <div className="preview-mode" dangerouslySetInnerHTML={{ __html: value || '<p class="text-slate-400 italic">No content to preview</p>' }} />
+          <div className="preview-mode" dangerouslySetInnerHTML={{ __html: sanitizeHtmlContent(value || '<p class=\"text-slate-400 italic\">No content to preview</p>') }} />
         </>
       ) : (
         <>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { hasValidSupabase } from '../lib/supabaseEnv';
 
 interface FooterContentItem {
   id: string;
@@ -23,20 +23,20 @@ export function useFooterContent(): UseFooterContentResult {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!hasValidSupabase) {
+      setLoading(false);
+      return;
+    }
     const fetchContent = async () => {
       try {
         setLoading(true);
         setError(null);
-        
+        const { supabase } = await import('../lib/supabase');
         const { data, error: fetchError } = await supabase
           .from('footer_content')
           .select('*')
           .order('order_index');
-
-        if (fetchError) {
-          throw fetchError;
-        }
-
+        if (fetchError) throw fetchError;
         setContent(data || []);
       } catch (err) {
         console.error('Error fetching footer content:', err);
@@ -46,7 +46,6 @@ export function useFooterContent(): UseFooterContentResult {
         setLoading(false);
       }
     };
-
     fetchContent();
   }, []);
 

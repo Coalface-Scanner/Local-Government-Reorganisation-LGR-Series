@@ -4,6 +4,7 @@ import MetaTags from '../components/MetaTags';
 import CollectionPageStructuredData from '../components/CollectionPageStructuredData';
 import PageBanner from '../components/PageBanner';
 import ServiceCard from '../components/ServiceCard';
+import FAQSection from '../components/FAQSection';
 
 interface FactsAndDataProps {
   onNavigate: (page: string) => void;
@@ -14,7 +15,7 @@ const dataSections = [
     id: 'key-facts',
     title: 'Key Facts',
     description: 'Comprehensive facts, statistics, and data about Local Government Reorganisation in England. Explore LGR timelines, councils involved, methodology, and sources.',
-    route: '/facts',
+    route: '/facts/key-facts',
     icon: FileText,
     color: 'from-teal-600 to-cyan-700'
   },
@@ -22,7 +23,7 @@ const dataSections = [
     id: 'materials',
     title: 'Materials & Datasets',
     description: 'Access datasets, materials, and downloadable resources related to Local Government Reorganisation.',
-    route: '/materials',
+    route: '/library',
     icon: BookOpen,
     color: 'from-blue-500 to-cyan-600'
   },
@@ -65,7 +66,7 @@ export default function FactsAndData({ onNavigate: _onNavigate }: FactsAndDataPr
         currentPath={location.pathname}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="layout-container layout-content-hub">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 items-stretch">
           {dataSections.map((section) => (
             <ServiceCard
@@ -81,23 +82,19 @@ export default function FactsAndData({ onNavigate: _onNavigate }: FactsAndDataPr
         </div>
 
         <div className="max-w-2xl mx-auto mb-12">
-          <div className="bg-teal-800 text-white p-8">
-            <h3 className="text-academic-xl font-display font-bold text-white mb-4">
-              LGR Series Newsletter
-            </h3>
-            <p className="text-academic-sm text-white mb-5 font-serif">
-              Get the LGR Series directly in your inbox. No fluff, just deep analysis.
+          <div className="lgr-insights-cta">
+            <h3 className="lgr-insights-cta__title">LGR Insights & Updates</h3>
+            <p className="lgr-insights-cta__body">
+              Receive our regular update direct to your inbox. Subscribe here.
             </p>
-            <Link
-              to="/subscribe"
-              className="inline-block bg-white text-teal-700 px-6 py-3 rounded-lg font-display font-bold text-sm uppercase tracking-wider hover:bg-teal-50 transition-colors"
-            >
+            <Link to="/subscribe" className="lgr-insights-cta__btn">
               Subscribe
             </Link>
           </div>
         </div>
       </div>
 
+      <FAQSection page="facts" />
     </div>
   );
 }

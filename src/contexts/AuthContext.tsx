@@ -1,6 +1,6 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { User, Session } from '@supabase/supabase-js';
-import { supabase } from '../lib/supabase';
+import { createContext, useContext, useEffect, useRef, useState, ReactNode } from 'react';
+import type { User, Session } from '@supabase/supabase-js';
+import { hasValidSupabase } from '../lib/supabaseEnv';
 
 interface AuthContextType {
   user: User | null;
@@ -16,31 +16,54 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const authRef = useRef<{
+    getSession: () => Promise<{ data: { session: Session | null } }>;
+    signInWithPassword: (opts: { email: string; password: string }) => Promise<{ error: Error | null }>;
+    signOut: () => Promise<void>;
+    onAuthStateChange: (cb: (_e: string, s: Session | null) => void) => { data: { subscription: { unsubscribe: () => void } } };
+  } | null>(null);
+  const unsubRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
+    if (!hasValidSupabase) {
       setLoading(false);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      (async () => {
-        setSession(session);
-        setUser(session?.user ?? null);
+      return;
+    }
+    let cancelled = false;
+    import('../lib/supabase').then(({ supabase }) => {
+      if (cancelled) return;
+      authRef.current = supabase.auth;
+      supabase.auth.getSession().then(({ data: { session: s } }) => {
+        if (cancelled) return;
+        setSession(s);
+        setUser(s?.user ?? null);
         setLoading(false);
-      })();
+      });
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, s) => {
+        if (cancelled) return;
+        setSession(s);
+        setUser(s?.user ?? null);
+        setLoading(false);
+      });
+      unsubRef.current = () => subscription.unsubscribe();
+      if (cancelled) subscription.unsubscribe();
+    }).catch(() => {
+      if (!cancelled) setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      cancelled = true;
+      unsubRef.current?.();
+      unsubRef.current = null;
+      authRef.current = null;
+    };
   }, []);
 
   const signIn = async (email: string, password: string) => {
+    const auth = authRef.current;
+    if (!auth) return { error: new Error('Auth not ready') as Error };
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      const { error } = await auth.signInWithPassword({ email, password });
       return { error };
     } catch (error) {
       return { error: error as Error };
@@ -48,7 +71,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    const auth = authRef.current;
+    if (auth) await auth.signOut();
   };
 
   const value = {

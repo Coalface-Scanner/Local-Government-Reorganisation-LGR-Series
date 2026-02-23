@@ -114,6 +114,29 @@
   --color-academic-blue-800: #36414d;
   --color-academic-blue-900: #2f3842;
 
+  /* What Is LGR page – narrative arc palette */
+  --lgr-hero-start: #0f4c4c;
+  --lgr-hero-end: #0b3d3d;
+  --lgr-accent: #1f8a70;
+  --lgr-panel-tint: #e8f3f3;
+  --lgr-button-border: #d6e4e4;
+  --lgr-button-hover: #f2fafa;
+  --lgr-nav-border: #e6ecec;
+  --lgr-section-neutral: #f7f9f9;
+  --lgr-data-band: #1e1e1e;
+  --lgr-tab-inactive: #f2f4f4;
+  --lgr-stage-panel: #edf4fa;
+  --lgr-quiz-bg: #dceeee;
+  --lgr-does-not-border: #c96c6c;
+
+  /* Hub page design tokens */
+  --hub-accent: #1f8a70;
+  --hub-tint-pathway: #f2fafa;
+  --hub-tint-faq: #f7f9f9;
+  --hub-border-faq: #e6ecec;
+  --hub-cta-bg: #0f4c4c;
+  --hub-body: #2e2e2e;
+
   /* LGR Logo Red - Inspired by HighRed Logo */
   --color-lgr-red-50: #fef2f2;
   --color-lgr-red-100: #fee2e2;
@@ -137,6 +160,20 @@
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-serif: 'Crimson Pro', Georgia, serif;
   --font-display: 'Inter', system-ui, sans-serif;
+
+  /* Layout: single global grid and content width */
+  --layout-max-width: 80rem; /* 1280px, matches max-w-7xl */
+  --layout-gutter-mobile: 1rem;
+  --layout-gutter-tablet: 1.5rem;
+  --layout-gutter-desktop: 2rem;
+  --section-spacing: 2.5rem; /* between sections on hub/subject pages */
+  --section-spacing-lg: 3rem;  /* main content block vertical padding (hub) */
+  --subpage-content-py: 2rem;  /* vertical padding for sub pages */
+  /* Breakpoints (reference; Tailwind uses sm/md/lg) */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
 }
 @layer base {
   body {
@@ -217,6 +254,432 @@
   a {
     @apply text-teal-700 hover:text-teal-800 transition-colors;
   }
+}
+
+/* ============================================
+   LAYOUT: Global grid, max-width, spacing scale
+   Use these classes for all hub, subject, and sub pages.
+   ============================================ */
+.layout-container {
+  width: 100%;
+  max-width: var(--layout-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--layout-gutter-mobile);
+  padding-right: var(--layout-gutter-mobile);
+}
+@media (min-width: 640px) {
+  .layout-container {
+    padding-left: var(--layout-gutter-tablet);
+    padding-right: var(--layout-gutter-tablet);
+  }
+}
+@media (min-width: 1024px) {
+  .layout-container {
+    padding-left: var(--layout-gutter-desktop);
+    padding-right: var(--layout-gutter-desktop);
+  }
+}
+
+/* Hub and subject pages: main content block padding */
+.layout-content-hub {
+  padding-top: var(--section-spacing-lg);
+  padding-bottom: var(--section-spacing-lg);
+}
+
+/* Sub pages: main content block padding */
+.layout-content-sub {
+  padding-top: var(--subpage-content-py);
+  padding-bottom: var(--subpage-content-py);
+}
+
+/* Section spacing: use between sections (intro, cards, FAQ) */
+.layout-section {
+  margin-bottom: var(--section-spacing);
+}
+.layout-section:last-child {
+  margin-bottom: 0;
+}
+
+/* Card grid: consistent gap and columns */
+.layout-card-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 768px) {
+  .layout-card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .layout-card-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* Featured pathway (3 columns) */
+.layout-pathway-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media (min-width: 640px) {
+  .layout-pathway-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Hub page: intro block – no box, narrow column, accent rule */
+.hub-intro {
+  max-width: 42rem;
+  line-height: 1.7;
+}
+.hub-intro::before {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: var(--hub-accent);
+  margin-bottom: 1.25rem;
+}
+.hub-intro p {
+  color: var(--hub-body);
+}
+
+/* Hub page: section background rhythm (white / tint) */
+.hub-section-plain {
+  background: #fff;
+}
+.hub-section-pathway {
+  background: var(--hub-tint-pathway);
+  padding: var(--section-spacing) 0;
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+@media (min-width: 768px) {
+  .hub-section-pathway {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+@media (min-width: 1024px) {
+  .hub-section-pathway {
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* Hub pathway cards: primary actions – white, accent border, hover lift */
+.hub-pathway-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  padding: 1.5rem;
+  background: #fff;
+  border: 2px solid var(--hub-accent);
+  border-radius: 2px;
+  text-align: center;
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 600;
+  color: var(--hub-body);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.hub-pathway-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  color: var(--hub-body);
+}
+.hub-pathway-card-primary {
+  transform: scale(1.06);
+}
+.hub-pathway-card-primary:hover {
+  transform: scale(1.06) translateY(-2px);
+}
+.hub-pathway-card .hub-pathway-icon {
+  color: var(--hub-accent);
+  margin-bottom: 0.5rem;
+}
+
+/* Hub “All pages” grid: more vertical spacing, outline icons */
+.hub-card-grid {
+  gap: 2rem;
+}
+.hub-card-icon {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border: 2px solid var(--hub-accent);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--hub-accent);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.group:hover .hub-card-icon {
+  color: var(--hub-accent);
+  border-color: var(--hub-accent);
+}
+
+/* Hub section headings: slight scale increase (4–6%) */
+.hub-section-heading {
+  font-size: 1.05em;
+}
+.hub-label-uppercase {
+  letter-spacing: 0.5px;
+}
+
+/* FAQ section on hub pages: light neutral background, more spacing, lighter border */
+.faq-section-hub {
+  background: var(--hub-tint-faq) !important;
+  padding-top: 2.5rem !important;
+  padding-bottom: 2.5rem !important;
+  margin-top: 0 !important;
+}
+.faq-section-hub .faq-accordion-item {
+  border-color: var(--hub-border-faq) !important;
+  margin-bottom: 0.75rem;
+}
+.faq-section-hub .faq-accordion-item button {
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+  padding-left: 1.5rem !important;
+  padding-right: 1.5rem !important;
+}
+
+/* Learn hub: section backgrounds and hero */
+.learn-promise-strip {
+  background-color: #f2fafa;
+}
+.learn-key-concepts-bg {
+  background-color: #f7f9f9;
+}
+.learn-hero-banner {
+  background-color: #0f4c4c; /* fallback if image fails */
+}
+.hub-hero-bg {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.learn-hero-overlay {
+  background-color: rgba(15, 76, 76, 0.82); /* deep teal overlay, reduced transparency */
+}
+.learn-hero-inner {
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* Start here: featured Roadmap card – light green tint, stands out */
+.learn-start-card-featured {
+  background-color: #e8f5f2; /* very light brand green tint */
+  box-shadow: 0 2px 8px rgba(31, 138, 112, 0.12);
+}
+.learn-start-card-icon-featured {
+  background-color: rgba(31, 138, 112, 0.12);
+}
+
+/* More space between Start here grid and Key concepts */
+.learn-start-here-section {
+  margin-bottom: 3.5rem;
+}
+@media (min-width: 768px) {
+  .learn-start-here-section {
+    margin-bottom: 4rem;
+  }
+}
+
+/* Middle section: faint blueprint-style pattern + key concepts */
+.learn-middle-band {
+  position: relative;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+@media (min-width: 768px) {
+  .learn-middle-band {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+}
+.learn-middle-band::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: #f7f9f9;
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%231f8a70' fill-opacity='0.04' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 20V40H20'/%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+.learn-key-concepts-inner {
+  position: relative;
+  z-index: 1;
+}
+.learn-key-concepts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  max-width: 52rem;
+}
+@media (min-width: 1024px) {
+  .learn-key-concepts-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+}
+
+/* All pages: card styling – borders, soft shadow, tappable */
+.learn-all-pages-card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+.learn-all-pages-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* FAQ: full-width light grey block to signal support/FAQ content */
+.learn-faq-block {
+  background-color: #eceeef;
+  padding-top: 2rem;
+  padding-bottom: 2.5rem;
+}
+@media (min-width: 768px) {
+  .learn-faq-block {
+    padding-top: 2.5rem;
+    padding-bottom: 3rem;
+  }
+}
+
+/* Hub CTA band: deep teal exit with purpose */
+.hub-cta-band {
+  background: var(--hub-cta-bg);
+  color: #fff;
+  padding: 1.5rem var(--layout-gutter-mobile);
+  text-align: center;
+}
+@media (min-width: 768px) {
+  .hub-cta-band {
+    padding-left: var(--layout-gutter-tablet);
+    padding-right: var(--layout-gutter-tablet);
+  }
+}
+@media (min-width: 1024px) {
+  .hub-cta-band {
+    padding-left: var(--layout-gutter-desktop);
+    padding-right: var(--layout-gutter-desktop);
+  }
+}
+.hub-cta-band .hub-cta-band-inner {
+  max-width: var(--layout-max-width);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.hub-cta-band p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #fff;
+}
+.hub-cta-band a.hub-cta-band-button {
+  display: inline-block;
+  padding: 0.5rem 1.25rem;
+  background: #fff;
+  color: var(--hub-cta-bg);
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 2px;
+  transition: opacity 0.2s ease;
+}
+.hub-cta-band a.hub-cta-band-button:hover {
+  opacity: 0.92;
+  color: var(--hub-cta-bg);
+}
+.hub-cta-band a.hub-cta-band-button-primary {
+  background: var(--hub-accent) !important;
+  color: #fff !important;
+}
+.hub-cta-band a.hub-cta-band-button-primary:hover {
+  opacity: 0.92;
+  color: #fff !important;
+}
+.hub-cta-band a.hub-cta-band-button-secondary {
+  background: transparent !important;
+  color: #fff !important;
+  border: 2px solid #fff;
+}
+.hub-cta-band a.hub-cta-band-button-secondary:hover {
+  opacity: 0.92;
+  color: #fff !important;
+}
+
+/* LGR Insights and Updates: newsletter CTA box (teal card) */
+.lgr-insights-cta {
+  background: linear-gradient(145deg, var(--color-teal-800) 0%, var(--color-teal-700) 100%);
+  color: white;
+  padding: 1.5rem 1.75rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 14px rgba(15, 118, 110, 0.25), 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+@media (min-width: 640px) {
+  .lgr-insights-cta {
+    padding: 1.75rem 2rem;
+  }
+}
+.lgr-insights-cta .lgr-insights-cta__title {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+.lgr-insights-cta .lgr-insights-cta__body {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.95);
+  font-family: var(--font-serif), Georgia, serif;
+  margin-bottom: 1.25rem;
+}
+.lgr-insights-cta .lgr-insights-cta__btn {
+  display: inline-block;
+  background: white;
+  color: var(--color-teal-800);
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: background-color 0.2s, color 0.2s;
+}
+.lgr-insights-cta .lgr-insights-cta__btn:hover {
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--color-teal-900);
 }
 
 @keyframes scroll {
@@ -361,45 +824,110 @@
   }
 }
 
-/* Journey Map Styles */
-.road-line {
+/* Journey Map: drawn map background (countryside and cities) */
+.roadmap-map-bg {
   position: absolute;
-  left: 50%;
-  top: 0;
-  bottom: 0;
-  width: 12px;
-  background: #374151;
-  transform: translateX(-50%);
+  inset: 0;
   z-index: 0;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+  overflow: hidden;
+  min-height: 100%;
 }
 
-.road-stripes {
+.roadmap-map-bg__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+/* Bent road (curved motorway) */
+.bent-road {
   position: absolute;
   left: 50%;
   top: 0;
   bottom: 0;
-  width: 2px;
-  background-image: linear-gradient(to bottom, #ffffff 50%, transparent 50%);
-  background-size: 100% 40px;
+  width: 140px;
+  max-width: 20vw;
   transform: translateX(-50%);
   z-index: 1;
+  pointer-events: none;
+  overflow: visible;
 }
+
+.bent-road__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
 
 .milestone-card {
   background: white;
   border-radius: 12px;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-  padding: 24px;
+  box-shadow:
+    0 10px 30px -8px rgba(0, 0, 0, 0.12),
+    0 8px 12px -6px rgba(0, 0, 0, 0.08);
+  padding: 28px;
   position: relative;
   z-index: 10;
-  transition: all 0.3s ease;
-  border-left: 6px solid #3b82f6;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.2s ease;
+  border-left: 6px solid #0d9488;
 }
 
 .milestone-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.2);
+  transform: translateY(-6px);
+  box-shadow:
+    0 24px 40px -12px rgba(13, 148, 136, 0.2),
+    0 12px 20px -8px rgba(0, 0, 0, 0.1);
+}
+
+/* Roadmap in-text and action links - bigger, clearer */
+.roadmap-content a,
+.milestone-card a,
+.roadmap-side-panel a {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f766e;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+}
+
+.roadmap-content a:hover,
+.milestone-card a:hover,
+.roadmap-side-panel a:hover {
+  color: #0d9488;
+}
+
+.roadmap-content a:focus-visible,
+.milestone-card a:focus-visible,
+.roadmap-side-panel a:focus-visible {
+  outline: 2px solid #0d9488;
+  outline-offset: 2px;
+}
+
+.roadmap-risk {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  border-radius: 0.25rem;
+  border: 1px solid #fcd34d;
+}
+
+.roadmap-warning {
+  background: #fffbeb;
+  color: #b45309;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  border-radius: 0.25rem;
+  border: 1px solid #fcd34d;
 }
 
 .connector {
@@ -431,14 +959,95 @@
 }
 
 .highway-sign {
-  background: #065f46;
+  background: linear-gradient(180deg, #065f46 0%, #047857 100%);
   color: white;
   border: 4px solid white;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
   text-transform: uppercase;
   font-weight: 800;
   letter-spacing: 1px;
+}
+
+/* UK motorway junction sign (blue background, white border, junction number box, arrow graphic) */
+.uk-junction-sign {
+  background: #0054a4;
+  color: white;
+  border: 3px solid white;
+  border-radius: 2px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  padding: 12px 10px 10px 14px;
+  min-width: 200px;
+  max-width: 280px;
+}
+
+.uk-junction-sign__content {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.uk-junction-sign__left {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.uk-junction-sign__destination {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  font-family: system-ui, -apple-system, sans-serif;
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+.uk-junction-sign__route {
+  font-size: 0.8rem;
+  font-weight: 600;
+  opacity: 0.95;
+  font-family: system-ui, -apple-system, sans-serif;
+  text-transform: none;
+}
+
+.uk-junction-sign__bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 6px;
+}
+
+.uk-junction-sign__junction-box {
+  background: black;
+  border: 2px solid white;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 2px 8px;
+  line-height: 1.2;
+  min-width: 28px;
+  text-align: center;
+}
+
+.uk-junction-sign__distance {
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.uk-junction-sign__graphic {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.uk-junction-sign__arrows {
+  width: 44px;
+  height: 56px;
 }
 
 .diversion-sign {
@@ -506,10 +1115,101 @@
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+.road-now-pin {
+  position: relative;
+  z-index: 10;
+}
+
+/* Animated vehicles on motorway */
+.road-vehicles {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 96px;
+  transform: translateX(-50%);
+  z-index: 8;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.road-vehicle {
+  position: absolute;
+  top: 0;
+  left: var(--lane, 50)%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: road-drive-down linear infinite;
+  animation-duration: var(--duration, 14s);
+  animation-delay: var(--delay, 0s);
+}
+
+.road-vehicle--up {
+  animation-name: road-drive-up;
+}
+
+.road-vehicle-icon {
+  width: 24px;
+  height: 24px;
+  color: #fef3c7;
+  fill: #fef3c7;
+  filter: drop-shadow(0 0 2px rgb(0 0 0 / 0.8)) drop-shadow(0 1px 4px rgb(0 0 0 / 0.5));
+  flex-shrink: 0;
+}
+
+.road-vehicle-icon--car {
+  color: #fde68a;
+  fill: #fde68a;
+}
+
+.road-vehicle-icon--truck {
+  width: 26px;
+  height: 26px;
+  color: #fcd34d;
+  fill: #fcd34d;
+}
+
+@keyframes road-drive-down {
+  from {
+    transform: translateX(-50%) translateY(-20%);
+  }
+  to {
+    transform: translateX(-50%) translateY(120%);
+  }
+}
+
+@keyframes road-drive-up {
+  from {
+    transform: translateX(-50%) translateY(120%);
+  }
+  to {
+    transform: translateX(-50%) translateY(-20%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .road-stripes {
+    animation: none;
+  }
+  .road-vehicle {
+    animation: none;
+  }
+  .road-vehicle:nth-child(odd) {
+    top: 15%;
+  }
+  .road-vehicle:nth-child(even) {
+    top: 55%;
+  }
+}
+
 /* Mobile Adjustments for Journey Map */
 @media (max-width: 768px) {
-  .road-line,
-  .road-stripes {
+  .bent-road,
+  .road-vehicles {
     left: 20px;
   }
 
@@ -2148,7 +2848,7 @@ select:focus-visible {
   /* Modern page headers and footers */
   @page {
     @top-center {
-      content: "LGR Series";
+      content: "LGR Initiative";
       font-size: 9pt;
       color: #999;
       font-weight: 500;
@@ -2240,8 +2940,8 @@ nav img[src*="LGR Podcast Logo"] {
 nav img.lgr-highred-logo,
 img.lgr-highred-logo,
 nav img[alt="LGR High Red Logo"],
-nav img[alt="LGR Series"],
-img[alt="LGR Series"],
+nav img[alt="LGR Initiative"],
+img[alt="LGR Initiative"],
 nav img[src*="LGR_HighRed_Logo"],
 img[src*="LGR_HighRed_Logo"] {
   max-width: none !important;
@@ -2256,10 +2956,40 @@ img[src*="LGR_HighRed_Logo"] {
 @media (min-width: 640px) {
   .lgr-highred-logo,
   img.lgr-highred-logo[src*="LGR_HighRed_Logo"],
-  img[alt="LGR Series"][src*="LGR_HighRed_Logo"] {
+  img[alt="LGR Initiative"][src*="LGR_HighRed_Logo"] {
     height: 32px !important;
     max-height: 32px !important;
   }
+}
+
+/* PageBanner logo wrapper - fixed height, no extra margin/padding */
+.page-banner-logo-wrap {
+  height: 75px;
+  max-height: 75px;
+  margin: 0;
+  padding: 4px 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  line-height: 0;
+}
+@media (min-width: 768px) {
+  .page-banner-logo-wrap {
+    height: 92px;
+    max-height: 92px;
+    padding: 6px 0;
+  }
+}
+
+/* Logo image fills wrapper and crops transparent edges (object-fit: cover) */
+.page-banner-logo {
+  max-width: none !important;
+  width: auto !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  display: block !important;
 }
 
 /* Responsive Tables - Horizontal scroll on mobile */
@@ -2710,7 +3440,32 @@ nav img.lgr-highred-logo[src*="LGR_HighRed_Logo"],
   display: block !important;
 }
 
-/* Hero banner text – readability over photo background */
+/* Hero banner intro: headline can extend full width; paragraph stays within 50% */
+.hero-banner-intro {
+  display: table !important;
+  width: auto !important;
+}
+
+.hero-banner-intro-body {
+  max-width: 65% !important;
+}
+
+/* Hero banner headline: slightly wider than bulk text so Local Government Reorganisation fits on one line */
+.hero-banner-headline {
+  max-width: 72% !important;
+}
+
+.hero-banner-headline p {
+  font-size: clamp(1.36rem, 2.99vw, 2.38rem) !important;
+  font-family: var(--font-display), 'Inter', system-ui, sans-serif !important;
+  white-space: normal !important;
+  hyphens: none !important;
+  -webkit-hyphens: none !important;
+  -moz-hyphens: none !important;
+  -ms-hyphens: none !important;
+}
+
+/* Hero banner text: readability over photo background */
 .hero-banner-text {
   /* Disable automatic hyphenation completely */
   hyphens: none !important;
@@ -2778,4 +3533,121 @@ div[class*="flex-shrink-0"][class*="overflow-hidden"] > img {
   min-width: 100% !important;
   min-height: 100% !important;
   display: block !important;
+}
+
+/* Full-width banner breakout: when inside sidebar layout, banner spans viewport */
+.banner-full-width {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
+/* Outlet wrapper participates in grid via its children (display: contents) */
+.page-layout-outlet {
+  display: contents;
+}
+
+/* Sidebar layout grid: row 1 = banner, row 2 = nav (if present), row 3 (or 2) = main content | sidebar */
+/* Content row uses auto so it grows with content and both columns get the same height */
+.page-layout-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 0.5rem;
+}
+
+.page-layout-grid [data-full-width-banner] {
+  grid-row: 1;
+  grid-column: 1;
+}
+
+.page-layout-grid [data-page-nav] {
+  grid-row: 2;
+  grid-column: 1;
+}
+
+/* When nav is present, main and sidebar go in row 3/4 (mobile) or row 3 (desktop); when absent, row 2 */
+/* Stretch both columns to same height for a clean two-column layout */
+.page-layout-grid [data-page-main] {
+  grid-row: 2;
+  grid-column: 1;
+  align-self: stretch;
+}
+
+.page-layout-grid .page-layout-sidebar {
+  grid-row: 3;
+  grid-column: 1;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Sidebar inner aside fills the column height so left and right align visually */
+.page-layout-sidebar > aside {
+  flex: 1;
+  min-height: 0;
+}
+
+.page-layout-grid:has([data-page-nav]) {
+  grid-template-rows: auto auto auto auto;
+}
+
+.page-layout-grid:has([data-page-nav]) [data-page-main] {
+  grid-row: 3;
+}
+
+.page-layout-grid:has([data-page-nav]) .page-layout-sidebar {
+  grid-row: 4;
+}
+
+/* Legacy: single root div (no data-page-main) spans all rows */
+.page-layout-grid > *:not(.page-layout-sidebar):not([data-full-width-banner]):not([data-page-nav]):not([data-page-main]) {
+  grid-row: 1 / -1;
+  grid-column: 1;
+}
+
+@media (min-width: 1024px) {
+  .page-layout-grid {
+    grid-template-columns: 1fr 18rem;
+    grid-template-rows: auto auto;
+  }
+
+  .page-layout-grid [data-full-width-banner] {
+    grid-column: 1 / -1;
+  }
+
+  .page-layout-grid [data-page-nav] {
+    grid-column: 1 / -1;
+  }
+
+  .page-layout-grid [data-page-main] {
+    grid-row: 2;
+    grid-column: 1;
+    align-self: stretch;
+  }
+
+  .page-layout-grid .page-layout-sidebar {
+    grid-row: 2;
+    grid-column: 2;
+    align-self: stretch;
+    padding-top: 1rem; /* Match main content top padding so sidebar aligns with first content block */
+  }
+
+  .page-layout-grid:has([data-page-nav]) {
+    grid-template-rows: auto auto auto;
+  }
+
+  .page-layout-grid:has([data-page-nav]) [data-page-main] {
+    grid-row: 3;
+    grid-column: 1;
+    align-self: stretch;
+  }
+
+  .page-layout-grid:has([data-page-nav]) .page-layout-sidebar {
+    grid-row: 3;
+    grid-column: 2;
+    align-self: stretch;
+    padding-top: 1rem; /* Match main content top padding so sidebar aligns with first content block */
+  }
 }

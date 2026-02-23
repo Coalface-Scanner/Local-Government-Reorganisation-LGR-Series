@@ -7,6 +7,7 @@ import ErrorDisplay from '../components/ErrorDisplay';
 import MembersPasswordProtection from '../components/MembersPasswordProtection';
 import { Search, Filter, ArrowUpDown, Calendar, Building2 } from 'lucide-react';
 import { LGRReorganisation, ReorganisationType, REORGANISATION_TYPE_LABELS } from '../types/reorganisations';
+import FAQSection from '../components/FAQSection';
 
 interface ReorganisationsProps {
   onNavigate: (page: string, slug?: string) => void;
@@ -163,7 +164,7 @@ export default function Reorganisations({ onNavigate }: ReorganisationsProps) {
           currentPath={location.pathname}
         />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="layout-container layout-content-sub">
         <div className="flex flex-col lg:flex-row gap-8">
           <div className={`lg:w-80 ${showFilters ? 'block' : 'hidden lg:block'}`}>
             <div className="sticky top-24 space-y-6">
@@ -413,7 +414,8 @@ export default function Reorganisations({ onNavigate }: ReorganisationsProps) {
         </div>
       </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <FAQSection page="reorganisations" />
+        <div className="layout-container">
         </div>
       </div>
     </MembersPasswordProtection>

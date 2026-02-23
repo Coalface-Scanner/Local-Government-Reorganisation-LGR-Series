@@ -75,15 +75,15 @@ export default function ArticleStructuredData({
     "headline": title,
     "description": description,
     "author": {
-      "@type": author === "LGR Series Editorial Team" || author === "Coalface Engagement" || author === "Local Government Reorganisation" ? "Organization" : "Person",
+      "@type": author === "LGRI Editorial Team" || author === "Coalface Engagement" || author === "Local Government Reorganisation" ? "Organization" : "Person",
       "name": author
     },
     "datePublished": publishedDate,
     "dateModified": updatedDate || publishedDate,
     "publisher": {
       "@type": "Organization",
-      "name": "LGR Series",
-      "alternateName": ["LGR Series by COALFACE", "Local Government Reorganisation Series", "COALFACE"],
+      "name": "LGRI",
+      "alternateName": ["LGRI by COALFACE", "Local Government Reorganisation Initiative", "COALFACE"],
       "legalName": "Coalface Engagement Ltd",
       "foundingDate": "2019",
       "address": {
@@ -105,7 +105,7 @@ export default function ArticleStructuredData({
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `${baseUrl}/article/${slug}`
+      "@id": `${baseUrl}/insights/${slug}`
     },
     ...(imageUrl && {
       "image": {

@@ -3,6 +3,7 @@ import { Plus, Edit2, Trash2, Save, X } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import WYSIWYGEditor from '../../components/WYSIWYGEditor';
 import ErrorMessage from '../../components/admin/ErrorMessage';
+import { sanitizeHtmlContent } from '../../lib/htmlSanitizer';
 
 interface ArticleQA {
   id: string;
@@ -58,6 +59,7 @@ export default function ArticleQAEditor({ articleSlug, onClose }: ArticleQAEdito
       .from('article_qa')
       .insert([{
         ...formData,
+        answer: sanitizeHtmlContent(formData.answer),
         article_slug: articleSlug,
       }]);
 
@@ -80,7 +82,10 @@ export default function ArticleQAEditor({ articleSlug, onClose }: ArticleQAEdito
 
     const { error } = await supabase
       .from('article_qa')
-      .update(formData)
+      .update({
+        ...formData,
+        answer: sanitizeHtmlContent(formData.answer),
+      })
       .eq('id', id);
 
     if (!error) {
@@ -258,7 +263,7 @@ export default function ArticleQAEditor({ articleSlug, onClose }: ArticleQAEdito
                   </h4>
                   <div
                     className="text-sm text-neutral-600 prose prose-sm max-w-none"
-                    dangerouslySetInnerHTML={{ __html: qa.answer.substring(0, 100) + (qa.answer.length > 100 ? '...' : '') }}
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtmlContent(qa.answer.substring(0, 100) + (qa.answer.length > 100 ? '...' : '')) }}
                   />
                 </div>
                 <div className="flex items-center gap-2 ml-4">
@@ -285,4 +290,3 @@ export default function ArticleQAEditor({ articleSlug, onClose }: ArticleQAEdito
     </div>
   );
 }
-

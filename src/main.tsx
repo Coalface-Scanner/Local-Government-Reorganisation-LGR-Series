@@ -4,6 +4,9 @@ import App from './App.tsx';
 import './index.css';
 import { AdminAuthProvider } from './contexts/AdminAuthContext';
 
+// Preload Home chunk so it’s requested in parallel with app init (reduces time on loading screen)
+import('./pages/Home').catch(() => {});
+
 // Register service worker for offline support (production only)
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => {
@@ -22,7 +25,8 @@ if ('serviceWorker' in navigator && import.meta.env.PROD) {
   });
 }
 
-createRoot(document.getElementById('root')!).render(
+const rootEl = document.getElementById('root')!;
+createRoot(rootEl).render(
   <StrictMode>
     <AdminAuthProvider>
       <App />

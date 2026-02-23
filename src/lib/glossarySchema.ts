@@ -18,7 +18,7 @@ export function generateDefinedTermSchema(
     url: termUrl,
     inDefinedTermSet: {
       '@type': 'DefinedTermSet',
-      name: 'LGR Series Glossary',
+      name: 'LGRI Glossary',
       url: `${baseUrl}/glossary`
     }
   };
@@ -54,7 +54,7 @@ export function generateDefinedTermSetSchema(
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'DefinedTermSet',
-    name: 'LGR Series Glossary',
+    name: 'LGRI Glossary',
     description: 'Comprehensive glossary of Local Government Reorganisation (LGR) terms and definitions',
     url: glossaryUrl,
     numberOfItems: terms.length,

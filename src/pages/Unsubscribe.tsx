@@ -5,6 +5,7 @@ import PageBanner from '../components/PageBanner';
 import Footer from '../components/Footer';
 import MetaTags from '../components/MetaTags';
 import { Mail, CheckCircle, XCircle } from 'lucide-react';
+import FAQSection from '../components/FAQSection';
 
 export default function Unsubscribe() {
   const navigate = useNavigate();
@@ -74,8 +75,8 @@ export default function Unsubscribe() {
   return (
     <div className="min-h-screen bg-academic-cream">
       <MetaTags
-        title="Unsubscribe - LGR Series Newsletter"
-        description="Unsubscribe from the LGR Series mailing list. Enter your email address to stop receiving weekly insights and updates."
+        title="Unsubscribe - LGR Insights & Updates"
+        description="Unsubscribe from the LGRI mailing list. Enter your email address to stop receiving weekly insights and updates."
       />
       <PageBanner
         heroLabel="NEWSLETTER"
@@ -141,6 +142,7 @@ export default function Unsubscribe() {
           </p>
         </div>
       </main>
+      <FAQSection page="unsubscribe" />
     </div>
   );
 }

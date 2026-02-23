@@ -346,9 +346,9 @@ export default function Materials({ onNavigate }: MaterialsProps) {
   return (
     <div id="main-content" className="min-h-screen bg-academic-cream">
       <MetaTags
-        title="LGR Series Materials & Resources"
+        title="LGRI Materials & Resources"
         description="Comprehensive library of articles, research papers, factsheets, and interviews from the Local Government Reorganisation (LGR) Series. Expert analysis on LGR governance, council reform, and unitary authorities."
-        keywords="LGR Series, Local Government Reorganisation materials, LGR research, council reform materials, reorganisation case studies, local government resources, unitary authority research, LGR governance"
+        keywords="LGRI, Local Government Reorganisation materials, LGR research, council reform materials, reorganisation case studies, local government resources, unitary authority research, LGR governance"
       />
       <CollectionPageStructuredData
         name="Research Library - Materials & Resources"
@@ -363,12 +363,12 @@ export default function Materials({ onNavigate }: MaterialsProps) {
       />
       <PageBanner
         heroLabel="RESEARCH LIBRARY"
-        heroTitle="LGR Series Materials"
-        heroSubtitle="Search and explore all research, insights, case studies, and resources from the LGR Series on local government reorganisation and LGR governance"
+heroTitle="LGRI Materials"
+          heroSubtitle="Search and explore all research, insights, case studies, and resources from the LGRI on local government reorganisation and LGR governance"
         currentPath={location.pathname}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="layout-container layout-content-sub">
         <div className="flex flex-col lg:flex-row gap-8">
           <div className={`lg:w-80 ${showFilters ? 'block' : 'hidden lg:block'}`}>
             <div className="sticky top-24 space-y-6">
@@ -695,7 +695,7 @@ export default function Materials({ onNavigate }: MaterialsProps) {
 
       <FAQSection page="materials" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="layout-container">
       </div>
     </div>
   );

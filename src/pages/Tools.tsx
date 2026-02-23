@@ -1,8 +1,11 @@
 import { ArrowRight, Calendar, Vote, BookOpen, Quote, Headphones } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import MetaTags from '../components/MetaTags';
+import CollectionPageStructuredData from '../components/CollectionPageStructuredData';
 import PageBanner from '../components/PageBanner';
 import ThemeChip from '../components/ThemeChip';
+import { ContentContainer } from '../components/layout';
+import FAQSection from '../components/FAQSection';
 
 interface ToolsProps {
   onNavigate: (page: string, slug?: string) => void;
@@ -14,7 +17,7 @@ export default function Tools({ onNavigate }: ToolsProps) {
   return (
     <div className="bg-academic-cream">
       <MetaTags
-        title="Tools and Practical Resources - LGR Series"
+        title="Tools and Practical Resources - LGRI"
         description="Practical tools and resources for Local Government Reorganisation including the LGR Timetable & Governance Roadmap, Election & Representation Models, First 100 Days Playbook, Lessons Library, and Podcast."
         keywords="LGR tools, local government reorganisation resources, LGR roadmap, election models, first 100 days playbook, LGR lessons, LGR podcast"
       />
@@ -150,7 +153,7 @@ export default function Tools({ onNavigate }: ToolsProps) {
         </section>
 
         {/* Navigation Links */}
-        <section className="mb-16">
+        <section className="layout-section">
           <div className="academic-card p-8 bg-teal-50 border-l-4 border-teal-600">
             <h2 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-6">
               Explore More
@@ -174,6 +177,8 @@ export default function Tools({ onNavigate }: ToolsProps) {
           </div>
         </section>
       </div>
+      <FAQSection page="tools" variant="hub" />
+      <HubCtaBand />
     </div>
   );
 }

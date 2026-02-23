@@ -4,6 +4,8 @@ import MetaTags from '../components/MetaTags';
 import CollectionPageStructuredData from '../components/CollectionPageStructuredData';
 import PageBanner from '../components/PageBanner';
 import ServiceCard from '../components/ServiceCard';
+import FAQSection from '../components/FAQSection';
+import { ContentContainer } from '../components/layout';
 
 interface LGRHubProps {
   onNavigate: (page: string, slug?: string) => void;
@@ -11,20 +13,20 @@ interface LGRHubProps {
 
 const hubSections = [
   {
+    id: 'roadmap',
+    title: 'Roadmap',
+    description: 'Interactive journey map visualizing the LGR journey for 2026, navigating key milestones, decisions, and transitions.',
+    route: '/roadmap',
+    icon: Calendar,
+    color: 'from-blue-500 to-cyan-600'
+  },
+  {
     id: 'overview',
     title: 'Overview',
     description: 'Welcome to the LGR Hub - your central resource for Local Government Reorganisation. Explore roadmap, tools, and podcast content.',
     route: '/lgr-hub',
     icon: Route,
     color: 'from-teal-600 to-cyan-700'
-  },
-  {
-    id: 'roadmap',
-    title: 'Roadmap',
-    description: 'Interactive journey map visualizing the LGR journey for 2026, navigating key milestones, decisions, and transitions.',
-    route: '/lgr-journey-2026',
-    icon: Calendar,
-    color: 'from-blue-500 to-cyan-600'
   },
   {
     id: 'tools',
@@ -38,7 +40,7 @@ const hubSections = [
     id: 'podcast',
     title: 'Podcast',
     description: 'Conversations with leaders, practitioners and academics on how Local Government Reorganisation works in practice.',
-    route: '/interviews',
+    route: '/podcast',
     icon: Headphones,
     color: 'from-violet-500 to-purple-600'
   }
@@ -73,8 +75,22 @@ export default function LGRHub({ onNavigate }: LGRHubProps) {
         currentPath={location.pathname}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 items-stretch">
+      <ContentContainer variant="hub">
+        <section className="layout-section">
+          <div className="academic-card p-8 mb-6">
+            <p className="text-academic-base font-serif text-academic-neutral-700 leading-relaxed mb-4">
+              The LGR Hub is your central resource for Local Government Reorganisation. Use the cards below to explore the roadmap, tools, podcast, and practical guidance for council reorganisation.
+            </p>
+            <Link
+              to="/roadmap"
+              className="inline-flex items-center gap-2 font-display font-semibold text-teal-700 hover:text-teal-800"
+            >
+              <Calendar size={20} aria-hidden="true" />
+              Explore the Journey Map
+            </Link>
+          </div>
+        </section>
+        <div className="layout-section grid md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
           {hubSections.map((section) => (
             <ServiceCard
               key={section.id}
@@ -91,24 +107,22 @@ export default function LGRHub({ onNavigate }: LGRHubProps) {
           ))}
         </div>
 
-        <div className="max-w-2xl mx-auto mb-12">
-          <div className="bg-teal-800 text-white p-8">
-            <h3 className="text-academic-xl font-display font-bold text-white mb-4">
-              LGR Series Newsletter
-            </h3>
-            <p className="text-academic-sm text-white mb-5 font-serif">
-              Get the LGR Series directly in your inbox. No fluff, just deep analysis.
-            </p>
-            <Link
-              to="/subscribe"
-              className="inline-block bg-white text-teal-700 px-6 py-3 rounded-lg font-display font-bold text-sm uppercase tracking-wider hover:bg-teal-50 transition-colors"
-            >
-              Subscribe
-            </Link>
+        <section className="layout-section">
+          <div className="max-w-2xl mx-auto">
+            <div className="lgr-insights-cta">
+              <h3 className="lgr-insights-cta__title">LGR Insights & Updates</h3>
+              <p className="lgr-insights-cta__body">
+                Receive our regular update direct to your inbox. Subscribe here.
+              </p>
+              <Link to="/subscribe" className="lgr-insights-cta__btn">
+                Subscribe
+              </Link>
+            </div>
           </div>
-        </div>
-      </div>
+        </section>
+      </ContentContainer>
 
+      <FAQSection page="lgr-hub" />
     </div>
   );
 }

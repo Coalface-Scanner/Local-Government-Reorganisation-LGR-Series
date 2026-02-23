@@ -7,25 +7,32 @@ export interface GlossaryMention {
   matchedText: string; // The actual text that was matched (could be term or synonym)
 }
 
+function toTextContent(value: unknown): string {
+  if (typeof value === 'string') return value;
+  if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+  return '';
+}
+
 /**
  * Find mentions of glossary terms in text content
  * Only matches the first occurrence of each term to avoid over-linking
  */
 export function findGlossaryMentions(
-  content: string,
+  content: unknown,
   options: {
     onlyFirstOccurrence?: boolean; // Only link first occurrence of each term (default: true)
     excludeSlugs?: string[]; // Don't link these terms
   } = {}
 ): GlossaryMention[] {
-  if (!content) return [];
+  const source = toTextContent(content);
+  if (!source) return [];
 
   const { onlyFirstOccurrence = true, excludeSlugs = [] } = options;
   const mentions: GlossaryMention[] = [];
   const linkedTerms = new Set<string>(); // Track which terms we've already linked
   
   // Remove HTML tags for matching (but we'll use original positions)
-  const textContent = content.replace(/<[^>]*>/g, ' ');
+  const textContent = source.replace(/<[^>]*>/g, ' ');
 
   // Sort terms by length (longest first) to match longer terms before shorter ones
   // This prevents "Local Government Reorganisation" from matching just "Local Government"
@@ -50,7 +57,7 @@ export function findGlossaryMentions(
 
     // Check if term is already linked in the HTML
     const termRegex = new RegExp(`<a[^>]*href=["']/glossary/${term.slug}["'][^>]*>.*?</a>`, 'gi');
-    if (termRegex.test(content)) {
+    if (termRegex.test(source)) {
       linkedTerms.add(term.slug);
       continue;
     }
@@ -87,7 +94,7 @@ export function findGlossaryMentions(
       if (position === undefined) continue;
 
       // Check if this position is already inside a link tag
-      const beforeMatch = content.substring(0, position);
+      const beforeMatch = source.substring(0, position);
       const lastOpenTag = beforeMatch.lastIndexOf('<a');
       const lastCloseTag = beforeMatch.lastIndexOf('</a>');
       
@@ -118,22 +125,23 @@ export function findGlossaryMentions(
  * Only links the first occurrence of each term to avoid over-linking
  */
 export function enhanceContentWithGlossaryLinks(
-  content: string,
+  content: unknown,
   options: {
     onlyFirstOccurrence?: boolean;
     excludeSlugs?: string[];
     linkClass?: string;
   } = {}
 ): string {
-  if (!content) return content;
+  const source = toTextContent(content);
+  if (!source) return '';
 
   const { onlyFirstOccurrence = true, excludeSlugs = [], linkClass = 'glossary-link' } = options;
-  const mentions = findGlossaryMentions(content, { onlyFirstOccurrence, excludeSlugs });
+  const mentions = findGlossaryMentions(source, { onlyFirstOccurrence, excludeSlugs });
   
-  if (mentions.length === 0) return content;
+  if (mentions.length === 0) return source;
 
   // Process mentions in reverse order to maintain positions
-  let enhancedContent = content;
+  let enhancedContent = source;
   for (let i = mentions.length - 1; i >= 0; i--) {
     const mention = mentions[i];
     
@@ -187,9 +195,10 @@ export function enhanceContentWithGlossaryLinks(
  * Get glossary terms that appear in content (for metadata/tags)
  */
 export function getGlossaryTermsInContent(content: string): GlossaryTerm[] {
-  if (!content) return [];
+  const source = toTextContent(content);
+  if (!source) return [];
 
-  const mentions = findGlossaryMentions(content, { onlyFirstOccurrence: false });
+  const mentions = findGlossaryMentions(source, { onlyFirstOccurrence: false });
   const uniqueSlugs = new Set(mentions.map(m => m.slug));
   
   return glossaryTerms.filter(term => uniqueSlugs.has(term.slug));
@@ -199,6 +208,9 @@ export function getGlossaryTermsInContent(content: string): GlossaryTerm[] {
  * Check if a term should be linked (helper for manual linking decisions)
  */
 export function shouldLinkTerm(term: string, content: string, excludeSlugs: string[] = []): boolean {
+  const source = toTextContent(content);
+  if (!source) return false;
+
   const glossaryTerm = glossaryTerms.find(
     t => t.term.toLowerCase() === term.toLowerCase() || 
          t.synonyms?.some(s => s.toLowerCase() === term.toLowerCase())
@@ -210,7 +222,7 @@ export function shouldLinkTerm(term: string, content: string, excludeSlugs: stri
 
   // Check if already linked
   const linkRegex = new RegExp(`<a[^>]*href=["']/glossary/${glossaryTerm.slug}["'][^>]*>`, 'gi');
-  if (linkRegex.test(content)) {
+  if (linkRegex.test(source)) {
     return false;
   }
 

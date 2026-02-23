@@ -2,203 +2,221 @@ import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import FAQSection from '../../components/FAQSection';
 import ArticleStructuredData from '../../components/ArticleStructuredData';
-import InBriefSection from '../../components/InBriefSection';
-import { 
-  ArrowLeft, BookOpen, Calendar, MapPin, Building2, Users,
-  ChevronRight, Target
+import WhoseJobQuiz from '../../components/WhoseJobQuiz';
+import LGRProcessTimeline from '../../components/LGRProcessTimeline';
+import QuickFactsStrip from '../../components/QuickFactsStrip';
+import WhatIsLGRAnchorBar from '../../components/WhatIsLGRAnchorBar';
+import WhyThisMattersNow from '../../components/WhyThisMattersNow';
+import LGRDataStatementBlock from '../../components/LGRDataStatementBlock';
+import {
+  ArrowLeft,
+  BookOpen,
+  Calendar,
+  MapPin,
+  Building2,
+  Users,
+  ChevronRight,
+  Target,
+  User,
+  Landmark,
+  Briefcase,
+  Search,
+  CheckCircle2,
+  XCircle,
 } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+
+const audienceRoutes = [
+  { id: 'residents', label: 'Residents', icon: User, route: '/beginners-guide', description: 'Understand how local government works and what’s changing in your area.' },
+  { id: 'councillors', label: 'Councillors', icon: Landmark, route: '/first-100-days', description: 'Guidance for leaders and members in new authorities.' },
+  { id: 'officers', label: 'Officers', icon: Briefcase, route: '/lgr-journey-2026', description: 'Interactive roadmap: milestones and what to do now.' },
+  { id: 'researchers', label: 'Researchers', icon: Search, route: '/materials', description: 'Research, reports, and evidence from the LGRI.' },
+];
 
 export default function WhatIsLGR() {
   const navigate = useNavigate();
   const location = useLocation();
-
-  const relatedResources = [
-    {
-      title: 'LGR Glossary',
-      description: 'Key terms and definitions for Local Government Reorganisation',
-      route: '/glossary',
-      icon: BookOpen
-    },
-    {
-      title: 'LGR Timeline 2026',
-      description: 'Comprehensive timeline of LGR processes and key dates',
-      route: '/facts/lgr-timeline',
-      icon: Calendar
-    },
-    {
-      title: 'Council Cases',
-      description: 'Case studies of councils involved in LGR',
-      route: '/facts/council-cases',
-      icon: MapPin
-    },
-    {
-      title: 'Surrey Reorganisation Analysis',
-      description: 'Detailed analysis of Surrey\'s LGR transition',
-      route: '/surrey',
-      icon: Building2
-    },
-    {
-      title: 'LGR Governance Interviews',
-      description: 'Expert perspectives on local government reorganisation',
-      route: '/interviews',
-      icon: Users
-    },
-    {
-      title: 'First 100 Days Playbook',
-      description: 'Strategic framework for unitary transition',
-      route: '/100days',
-      icon: Target
-    }
-  ];
-
   const currentDate = new Date().toISOString().split('T')[0];
 
   return (
-    <div className="min-h-screen bg-academic-cream">
-      <MetaTags
-        title="What is Local Government Reorganisation? (LGR)"
-        description="Local Government Reorganisation (LGR) is the process of restructuring local government structures in England, typically creating unitary authorities. Learn about LGR governance, LGR timetable 2026, and how reorganisation works."
-        keywords="What is LGR, Local Government Reorganisation, LGR definition, LGR governance, LGR timetable 2026, unitary authorities, council reorganisation, local government reform"
-      />
-      <ArticleStructuredData
-        title="What is Local Government Reorganisation? (LGR)"
-        description="Local Government Reorganisation (LGR) is the process of restructuring local government structures in England, typically creating unitary authorities. Learn about LGR governance, LGR timetable 2026, and how reorganisation works."
-        author="LGR Series Editorial Team"
-        publishedDate={currentDate}
-        updatedDate={currentDate}
-        slug="what-is-lgr"
-      />
+    <>
       <PageBanner
         heroLabel="FACTS & DATA"
-        heroTitle="What is Local Government Reorganisation? (LGR)"
-        heroSubtitle="The process of restructuring local government in England, typically creating unitary authorities. Learn about LGR governance, timetable, and how reorganisation works."
+        heroTitle="Local Government Reorganisation Explained"
+        heroSubtitle="What is changing, why it matters, and how it will reshape local decision making."
         currentPath={location.pathname}
       />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <button
-          onClick={() => navigate('/facts')}
-          className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
-        >
-          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-          Back to Facts & Data
-        </button>
+      <div data-page-nav className="bg-academic-cream">
+        <div className="layout-container py-1.5">
+          <button
+            onClick={() => navigate('/facts')}
+            className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
+          >
+            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+            Back to Facts & Data
+          </button>
+        </div>
       </div>
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* In Brief Section - Optimized for Featured Snippets */}
-        <InBriefSection content="Local Government Reorganisation (LGR) is the process of restructuring local government structures in England, typically merging district and county councils to create unitary authorities. LGR aims to simplify governance, improve service delivery, and enable strategic decision-making at the right scale. The process involves shadow authorities, elections, and a transition period before the new unitary councils take full control on vesting day." />
 
-        {/* Detailed Explanation */}
-        <div className="academic-card p-8 md:p-12 mb-12">
-          <div className="academic-prose max-w-none">
-            <h2 className="text-3xl font-display font-bold text-academic-charcoal mb-6">
-              Understanding Local Government Reorganisation
+      <div data-page-main className="min-h-screen hyphens-none">
+        <MetaTags
+          title="What is Local Government Reorganisation? (LGR)"
+          description="What is changing, why it matters, and how it will reshape local decision making. LGR explained with a clear point of view."
+          keywords="What is LGR, Local Government Reorganisation, LGR definition, LGR governance, LGR timetable 2026, unitary authorities, council reorganisation, local government reform"
+        />
+        <ArticleStructuredData
+          title="What is Local Government Reorganisation? (LGR)"
+          description="What is changing, why it matters, and how it will reshape local decision making."
+          author="LGRI Editorial Team"
+          publishedDate={currentDate}
+          updatedDate={currentDate}
+          slug="what-is-lgr"
+        />
+
+        <WhatIsLGRAnchorBar />
+
+        <WhyThisMattersNow />
+
+        {/* What LGR does and does not – green/red contrast, takeaway lines */}
+        <section id="what-lgr-does" className="py-10 md:py-14 scroll-mt-24 hyphens-none" style={{ backgroundColor: 'var(--lgr-section-neutral)' }}>
+          <div className="layout-container layout-content-sub max-w-4xl">
+            <h2 className="text-2xl md:text-3xl font-display font-bold text-academic-charcoal mb-8">
+              What LGR does and does not do
             </h2>
-            
-            <p className="text-lg text-academic-neutral-700 mb-6 leading-relaxed font-serif">
-              Local Government Reorganisation (LGR) represents a fundamental restructuring of how local government operates in England. Unlike devolution, which transfers powers from central to local government, LGR focuses on simplifying and rationalising the structure of local authorities themselves.
-            </p>
-
-            <h3 className="text-2xl font-display font-bold text-academic-charcoal mt-8 mb-4">
-              The Two-Tier System
-            </h3>
-            <p className="text-lg text-academic-neutral-700 mb-6 leading-relaxed font-serif">
-              Much of England operates under a two-tier system where responsibilities are split between:
-            </p>
-            <ul className="list-disc pl-6 mb-6 space-y-2 text-academic-neutral-700 font-serif">
-              <li><strong>County councils</strong> - responsible for strategic services like education, social care, highways, and waste disposal</li>
-              <li><strong>District councils</strong> - responsible for local services like housing, planning, waste collection, and licensing</li>
-            </ul>
-
-            <h3 className="text-2xl font-display font-bold text-academic-charcoal mt-8 mb-4">
-              Moving to Unitary Authorities
-            </h3>
-            <p className="text-lg text-academic-neutral-700 mb-6 leading-relaxed font-serif">
-              LGR typically involves merging these two tiers into a single <strong>unitary authority</strong> that takes on all local government responsibilities. This simplification aims to:
-            </p>
-            <ul className="list-disc pl-6 mb-6 space-y-2 text-academic-neutral-700 font-serif">
-              <li>Reduce administrative complexity and costs</li>
-              <li>Improve coordination between services</li>
-              <li>Enable strategic decision-making at the right geographic scale</li>
-              <li>Create clearer accountability for residents</li>
-            </ul>
-
-            <h3 className="text-2xl font-display font-bold text-academic-charcoal mt-8 mb-4">
-              The LGR Process
-            </h3>
-            <p className="text-lg text-academic-neutral-700 mb-6 leading-relaxed font-serif">
-              The LGR process follows several key stages:
-            </p>
-            <ol className="list-decimal pl-6 mb-6 space-y-3 text-academic-neutral-700 font-serif">
-              <li><strong>Proposal</strong> - Government or local authorities propose reorganisation</li>
-              <li><strong>Consultation</strong> - Public and stakeholder consultation on proposals</li>
-              <li><strong>Decision</strong> - Government makes final decision on reorganisation</li>
-              <li><strong>Shadow Authority</strong> - New unitary council is elected and begins planning</li>
-              <li><strong>Vesting Day</strong> - New unitary authority takes full control of services</li>
-              <li><strong>Transition</strong> - Ongoing integration and service consolidation</li>
-            </ol>
-
-            <h3 className="text-2xl font-display font-bold text-academic-charcoal mt-8 mb-4">
-              LGR Timetable 2026
-            </h3>
-            <p className="text-lg text-academic-neutral-700 mb-6 leading-relaxed font-serif">
-              The <strong>LGR timetable 2026</strong> represents a significant wave of reorganisations across England. Key milestones include shadow elections in 2026, with many new unitary authorities taking full control in 2027 or 2028. Areas like Surrey are being fast-tracked through this process, creating both opportunities and challenges for effective governance.
-            </p>
-
-            <h3 className="text-2xl font-display font-bold text-academic-charcoal mt-8 mb-4">
-              LGR Governance
-            </h3>
-            <p className="text-lg text-academic-neutral-700 mb-6 leading-relaxed font-serif">
-              Effective <strong>LGR governance</strong> requires careful management of the transition period. This includes managing relationships between old and new authorities, ensuring continuity of services, addressing councillor transitions, and maintaining democratic legitimacy throughout the process. The first 100 days after vesting are particularly critical for establishing effective governance structures.
-            </p>
-
-            <h3 className="text-2xl font-display font-bold text-academic-charcoal mt-8 mb-4">
-              Why LGR Matters
-            </h3>
-            <p className="text-lg text-academic-neutral-700 mb-6 leading-relaxed font-serif">
-              Local Government Reorganisation is not just a technical exercise—it fundamentally reshapes how decisions are made, how services are delivered, and how communities are represented. Understanding LGR is essential for anyone involved in local government, planning, development, or public policy in England.
-            </p>
+            <div className="grid md:grid-cols-2 gap-8 mb-8">
+              <div className="bg-white rounded-2xl p-8 shadow-md border-l-4" style={{ borderLeftColor: 'var(--lgr-accent)' }}>
+                <h3 className="text-xl font-display font-bold text-academic-charcoal mb-4">What LGR does</h3>
+                <ul className="list-disc pl-5 space-y-2 text-academic-charcoal font-serif text-base mb-5">
+                  <li>Merges <Link to="/glossary/two-tier-system" className="text-teal-700 hover:text-teal-800 underline underline-offset-2">district and county councils</Link></li>
+                  <li>Creates a single unitary authority</li>
+                  <li>Centralises service responsibility</li>
+                  <li>Simplifies accountability</li>
+                </ul>
+                <p className="font-display font-bold text-academic-charcoal text-sm border-t pt-4" style={{ borderColor: 'var(--lgr-button-border)' }}>
+                  LGR simplifies structure. It does not automatically reduce cost.
+                </p>
+              </div>
+              <div className="bg-white rounded-2xl p-8 shadow-md border-l-4" style={{ borderLeftColor: 'var(--lgr-does-not-border)' }}>
+                <h3 className="text-xl font-display font-bold text-academic-charcoal mb-4">What it does not do</h3>
+                <ul className="list-disc pl-5 space-y-2 text-academic-charcoal font-serif text-base mb-5">
+                  <li>It is not <Link to="/glossary/devolution" className="text-teal-700 hover:text-teal-800 underline underline-offset-2">devolution</Link></li>
+                  <li>It does not automatically reduce council tax</li>
+                  <li>It does not remove all local representation</li>
+                </ul>
+                <p className="text-academic-neutral-600 font-serif text-sm border-t pt-4" style={{ borderColor: 'var(--lgr-button-border)' }}>
+                  Policy design and political leadership determine outcomes.
+                </p>
+              </div>
+            </div>
+            <h3 className="text-lg font-display font-bold text-academic-charcoal mb-3">At a glance</h3>
+            <QuickFactsStrip />
           </div>
-        </div>
+        </section>
 
-        {/* Related Resources */}
-        <div className="academic-card p-8 md:p-12 mb-12">
-          <h2 className="text-3xl font-display font-bold text-academic-charcoal mb-6">
-            Explore More from the LGR Series
-          </h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            {relatedResources.map((resource, index) => (
-              <button
-                key={index}
-                onClick={() => navigate(resource.route)}
-                className="academic-card p-6 text-left hover:shadow-lg transition-shadow group"
+        <LGRDataStatementBlock />
+
+        {/* How it happens */}
+        <section id="process" className="bg-white py-10 md:py-14 scroll-mt-24">
+          <div className="layout-container layout-content-sub max-w-4xl">
+            <h2 className="text-2xl md:text-3xl font-display font-bold text-academic-charcoal mb-2 text-center">How it happens</h2>
+            <p className="text-academic-neutral-700 text-base text-center mb-8 font-serif max-w-xl mx-auto">Six stages from proposal to launch.</p>
+            <LGRProcessTimeline hideDurationCallout />
+          </div>
+        </section>
+
+        {/* Quiz – after process for engagement mid-page */}
+        <section id="overview" className="py-10 md:py-14 scroll-mt-24" style={{ backgroundColor: 'var(--lgr-quiz-bg)' }}>
+          <div className="layout-container layout-content-sub max-w-4xl">
+            <WhoseJobQuiz />
+          </div>
+        </section>
+
+        {/* What it means 2026 – two lines + two strong buttons */}
+        <section id="what-it-means" className="bg-white py-10 md:py-14 scroll-mt-24">
+          <div className="layout-container layout-content-sub max-w-4xl">
+            <h2 className="text-2xl md:text-3xl font-display font-bold text-academic-charcoal mb-6">What it means for your area in 2026</h2>
+            <p className="text-academic-charcoal font-serif text-base mb-2 max-w-prose"><Link to="/glossary/shadow-elections" className="text-teal-700 hover:text-teal-800 underline underline-offset-2">Shadow elections</Link> in May 2026. New unitaries live in 2027 to 2028.</p>
+            <p className="text-academic-neutral-700 font-serif text-base mb-8 max-w-prose">The <Link to="/glossary/transition-period" className="text-teal-700 hover:text-teal-800 underline underline-offset-2">transition period</Link> determines whether services remain stable. The first 100 days set the tone.</p>
+            <div className="flex flex-wrap gap-4">
+              <Link
+                to="/facts/lgr-timeline"
+                className="inline-flex items-center gap-2 px-6 py-3 text-white font-display font-semibold rounded-xl shadow-md hover:opacity-95 transition"
+                style={{ backgroundColor: 'var(--lgr-accent)' }}
               >
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 mt-1">
-                    <resource.icon className="text-teal-700 group-hover:text-teal-800" size={24} />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-display font-bold text-academic-charcoal mb-2 group-hover:text-teal-700 transition-colors">
-                      {resource.title}
-                    </h3>
-                    <p className="text-academic-neutral-600 font-serif">
-                      {resource.description}
-                    </p>
-                    <div className="flex items-center gap-2 text-teal-700 mt-4 font-medium text-sm">
-                      Learn more
-                      <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </div>
-                </div>
-              </button>
-            ))}
+                View the 2026 Timeline
+                <ChevronRight size={18} />
+              </Link>
+              <Link
+                to="/first-100-days"
+                className="inline-flex items-center gap-2 px-6 py-3 font-display font-semibold rounded-xl border-2 transition border-[var(--lgr-accent)] text-[var(--lgr-accent)] hover:bg-[var(--lgr-button-hover)]"
+              >
+                Read the First 100 Days Playbook
+                <ChevronRight size={18} />
+              </Link>
+            </div>
           </div>
-        </div>
+        </section>
 
-        {/* FAQ Section */}
-        <FAQSection page="what-is-lgr" />
+        {/* Who is this for */}
+        <section id="who-its-for" className="py-10 md:py-14 scroll-mt-24" style={{ backgroundColor: 'var(--lgr-section-neutral)' }}>
+          <div className="layout-container layout-content-sub max-w-4xl">
+            <h2 className="text-2xl md:text-3xl font-display font-bold text-academic-charcoal mb-6">Who is this for?</h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {audienceRoutes.map(({ id, label, icon: Icon, route, description }) => (
+                <Link
+                  key={id}
+                  to={route}
+                  className="bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-all text-left group hyphens-none hover:-translate-y-0.5"
+                  style={{ borderColor: 'var(--lgr-button-border)', borderWidth: 1 }}
+                >
+                  <Icon className="w-8 h-8 mb-3 group-hover:opacity-80" style={{ color: 'var(--lgr-accent)' }} aria-hidden />
+                  <h3 className="font-display font-bold text-academic-charcoal mb-2 text-lg">{label}</h3>
+                  <p className="text-sm text-academic-neutral-700 font-serif leading-snug">{description}</p>
+                  <span className="inline-flex items-center gap-1 font-medium text-sm mt-3" style={{ color: 'var(--lgr-accent)' }}>
+                    Go
+                    <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
 
+        {/* Closing statement – end with intent */}
+        <section
+          className="py-14 md:py-20 text-white hyphens-none"
+          style={{ backgroundColor: 'var(--lgr-hero-start)' }}
+        >
+          <div className="layout-container layout-content-sub text-center max-w-2xl mx-auto">
+            <p className="text-2xl md:text-3xl font-display font-bold mb-4 leading-tight">
+              Reorganisation reshapes how local decisions are made for a generation.
+            </p>
+            <p className="text-white/90 font-serif text-base mb-10">The structure may change once. The consequences endure.</p>
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <Link
+                to="/facts/lgr-timeline"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-[var(--lgr-hero-start)] font-display font-semibold rounded-xl shadow-md hover:opacity-95 transition"
+              >
+                Explore the Timeline
+                <ChevronRight size={18} />
+              </Link>
+              <Link
+                to="/first-100-days"
+                className="inline-flex items-center gap-2 px-6 py-3 font-display font-semibold rounded-xl border-2 border-white text-white hover:bg-white/10 transition"
+              >
+                Access the 100 Days Playbook
+                <ChevronRight size={18} />
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <section id="tools" className="bg-white py-10 md:py-14 scroll-mt-24">
+          <div className="layout-container layout-content-sub max-w-4xl">
+            <FAQSection page="what-is-lgr" />
+          </div>
+        </section>
       </div>
-    </div>
+    </>
   );
 }

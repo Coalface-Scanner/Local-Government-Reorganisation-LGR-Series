@@ -5,9 +5,9 @@ import { getGlossaryTerm, generateMetadata } from '../../../lib/glossaryData';
 import GlossaryTermClient from '../../../components/glossary/GlossaryTermClient';
 import MetaTags from '../../../components/MetaTags';
 import PageBanner from '../../../components/PageBanner';
-import Breadcrumbs from '../../../components/Breadcrumbs';
 import DefinedTermSchema from '../../../components/glossary/DefinedTermSchema';
 import { ArrowLeft } from 'lucide-react';
+import FAQSection from '../../../components/FAQSection';
 
 /**
  * Dynamic glossary term page (Next.js App Router structure)
@@ -59,14 +59,9 @@ export default function GlossaryTermPage() {
           heroTitle={term.term}
           heroSubtitle={term.category ? `Category: ${term.category}` : undefined}
           currentPath={location.pathname}
+          breadcrumbCurrentLabel={term.term}
         />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <Breadcrumbs 
-            items={[
-              { label: 'Glossary', path: '/glossary' },
-              { label: term.term }
-            ]} 
-          />
+        <div className="layout-container layout-content-sub">
           <button
             onClick={() => navigate('/glossary')}
             className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
@@ -81,6 +76,7 @@ export default function GlossaryTermPage() {
           <GlossaryTermClient term={term} />
         </div>
       </div>
+      <FAQSection page="glossary" />
     </>
   );
 }

@@ -6,6 +6,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import FAQSection from '../../components/FAQSection';
 
 interface CouncilCase {
   name: string;
@@ -104,7 +105,7 @@ export default function CouncilCases() {
         heroSubtitle="Case studies of councils involved in LGR, including recent reorganisations and those in progress. Learn from Dorset, Buckinghamshire, Somerset, North Yorkshire, Cumbria, and Surrey."
         currentPath={location.pathname}
       />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="layout-container layout-content-sub">
         <button
           onClick={() => navigate('/facts')}
           className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
@@ -113,7 +114,7 @@ export default function CouncilCases() {
           Back to Facts & Data
         </button>
       </div>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="layout-container layout-content-hub">
         {/* In Brief Section */}
         <div className="academic-card p-8 mb-12 bg-teal-50 border-l-4 border-teal-700">
           <div className="flex items-start gap-4">
@@ -267,6 +268,7 @@ export default function CouncilCases() {
           </div>
         </div>
 
+      <FAQSection page="facts" />
       </div>
     </div>
   );

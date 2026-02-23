@@ -1,0 +1,290 @@
+import { useState, useRef, useEffect } from 'react';
+import {
+  MapPin,
+  ChevronDown,
+  Search,
+  Bookmark,
+  X,
+  Menu,
+} from 'lucide-react';
+import type { RouteId, AudienceId, ScenarioId, PlaceId } from '../../data/roadmapMilestones';
+import {
+  ZONES,
+  ROUTE_IDS,
+  ROUTE_LABELS,
+  AUDIENCE_IDS,
+  AUDIENCE_LABELS,
+  SCENARIO_IDS,
+  SCENARIO_LABELS,
+  PLACE_OPTIONS,
+  PLACE_LABELS,
+} from '../../data/roadmapMilestones';
+
+export interface RoadmapFilters {
+  zone: string;
+  routes: RouteId[];
+  audience: AudienceId | '';
+  place: PlaceId;
+  scenario: ScenarioId;
+  searchQuery: string;
+}
+
+interface StickyJourneyControlBarProps {
+  filters: RoadmapFilters;
+  onFiltersChange: (f: Partial<RoadmapFilters>) => void;
+  onNowClick: () => void;
+  onZoneChange?: (zoneId: string) => void;
+  savedCount: number;
+  onSavedClick: () => void;
+}
+
+export default function StickyJourneyControlBar({
+  filters,
+  onFiltersChange,
+  onNowClick,
+  onZoneChange,
+  savedCount,
+  onSavedClick,
+}: StickyJourneyControlBarProps) {
+  const [showZoneDropdown, setShowZoneDropdown] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (showSearch && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [showSearch]);
+
+  const currentZoneLabel = ZONES.find((z) => z.id === filters.zone)?.title ?? 'Junction';
+  const hasActiveFilters =
+    filters.routes.length > 0 ||
+    filters.audience !== '' ||
+    filters.place !== 'all-england' ||
+    filters.scenario !== 'baseline' ||
+    (filters.searchQuery?.trim() ?? '') !== '';
+
+  const toggleRoute = (r: RouteId) => {
+    const next = filters.routes.includes(r)
+      ? filters.routes.filter((x) => x !== r)
+      : [...filters.routes, r];
+    onFiltersChange({ routes: next });
+  };
+
+  return (
+    <div className="bg-academic-cream border-b border-academic-neutral-200">
+      <div className="layout-container py-2">
+        <div className="flex flex-wrap items-center gap-2 md:gap-4">
+          <button
+            type="button"
+            onClick={onNowClick}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-display font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 border border-teal-200 transition-colors"
+            aria-label="Jump to current position on the journey"
+          >
+            <MapPin size={16} aria-hidden="true" />
+            Now
+          </button>
+
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setShowZoneDropdown(!showZoneDropdown)}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-display font-medium bg-academic-neutral-100 text-academic-charcoal hover:bg-academic-neutral-200 border border-academic-neutral-300"
+              aria-expanded={showZoneDropdown}
+              aria-haspopup="listbox"
+            >
+              {currentZoneLabel}
+              <ChevronDown size={16} aria-hidden="true" />
+            </button>
+            {showZoneDropdown && (
+              <>
+                <div
+                  className="fixed inset-0 z-10"
+                  aria-hidden="true"
+                  onClick={() => setShowZoneDropdown(false)}
+                />
+                <ul
+                  role="listbox"
+                  className="absolute left-0 top-full mt-1 py-1 bg-white border border-academic-neutral-300 rounded-lg shadow-lg z-20 min-w-[200px]"
+                >
+                  {ZONES.map((z) => (
+                    <li key={z.id} role="option" aria-selected={filters.zone === z.id}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          onFiltersChange({ zone: z.id });
+                          onZoneChange?.(z.id);
+                          setShowZoneDropdown(false);
+                        }}
+                        className={`w-full text-left px-4 py-2 text-sm font-serif ${
+                          filters.zone === z.id ? 'bg-teal-50 text-teal-800 font-semibold' : 'text-academic-charcoal hover:bg-academic-warm'
+                        }`}
+                      >
+                        {z.title}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setShowFilters(!showFilters)}
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-display font-medium border transition-colors ${
+              showFilters || hasActiveFilters
+                ? 'bg-teal-50 text-teal-700 border-teal-300'
+                : 'bg-academic-neutral-100 text-academic-charcoal hover:bg-academic-neutral-200 border-academic-neutral-300'
+            }`}
+            aria-expanded={showFilters}
+          >
+            <Menu size={16} aria-hidden="true" />
+            Filters
+            {hasActiveFilters && (
+              <span className="w-2 h-2 rounded-full bg-teal-500" aria-hidden="true" />
+            )}
+          </button>
+
+          <div className="flex items-center gap-1">
+            {showSearch ? (
+              <>
+                <input
+                  ref={searchInputRef}
+                  type="search"
+                  value={filters.searchQuery}
+                  onChange={(e) => onFiltersChange({ searchQuery: e.target.value })}
+                  placeholder="Search milestones..."
+                  className="px-3 py-2 text-sm border border-academic-neutral-300 rounded-lg w-40 md:w-52 font-serif"
+                  aria-label="Search milestones"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowSearch(false)}
+                  className="p-2 text-academic-neutral-500 hover:text-academic-charcoal"
+                  aria-label="Close search"
+                >
+                  <X size={18} aria-hidden="true" />
+                </button>
+              </>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setShowSearch(true)}
+                className="p-2 rounded-lg text-academic-neutral-600 hover:bg-academic-warm hover:text-academic-charcoal"
+                aria-label="Open search"
+              >
+                <Search size={18} aria-hidden="true" />
+              </button>
+            )}
+          </div>
+
+          <button
+            type="button"
+            onClick={onSavedClick}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-display font-medium text-academic-charcoal hover:bg-academic-warm border border-academic-neutral-300"
+            aria-label={savedCount ? `Reading list: ${savedCount} saved` : 'Reading list'}
+          >
+            <Bookmark size={16} aria-hidden="true" />
+            Saved
+            {savedCount > 0 && (
+              <span className="bg-teal-100 text-teal-800 text-xs font-bold px-1.5 py-0.5 rounded">
+                {savedCount}
+              </span>
+            )}
+          </button>
+        </div>
+
+        {showFilters && (
+          <div className="mt-4 pt-4 border-t border-academic-neutral-200 space-y-4">
+            <div>
+              <p className="text-academic-xs font-display font-bold text-academic-neutral-600 uppercase mb-2">
+                Routes
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {ROUTE_IDS.map((r) => (
+                  <button
+                    key={r}
+                    type="button"
+                    onClick={() => toggleRoute(r)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-display font-medium transition-colors ${
+                      filters.routes.includes(r)
+                        ? 'bg-teal-600 text-white'
+                        : 'bg-academic-neutral-100 text-academic-charcoal hover:bg-teal-100 hover:text-teal-800'
+                    }`}
+                  >
+                    {ROUTE_LABELS[r]}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p className="text-academic-xs font-display font-bold text-academic-neutral-600 uppercase mb-2">
+                Audience
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {AUDIENCE_IDS.map((a) => (
+                  <button
+                    key={a}
+                    type="button"
+                    onClick={() => onFiltersChange({ audience: filters.audience === a ? '' : a })}
+                    className={`px-3 py-1.5 rounded-full text-xs font-display font-medium transition-colors ${
+                      filters.audience === a
+                        ? 'bg-teal-600 text-white'
+                        : 'bg-academic-neutral-100 text-academic-charcoal hover:bg-teal-100 hover:text-teal-800'
+                    }`}
+                  >
+                    {AUDIENCE_LABELS[a]}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p className="text-academic-xs font-display font-bold text-academic-neutral-600 uppercase mb-2">
+                Place
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {PLACE_OPTIONS.map((p) => (
+                  <button
+                    key={p}
+                    type="button"
+                    onClick={() => onFiltersChange({ place: p })}
+                    className={`px-3 py-1.5 rounded-full text-xs font-display font-medium transition-colors ${
+                      filters.place === p
+                        ? 'bg-teal-600 text-white'
+                        : 'bg-academic-neutral-100 text-academic-charcoal hover:bg-teal-100 hover:text-teal-800'
+                    }`}
+                  >
+                    {PLACE_LABELS[p]}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p className="text-academic-xs font-display font-bold text-academic-neutral-600 uppercase mb-2">
+                Scenario
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {SCENARIO_IDS.map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => onFiltersChange({ scenario: s })}
+                    className={`px-3 py-1.5 rounded-full text-xs font-display font-medium transition-colors ${
+                      filters.scenario === s
+                        ? 'bg-teal-600 text-white'
+                        : 'bg-academic-neutral-100 text-academic-charcoal hover:bg-teal-100 hover:text-teal-800'
+                    }`}
+                  >
+                    {SCENARIO_LABELS[s]}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

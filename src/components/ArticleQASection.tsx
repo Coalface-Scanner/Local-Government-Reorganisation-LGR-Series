@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { sanitizeHtmlContent } from '../lib/htmlSanitizer';
 
 interface ArticleQA {
   id: string;
@@ -50,7 +51,7 @@ export default function ArticleQASection({ articleSlug }: ArticleQASectionProps)
       "name": qa.question,
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": qa.answer
+        "text": sanitizeHtmlContent(qa.answer)
       }
     }))
   };
@@ -93,7 +94,7 @@ export default function ArticleQASection({ articleSlug }: ArticleQASectionProps)
                 <div id={`qa-answer-${qa.id}`} className="px-6 pb-4 pt-2 border-t border-slate-100">
                   <div 
                     className="text-slate-700 leading-relaxed prose prose-sm max-w-none"
-                    dangerouslySetInnerHTML={{ __html: qa.answer }}
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtmlContent(qa.answer) }}
                   />
                 </div>
               )}
@@ -104,4 +105,3 @@ export default function ArticleQASection({ articleSlug }: ArticleQASectionProps)
     </section>
   );
 }
-

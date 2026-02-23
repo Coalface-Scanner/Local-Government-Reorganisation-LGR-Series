@@ -199,7 +199,7 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
       <MetaTags
         title="LGR Governance Interviews - Council Leaders & Practitioners"
         description="In-depth interviews with council leaders, officers, and practitioners on Local Government Reorganisation (LGR) and LGR governance. First-hand accounts and expert perspectives on local government reorganisation reform."
-        keywords="LGR interviews, LGR governance interviews, Local Government Reorganisation interviews, council leader interviews, local government insights, reorganisation experiences, practitioner perspectives, LGR Series interviews"
+        keywords="LGR interviews, LGR governance interviews, Local Government Reorganisation interviews, council leader interviews, local government insights, reorganisation experiences, practitioner perspectives, LGRI interviews"
       />
       <PageBanner
         heroLabel="EXPERT PERSPECTIVES"
@@ -208,7 +208,7 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
         currentPath={location.pathname}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="layout-container layout-content-sub">
         <div className="mb-12 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-2xl p-8 border border-cyan-200 academic-card">
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -441,17 +441,12 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
           <div className="lg:col-span-1">
             <div className="sticky top-24 space-y-6">
               <PageNavigation items={navItems} />
-              <div className="bg-teal-800 text-white p-6">
-                <h3 className="text-xl font-black text-white mb-3">
-                  LGR Series Newsletter
-                </h3>
-                <p className="text-sm text-white mb-4">
-                  Get the LGR Series directly in your inbox. No fluff, just deep analysis.
+              <div className="lgr-insights-cta">
+                <h3 className="lgr-insights-cta__title">LGR Insights & Updates</h3>
+                <p className="lgr-insights-cta__body">
+                  Receive our regular update direct to your inbox. Subscribe here.
                 </p>
-                <Link
-                  to="/subscribe"
-                  className="inline-block bg-white text-teal-700 px-6 py-3 rounded-lg font-display font-bold text-sm uppercase tracking-wider hover:bg-teal-50 transition-colors"
-                >
+                <Link to="/subscribe" className="lgr-insights-cta__btn">
                   Subscribe
                 </Link>
               </div>
@@ -489,7 +484,7 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
       <FAQSection page="interviews" />
 
       {/* Related Resources - LGR Hub Link */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="layout-container layout-content-sub">
         <div className="academic-card p-8 bg-teal-50 border-l-4 border-teal-700">
           <div className="flex items-start gap-4">
             <BookOpen className="text-teal-700 flex-shrink-0 mt-1" size={24} />
@@ -498,7 +493,7 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
                 Learn More About Local Government Reorganisation
               </h3>
               <p className="text-academic-neutral-700 mb-4 font-serif">
-                Explore the <a href="/facts/what-is-lgr" className="text-teal-700 hover:text-teal-800 underline font-medium">LGR Series hub</a> for comprehensive guides on Local Government Reorganisation, LGR governance, and the LGR timetable 2026.
+                Explore the <a href="/facts/what-is-lgr" className="text-teal-700 hover:text-teal-800 underline font-medium">LGRI hub</a> for comprehensive guides on Local Government Reorganisation, LGR governance, and the LGR timetable 2026.
               </p>
               <a
                 href="/facts/what-is-lgr"

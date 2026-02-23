@@ -115,9 +115,9 @@ export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
   return (
     <div className="min-h-screen bg-academic-cream">
       <MetaTags
-        title="Local Government Reorganisation Facts & Data - LGR Series"
-        description="Comprehensive facts, statistics, and data about Local Government Reorganisation (LGR) in England. Explore LGR timelines, councils involved, methodology, and sources from the LGR Series."
-        keywords="LGR facts, Local Government Reorganisation data, LGR Series facts, reorganisation data, unitary authority evidence, local government reorganisation analysis, LGR statistics, LGR timetable"
+        title="Local Government Reorganisation Facts & Data - LGRI"
+        description="Comprehensive facts, statistics, and data about Local Government Reorganisation (LGR) in England. Explore LGR timelines, councils involved, methodology, and sources from the LGRI."
+        keywords="LGR facts, Local Government Reorganisation data, LGRI facts, reorganisation data, unitary authority evidence, local government reorganisation analysis, LGR statistics, LGR timetable"
       />
       <CollectionPageStructuredData
         name="Facts & Figures"
@@ -134,11 +134,11 @@ export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
       <PageBanner
         heroLabel="EVIDENCE-BASED ANALYSIS"
         heroTitle="Local Government Reorganisation Facts & Data"
-        heroSubtitle="What is Local Government Reorganisation? Local Government Reorganisation (LGR) is the process of restructuring local government structures in England, typically moving from a two-tier system (county and district councils) to single-tier unitary authorities. This section provides comprehensive evidence-based analysis of LGR timelines, councils involved, key facts, methodology, sources, and additional resources from the LGR Series."
+        heroSubtitle="What is Local Government Reorganisation? Local Government Reorganisation (LGR) is the process of restructuring local government structures in England, typically moving from a two-tier system (county and district councils) to single-tier unitary authorities. This section provides comprehensive evidence-based analysis of LGR timelines, councils involved, key facts, methodology, sources, and additional resources from the LGRI."
         currentPath={location.pathname}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="layout-container layout-content-sub">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 items-stretch">
           {serviceCards.map((card) => (
             <ServiceCard
@@ -155,17 +155,12 @@ export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
         </div>
 
         <div className="max-w-2xl mx-auto">
-          <div className="bg-teal-800 text-white p-8">
-            <h3 className="text-academic-xl font-display font-bold text-white mb-4">
-              LGR Series Newsletter
-            </h3>
-            <p className="text-academic-sm text-white mb-5 font-serif">
-              Get the LGR Series directly in your inbox. No fluff, just deep analysis.
+          <div className="lgr-insights-cta">
+            <h3 className="lgr-insights-cta__title">LGR Insights & Updates</h3>
+            <p className="lgr-insights-cta__body">
+              Receive our regular update direct to your inbox. Subscribe here.
             </p>
-            <Link
-              to="/subscribe"
-              className="inline-block bg-white text-teal-700 px-6 py-3 rounded-lg font-display font-bold text-sm uppercase tracking-wider hover:bg-teal-50 transition-colors"
-            >
+            <Link to="/subscribe" className="lgr-insights-cta__btn">
               Subscribe
             </Link>
           </div>

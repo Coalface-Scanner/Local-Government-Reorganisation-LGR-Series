@@ -8,6 +8,7 @@ import ErrorDisplay from '../components/ErrorDisplay';
 import PageBanner from '../components/PageBanner';
 import { Newspaper, Calendar, Clock } from 'lucide-react';
 import { enhanceContentWithGlossaryLinks } from '../lib/glossaryLinks';
+import { sanitizeEmbedCode, sanitizeHtmlContent } from '../lib/htmlSanitizer';
 
 interface NewsItem {
   id: string;
@@ -17,7 +18,7 @@ interface NewsItem {
   content: string;
   embed_code: string | null;
   excerpt: string | null;
-  published: boolean;
+  status: 'draft' | 'published' | 'archived';
   display_order: number;
 }
 
@@ -46,12 +47,23 @@ export default function News() {
   const fetchNews = async () => {
     try {
       setError(null);
-      const { data, error: fetchError } = await supabase
+      let { data, error: fetchError } = await supabase
         .from('news')
         .select('*')
-        .eq('published', true)
+        .eq('status', 'published')
         .order('display_order', { ascending: true })
         .order('published_date', { ascending: false });
+
+      if (fetchError && fetchError.message.toLowerCase().includes('status')) {
+        const fallback = await supabase
+          .from('news')
+          .select('*')
+          .eq('published', true)
+          .order('display_order', { ascending: true })
+          .order('published_date', { ascending: false });
+        data = fallback.data;
+        fetchError = fallback.error;
+      }
 
       if (fetchError) {
         throw fetchError;
@@ -101,7 +113,7 @@ export default function News() {
         currentPath={location.pathname}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="layout-container layout-content-sub">
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
             {loading ? (
@@ -115,7 +127,7 @@ export default function News() {
                 message={error}
                 onRetry={fetchNews}
               />
-            ) : newsItems.length === 0 ? (
+            ) : enhancedNewsItems.length === 0 ? (
               <div className="academic-card p-12 text-center">
                 <Newspaper className="mx-auto mb-4 text-academic-neutral-300" size={56} />
                 <h3 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-3">No news yet</h3>
@@ -123,7 +135,7 @@ export default function News() {
               </div>
             ) : (
               <div className="space-y-16">
-                {newsItems.map((item, index) => (
+                {enhancedNewsItems.map((item, index) => (
                   <article
                     key={item.id}
                     className="academic-card overflow-hidden transition-shadow duration-300"
@@ -160,12 +172,12 @@ export default function News() {
                       {/* Main Content */}
                       <div
                         className="academic-prose max-w-none mb-8"
-                        dangerouslySetInnerHTML={{ __html: item.content }}
+                        dangerouslySetInnerHTML={{ __html: sanitizeHtmlContent(item.enhancedContent ?? item.content) }}
                       />
 
                       {/* Embed Code */}
                       {item.embed_code && (
-                        <div className="my-10 p-6 bg-academic-warm border border-academic-neutral-300" style={{ borderRadius: '2px' }} dangerouslySetInnerHTML={{ __html: item.embed_code }} />
+                        <div className="my-10 p-6 bg-academic-warm border border-academic-neutral-300" style={{ borderRadius: '2px' }} dangerouslySetInnerHTML={{ __html: sanitizeEmbedCode(item.embed_code) }} />
                       )}
                     </div>
 
@@ -188,7 +200,7 @@ export default function News() {
                   LGR Series Newsletter
                 </h3>
                 <p className="text-sm text-white mb-4">
-                  Get the LGR Series directly in your inbox. No fluff, just deep analysis.
+                  Receive our regular update direct to your inbox. Subscribe here.
                 </p>
                 <Link
                   to="/subscribe"
@@ -230,7 +242,7 @@ export default function News() {
 
       <FAQSection page="news" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="layout-container">
         <LastUpdated />
       </div>
     </div>

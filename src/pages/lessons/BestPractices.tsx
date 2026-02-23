@@ -3,6 +3,7 @@ import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import { ArrowLeft } from 'lucide-react';
 import { useScrollDepthTracking } from '../../hooks/useScrollDepthTracking';
+import FAQSection from '../../components/FAQSection';
 import { useTimeOnPageTracking } from '../../hooks/useTimeOnPageTracking';
 
 export default function LessonsBestPractices() {
@@ -16,7 +17,7 @@ export default function LessonsBestPractices() {
     <div className="min-h-screen bg-academic-cream">
       <MetaTags
         title="Best Practices - Lessons from Reorganisation"
-        description="Practical guidance drawn from the first wave of Local Government Reorganisation. Curated best practices, checklists and lessons from the LGR Series."
+        description="Practical guidance drawn from the first wave of Local Government Reorganisation. Curated best practices, checklists and lessons from the LGRI."
         keywords="LGR best practices, reorganisation planning, governance design, transition delivery, local government reorganisation guidance, unitary authority checklists"
       />
       <PageBanner
@@ -26,7 +27,7 @@ export default function LessonsBestPractices() {
         currentPath={location.pathname}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="layout-container layout-content-sub">
         <button
           onClick={() => navigate('/lessons')}
           className="flex items-center gap-2 text-teal-700 hover:text-teal-800 font-display font-medium mb-8 group"
@@ -43,7 +44,7 @@ export default function LessonsBestPractices() {
 
           <div className="academic-card p-8 md:p-10 space-y-6">
             <p className="text-academic-base font-serif text-academic-neutral-700 leading-relaxed">
-              This section will bring together curated best practices, checklists and lessons drawn from the LGR Series to date.
+              This section will bring together curated best practices, checklists and lessons drawn from the LGRI to date.
             </p>
             <p className="text-academic-base font-serif text-academic-neutral-700 leading-relaxed">
               Rather than abstract theory, it will focus on the decisions that have mattered most in practice across recently reorganised councils, and the consequences where they were delayed, diluted or avoided.
@@ -69,6 +70,7 @@ export default function LessonsBestPractices() {
           </div>
         </div>
       </div>
+      <FAQSection page="lessons" />
     </div>
   );
 }

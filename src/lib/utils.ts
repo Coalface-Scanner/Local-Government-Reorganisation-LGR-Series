@@ -1,5 +1,5 @@
 /**
- * Utility functions for the LGR Series website
+ * Utility functions for the LGRI website
  */
 
 /**

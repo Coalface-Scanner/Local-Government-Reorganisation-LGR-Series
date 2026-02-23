@@ -9,20 +9,22 @@ interface Props {
 interface State {
   hasError: boolean;
   error: Error | null;
+  componentStack: string | null;
 }
 
 export default class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { hasError: false, error: null };
+    this.state = { hasError: false, error: null, componentStack: null };
   }
 
   static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error };
+    return { hasError: true, error, componentStack: null };
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error('ErrorBoundary caught an error:', error, errorInfo);
+    this.setState({ componentStack: errorInfo.componentStack || null });
   }
 
   render() {
@@ -50,6 +52,8 @@ export default class ErrorBoundary extends Component<Props, State> {
                 </summary>
                 <pre className="text-xs bg-slate-100 p-4 rounded-lg overflow-auto max-h-40">
                   {this.state.error.message}
+                  {this.state.error.stack ? `\n\n${this.state.error.stack}` : ''}
+                  {this.state.componentStack ? `\n\nComponent stack:\n${this.state.componentStack}` : ''}
                 </pre>
               </details>
             )}

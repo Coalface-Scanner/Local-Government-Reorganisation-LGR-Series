@@ -2,6 +2,7 @@ import { useLocation } from 'react-router-dom';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import OptimizedImage from '../../components/OptimizedImage';
+import FAQSection from '../../components/FAQSection';
 
 interface ContributorsProps {
   onNavigate: (page: string) => void;
@@ -13,19 +14,19 @@ export default function Contributors({ onNavigate: _onNavigate }: ContributorsPr
   return (
     <div className="bg-academic-cream min-h-screen">
       <MetaTags
-        title="Contributors - LGR Series Authors & Contributors"
-        description="Meet the contributors and authors behind the LGR Series research programme examining local government reorganisation."
+        title="Contributors - LGRI Authors & Contributors"
+        description="Meet the contributors and authors behind the LGRI research programme examining local government reorganisation."
         keywords="LGR series contributors, LGR authors, local government reorganisation researchers, COALFACE team"
       />
       
       <PageBanner
         heroLabel="ABOUT"
         heroTitle="Contributors & Authors"
-        heroSubtitle="Meet the contributors and authors behind the LGR Series research programme."
+        heroSubtitle="Meet the contributors and authors behind the LGRI research programme."
         currentPath={location.pathname}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="layout-container layout-content-sub">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
             {/* Contributors Section */}
@@ -35,10 +36,10 @@ export default function Contributors({ onNavigate: _onNavigate }: ContributorsPr
               </h2>
               <div className="academic-prose space-y-4">
                 <p>
-                  The LGR Series benefits from contributions from practitioners, academics, and elected representatives with direct experience of local government reorganisation.
+                  The LGRI benefits from contributions from practitioners, academics, and elected representatives with direct experience of local government reorganisation.
                 </p>
                 <p>
-                  If you would like to contribute to the LGR Series, please visit our{' '}
+                  If you would like to contribute to the LGRI, please visit our{' '}
                   <a href="/about/contribute" className="text-teal-700 hover:text-teal-800 underline">
                     Contribute page
                   </a>
@@ -62,7 +63,7 @@ export default function Contributors({ onNavigate: _onNavigate }: ContributorsPr
               </div>
               <div className="academic-prose">
                 <p>
-                  COALFACE is an independent consultancy and insight practice specialising in local government, planning, governance and political decision making. Its contribution to the LGR Series draws on experience as an elected councillor, in advisory and officer roles within local authorities, and in supporting planning and regeneration programmes. COALFACE provides applied analysis focused on governance design, democratic legitimacy and delivery conditions in reorganised councils, with an emphasis on how decisions are made in practice rather than on formal structures alone.
+                  COALFACE is an independent consultancy and insight practice specialising in local government, planning, governance and political decision making. Its contribution to the LGRI draws on experience as an elected councillor, in advisory and officer roles within local authorities, and in supporting planning and regeneration programmes. COALFACE provides applied analysis focused on governance design, democratic legitimacy and delivery conditions in reorganised councils, with an emphasis on how decisions are made in practice rather than on formal structures alone.
                 </p>
               </div>
             </section>
@@ -74,7 +75,7 @@ export default function Contributors({ onNavigate: _onNavigate }: ContributorsPr
               </h2>
               <div className="academic-prose mb-8">
                 <p className="text-academic-base text-academic-neutral-700 font-serif leading-relaxed">
-                  Our sincere thanks to everyone listed below who has contributed insight to the LGR Series, whether through interviews, advice, specialist input or discussion. Their contributions have strengthened the quality, balance and practical relevance of the work, while responsibility for all analysis and conclusions remains mine as Series Editor.
+                  Our sincere thanks to everyone listed below who has contributed insight to the LGRI, whether through interviews, advice, specialist input or discussion. Their contributions have strengthened the quality, balance and practical relevance of the work, while responsibility for all analysis and conclusions remains mine as Editor.
                 </p>
               </div>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -256,10 +257,10 @@ export default function Contributors({ onNavigate: _onNavigate }: ContributorsPr
                     href="/about"
                     className="block w-full text-left px-4 py-3 bg-academic-neutral-50 hover:bg-teal-50 border border-academic-neutral-300 hover:border-teal-700 transition-all text-sm font-bold text-academic-neutral-700 hover:text-teal-700"
                   >
-                    About the LGR Series →
+                    About the LGRI →
                   </a>
                   <a
-                    href="/editor/rowan-cole"
+                    href="/about/leadership/rowan-cole"
                     className="block w-full text-left px-4 py-3 bg-academic-neutral-50 hover:bg-teal-50 border border-academic-neutral-300 hover:border-teal-700 transition-all text-sm font-bold text-academic-neutral-700 hover:text-teal-700"
                   >
                     Editor Profile →
@@ -277,6 +278,7 @@ export default function Contributors({ onNavigate: _onNavigate }: ContributorsPr
         </div>
       </div>
 
+      <FAQSection page="about" />
     </div>
   );
 }

@@ -3,6 +3,8 @@ import { ArrowLeft, Share2, Lightbulb, Database, MessageSquare } from 'lucide-re
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import { useAboutPage } from '../../hooks/useAboutPage';
+import FAQSection from '../../components/FAQSection';
+import { sanitizeHtmlContent } from '../../lib/htmlSanitizer';
 
 interface ContributeProps {
   onNavigate: (page: string) => void;
@@ -37,42 +39,35 @@ export default function Contribute({ onNavigate: _onNavigate }: ContributeProps)
   return (
     <div className="bg-academic-cream min-h-screen">
       <MetaTags
-        title="How to Contribute - LGR Series"
-        description="Get involved in the LGR Series by sharing your experience, suggesting topics, providing data, or contributing expert commentary."
-        keywords="contribute to LGR series, share experience, suggest topics, provide data, expert commentary"
+        title="How to Contribute - LGRI"
+        description="Get involved in the LGRI by sharing your experience, suggesting topics, providing data, or contributing expert commentary."
+        keywords="contribute to LGRI, share experience, suggest topics, provide data, expert commentary, local government reorganisation"
       />
       
       <PageBanner
         heroLabel="ABOUT"
         heroTitle="How to Contribute"
-        heroSubtitle="Get involved in the LGR Series by sharing your experience, suggesting topics, or contributing to our research."
+        heroSubtitle="Get involved in the LGRI by sharing your experience, suggesting topics, or contributing to our research."
         currentPath={location.pathname}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="layout-container layout-content-sub">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-            {/* Breadcrumb */}
-            <nav className="flex items-center gap-2 text-academic-sm text-academic-neutral-600">
-              <Link to="/about" className="hover:text-teal-700 transition-colors">About</Link>
-              <span>/</span>
-              <span className="text-academic-neutral-900">Contribute</span>
-            </nav>
-
             {/* Introduction */}
             <section className="academic-card p-8 md:p-10">
               <div className="academic-prose">
                 {loading ? (
                   <div className="text-center py-8 text-academic-neutral-600">Loading...</div>
                 ) : cmsPage ? (
-                  <div dangerouslySetInnerHTML={{ __html: cmsPage.content }} />
+                  <div dangerouslySetInnerHTML={{ __html: sanitizeHtmlContent(cmsPage.content) }} />
                 ) : (
                   <>
                     <h2 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-4">
                       Get Involved
                     </h2>
                     <p className="mb-6">
-                      The LGR Series welcomes contributions from practitioners, local authority officers, elected members, developers, and other stakeholders involved in local government reorganisation and planning.
+                      The LGRI welcomes contributions from practitioners, local authority officers, elected members, developers, and other stakeholders involved in local government reorganisation and planning.
                     </p>
                   </>
                 )}
@@ -172,10 +167,10 @@ export default function Contribute({ onNavigate: _onNavigate }: ContributeProps)
             <div className="sticky top-24 space-y-6">
               <div className="bg-white p-6 border border-academic-neutral-300 rounded-sm shadow-sm">
                 <h3 className="text-academic-xl font-display font-black text-academic-charcoal mb-3">
-                  LGR Series Newsletter
+                  LGR Insights & Updates
                 </h3>
                 <p className="text-academic-sm text-academic-neutral-700 mb-4 font-serif">
-                  Get the LGR Series directly in your inbox. No fluff, just deep analysis.
+                  Receive our regular update direct to your inbox. Subscribe here.
                 </p>
                 <Link
                   to="/subscribe"
@@ -197,7 +192,7 @@ export default function Contribute({ onNavigate: _onNavigate }: ContributeProps)
                     Overview
                   </Link>
                   <Link
-                    to="/editor/rowan-cole"
+                    to="/about/leadership/rowan-cole"
                     className="block px-3 py-2 text-academic-sm text-academic-neutral-700 hover:bg-teal-50 hover:text-teal-700 transition-colors rounded"
                   >
                     Editor Profile
@@ -227,6 +222,7 @@ export default function Contribute({ onNavigate: _onNavigate }: ContributeProps)
         </div>
       </div>
 
+      <FAQSection page="about" />
     </div>
   );
 }

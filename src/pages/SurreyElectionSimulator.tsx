@@ -5,6 +5,7 @@ import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import { X, Sparkles, CheckCircle2, BarChart3, Zap, BookOpen, MapPin, Share2, ArrowLeft, Link as LinkIcon } from 'lucide-react';
 import ShareButtons from '../components/ShareButtons';
+import FAQSection from '../components/FAQSection';
 import './SurreyElectionSimulator.css';
 
 interface SurreyElectionSimulatorProps {
@@ -646,7 +647,7 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
         heroSubtitle={heroSubtitle}
         currentPath={location.pathname}
       />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="layout-container layout-content-sub">
         <button
           onClick={() => navigate('/surrey/election-tracker')}
           className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
@@ -655,7 +656,7 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
           Back to Election Tracker
         </button>
       </div>
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="layout-container layout-content-sub">
         <div className="space-y-10">
         {/* SECTION 1: AGGREGATE */}
         {(!currentHash || currentHash === 'aggregate') && (
@@ -1190,7 +1191,7 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
                 Learn More About Local Government Reorganisation
               </h3>
               <p className="text-neutral-600 mb-4">
-                Explore the <a href="/facts/what-is-lgr" className="text-teal-700 hover:text-teal-800 underline font-medium">LGR Series hub</a> for comprehensive guides on Local Government Reorganisation, LGR governance, and the LGR timetable 2026.
+                Explore the <a href="/facts/what-is-lgr" className="text-teal-700 hover:text-teal-800 underline font-medium">LGRI hub</a> for comprehensive guides on Local Government Reorganisation, LGR governance, and the LGR timetable 2026.
               </p>
               <button
                 onClick={() => navigate('/facts/what-is-lgr')}
@@ -1205,6 +1206,7 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
         </div>
       </main>
 
+      <FAQSection page="surrey" />
       {/* DETAILS MODAL */}
       {isModalOpen && selectedDistrict && (
         <div

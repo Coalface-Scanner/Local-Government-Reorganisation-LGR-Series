@@ -59,7 +59,7 @@ export const surreyCouncils: CouncilProfile[] = [
     services: ['Planning', 'Waste Collection', 'Housing', 'Leisure', 'Parks'],
     challenges: ['Housing affordability', 'Traffic congestion', 'Green belt protection'],
     opportunities: ['Economic growth', 'Transport improvements', 'Sustainability initiatives'],
-    futureUnitary: 'West Surrey'
+    futureUnitary: 'East Surrey'
   },
   {
     id: 'epsom-ewell',

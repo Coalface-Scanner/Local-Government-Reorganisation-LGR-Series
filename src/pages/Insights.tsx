@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '../lib/supabase';
+import { supabase, hasValidSupabase } from '../lib/supabase';
 import { useLocation } from 'react-router-dom';
 import ErrorDisplay from '../components/ErrorDisplay';
 import { Calendar } from 'lucide-react';
@@ -8,6 +8,8 @@ import CollectionPageStructuredData from '../components/CollectionPageStructured
 import PageBanner from '../components/PageBanner';
 import OptimizedImage from '../components/OptimizedImage';
 import ContentTypeTag from '../components/ContentTypeTag';
+import FAQSection from '../components/FAQSection';
+import { ContentContainer } from '../components/layout';
 
 interface Article {
   id: string;
@@ -44,6 +46,11 @@ export default function Insights({ onNavigate }: InsightsProps) {
   const fetchArticles = async () => {
     try {
       setError(null);
+      if (!hasValidSupabase) {
+        setArticles([]);
+        setLoading(false);
+        return;
+      }
       const { data, error: fetchError } = await supabase
         .from('articles')
         .select('*')
@@ -127,8 +134,15 @@ export default function Insights({ onNavigate }: InsightsProps) {
         currentPath={location.pathname}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="mb-6">
+      <ContentContainer variant="hub">
+        <section className="layout-section">
+          <div className="academic-card p-8">
+            <p className="text-academic-base font-serif text-academic-neutral-700 leading-relaxed">
+              Insights & Analysis brings together expert perspectives on local government reorganisation, planning policy, and democratic governance. Browse articles below.
+            </p>
+          </div>
+        </section>
+        <div className="layout-section mb-6">
           <div className="text-academic-neutral-600 font-serif">
             {articles.length} {articles.length === 1 ? 'article' : 'articles'}
           </div>
@@ -140,7 +154,7 @@ export default function Insights({ onNavigate }: InsightsProps) {
           </div>
         ) : (
           <>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+            <div className="layout-card-grid gap-8 mb-8">
               {paginatedArticles.map(article => (
                 <article
                   key={article.id}
@@ -232,8 +246,9 @@ export default function Insights({ onNavigate }: InsightsProps) {
             )}
           </>
         )}
-      </div>
+      </ContentContainer>
 
+      <FAQSection page="insights" />
     </div>
   );
 }

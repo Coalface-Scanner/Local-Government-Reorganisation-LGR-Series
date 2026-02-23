@@ -4,6 +4,8 @@ import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import OptimizedImage from '../../components/OptimizedImage';
 import { useAboutPage } from '../../hooks/useAboutPage';
+import FAQSection from '../../components/FAQSection';
+import { sanitizeHtmlContent } from '../../lib/htmlSanitizer';
 
 interface RowanColeProps {
   onNavigate: (page: string) => void;
@@ -16,10 +18,10 @@ export default function RowanCole({ onNavigate: _onNavigate }: RowanColeProps) {
   return (
     <div className="bg-academic-cream min-h-screen">
       <MetaTags
-        title="Rowan Cole | Editor, LGR Series | Local Government Governance"
-        description="Rowan Cole is Editor of the LGR Series and an LGR strategist specialising in public sector strategy, evidence-based governance analysis, and stronger accountability for local authorities."
-        keywords="Rowan Cole, LGR Series editor, local government reorganisation, public sector strategy, governance analysis, COALFACE"
-        ogTitle="Rowan Cole | Editor, LGR Series"
+        title="Rowan Cole | Editor, LGRI | Local Government Governance"
+        description="Rowan Cole is Editor of the LGRI and an LGR strategist specialising in public sector strategy, evidence-based governance analysis, and stronger accountability for local authorities."
+        keywords="Rowan Cole, LGRI editor, local government reorganisation, public sector strategy, governance analysis, COALFACE"
+        ogTitle="Rowan Cole | Editor, LGRI"
         ogDescription="Evidence-based governance analysis supporting local authority leaders and officers through risk-managed transitions, service integration, and stronger public accountability."
         ogImage="/rowan-cole-editor-lgr-series.jpg"
       />
@@ -27,33 +29,27 @@ export default function RowanCole({ onNavigate: _onNavigate }: RowanColeProps) {
       <PageBanner
         heroLabel="ABOUT"
         heroTitle="Rowan Cole"
-        heroSubtitle="Editor of the LGR Series and LGR strategist specialising in public sector strategy, evidence-based governance analysis, and stronger accountability for local authorities."
+        heroSubtitle="Editor of the LGRI and LGR strategist specialising in public sector strategy, evidence-based governance analysis, and stronger accountability for local authorities."
         currentPath={location.pathname}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="layout-container layout-content-sub">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-            {/* Breadcrumb */}
-            <nav className="flex items-center gap-2 text-academic-sm text-academic-neutral-600">
-              <Link to="/about" className="hover:text-teal-700 transition-colors">About</Link>
-              <span>/</span>
-              <span className="text-academic-neutral-900">Rowan Cole</span>
-            </nav>
             {/* Editor Profile */}
             <section className="academic-card p-8 md:p-10">
               <div className="space-y-6">
                 <div className="w-full">
                   <OptimizedImage
                     src="/rowan-cole-editor-lgr-series.jpg"
-                    alt="Rowan Cole, Editor of the LGR Series and LGR strategist specialising in public sector strategy and governance analysis"
+                    alt="Rowan Cole, Editor of the LGRI and LGR strategist specialising in public sector strategy and governance analysis"
                     variant="article"
                     className="w-full max-w-2xl mx-auto rounded-lg object-cover shadow-lg"
                   />
                 </div>
                 <div className="academic-prose max-w-4xl">
                   <p className="mb-4">
-                    <span className="font-bold">Rowan Cole</span> is Editor of the LGR Series and a specialist LGR strategist focused on public sector strategy and governance, democratic accountability, and the conditions that shape delivery outcomes across England.
+                    <span className="font-bold">Rowan Cole</span> is Editor of the LGRI and a specialist LGR strategist focused on public sector strategy and governance, democratic accountability, and the conditions that shape delivery outcomes across England.
                   </p>
                   <p className="mb-4">
                     He provides evidence-based policy and governance analysis for local authority leaders and officers, supporting clearer decision making, stronger governance and accountability, and more resilient institutional performance during periods of structural change.
@@ -65,7 +61,7 @@ export default function RowanCole({ onNavigate: _onNavigate }: RowanColeProps) {
                     Rowan's work is directed at public sector partners and advisors navigating complex reform environments, with a focus on risk-managed transitions, service integration and citizen experience, and clarity of mission and vision at both organisational and place level.
                   </p>
                   <p className="mb-4">
-                    The LGR Series draws on COALFACE's Council Scanner™ methodology, examining planning committee behaviour, officer delegation patterns, decision making consistency, and governance effectiveness across England's planning authorities.
+                    The LGRI draws on COALFACE's Council Scanner™ methodology, examining planning committee behaviour, officer delegation patterns, decision making consistency, and governance effectiveness across England's planning authorities.
                   </p>
                   <p className="mb-6">
                     Alongside his advisory work, Rowan is recognised as an industry judge for the British Homes and Planning Awards and maintains high-level professional memberships with the Institute of Directors and the Chartered Institute of Public Relations. His approach is collaborative and pragmatic, grounded in clear, jargon-free communication and institutional realism.
@@ -138,7 +134,7 @@ export default function RowanCole({ onNavigate: _onNavigate }: RowanColeProps) {
                 {loading ? (
                   <div className="text-center py-8 text-academic-neutral-600">Loading...</div>
                 ) : cmsPage ? (
-                  <div dangerouslySetInnerHTML={{ __html: cmsPage.content }} />
+                  <div dangerouslySetInnerHTML={{ __html: sanitizeHtmlContent(cmsPage.content) }} />
                 ) : (
                   <>
                     <p className="text-academic-lg font-semibold text-teal-700 mb-6 leading-relaxed">
@@ -162,7 +158,7 @@ export default function RowanCole({ onNavigate: _onNavigate }: RowanColeProps) {
                     </p>
 
                     <p className="mb-6">
-                      Our intent in publishing this Series is firmly supportive. We want to help authorities, developers and practitioners understand the issues early, so they can capitalise on the opportunity rather than be hindered by it. We will focus on what is practical, what is measurable, and what can be acted on within real world political and organisational constraints.
+                      Our intent in publishing this Initiative is firmly supportive. We want to help authorities, developers and practitioners understand the issues early, so they can capitalise on the opportunity rather than be hindered by it. We will focus on what is practical, what is measurable, and what can be acted on within real world political and organisational constraints.
                     </p>
 
                     <p className="mb-6">
@@ -170,15 +166,15 @@ export default function RowanCole({ onNavigate: _onNavigate }: RowanColeProps) {
                     </p>
 
                     <p className="mb-6">
-                      To keep the analysis grounded, the Series uses Surrey as a primary test case, examining how reorganisation may reconfigure planning committees, officer delegations, governance controls, digital infrastructure and political accountability. From this, we draw out what planners, developers, officers, councillors and programme leaders need to understand now, before formal transition decisions set the direction of travel.
+                      To keep the analysis grounded, the Initiative uses Surrey as a primary test case, examining how reorganisation may reconfigure planning committees, officer delegations, governance controls, digital infrastructure and political accountability. From this, we draw out what planners, developers, officers, councillors and programme leaders need to understand now, before formal transition decisions set the direction of travel.
                     </p>
 
                     <p className="mb-6">
-                      Across the Series we return to a core question. Will LGR create a simpler, faster and more effective environment for planning and delivery, or will new structures, inherited systems and political flux introduce fresh complexity?
+                      Across the Initiative we return to a core question. Will LGR create a simpler, faster and more effective environment for planning and delivery, or will new structures, inherited systems and political flux introduce fresh complexity?
                     </p>
 
                     <p className="mb-8">
-                      Our objective is to equip the sector to make the former a reality. Thank you to everyone who has already contributed, and to those who will take part as the Series develops. I hope you find it useful, insightful and pragmatic, and I welcome suggestions for topics, case studies and contributors.
+                      Our objective is to equip the sector to make the former a reality. Thank you to everyone who has already contributed, and to those who will take part as the Initiative develops. I hope you find it useful, insightful and pragmatic, and I welcome suggestions for topics, case studies and contributors.
                     </p>
                   </>
                 )}
@@ -190,7 +186,7 @@ export default function RowanCole({ onNavigate: _onNavigate }: RowanColeProps) {
                     className="h-16 mb-2"
                   />
                   <p className="text-academic-charcoal font-semibold text-lg">Rowan Cole</p>
-                  <p className="text-academic-neutral-600">LGR Series</p>
+                  <p className="text-academic-neutral-600">LGRI</p>
                 </div>
               </div>
             </section>
@@ -211,10 +207,10 @@ export default function RowanCole({ onNavigate: _onNavigate }: RowanColeProps) {
             <div className="sticky top-24 space-y-6">
               <div className="bg-white p-6 border border-academic-neutral-300 rounded-sm shadow-sm">
                 <h3 className="text-academic-xl font-display font-black text-academic-charcoal mb-3">
-                  LGR Series Newsletter
+                  LGR Insights & Updates
                 </h3>
                 <p className="text-academic-sm text-academic-neutral-700 mb-4 font-serif">
-                  Get the LGR Series directly in your inbox. No fluff, just deep analysis.
+                  Receive our regular update direct to your inbox. Subscribe here.
                 </p>
                 <Link
                   to="/subscribe"
@@ -236,7 +232,7 @@ export default function RowanCole({ onNavigate: _onNavigate }: RowanColeProps) {
                     Overview
                   </Link>
                   <Link
-                    to="/editor/rowan-cole"
+                    to="/about/leadership/rowan-cole"
                     className="block px-3 py-2 text-academic-sm text-teal-700 bg-teal-50 font-semibold rounded"
                   >
                     Editor Profile
@@ -266,6 +262,7 @@ export default function RowanCole({ onNavigate: _onNavigate }: RowanColeProps) {
         </div>
       </div>
 
+      <FAQSection page="about" />
     </div>
   );
 }
