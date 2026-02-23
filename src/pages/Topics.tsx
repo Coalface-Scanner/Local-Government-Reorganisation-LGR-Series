@@ -162,7 +162,7 @@ export default function Topics({ onNavigate }: TopicsProps) {
   return (
     <div className="bg-academic-cream">
       <MetaTags
-        title="Topics - Core Themes | LGRI"
+        title="Topics - Core Themes | LGR Initiative"
         description="Explore our research organised around key themes: Governance and Reform, Democratic Legitimacy, and Statecraft and System Design. Each theme features pillar pieces, essays, briefs, and related analysis."
         keywords="local government reorganisation, governance, democratic legitimacy, statecraft, system design, council reform, LGR themes"
       />

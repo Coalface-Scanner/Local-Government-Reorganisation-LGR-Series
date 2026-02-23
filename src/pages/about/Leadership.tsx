@@ -13,9 +13,9 @@ interface LeadershipProps {
 }
 
 const keyLinksList = [
-  { label: 'Methodology', url: '/about/methodology', icon: FileText },
+  { label: 'Methodology', url: '/about/overview#methodology', icon: FileText },
   { label: 'Contributors', url: '/about/contributors', icon: Users },
-  { label: 'Contribute', url: '/about/contribute', icon: User },
+  { label: 'Contribute', url: '/about/contributors/contribute', icon: User },
   { label: 'Partnerships', url: '/partnerships', icon: Users },
   { label: 'Contact', url: '/contact', icon: Mail },
 ];
@@ -41,19 +41,19 @@ export default function Leadership({ onNavigate: _onNavigate }: LeadershipProps)
     <>
       <PageBanner
         heroLabel="ABOUT"
-        heroTitle="LGRI Leadership"
-        heroSubtitle="Who is responsible for the LGRI, how editorial accountability operates, and who to contact on partnerships and content queries."
+        heroTitle="LGR Initiative Leadership"
+        heroSubtitle="Who is responsible for the LGR Initiative, how editorial accountability operates, and who to contact on partnerships and content queries."
         currentPath={location.pathname}
       />
       <div data-page-main className="min-h-screen bg-academic-cream">
         <MetaTags
-          title="LGRI Leadership"
-          description="Meet the leadership behind the LGRI, including editorial accountability, research support and partner organisations. View short profiles and open full biographies."
-          keywords="LGRI leadership, editorial team, LGR contributors, Rowan Cole, local government reorganisation"
+          title="LGR Initiative Leadership"
+          description="Meet the leadership behind the LGR Initiative, including editorial accountability, research support and partner organisations. View short profiles and open full biographies."
+          keywords="LGR Initiative leadership, editorial team, LGR contributors, Rowan Cole, local government reorganisation"
         />
         <CollectionPageStructuredData
-          name="LGRI Leadership"
-          description="Who is responsible for the LGRI, how editorial accountability operates, and who to contact on partnerships, content queries and methodology."
+          name="LGR Initiative Leadership"
+          description="Who is responsible for the LGR Initiative, how editorial accountability operates, and who to contact on partnerships, content queries and methodology."
           url="/about/leadership"
           numberOfItems={leadershipProfiles.length}
           items={leadershipProfiles.map((p) => ({ name: p.name, url: p.link, description: p.title }))}
@@ -80,7 +80,7 @@ export default function Leadership({ onNavigate: _onNavigate }: LeadershipProps)
             </div>
           </div>
           <p className="text-academic-base font-serif text-academic-neutral-700 leading-relaxed mb-6">
-            Lead partners are the principal institutional supporters of the LGRI. They provide high level support to programme direction, credibility, and delivery capacity, helping ensure outputs are rigorous, balanced and consistent over time.
+            Lead partners are the principal institutional supporters of the LGR Initiative. They provide high level support to programme direction, credibility, and delivery capacity, helping ensure outputs are rigorous, balanced and consistent over time.
           </p>
           <div className="grid md:grid-cols-2 gap-6">
             {leadershipProfiles.filter((p) => p.partnerType === 'lead').map((profile) => (
@@ -182,7 +182,7 @@ export default function Leadership({ onNavigate: _onNavigate }: LeadershipProps)
           <h3 className="text-academic-xl font-display font-bold text-academic-charcoal mb-4">Editorial policy and independence</h3>
           <div className="academic-card p-6 md:p-8">
             <p className="text-academic-base font-serif text-academic-neutral-700 leading-relaxed mb-6">
-              The LGRI operates a clear separation between partner contribution and editorial decision making. Partner input is welcomed and used to improve accuracy, completeness and usefulness, including through suggestions, factual checks, and specialist review. Coalface remains accountable for the final content that appears on the site, including how sources are used, how methodology is applied, and how outputs are presented and updated over time. The Centre for Britain and Europe provides academic support to strengthen rigour, support transparency, and reinforce an evidence led approach.
+              The LGR Initiative operates a clear separation between partner contribution and editorial decision making. Partner input is welcomed and used to improve accuracy, completeness and usefulness, including through suggestions, factual checks, and specialist review. Coalface remains accountable for the final content that appears on the site, including how sources are used, how methodology is applied, and how outputs are presented and updated over time. The Centre for Britain and Europe provides academic support to strengthen rigour, support transparency, and reinforce an evidence led approach.
             </p>
             <p className="text-academic-base font-serif text-academic-neutral-700 leading-relaxed">
               Partners are encouraged to input, challenge and contribute within their area of expertise, including by informing research questions, highlighting sources, and participating in structured review. Editorial decisions, publication judgements, and final wording remain the responsibility of Coalface.

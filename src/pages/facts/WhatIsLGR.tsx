@@ -30,7 +30,7 @@ const audienceRoutes = [
   { id: 'residents', label: 'Residents', icon: User, route: '/beginners-guide', description: 'Understand how local government works and what’s changing in your area.' },
   { id: 'councillors', label: 'Councillors', icon: Landmark, route: '/first-100-days', description: 'Guidance for leaders and members in new authorities.' },
   { id: 'officers', label: 'Officers', icon: Briefcase, route: '/lgr-journey-2026', description: 'Interactive roadmap: milestones and what to do now.' },
-  { id: 'researchers', label: 'Researchers', icon: Search, route: '/materials', description: 'Research, reports, and evidence from the LGRI.' },
+  { id: 'researchers', label: 'Researchers', icon: Search, route: '/materials', description: 'Research, reports, and evidence from the LGR Initiative.' },
 ];
 
 export default function WhatIsLGR() {
@@ -67,7 +67,7 @@ export default function WhatIsLGR() {
         <ArticleStructuredData
           title="What is Local Government Reorganisation? (LGR)"
           description="What is changing, why it matters, and how it will reshape local decision making."
-          author="LGRI Editorial Team"
+          author="LGR Initiative Editorial Team"
           publishedDate={currentDate}
           updatedDate={currentDate}
           slug="what-is-lgr"

@@ -31,7 +31,7 @@ const dataSections = [
     id: 'councils',
     title: 'Council Map & Profiles',
     description: 'Interactive map and profiles of councils involved in Local Government Reorganisation across England.',
-    route: '/councils',
+    route: '/surrey/area-profile',
     icon: MapPin,
     color: 'from-emerald-500 to-teal-600'
   }

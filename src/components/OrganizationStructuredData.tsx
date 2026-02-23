@@ -6,11 +6,11 @@ export default function OrganizationStructuredData() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "LGRI",
+    "name": "LGR Initiative",
     "legalName": "Coalface Engagement Ltd",
     "alternateName": [
       "Local Government Reorganisation Initiative",
-      "LGRI by COALFACE", "LGR Series",
+      "LGR Initiative by COALFACE", "LGR Series",
       "COALFACE"
     ],
     "url": baseUrl,

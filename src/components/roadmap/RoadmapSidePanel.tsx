@@ -59,7 +59,7 @@ export default function RoadmapSidePanel({
         <button
           type="button"
           onClick={onClose}
-          className="p-2 rounded-lg text-academic-neutral-500 hover:bg-academic-warm hover:text-academic-charcoal"
+          className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-academic-neutral-500 hover:bg-academic-warm hover:text-academic-charcoal"
           aria-label="Close panel"
         >
           <X size={24} aria-hidden="true" />

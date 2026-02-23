@@ -4,6 +4,8 @@ import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import FAQSection from '../../components/FAQSection';
 import OrganizationStructuredData from '../../components/OrganizationStructuredData';
+import { useAboutPage } from '../../hooks/useAboutPage';
+import { sanitizeHtmlContent } from '../../lib/htmlSanitizer';
 
 interface AboutProps {
   onNavigate: (page: string) => void;
@@ -11,12 +13,13 @@ interface AboutProps {
 
 export default function About({ onNavigate: _onNavigate }: AboutProps) {
   const location = useLocation();
+  const { page: methodologyPage, loading: methodologyLoading } = useAboutPage('methodology');
   const aboutSections = [
     {
       id: 'overview',
       title: 'About This Research Programme',
       icon: <Info size={24} className="text-teal-700" />,
-      description: 'The LGRI is a dedicated research and analysis programme examining the 2024-2025 wave of English local government reorganisation, with particular focus on its implications for planning, governance, and development delivery.',
+      description: 'The LGR Initiative is a dedicated research and analysis programme examining the 2024-2025 wave of English local government reorganisation, with particular focus on its implications for planning, governance, and development delivery.',
       link: '/about',
       linkText: 'Learn more'
     },
@@ -24,7 +27,7 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
       id: 'leadership',
       title: 'Leadership',
       icon: <User size={24} className="text-teal-700" />,
-      description: 'Meet the leadership behind the LGRI: editorial accountability, research support and partner organisations. View profiles and full biographies.',
+      description: 'Meet the leadership behind the LGR Initiative: editorial accountability, research support and partner organisations. View profiles and full biographies.',
       link: '/about/leadership',
       linkText: 'Meet the team'
     },
@@ -33,40 +36,32 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
       title: 'Research Methodology',
       icon: <FileText size={24} className="text-teal-700" />,
       description: 'Learn about our research approach, data sources, analytical framework, and quality standards.',
-      link: '/about/methodology',
+      link: '/about/overview#methodology',
       linkText: 'View methodology'
     },
     {
       id: 'contribute',
       title: 'How to Contribute',
       icon: <MessageSquare size={24} className="text-teal-700" />,
-      description: 'Get involved in the LGRI by sharing your experience, suggesting topics, or providing data.',
-      link: '/about/contribute',
+      description: 'Get involved in the LGR Initiative by sharing your experience, suggesting topics, or providing data.',
+      link: '/about/contributors/contribute',
       linkText: 'Get involved'
     },
-    {
-      id: 'coalface',
-      title: 'About COALFACE',
-      icon: <Info size={24} className="text-teal-700" />,
-      description: 'Learn about COALFACE, the research and engagement practice behind the LGRI.',
-      link: '/about/coalface',
-      linkText: 'About COALFACE'
-    }
   ];
 
   return (
     <div className="bg-academic-cream min-h-screen">
       <MetaTags
-        title="About the LGRI - Research Programme Overview"
-        description="Learn about the LGRI research programme examining local government reorganisation and its implications for planning, governance, and development delivery."
-        keywords="LGRI, local government reorganisation, council reform research, COALFACE insights, research programme"
+        title="About the LGR Initiative - Research Programme Overview"
+        description="Learn about the LGR Initiative research programme examining local government reorganisation and its implications for planning, governance, and development delivery."
+        keywords="LGR Initiative, local government reorganisation, council reform research, COALFACE insights, research programme"
       />
       <OrganizationStructuredData />
       
       <PageBanner
         heroLabel="ABOUT"
-        heroTitle="About the LGRI"
-        heroSubtitle="The LGRI was first established as the LGR Series by Coalface in 2025, it has since expanded into a dedicated research programme examining local government reorganisation and its impact on planning, governance, and development delivery, attracting academic and corporate partners who share the same aspirations for LGR to be a success."
+        heroTitle="About the LGR Initiative"
+        heroSubtitle="The LGR Initiative was first established as the LGR Series by Coalface in 2025, it has since expanded into a dedicated research programme examining local government reorganisation and its impact on planning, governance, and development delivery, attracting academic and corporate partners who share the same aspirations for LGR to be a success."
         currentPath={location.pathname}
       />
 
@@ -85,7 +80,7 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
               </div>
               <div className="academic-prose space-y-4">
                 <p>
-                  The LGRI provides independent, governance led insight into local government reorganisation and devolution, with a clear focus on democratic leadership and community confidence.
+                  The LGR Initiative provides independent, governance led insight into local government reorganisation and devolution, with a clear focus on democratic leadership and community confidence.
                 </p>
                 <p>
                   It examines what works, what fails, and how changes in power, accountability and decision making shape the ability of elected representatives and communities to influence outcomes. The Initiative explores the implications for political leadership, planning, housing and service delivery, public trust and local economic decision making.
@@ -103,7 +98,7 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
               </h2>
               <div className="academic-prose space-y-4">
                 <p>
-                  The LGRI is a dedicated research and analysis programme examining the current wave of English local government reorganisation, initiated in 2024.
+                  The LGR Initiative is a dedicated research and analysis programme examining the current wave of English local government reorganisation, initiated in 2024.
                 </p>
                 <p>
                   It explores one of the most significant structural changes to local government in a generation, focusing on how new council arrangements affect governance, democratic legitimacy and delivery in practice. The Initiative is intended to support authorities, practitioners and stakeholders to understand both the opportunities created by reorganisation and the risks that can undermine confidence, performance and trust if governance is not designed and exercised well.
@@ -121,7 +116,7 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
               </h2>
               <div className="academic-prose space-y-4">
                 <p className="text-academic-xl font-serif italic text-academic-charcoal font-medium">
-                  At its core, the LGRI is driven by a single question:
+                  At its core, the LGR Initiative is driven by a single question:
                 </p>
                 <div className="bg-teal-50 border-l-4 border-teal-600 pl-6 pr-6 py-4 my-6">
                   <p className="text-academic-xl font-serif font-semibold text-academic-charcoal leading-relaxed">
@@ -144,7 +139,7 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
               </h2>
               <div className="academic-prose space-y-6">
                 <p>
-                  The three core themes of the LGRI act as analytical lenses on this central question.
+                  The three core themes of the LGR Initiative act as analytical lenses on this central question.
                 </p>
                 
                 <div className="space-y-6">
@@ -194,6 +189,76 @@ export default function About({ onNavigate: _onNavigate }: AboutProps) {
                 <p className="mt-6">
                   Taken together, these themes allow the Initiative to move beyond abstract debate and assess reorganisation on its real test: whether it improves the capacity of councils to govern democratically and deliver effectively in the environments they now operate in.
                 </p>
+              </div>
+            </section>
+
+            {/* Research Methodology Section */}
+            <section id="methodology" className="academic-card p-8 scroll-mt-24">
+              <div className="flex items-center gap-4 mb-6 pb-4 border-b border-academic-neutral-300">
+                <div className="w-12 h-12 bg-gradient-teal flex items-center justify-center flex-shrink-0">
+                  <FileText size={24} className="text-white" />
+                </div>
+                <h2 className="text-academic-sm font-display font-bold tracking-wider text-academic-charcoal">
+                  RESEARCH METHODOLOGY
+                </h2>
+              </div>
+              <div className="academic-prose">
+                {methodologyLoading ? (
+                  <div className="text-center py-8 text-academic-neutral-600">Loading...</div>
+                ) : methodologyPage ? (
+                  <div dangerouslySetInnerHTML={{ __html: sanitizeHtmlContent(methodologyPage.content) }} />
+                ) : (
+                  <>
+                    <h3 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-4">
+                      Research Approach
+                    </h3>
+                    <p className="mb-6">
+                      The LGR Initiative is built on COALFACE's Council Scanner™ methodology, which provides systematic analysis of planning authority governance, decision-making patterns, and institutional behaviour across England.
+                    </p>
+
+                    <h3 className="text-academic-xl font-display font-bold text-academic-charcoal mb-3 mt-6">
+                      Core Data Sources
+                    </h3>
+                    <ul className="list-disc pl-6 space-y-2 mb-6">
+                      <li>Planning committee meeting records and voting patterns</li>
+                      <li>Officer delegation schemes and decision-making authority</li>
+                      <li>Council constitutional documents and governance frameworks</li>
+                      <li>Strategic planning policies and local plan timelines</li>
+                      <li>Political composition and electoral cycle analysis</li>
+                      <li>Performance data on application processing and outcomes</li>
+                    </ul>
+
+                    <h3 className="text-academic-xl font-display font-bold text-academic-charcoal mb-3 mt-6">
+                      Analytical Framework
+                    </h3>
+                    <p className="mb-4">
+                      Our analysis examines how governance structures, political conditions, and institutional capacity interact to shape planning outcomes. We focus on:
+                    </p>
+                    <ul className="list-disc pl-6 space-y-2 mb-6">
+                      <li>Decision-making consistency and transparency</li>
+                      <li>Governance stability and political risk factors</li>
+                      <li>Officer capacity and delegation patterns</li>
+                      <li>Committee behaviour and member engagement</li>
+                      <li>Digital infrastructure and system integration</li>
+                    </ul>
+
+                    <h3 className="text-academic-xl font-display font-bold text-academic-charcoal mb-3 mt-6">
+                      Quality Standards
+                    </h3>
+                    <p className="mb-6">
+                      All analysis is grounded in publicly available data, cross-referenced across multiple sources, and validated against official records. We prioritise empirical evidence over anecdote, and clearly distinguish between observation, analysis, and interpretation.
+                    </p>
+
+                    <div className="bg-teal-50 border-l-4 border-teal-700 p-6 mt-8">
+                      <h4 className="font-display font-bold text-academic-charcoal mb-2">
+                        Transparency and Reproducibility
+                      </h4>
+                      <p className="text-academic-neutral-700">
+                        We are committed to transparency in our research methods. All data sources are cited, and our analytical frameworks are clearly explained to enable others to understand and build upon our work.
+                      </p>
+                    </div>
+                  </>
+                )}
               </div>
             </section>
 

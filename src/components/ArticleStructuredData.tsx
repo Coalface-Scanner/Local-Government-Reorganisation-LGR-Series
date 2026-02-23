@@ -75,15 +75,15 @@ export default function ArticleStructuredData({
     "headline": title,
     "description": description,
     "author": {
-      "@type": author === "LGRI Editorial Team" || author === "Coalface Engagement" || author === "Local Government Reorganisation" ? "Organization" : "Person",
+      "@type": author === "LGR Initiative Editorial Team" || author === "Coalface Engagement" || author === "Local Government Reorganisation" ? "Organization" : "Person",
       "name": author
     },
     "datePublished": publishedDate,
     "dateModified": updatedDate || publishedDate,
     "publisher": {
       "@type": "Organization",
-      "name": "LGRI",
-      "alternateName": ["LGRI by COALFACE", "Local Government Reorganisation Initiative", "COALFACE"],
+      "name": "LGR Initiative",
+      "alternateName": ["LGR Initiative by COALFACE", "Local Government Reorganisation Initiative", "COALFACE"],
       "legalName": "Coalface Engagement Ltd",
       "foundingDate": "2019",
       "address": {

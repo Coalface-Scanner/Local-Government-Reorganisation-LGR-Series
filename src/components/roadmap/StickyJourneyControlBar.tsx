@@ -162,7 +162,7 @@ export default function StickyJourneyControlBar({
                 <button
                   type="button"
                   onClick={() => setShowSearch(false)}
-                  className="p-2 text-academic-neutral-500 hover:text-academic-charcoal"
+                  className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-academic-neutral-500 hover:text-academic-charcoal"
                   aria-label="Close search"
                 >
                   <X size={18} aria-hidden="true" />
@@ -172,7 +172,7 @@ export default function StickyJourneyControlBar({
               <button
                 type="button"
                 onClick={() => setShowSearch(true)}
-                className="p-2 rounded-lg text-academic-neutral-600 hover:bg-academic-warm hover:text-academic-charcoal"
+                className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-academic-neutral-600 hover:bg-academic-warm hover:text-academic-charcoal"
                 aria-label="Open search"
               >
                 <Search size={18} aria-hidden="true" />

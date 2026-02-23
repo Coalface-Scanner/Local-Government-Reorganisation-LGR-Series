@@ -1,4 +1,4 @@
-import { Menu, X, ChevronDown, Search, FileText } from 'lucide-react';
+import { Menu, X, ChevronDown, Search, FileText, Twitter, Mail } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
@@ -32,14 +32,11 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
   const toolsDropdownRef = useRef<HTMLDivElement>(null);
   const aboutDropdownRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const localGovernmentRef = useRef<HTMLHeadingElement>(null);
-  const reorganisationRef = useRef<HTMLHeadingElement>(null);
   const menuBarRef = useRef<HTMLDivElement>(null);
   const topBannerRef = useRef<HTMLDivElement>(null);
   const mainContainerRef = useRef<HTMLDivElement>(null);
   const logoContainerRef = useRef<HTMLDivElement>(null);
   const logoImageRef = useRef<HTMLImageElement>(null);
-  const highRedLogoRef = useRef<HTMLImageElement>(null);
   const navRef = useRef<HTMLElement>(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -61,47 +58,6 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
 
     return () => clearInterval(interval);
   }, []);
-
-  // Match Reorganisation width to Local Government width and align first/last letters
-  useEffect(() => {
-    const matchWidths = () => {
-      if (localGovernmentRef.current && reorganisationRef.current) {
-        const targetWidth = localGovernmentRef.current.offsetWidth;
-        reorganisationRef.current.style.width = `${targetWidth}px`;
-        
-        // Calculate letter spacing to make both rows align at ends
-        const reorgText = reorganisationRef.current.textContent || '';
-        
-        // Get computed styles
-        const reorgStyle = window.getComputedStyle(reorganisationRef.current);
-        
-        // Calculate current widths without letter spacing
-        const reorgChars = reorgText.length;
-        
-        // Adjust letter spacing to match widths
-        
-        // Calculate required letter spacing for reorganisation to match width
-        const reorgCurrentLS = parseFloat(reorgStyle.letterSpacing) || 0;
-        const reorgWidth = reorganisationRef.current.scrollWidth;
-        
-        if (reorgWidth < targetWidth && reorgChars > 0) {
-          const additionalSpacing = (targetWidth - reorgWidth) / (reorgChars - 1);
-          const newLS = reorgCurrentLS + additionalSpacing;
-          reorganisationRef.current.style.letterSpacing = `${newLS}px`;
-        }
-      }
-    };
-
-    // Use requestAnimationFrame to ensure DOM is ready
-    requestAnimationFrame(() => {
-      matchWidths();
-      setTimeout(matchWidths, 100); // Also run after a short delay to ensure fonts loaded
-    });
-    
-    window.addEventListener('resize', matchWidths);
-    return () => window.removeEventListener('resize', matchWidths);
-  }, []);
-
 
   const navItems = [
     { id: 'learn', label: 'LEARN', path: '/learn' },
@@ -175,9 +131,9 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
 
   // Section active states for 6-hub structure
   const isLearnSection = location.pathname === '/learn' || location.pathname.startsWith('/what-is-lgr') || location.pathname.startsWith('/beginners-guide') || location.pathname.startsWith('/questions-and-answers') || location.pathname.startsWith('/glossary') || location.pathname.startsWith('/first-100-days');
-  const isDiscoverSection = location.pathname === '/discover' || location.pathname.startsWith('/topics') || location.pathname.startsWith('/reorganisations') || location.pathname.startsWith('/councils') || location.pathname.startsWith('/council-profiles') || location.pathname.startsWith('/surrey');
+  const isDiscoverSection = location.pathname === '/discover' || location.pathname.startsWith('/topics') || location.pathname.startsWith('/reorganisations') || location.pathname.startsWith('/podcast');
   const isResearchSection = location.pathname === '/research' || location.pathname.startsWith('/facts-and-data') || location.pathname.startsWith('/facts') || location.pathname.startsWith('/library') || location.pathname.startsWith('/lessons');
-  const isInsightsSection = location.pathname.startsWith('/insights') || location.pathname.startsWith('/first-100-days') || location.pathname.startsWith('/news') || location.pathname.startsWith('/podcast');
+  const isInsightsSection = location.pathname.startsWith('/insights') || location.pathname.startsWith('/first-100-days') || location.pathname.startsWith('/news') || location.pathname.startsWith('/surrey');
   const isToolsSection = location.pathname.startsWith('/tools') || location.pathname.startsWith('/roadmap') || location.pathname.startsWith('/library');
   const isAboutSection = location.pathname.startsWith('/about') || location.pathname.startsWith('/contact') || location.pathname.startsWith('/partnerships');
 
@@ -195,17 +151,19 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
       >
         Skip to main content
       </a>
-      <div ref={topBannerRef} className="border-b border-academic-neutral-300 bg-academic-warm" style={{ padding: 0, margin: 0 }}>
+      <div ref={topBannerRef} className="border-b border-teal-900 bg-teal-800 py-0.5" style={{ paddingLeft: 0, paddingRight: 0, margin: 0 }}>
         <div className="layout-container relative" style={{ paddingTop: 0, paddingBottom: 0 }}>
-          <div className="flex justify-between items-center text-[0.625rem] md:text-[0.6875rem] tracking-wider text-academic-neutral-700 font-display font-medium" style={{ lineHeight: '1.1', margin: 0, padding: 0 }}>
-            <div className="hidden md:block" style={{ lineHeight: '1.1', margin: 0, padding: 0 }}>EST. 2025 | A <a href="https://www.coalfaceengagement.co.uk" target="_blank" rel="noopener noreferrer" className="hover:text-academic-charcoal transition-colors underline">COALFACE</a> Insight Project</div>
+          <div className="flex justify-between items-center text-[0.625rem] md:text-[0.6875rem] tracking-wider text-white/95 font-display font-medium" style={{ lineHeight: '1.1', margin: 0, padding: 0 }}>
+            <div className="hidden md:block" style={{ lineHeight: '1.1', margin: 0, padding: 0 }}>EST. 2025 | By{' '}
+              <a href="https://www.coalfaceengagement.co.uk" target="_blank" rel="noopener noreferrer" className="text-white hover:text-teal-200 transition-colors underline">COALFACE</a>
+            </div>
             <div className="md:hidden text-[0.5rem]" style={{ lineHeight: '1.1', margin: 0, padding: 0 }}>EST. 2025</div>
-            <div className="hidden sm:block text-[0.625rem] md:text-[0.6875rem] font-display font-medium text-academic-neutral-800 text-center absolute left-1/2 -translate-x-1/2" style={{ lineHeight: '1.1' }}>{currentDate || 'Loading...'}</div>
+            <div className="hidden sm:block text-[0.625rem] md:text-[0.6875rem] font-display font-medium text-white/95 text-center absolute left-1/2 -translate-x-1/2" style={{ lineHeight: '1.1' }}>{currentDate || 'Loading...'}</div>
             <div className="flex gap-2 sm:gap-3 text-[0.5rem] sm:text-[0.625rem]" style={{ margin: 0, padding: 0 }}>
               <Link
                 to="/admin/login"
                 aria-label="Members login"
-                className="hover:text-academic-charcoal transition-colors px-1.5 flex items-center justify-center"
+                className="text-white hover:text-teal-200 transition-colors px-1.5 flex items-center justify-center"
                 style={{ paddingTop: '2px', paddingBottom: '2px', minHeight: 'auto', lineHeight: '1.1', margin: 0 }}
               >
                 MEMBERS LOGIN
@@ -216,365 +174,56 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
       </div>
 
       <div ref={mainContainerRef} className="layout-container" style={{ paddingTop: 0, paddingBottom: 0 }}>
-        <div 
+        <div
           ref={logoContainerRef}
-          className="flex items-start justify-center border-b border-academic-neutral-300 py-1 sm:py-2" 
+          className="flex items-center justify-between border-b border-academic-neutral-300 py-2 sm:py-3 gap-4"
           style={{ margin: 0, marginTop: '-2px' }}
         >
           <Link
             to="/"
-            aria-label="Go to homepage"
-            className="flex items-start hover:opacity-90 transition-opacity"
-            style={{ margin: 0, padding: 0, gap: '0.5rem' }}
+            aria-label="LGR Initiative - Home"
+            className="flex-shrink-0 hover:opacity-90 transition-opacity"
+            style={{ margin: 0, padding: 0 }}
           >
-            {/* LGR High Red Logo */}
-            <div className="flex-shrink-0 flex flex-col items-center" style={{ margin: 0, padding: 0 }}>
-              <img 
-                ref={highRedLogoRef}
-                src="/LGR-Banner-Masthead.png" 
-                alt="LGRI Logo" 
-                className="lgr-highred-logo"
-                loading="eager"
-                style={{ 
-                  display: 'block', 
-                  margin: 0, 
-                  padding: 0, 
-                  height: '32px', 
-                  width: 'auto', 
-                  maxHeight: '32px',
-                  maxWidth: 'none',
-                  objectFit: 'contain'
-                }}
-              />
-              <span className="text-[0.625rem] sm:text-[0.75rem] md:text-[0.875rem] font-display font-bold text-academic-charcoal tracking-wider uppercase mt-1 leading-tight">
-                Series
-              </span>
-            </div>
-            
-            {/* LGR Logo */}
-            <div 
-              className="flex-shrink-0 flex items-center overflow-hidden relative lgr-logo-container" 
-              style={{ 
-                margin: 0, 
-                padding: 0, 
-                height: '48px', 
-                maxHeight: '48px',
-                width: 'auto',
-                minWidth: 0
-              }}
+            <img
+              ref={logoImageRef}
+              src="/LGR-Banner-Masthead.png"
+              alt="LGR Initiative"
+              className="nav-header-masthead-logo h-[51px] sm:h-[61px] md:h-[71px] w-auto max-h-[71px] object-contain"
+              loading="eager"
+              style={{ margin: 0, padding: 0, display: 'block' }}
+            />
+          </Link>
+          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+            <Link
+              to="/glossary"
+              className="px-3 py-1.5 text-academic-neutral-700 hover:text-teal-700 text-[0.625rem] font-display font-bold tracking-wider transition-colors whitespace-nowrap"
             >
-              <img 
-                ref={(el) => {
-                  logoImageRef.current = el;
-                }}
-                src="/LGR-Banner-Masthead.png" 
-                alt="LGRI Logo" 
-                className="lgr-main-logo"
-                loading="eager"
-                style={{ 
-                  display: 'block', 
-                  margin: 0, 
-                  padding: 0, 
-                  height: '48px', 
-                  width: 'auto', 
-                  maxHeight: '48px', 
-                  maxWidth: 'none',
-                  objectFit: 'contain',
-                  flexShrink: 0
-                }}
-              />
-            </div>
-            
-            {/* Text Stack */}
-            <div className="flex flex-col justify-center gap-1">
-              <h1 
-                ref={localGovernmentRef}
-                className="text-base sm:text-lg md:text-xl font-display font-black text-academic-charcoal whitespace-nowrap"
-                style={{ letterSpacing: '0.05em', lineHeight: '1', margin: 0, padding: 0 }}
-              >
-                Local Government
-              </h1>
-              <h2 
-                ref={reorganisationRef}
-                className="text-base sm:text-lg md:text-xl text-teal-700 whitespace-nowrap"
-                style={{ textAlign: 'left', lineHeight: '1', margin: 0, padding: 0 }}
-              >
-                <span className="font-serif italic">Reorganisation</span>{' '}
-                <span className="font-display not-italic">|</span>{' '}
-                <span className="font-serif italic">LGRI</span>
-              </h2>
-            </div>
-          </Link>
-        </div>
-
-        <div ref={menuBarRef} className="hidden md:flex justify-center items-center space-x-0.5 flex-nowrap" style={{ paddingTop: 0, paddingBottom: '1px', margin: 0, marginTop: '-1px' }}>
-          {navItems.map((item) => {
-            if (item.id === 'learn') {
-              return (
-                <div key={item.id} ref={learnDropdownRef} className="relative" onMouseEnter={() => setLearnDropdownOpen(true)} onMouseLeave={() => setLearnDropdownOpen(false)}>
-                  <Link to={item.path} className={`px-2 py-1.5 text-[0.625rem] font-display font-bold tracking-wider transition-all duration-200 min-h-[24px] flex items-center justify-center gap-0.5 whitespace-nowrap ${isLearnSection ? 'text-teal-600 border-b-2 border-teal-500' : 'text-academic-neutral-700 hover:text-academic-charcoal'}`}>
-                    {item.label}
-                    <ChevronDown size={12} className={`transition-transform duration-200 ${learnDropdownOpen ? 'rotate-180' : ''}`} />
-                  </Link>
-                  {learnDropdownOpen && (
-                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 bg-white/95 backdrop-blur-sm rounded-lg shadow-xl border border-neutral-200/50 py-2 min-w-[200px] z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                      <Link to="/what-is-lgr" className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${location.pathname.startsWith('/what-is-lgr') ? 'text-teal-600 bg-teal-50' : 'text-academic-neutral-700 hover:bg-academic-warm'}`}>What is LGR</Link>
-                      <Link to="/beginners-guide" className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${location.pathname.startsWith('/beginners-guide') ? 'text-teal-600 bg-teal-50' : 'text-academic-neutral-700 hover:bg-academic-warm'}`}>Beginners guide</Link>
-                      <Link to="/questions-and-answers" className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${location.pathname.startsWith('/questions-and-answers') ? 'text-teal-600 bg-teal-50' : 'text-academic-neutral-700 hover:bg-academic-warm'}`}>Questions and answers</Link>
-                      <Link to="/glossary" className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${location.pathname.startsWith('/glossary') ? 'text-teal-600 bg-teal-50' : 'text-academic-neutral-700 hover:bg-academic-warm'}`}>Glossary</Link>
-                      <Link to="/first-100-days" className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${location.pathname.startsWith('/first-100-days') ? 'text-teal-600 bg-teal-50' : 'text-academic-neutral-700 hover:bg-academic-warm'}`}>First 100 Days</Link>
-                    </div>
-                  )}
-                </div>
-              );
-            }
-            if (item.id === 'discover') {
-              return (
-                <div key={item.id} ref={discoverDropdownRef} className="relative" onMouseEnter={() => setDiscoverDropdownOpen(true)} onMouseLeave={() => setDiscoverDropdownOpen(false)}>
-                  <Link to={item.path} className={`px-2 py-1.5 text-[0.625rem] font-display font-bold tracking-wider transition-all duration-200 min-h-[24px] flex items-center justify-center gap-0.5 whitespace-nowrap ${isDiscoverSection ? 'text-teal-600 border-b-2 border-teal-500' : 'text-academic-neutral-700 hover:text-academic-charcoal'}`}>
-                    {item.label}
-                    <ChevronDown size={12} className={`transition-transform duration-200 ${discoverDropdownOpen ? 'rotate-180' : ''}`} />
-                  </Link>
-                  {discoverDropdownOpen && (
-                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 bg-white/95 backdrop-blur-sm rounded-lg shadow-xl border border-neutral-200/50 py-2 min-w-[200px] z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                      <Link to="/topics" className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${location.pathname.startsWith('/topics') ? 'text-teal-600 bg-teal-50' : 'text-academic-neutral-700 hover:bg-academic-warm'}`}>Topics</Link>
-                      <Link to="/reorganisations" className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${location.pathname.startsWith('/reorganisations') ? 'text-teal-600 bg-teal-50' : 'text-academic-neutral-700 hover:bg-academic-warm'}`}>Reorganisations</Link>
-                      <Link to="/councils" className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${location.pathname.startsWith('/councils') ? 'text-teal-600 bg-teal-50' : 'text-academic-neutral-700 hover:bg-academic-warm'}`}>Councils map</Link>
-                      <Link to="/council-profiles" className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${location.pathname.startsWith('/council-profiles') ? 'text-teal-600 bg-teal-50' : 'text-academic-neutral-700 hover:bg-academic-warm'}`}>Council profiles</Link>
-                      <Link to="/surrey" className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${location.pathname.startsWith('/surrey') ? 'text-teal-600 bg-teal-50' : 'text-academic-neutral-700 hover:bg-academic-warm'}`}>Surrey</Link>
-                    </div>
-                  )}
-                </div>
-              );
-            }
-            if (item.id === 'research') {
-              return (
-                <div key={item.id} ref={researchDropdownRef} className="relative" onMouseEnter={() => setResearchDropdownOpen(true)} onMouseLeave={() => setResearchDropdownOpen(false)}>
-                  <Link to={item.path} className={`px-2 py-1.5 text-[0.625rem] font-display font-bold tracking-wider transition-all duration-200 min-h-[24px] flex items-center justify-center gap-0.5 whitespace-nowrap ${isResearchSection ? 'text-teal-600 border-b-2 border-teal-500' : 'text-academic-neutral-700 hover:text-academic-charcoal'}`}>
-                    {item.label}
-                    <ChevronDown size={12} className={`transition-transform duration-200 ${researchDropdownOpen ? 'rotate-180' : ''}`} />
-                  </Link>
-                  {researchDropdownOpen && (
-                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 bg-white/95 backdrop-blur-sm rounded-lg shadow-xl border border-neutral-200/50 py-2 min-w-[220px] z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                      <Link to="/facts-and-data" className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${location.pathname === '/facts-and-data' ? 'text-teal-600 bg-teal-50' : 'text-academic-neutral-700 hover:bg-academic-warm'}`}>Facts and data</Link>
-                      <Link to="/facts/key-facts" className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${location.pathname.startsWith('/facts/key-facts') ? 'text-teal-600 bg-teal-50' : 'text-academic-neutral-700 hover:bg-academic-warm'}`}>Key facts</Link>
-                      <Link to="/library" className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${location.pathname.startsWith('/library') ? 'text-teal-600 bg-teal-50' : 'text-academic-neutral-700 hover:bg-academic-warm'}`}>Library</Link>
-                      <Link to="/lessons" className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${location.pathname.startsWith('/lessons') ? 'text-teal-600 bg-teal-50' : 'text-academic-neutral-700 hover:bg-academic-warm'}`}>Lessons</Link>
-                    </div>
-                  )}
-                </div>
-              );
-            }
-            if (item.id === 'insights') {
-              return (
-                <div
-                  key={item.id}
-                  ref={insightsDropdownRef}
-                  className="relative"
-                  onMouseEnter={() => setInsightsDropdownOpen(true)}
-                  onMouseLeave={() => setInsightsDropdownOpen(false)}
-                >
-                  <Link
-                    to={item.path}
-                    className={`px-2 py-1.5 text-[0.625rem] font-display font-bold tracking-wider transition-all duration-200 min-h-[24px] flex items-center justify-center gap-0.5 whitespace-nowrap ${
-                      isInsightsSection
-                        ? 'text-teal-600 border-b-2 border-teal-500'
-                        : 'text-academic-neutral-700 hover:text-academic-charcoal'
-                    }`}
-                  >
-                    {item.label}
-                    <ChevronDown 
-                      size={12} 
-                      className={`transition-transform duration-200 ${insightsDropdownOpen ? 'rotate-180' : ''}`}
-                    />
-                  </Link>
-                  
-                  {insightsDropdownOpen && (
-                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 bg-white/95 backdrop-blur-sm rounded-lg shadow-xl border border-neutral-200/50 py-2 min-w-[200px] z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                      <Link to="/insights" className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${location.pathname === '/insights' ? 'text-teal-600 bg-teal-50' : 'text-academic-neutral-700 hover:bg-academic-warm'}`}>All Insights</Link>
-                      <Link to="/insights/reports" className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${location.pathname.startsWith('/insights/reports') ? 'text-teal-600 bg-teal-50' : 'text-academic-neutral-700 hover:bg-academic-warm'}`}>Reports</Link>
-                      <Link to="/news" className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${location.pathname.startsWith('/news') ? 'text-teal-600 bg-teal-50' : 'text-academic-neutral-700 hover:bg-academic-warm'}`}>News</Link>
-                      <Link to="/podcast" className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${location.pathname.startsWith('/podcast') ? 'text-teal-600 bg-teal-50' : 'text-academic-neutral-700 hover:bg-academic-warm'}`}>Podcast</Link>
-                    </div>
-                  )}
-                </div>
-              );
-            }
-            if (item.id === 'tools') {
-              return (
-                <div key={item.id} ref={toolsDropdownRef} className="relative" onMouseEnter={() => setToolsDropdownOpen(true)} onMouseLeave={() => setToolsDropdownOpen(false)}>
-                  <Link to={item.path} className={`px-2 py-1.5 text-[0.625rem] font-display font-bold tracking-wider transition-all duration-200 min-h-[24px] flex items-center justify-center gap-0.5 whitespace-nowrap ${isToolsSection ? 'text-teal-600 border-b-2 border-teal-500' : 'text-academic-neutral-700 hover:text-academic-charcoal'}`}>
-                    {item.label}
-                    <ChevronDown size={12} className={`transition-transform duration-200 ${toolsDropdownOpen ? 'rotate-180' : ''}`} />
-                  </Link>
-                  {toolsDropdownOpen && (
-                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 bg-white/95 backdrop-blur-sm rounded-lg shadow-xl border border-neutral-200/50 py-2 min-w-[200px] z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                      <Link to="/roadmap" className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${location.pathname.startsWith('/roadmap') ? 'text-teal-600 bg-teal-50' : 'text-academic-neutral-700 hover:bg-academic-warm'}`}>Roadmap</Link>
-                      <Link to="/library" className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${location.pathname.startsWith('/library') ? 'text-teal-600 bg-teal-50' : 'text-academic-neutral-700 hover:bg-academic-warm'}`}>Library</Link>
-                      <Link to="/surrey/election-tracker" className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${location.pathname.startsWith('/surrey/election-tracker') ? 'text-teal-600 bg-teal-50' : 'text-academic-neutral-700 hover:bg-academic-warm'}`}>Surrey election tools</Link>
-                      <Link to="/first-100-days" className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${location.pathname.startsWith('/first-100-days') ? 'text-teal-600 bg-teal-50' : 'text-academic-neutral-700 hover:bg-academic-warm'}`}>First 100 Days</Link>
-                    </div>
-                  )}
-                </div>
-              );
-            }
-            if (item.id === 'about') {
-              return (
-                <div
-                  key={item.id}
-                  ref={aboutDropdownRef}
-                  className="relative"
-                  onMouseEnter={() => setAboutDropdownOpen(true)}
-                  onMouseLeave={() => setAboutDropdownOpen(false)}
-                >
-                  <Link
-                    to={item.path}
-                    className={`px-2 py-1.5 text-[0.625rem] font-display font-bold tracking-wider transition-all duration-200 min-h-[24px] flex items-center justify-center gap-0.5 whitespace-nowrap ${
-                      isAboutSection
-                        ? 'text-teal-600 border-b-2 border-teal-500'
-                        : 'text-academic-neutral-700 hover:text-academic-charcoal'
-                    }`}
-                  >
-                    {item.label}
-                    <ChevronDown 
-                      size={12} 
-                      className={`transition-transform duration-200 ${aboutDropdownOpen ? 'rotate-180' : ''}`}
-                    />
-                  </Link>
-                  
-                  {aboutDropdownOpen && (
-                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 bg-white/95 backdrop-blur-sm rounded-lg shadow-xl border border-neutral-200/50 py-2 min-w-[200px] z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                      <Link
-                        to="/about"
-                        className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
-                          location.pathname === '/about'
-                            ? 'text-teal-600 bg-teal-50'
-                            : 'text-academic-neutral-700 hover:bg-academic-warm'
-                        }`}
-                      >
-                        About the LGRI
-                      </Link>
-                      <Link
-                        to="/about/leadership"
-                        className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
-                          location.pathname.startsWith('/about/leadership')
-                            ? 'text-teal-600 bg-teal-50'
-                            : 'text-academic-neutral-700 hover:bg-academic-warm'
-                        }`}
-                      >
-                        Leadership
-                      </Link>
-                      <Link
-                        to="/about/contributors"
-                        className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
-                          location.pathname === '/about/contributors'
-                            ? 'text-teal-600 bg-teal-50'
-                            : 'text-academic-neutral-700 hover:bg-academic-warm'
-                        }`}
-                      >
-                        Contributors
-                      </Link>
-                      <Link
-                        to="/contact"
-                        className={`block px-4 py-2 text-academic-xs font-display font-bold tracking-wider transition-colors ${
-                          location.pathname === '/contact'
-                            ? 'text-teal-600 bg-teal-50'
-                            : 'text-academic-neutral-700 hover:bg-academic-warm'
-                        }`}
-                      >
-                        Contact
-                      </Link>
-                    </div>
-                  )}
-                </div>
-              );
-            }
-            return null;
-          })}
-          
-          {/* Search Button */}
-          <div className="relative ml-2">
-            {showSearch ? (
-              <div className="relative" onMouseLeave={() => {
-                if (!searchQuery.trim()) {
-                  setTimeout(() => {
-                    setShowSearch(false);
-                    setShowSearchDropdown(false);
-                  }, 200);
-                }
-              }}>
-                <form onSubmit={handleSearchSubmit} className="flex items-center gap-1">
-                  <input
-                    ref={searchInputRef}
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyDown={handleSearchKeyDown}
-                    onFocus={() => setShowSearchDropdown(true)}
-                    onBlur={(e) => {
-                      // Don't close if clicking on dropdown
-                      const relatedTarget = e.relatedTarget as Node;
-                      const dropdown = e.currentTarget.parentElement?.querySelector('[data-search-dropdown]');
-                      if (dropdown && dropdown.contains(relatedTarget)) {
-                        return;
-                      }
-                      if (!searchQuery.trim()) {
-                        setTimeout(() => {
-                          setShowSearch(false);
-                          setShowSearchDropdown(false);
-                        }, 200);
-                      }
-                    }}
-                    placeholder="Search..."
-                    className="px-2 py-1 text-[0.625rem] font-display font-bold tracking-wider border border-academic-neutral-300 rounded focus:outline-none focus:border-teal-500 bg-white text-academic-charcoal min-w-[120px]"
-                  />
-                  <button
-                    type="submit"
-                    className="px-2 py-1 text-academic-neutral-700 hover:text-teal-600 transition-colors"
-                    aria-label="Submit search"
-                  >
-                    <Search size={14} />
-                  </button>
-                </form>
-                {/* Search Dropdown */}
-                {showSearchDropdown && (
-                  <div 
-                    data-search-dropdown
-                    className="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-xl border border-academic-neutral-200 py-2 min-w-[200px] z-50 animate-in fade-in slide-in-from-top-2 duration-200"
-                    onMouseDown={(e) => e.preventDefault()}
-                  >
-                    <Link
-                      to="/library"
-                      onClick={() => {
-                        setShowSearch(false);
-                        setShowSearchDropdown(false);
-                        setSearchQuery('');
-                      }}
-                      className="flex items-center gap-3 px-4 py-2 text-academic-xs font-display font-bold tracking-wider text-academic-neutral-700 hover:bg-teal-50 hover:text-teal-700 transition-colors"
-                    >
-                      <FileText size={14} className="text-teal-600" />
-                      <span>Materials Library</span>
-                    </Link>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <button
-                onClick={() => setShowSearch(true)}
-                className="px-2 py-1.5 text-academic-neutral-700 hover:text-academic-charcoal transition-colors min-h-[24px] flex items-center justify-center"
-                aria-label="Open search"
-              >
-                <Search size={14} />
-              </button>
-            )}
+              Glossary
+            </Link>
+            <Link
+              to="/subscribe"
+              className="px-3 py-1.5 bg-teal-700 hover:bg-teal-800 text-white text-[0.625rem] font-display font-bold tracking-wider rounded transition-colors whitespace-nowrap"
+            >
+              Subscribe
+            </Link>
+            <a
+              href="https://x.com/LGRSeries"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-8 h-8 flex items-center justify-center bg-teal-700 hover:bg-teal-800 text-white rounded transition-colors"
+              aria-label="Follow on X (Twitter)"
+            >
+              <Twitter size={16} />
+            </a>
+            <a
+              href="mailto:office@lgr-initiative.co.uk"
+              className="w-8 h-8 flex items-center justify-center bg-teal-700 hover:bg-teal-800 text-white rounded transition-colors"
+              aria-label="Email us"
+            >
+              <Mail size={16} />
+            </a>
           </div>
-          
-          <Link
-            to="/subscribe"
-            className="ml-2 px-3 py-1.5 bg-gradient-to-r from-teal-700 to-teal-600 hover:from-teal-800 hover:to-teal-700 text-white text-[0.625rem] font-display font-bold tracking-wider transition-all min-h-[24px] flex items-center justify-center whitespace-nowrap rounded-xl shadow-md hover:shadow-xl hover:shadow-teal-500/25 hover:scale-[1.02] active:scale-[0.98]"
-          >
-            SUBSCRIBE
-          </Link>
         </div>
 
         <div className="md:hidden py-1.5">
@@ -621,11 +270,12 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
                       </button>
                       {discoverMobileExpanded && (
                         <div className="bg-academic-warm border-b border-academic-neutral-200">
-                          <Link to="/topics" onClick={handleNavClick} className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname.startsWith('/topics') ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>Topics</Link>
+                          <Link to="/topics" onClick={handleNavClick} className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname === '/topics' ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>Topics</Link>
+                          <Link to="/topics/governance-and-reform" onClick={handleNavClick} className={`block px-8 pl-12 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname.startsWith('/topics/governance-and-reform') ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>Governance and Reform</Link>
+                          <Link to="/topics/democratic-legitimacy" onClick={handleNavClick} className={`block px-8 pl-12 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname.startsWith('/topics/democratic-legitimacy') ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>Democratic Legitimacy and Statecraft</Link>
+                          <Link to="/topics/statecraft-and-system-design" onClick={handleNavClick} className={`block px-8 pl-12 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname.startsWith('/topics/statecraft-and-system-design') ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>System Design</Link>
                           <Link to="/reorganisations" onClick={handleNavClick} className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname.startsWith('/reorganisations') ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>Reorganisations</Link>
-                          <Link to="/councils" onClick={handleNavClick} className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname.startsWith('/councils') ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>Councils map</Link>
-                          <Link to="/council-profiles" onClick={handleNavClick} className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname.startsWith('/council-profiles') ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>Council profiles</Link>
-                          <Link to="/surrey" onClick={handleNavClick} className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname.startsWith('/surrey') ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>Surrey</Link>
+                          <Link to="/podcast" onClick={handleNavClick} className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname.startsWith('/podcast') || location.pathname.startsWith('/interviews') ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>Podcast</Link>
                         </div>
                       )}
                     </div>
@@ -672,7 +322,11 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
                           <Link to="/insights/reports" onClick={handleNavClick} className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname.startsWith('/insights/reports') ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>Reports</Link>
                           <Link to="/insights" onClick={handleNavClick} className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname.startsWith('/insights/') && !location.pathname.startsWith('/insights/reports') ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>Articles</Link>
                           <Link to="/news" onClick={handleNavClick} className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname.startsWith('/news') ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>News</Link>
-                          <Link to="/podcast" onClick={handleNavClick} className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname.startsWith('/podcast') || location.pathname.startsWith('/interviews') ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>Podcast</Link>
+                          <Link to="/surrey" onClick={handleNavClick} className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname === '/surrey' ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>Surrey LGR Hub</Link>
+                          <Link to="/surrey/lessons" onClick={handleNavClick} className={`block px-8 pl-12 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname === '/surrey/lessons' ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>Lessons</Link>
+                          <Link to="/surrey/area-profile" onClick={handleNavClick} className={`block px-8 pl-12 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname.startsWith('/surrey/area-profile') ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>Area profile</Link>
+                          <Link to="/surrey/election-tracker" onClick={handleNavClick} className={`block px-8 pl-12 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname.startsWith('/surrey/election-tracker') ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>Election tracker</Link>
+                          <Link to="/surrey/hub" onClick={handleNavClick} className={`block px-8 pl-12 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname.startsWith('/surrey/hub') ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>Hub</Link>
                         </div>
                       )}
                     </div>
@@ -689,7 +343,6 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
                         <div className="bg-academic-warm border-b border-academic-neutral-200">
                           <Link to="/roadmap" onClick={handleNavClick} className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname.startsWith('/roadmap') ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>Roadmap</Link>
                           <Link to="/library" onClick={handleNavClick} className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname.startsWith('/library') ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>Library</Link>
-                          <Link to="/surrey/election-tracker" onClick={handleNavClick} className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname.startsWith('/surrey/election-tracker') ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>Surrey election tools</Link>
                           <Link to="/first-100-days" onClick={handleNavClick} className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${location.pathname.startsWith('/first-100-days') ? 'text-teal-700 bg-teal-100' : 'text-academic-neutral-600 hover:bg-academic-neutral-100'}`}>First 100 Days</Link>
                         </div>
                       )}
@@ -724,7 +377,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
                                 : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
                             }`}
                           >
-                            About the LGRI
+                            About the LGR Initiative
                           </Link>
                           <Link
                             to="/about/leadership"
@@ -738,6 +391,17 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
                             Leadership
                           </Link>
                           <Link
+                            to="/about/partnership"
+                            onClick={handleNavClick}
+                            className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
+                              location.pathname.startsWith('/about/partnership')
+                                ? 'text-teal-700 bg-teal-100'
+                                : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
+                            }`}
+                          >
+                            Partnership
+                          </Link>
+                          <Link
                             to="/about/contributors"
                             onClick={handleNavClick}
                             className={`block px-8 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
@@ -747,6 +411,17 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
                             }`}
                           >
                             Contributors
+                          </Link>
+                          <Link
+                            to="/about/contributors/contribute"
+                            onClick={handleNavClick}
+                            className={`block px-8 pl-12 py-2 text-sm font-bold tracking-wider text-left transition-colors ${
+                              location.pathname === '/about/contributors/contribute'
+                                ? 'text-teal-700 bg-teal-100'
+                                : 'text-academic-neutral-600 hover:bg-academic-neutral-100'
+                            }`}
+                          >
+                            Contribute
                           </Link>
                           <Link
                             to="/contact"

@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 interface OptimizedImageProps {
   src: string;
+  /** Alt text for the image. Omit or use empty string when decorative=true so screen readers skip it. */
   alt: string;
   className?: string;
   loading?: 'lazy' | 'eager';
@@ -11,6 +12,10 @@ interface OptimizedImageProps {
   height?: number;
   variant?: 'hero' | 'article' | 'thumbnail' | 'default';
   caption?: string;
+  /** When true, image is decorative: alt="" and role="presentation" so assistive tech ignores it. */
+  decorative?: boolean;
+  /** When set with variant="thumbnail", positions the crop (e.g. "50% 25%" to show more of the top). */
+  objectPosition?: string;
 }
 
 export default function OptimizedImage({
@@ -23,8 +28,11 @@ export default function OptimizedImage({
   width,
   height,
   variant = 'default',
-  caption
+  caption,
+  decorative = false,
+  objectPosition
 }: OptimizedImageProps) {
+  const effectiveAlt = decorative ? '' : alt;
   const [imageError, setImageError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -83,7 +91,7 @@ export default function OptimizedImage({
       )}
       <img
         src={src}
-        alt={alt}
+        alt={effectiveAlt}
         loading={priority || variant === 'hero' ? 'eager' : loading}
         fetchpriority={priority || variant === 'hero' ? 'high' : 'auto'}
         decoding={priority || variant === 'hero' ? 'sync' : 'async'}
@@ -92,6 +100,7 @@ export default function OptimizedImage({
         className={`${imageClasses} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
         style={variant === 'thumbnail' ? {
           objectFit: 'cover',
+          objectPosition: objectPosition ?? 'center',
           width: '100%',
           height: '100%',
           minWidth: '100%',

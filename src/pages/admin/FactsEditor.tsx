@@ -10,6 +10,7 @@ interface Fact {
   content: string;
   category: string | null;
   order_index: number;
+  source_url?: string | null;
 }
 
 export default function FactsEditor() {
@@ -22,6 +23,7 @@ export default function FactsEditor() {
     content: '',
     category: '',
     order_index: 0,
+    source_url: '',
   });
 
   useEffect(() => {
@@ -41,9 +43,13 @@ export default function FactsEditor() {
   };
 
   const handleCreate = async () => {
+    const payload = {
+      ...formData,
+      source_url: formData.source_url?.trim() || null,
+    };
     const { error } = await supabase
       .from('facts')
-      .insert([formData]);
+      .insert([payload]);
 
     if (!error) {
       await updateSiteTimestamp();
@@ -54,9 +60,13 @@ export default function FactsEditor() {
   };
 
   const handleUpdate = async (id: string) => {
+    const payload = {
+      ...formData,
+      source_url: formData.source_url?.trim() || null,
+    };
     const { error } = await supabase
       .from('facts')
-      .update(formData)
+      .update(payload)
       .eq('id', id);
 
     if (!error) {
@@ -87,6 +97,7 @@ export default function FactsEditor() {
       content: fact.content,
       category: fact.category || '',
       order_index: fact.order_index,
+      source_url: fact.source_url || '',
     });
     setEditingId(fact.id);
     setIsCreating(false);
@@ -98,6 +109,7 @@ export default function FactsEditor() {
       content: '',
       category: '',
       order_index: 0,
+      source_url: '',
     });
   };
 
@@ -130,8 +142,9 @@ export default function FactsEditor() {
 
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">Title</label>
+              <label htmlFor="fact-editor-title" className="block text-sm font-medium text-slate-700 mb-2">Title</label>
               <input
+                id="fact-editor-title"
                 type="text"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
@@ -140,8 +153,9 @@ export default function FactsEditor() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">Category</label>
+              <label htmlFor="fact-editor-category" className="block text-sm font-medium text-slate-700 mb-2">Category</label>
               <input
+                id="fact-editor-category"
                 type="text"
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
@@ -151,8 +165,8 @@ export default function FactsEditor() {
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">Content</label>
+          <div role="group" aria-labelledby="fact-editor-content-label">
+            <span id="fact-editor-content-label" className="block text-sm font-medium text-slate-700 mb-2">Content</span>
             <WYSIWYGEditor
               value={formData.content}
               onChange={(value) => setFormData({ ...formData, content: value })}
@@ -161,12 +175,25 @@ export default function FactsEditor() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">Order</label>
+            <label htmlFor="fact-editor-order" className="block text-sm font-medium text-slate-700 mb-2">Order</label>
             <input
+              id="fact-editor-order"
               type="number"
               value={formData.order_index}
               onChange={(e) => setFormData({ ...formData, order_index: parseInt(e.target.value) })}
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="fact-editor-source-url" className="block text-sm font-medium text-slate-700 mb-2">Source URL</label>
+            <input
+              id="fact-editor-source-url"
+              type="url"
+              value={formData.source_url}
+              onChange={(e) => setFormData({ ...formData, source_url: e.target.value })}
+              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500"
+              placeholder="https://..."
             />
           </div>
 
@@ -208,14 +235,18 @@ export default function FactsEditor() {
               </div>
               <div className="flex gap-2 ml-4">
                 <button
+                  type="button"
                   onClick={() => startEdit(fact)}
                   className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+                  aria-label="Edit fact"
                 >
                   <Edit className="w-5 h-5" />
                 </button>
                 <button
+                  type="button"
                   onClick={() => handleDelete(fact.id)}
                   className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                  aria-label="Delete fact"
                 >
                   <Trash2 className="w-5 h-5" />
                 </button>

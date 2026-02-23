@@ -4,7 +4,6 @@ import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import { surreyCouncils } from '../data/surreyCouncils';
 import FAQSection from '../components/FAQSection';
-import CouncilProfilesPasswordProtection from '../components/CouncilProfilesPasswordProtection';
 
 export default function CouncilProfiles() {
   const eastSurrey = surreyCouncils.filter(c => c.futureUnitary === 'East Surrey');
@@ -29,7 +28,6 @@ export default function CouncilProfiles() {
   const location = useLocation();
 
   return (
-    <CouncilProfilesPasswordProtection>
     <div className="min-h-screen bg-academic-cream">
       <MetaTags
         title="Surrey Council Profiles"
@@ -37,9 +35,10 @@ export default function CouncilProfiles() {
         keywords="Surrey councils, borough profiles, district councils, Surrey County Council, local authority profiles, council statistics"
       />
       <PageBanner
-        heroLabel="SURREY REORGANISATION"
-        heroTitle="Council Profiles"
-        heroSubtitle="Detailed profiles of all 12 Surrey councils, including key statistics, demographics, services, and their future roles in the East and West Surrey unitary authorities"
+        heroVariant="insights"
+        heroLabel="INSIGHTS"
+        heroTitle="Surrey Area Profile"
+        heroSubtitle="Council profiles: all 12 Surrey councils, with key statistics, demographics, services, and their future roles in East and West Surrey unitary authorities"
         currentPath={location.pathname}
       />
 
@@ -76,7 +75,7 @@ export default function CouncilProfiles() {
             {eastSurrey.map((council) => (
               <Link
                 key={council.id}
-                to={`/council-profiles/${council.slug}`}
+                to={`/surrey/area-profile/${council.slug}`}
                 className="group bg-white rounded-xl shadow-sm border-2 border-academic-neutral-200 hover:border-teal-700 overflow-hidden transition-all hover:shadow-lg academic-card"
               >
                 <div className="p-6">
@@ -123,7 +122,7 @@ export default function CouncilProfiles() {
             {westSurrey.map((council) => (
               <Link
                 key={council.id}
-                to={`/council-profiles/${council.slug}`}
+                to={`/surrey/area-profile/${council.slug}`}
                 className="group bg-white rounded-xl shadow-sm border-2 border-neutral-200 hover:border-teal-700 overflow-hidden transition-all hover:shadow-lg"
               >
                 <div className="p-6">
@@ -170,7 +169,7 @@ export default function CouncilProfiles() {
             {county.map((council) => (
               <Link
                 key={council.id}
-                to={`/council-profiles/${council.slug}`}
+                to={`/surrey/area-profile/${council.slug}`}
                 className="group bg-white rounded-xl shadow-sm border-2 border-neutral-200 hover:border-amber-700 overflow-hidden transition-all hover:shadow-lg"
               >
                 <div className="p-8">
@@ -213,6 +212,5 @@ export default function CouncilProfiles() {
 
       <FAQSection page="council-profiles" />
     </div>
-    </CouncilProfilesPasswordProtection>
   );
 }

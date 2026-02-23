@@ -109,7 +109,7 @@ export default function FurtherReading() {
                   </li>
                   <li>
                     <a href="/insights" className="text-teal-600 hover:text-teal-700 underline">
-                      Insights from the LGRI
+                      Insights from the LGR Initiative
                     </a>
                     <p className="text-sm text-slate-600 mt-1">Expert perspectives and analysis</p>
                   </li>

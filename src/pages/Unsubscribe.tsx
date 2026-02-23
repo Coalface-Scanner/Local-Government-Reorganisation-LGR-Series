@@ -76,7 +76,7 @@ export default function Unsubscribe() {
     <div className="min-h-screen bg-academic-cream">
       <MetaTags
         title="Unsubscribe - LGR Insights & Updates"
-        description="Unsubscribe from the LGRI mailing list. Enter your email address to stop receiving weekly insights and updates."
+        description="Unsubscribe from the LGR Initiative mailing list. Enter your email address to stop receiving weekly insights and updates."
       />
       <PageBanner
         heroLabel="NEWSLETTER"

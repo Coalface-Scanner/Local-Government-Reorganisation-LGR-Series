@@ -28,11 +28,191 @@ export default function CouncilCases() {
       name: 'Surrey',
       region: 'South East England',
       type: 'Two unitaries (East & West Surrey)',
-      description: 'Surrey is being fast-tracked through LGR to form East Surrey and West Surrey unitary authorities. Shadow elections expected May 2026, go-live May 2027.',
+      description: 'Surrey has an accelerated timetable and confirmed restructuring into East Surrey and West Surrey unitary authorities. Shadow elections expected May 2026, go-live May 2027.',
       keyDates: 'Shadow elections: May 2026 | Go-live: May 2027',
       status: 'In progress',
       link: '/surrey',
       details: 'Surrey represents a significant LGR case study with its fast-tracked timetable and creation of two unitary authorities. The reorganisation involves merging Surrey County Council with 11 district and borough councils.'
+    },
+    {
+      name: 'Cambridgeshire and Peterborough',
+      region: 'East of England',
+      type: 'County and unitary',
+      description: 'Cambridgeshire County Council with Peterborough as a unitary authority. A combined authority (Cambridgeshire and Peterborough) covers the area.',
+      keyDates: '—',
+      status: 'County structure',
+      details: 'County and unitary arrangement with a combined authority for strategic functions including transport and housing.'
+    },
+    {
+      name: 'Derbyshire and Derby',
+      region: 'East Midlands',
+      type: 'County and unitary',
+      description: 'Derbyshire County Council with Derby City as a unitary authority. Two-tier districts elsewhere in the county.',
+      keyDates: '—',
+      status: 'County structure',
+      details: 'Mixed structure: Derby became unitary in 1997; rest of Derbyshire remains two-tier.'
+    },
+    {
+      name: 'Devon, Plymouth and Torbay',
+      region: 'South West England',
+      type: 'County and unitaries',
+      description: 'Devon County Council with Plymouth and Torbay as unitary authorities. Two-tier districts in the rest of Devon.',
+      keyDates: '—',
+      status: 'County structure',
+      details: 'Plymouth and Torbay became unitaries in 1998; Devon retains two-tier structure elsewhere.'
+    },
+    {
+      name: 'East Sussex and Brighton & Hove',
+      region: 'South East England',
+      type: 'County and unitary',
+      description: 'East Sussex County Council with Brighton & Hove as a unitary authority. Two-tier districts in the rest of East Sussex.',
+      keyDates: '—',
+      status: 'County structure',
+      details: 'Brighton & Hove became unitary in 1997; East Sussex remains two-tier in its remaining area.'
+    },
+    {
+      name: 'Essex with Southend-on-Sea and Thurrock',
+      region: 'East of England',
+      type: 'County and unitaries',
+      description: 'Essex County Council with Southend-on-Sea and Thurrock as unitary authorities. Two-tier districts in the rest of Essex.',
+      keyDates: '—',
+      status: 'County structure',
+      details: 'Southend-on-Sea and Thurrock became unitaries in 1998; Essex remains two-tier elsewhere.'
+    },
+    {
+      name: 'Gloucestershire',
+      region: 'South West England',
+      type: 'Two-tier',
+      description: 'Gloucestershire County Council with six district councils. No unitary authorities within the county.',
+      keyDates: '—',
+      status: 'County structure',
+      details: 'Fully two-tier county structure across the whole of Gloucestershire.'
+    },
+    {
+      name: 'Hampshire, Isle of Wight, Portsmouth and Southampton',
+      region: 'South East England',
+      type: 'County and unitaries',
+      description: 'Hampshire County Council with Portsmouth and Southampton as unitaries; Isle of Wight is a separate unitary authority.',
+      keyDates: '—',
+      status: 'County structure',
+      details: 'Portsmouth and Southampton became unitaries in 1997; Isle of Wight is a single unitary; rest of Hampshire is two-tier.'
+    },
+    {
+      name: 'Hertfordshire',
+      region: 'East of England',
+      type: 'Two-tier',
+      description: 'Hertfordshire County Council with ten district councils. No unitary authorities within the county.',
+      keyDates: '—',
+      status: 'County structure',
+      details: 'Fully two-tier county structure across Hertfordshire.'
+    },
+    {
+      name: 'Kent and Medway',
+      region: 'South East England',
+      type: 'County and unitary',
+      description: 'Kent County Council with Medway as a unitary authority. Two-tier districts in the rest of Kent.',
+      keyDates: '—',
+      status: 'County structure',
+      details: 'Medway became a unitary authority in 1998; rest of Kent remains two-tier.'
+    },
+    {
+      name: 'Lancashire, Blackburn with Darwen and Blackpool',
+      region: 'North West England',
+      type: 'County and unitaries',
+      description: 'Lancashire County Council with Blackburn with Darwen and Blackpool as unitary authorities. Two-tier districts elsewhere.',
+      keyDates: '—',
+      status: 'County structure',
+      details: 'Blackburn with Darwen and Blackpool became unitaries in 1998; rest of Lancashire is two-tier.'
+    },
+    {
+      name: 'Leicestershire, Leicester and Rutland',
+      region: 'East Midlands',
+      type: 'County and unitaries',
+      description: 'Leicestershire County Council with Leicester City and Rutland as unitary authorities. Two-tier districts in the rest of Leicestershire.',
+      keyDates: '—',
+      status: 'County structure',
+      details: 'Leicester became unitary in 1997; Rutland in 1997; rest of Leicestershire remains two-tier.'
+    },
+    {
+      name: 'Lincolnshire, North Lincolnshire and North East Lincolnshire',
+      region: 'East Midlands',
+      type: 'County and unitaries',
+      description: 'Lincolnshire County Council with North Lincolnshire and North East Lincolnshire as unitary authorities. Two-tier districts in the rest of Lincolnshire.',
+      keyDates: '—',
+      status: 'County structure',
+      details: 'North Lincolnshire and North East Lincolnshire became unitaries in 1996; rest of Lincolnshire is two-tier.'
+    },
+    {
+      name: 'Norfolk',
+      region: 'East of England',
+      type: 'Two-tier',
+      description: 'Norfolk County Council with seven district councils. No unitary authorities within the county.',
+      keyDates: '—',
+      status: 'County structure',
+      details: 'Fully two-tier county structure across Norfolk.'
+    },
+    {
+      name: 'Nottinghamshire and Nottingham',
+      region: 'East Midlands',
+      type: 'County and unitary',
+      description: 'Nottinghamshire County Council with Nottingham City as a unitary authority. Two-tier districts in the rest of Nottinghamshire.',
+      keyDates: '—',
+      status: 'County structure',
+      details: 'Nottingham became a unitary authority in 1998; rest of Nottinghamshire remains two-tier.'
+    },
+    {
+      name: 'Oxfordshire',
+      region: 'South East England',
+      type: 'Two-tier',
+      description: 'Oxfordshire County Council with five district councils. No unitary authorities within the county.',
+      keyDates: '—',
+      status: 'County structure',
+      details: 'Fully two-tier county structure across Oxfordshire.'
+    },
+    {
+      name: 'Staffordshire and Stoke-on-Trent',
+      region: 'West Midlands',
+      type: 'County and unitary',
+      description: 'Staffordshire County Council with Stoke-on-Trent as a unitary authority. Two-tier districts in the rest of Staffordshire.',
+      keyDates: '—',
+      status: 'County structure',
+      details: 'Stoke-on-Trent became a unitary authority in 1997; rest of Staffordshire remains two-tier.'
+    },
+    {
+      name: 'Suffolk',
+      region: 'East of England',
+      type: 'Two-tier',
+      description: 'Suffolk County Council with five district councils. No unitary authorities within the county.',
+      keyDates: '—',
+      status: 'County structure',
+      details: 'Fully two-tier county structure across Suffolk.'
+    },
+    {
+      name: 'Warwickshire',
+      region: 'West Midlands',
+      type: 'Two-tier',
+      description: 'Warwickshire County Council with five district councils. No unitary authorities within the county.',
+      keyDates: '—',
+      status: 'County structure',
+      details: 'Fully two-tier county structure across Warwickshire.'
+    },
+    {
+      name: 'West Sussex',
+      region: 'South East England',
+      type: 'Two-tier',
+      description: 'West Sussex County Council with seven district councils. No unitary authorities within the county.',
+      keyDates: '—',
+      status: 'County structure',
+      details: 'Fully two-tier county structure across West Sussex.'
+    },
+    {
+      name: 'Worcestershire',
+      region: 'West Midlands',
+      type: 'Two-tier',
+      description: 'Worcestershire County Council with six district councils. No unitary authorities within the county.',
+      keyDates: '—',
+      status: 'County structure',
+      details: 'Fully two-tier county structure across Worcestershire.'
     },
     {
       name: 'Dorset',
@@ -85,8 +265,8 @@ export default function CouncilCases() {
     <div className="min-h-screen bg-academic-cream">
       <MetaTags
         title="LGR Council Cases - Local Government Reorganisation Case Studies"
-        description="Case studies of councils involved in Local Government Reorganisation (LGR) including Dorset, Buckinghamshire, Somerset, North Yorkshire, Cumbria, and Surrey. Learn from recent LGR transitions and reorganisations."
-        keywords="LGR case studies, Local Government Reorganisation councils, Dorset reorganisation, Buckinghamshire reorganisation, Somerset reorganisation, North Yorkshire reorganisation, Cumbria reorganisation, Surrey reorganisation, unitary authority case studies"
+        description="Council cases and structures across England: LGR case studies (Dorset, Buckinghamshire, Somerset, North Yorkshire, Cumbria, Surrey) plus county and two-tier areas including Cambridgeshire, Derbyshire, Devon, Essex, Hampshire, Kent, Lancashire, Lincolnshire, and more."
+        keywords="LGR case studies, Local Government Reorganisation councils, Dorset reorganisation, Buckinghamshire reorganisation, Somerset reorganisation, North Yorkshire reorganisation, Cumbria reorganisation, Surrey reorganisation, unitary authority case studies, county council structures"
       />
       <CollectionPageStructuredData
         name="LGR Council Cases"
@@ -102,7 +282,7 @@ export default function CouncilCases() {
       <PageBanner
         heroLabel="FACTS & DATA"
         heroTitle="Council Cases"
-        heroSubtitle="Case studies of councils involved in LGR, including recent reorganisations and those in progress. Learn from Dorset, Buckinghamshire, Somerset, North Yorkshire, Cumbria, and Surrey."
+        heroSubtitle="Council cases and structures across England: completed and in-progress LGR (Dorset, Buckinghamshire, Somerset, North Yorkshire, Cumbria, Surrey) plus county and two-tier areas."
         currentPath={location.pathname}
       />
       <div className="layout-container layout-content-sub">
@@ -124,7 +304,7 @@ export default function CouncilCases() {
                 LGR Council Cases Overview
               </h2>
               <p className="text-lg text-academic-neutral-800 leading-relaxed font-serif">
-                Recent Local Government Reorganisation has seen significant changes across England. Completed reorganisations in Dorset (2019), Buckinghamshire (2020), Somerset (2023), North Yorkshire (2023), and Cumbria (2023) provide valuable case studies. Surrey is currently progressing through the LGR timetable 2026, with shadow elections scheduled for May 2026. These cases illustrate different approaches to reorganisation, from single unitary authorities to split structures.
+                This page covers council structures across England: completed LGR in Dorset (2019), Buckinghamshire (2020), Somerset (2023), North Yorkshire (2023), and Cumbria (2023); Surrey in progress with an accelerated timetable to East and West Surrey unitaries (shadow elections May 2026, go-live May 2027); and county and two-tier areas such as Cambridgeshire and Peterborough, Derbyshire and Derby, Devon (Plymouth and Torbay), Essex (Southend-on-Sea and Thurrock), Hampshire (Portsmouth, Southampton, Isle of Wight), Kent and Medway, Lancashire (Blackburn with Darwen, Blackpool), Leicestershire (Leicester, Rutland), Lincolnshire (North and North East Lincolnshire), Norfolk, Nottinghamshire and Nottingham, Oxfordshire, Staffordshire and Stoke-on-Trent, Suffolk, Warwickshire, West Sussex, and Worcestershire.
               </p>
             </div>
           </div>
@@ -149,6 +329,8 @@ export default function CouncilCases() {
                     <span className={`px-3 py-1 rounded-md text-sm font-medium ${
                       case_.status === 'Completed' 
                         ? 'bg-green-100 text-green-700' 
+                        : case_.status === 'County structure'
+                        ? 'bg-academic-neutral-100 text-academic-neutral-700'
                         : 'bg-amber-100 text-amber-700'
                     }`}>
                       {case_.status}

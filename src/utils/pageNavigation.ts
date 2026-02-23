@@ -30,11 +30,18 @@ export function getSecondaryNavItemsForPrimaryNav(primaryNavId: string, pathname
     case 'discover':
       return [
         { label: 'DISCOVER', path: '/discover', active: fullPath === '/discover' },
-        { label: 'TOPICS', path: '/topics', active: fullPath.startsWith('/topics') },
+        {
+          label: 'TOPICS',
+          path: '/topics',
+          active: fullPath === '/topics' || fullPath.startsWith('/topics/'),
+          children: [
+            { label: 'Governance and Reform', path: '/topics/governance-and-reform', active: fullPath.startsWith('/topics/governance-and-reform') },
+            { label: 'Democratic Legitimacy and Statecraft', path: '/topics/democratic-legitimacy', active: fullPath.startsWith('/topics/democratic-legitimacy') },
+            { label: 'System Design', path: '/topics/statecraft-and-system-design', active: fullPath.startsWith('/topics/statecraft-and-system-design') },
+          ],
+        },
         { label: 'REORGANISATIONS', path: '/reorganisations', active: fullPath.startsWith('/reorganisations') },
-        { label: 'COUNCILS MAP', path: '/councils', active: fullPath.startsWith('/councils') },
-        { label: 'COUNCIL PROFILES', path: '/council-profiles', active: fullPath.startsWith('/council-profiles') },
-        { label: 'SURREY', path: '/surrey', active: fullPath.startsWith('/surrey') },
+        { label: 'PODCAST', path: '/podcast', active: fullPath.startsWith('/podcast') || fullPath.startsWith('/interviews') },
       ];
 
     case 'research':
@@ -52,7 +59,17 @@ export function getSecondaryNavItemsForPrimaryNav(primaryNavId: string, pathname
         { label: 'REPORTS', path: '/insights/reports', active: fullPath.startsWith('/insights/reports') },
         { label: 'ARTICLES', path: '/insights', active: fullPath.startsWith('/insights/') && !fullPath.startsWith('/insights/reports') },
         { label: 'NEWS', path: '/news', active: fullPath.startsWith('/news') },
-        { label: 'PODCAST', path: '/podcast', active: fullPath.startsWith('/podcast') || fullPath.startsWith('/interviews') },
+        {
+          label: 'SURREY LGR HUB',
+          path: '/surrey',
+          active: fullPath.startsWith('/surrey'),
+          children: [
+            { label: 'Lessons', path: '/surrey/lessons', active: fullPath === '/surrey/lessons' },
+            { label: 'Area profile', path: '/surrey/area-profile', active: fullPath.startsWith('/surrey/area-profile') },
+            { label: 'Election tracker', path: '/surrey/election-tracker', active: fullPath.startsWith('/surrey/election-tracker') },
+            { label: 'Hub', path: '/surrey/hub' },
+          ],
+        },
       ];
 
     case 'tools':
@@ -60,7 +77,6 @@ export function getSecondaryNavItemsForPrimaryNav(primaryNavId: string, pathname
         { label: 'TOOLS', path: '/tools', active: fullPath === '/tools' },
         { label: 'ROADMAP', path: '/roadmap', active: fullPath.startsWith('/roadmap') },
         { label: 'LIBRARY', path: '/library', active: fullPath.startsWith('/library') },
-        { label: 'SURREY ELECTION TOOLS', path: '/surrey/election-tracker', active: fullPath.startsWith('/surrey/election-tracker') },
         { label: 'FIRST 100 DAYS', path: '/first-100-days', active: fullPath.startsWith('/first-100-days') },
       ];
 
@@ -69,9 +85,15 @@ export function getSecondaryNavItemsForPrimaryNav(primaryNavId: string, pathname
         { label: 'ABOUT', path: '/about', active: fullPath === '/about' },
         { label: 'OVERVIEW', path: '/about/overview', active: fullPath === '/about/overview' },
         { label: 'LEADERSHIP', path: '/about/leadership', active: fullPath.startsWith('/about/leadership') },
-        { label: 'CONTRIBUTORS', path: '/about/contributors', active: fullPath === '/about/contributors' },
-        { label: 'CONTRIBUTE', path: '/about/contribute', active: fullPath === '/about/contribute' },
-        { label: 'METHODOLOGY', path: '/about/methodology', active: fullPath === '/about/methodology' },
+        { label: 'PARTNERSHIP', path: '/about/partnership', active: fullPath.startsWith('/about/partnership') },
+        {
+          label: 'CONTRIBUTORS',
+          path: '/about/contributors',
+          active: fullPath === '/about/contributors' || fullPath.startsWith('/about/contributors/'),
+          children: [
+            { label: 'Contribute', path: '/about/contributors/contribute', active: fullPath === '/about/contributors/contribute' },
+          ],
+        },
         { label: 'CONTACT', path: '/contact', active: fullPath === '/contact' },
       ];
 
@@ -130,9 +152,15 @@ export function getSecondaryNavItems(pathname: string): NavItem[] {
       { label: 'ABOUT', path: '/about', active: fullPath === '/about' },
       { label: 'OVERVIEW', path: '/about/overview', active: fullPath === '/about/overview' },
       { label: 'LEADERSHIP', path: '/about/leadership', active: fullPath.startsWith('/about/leadership') },
-      { label: 'CONTRIBUTORS', path: '/about/contributors', active: fullPath === '/about/contributors' },
-      { label: 'CONTRIBUTE', path: '/about/contribute', active: fullPath === '/about/contribute' },
-      { label: 'METHODOLOGY', path: '/about/methodology', active: fullPath === '/about/methodology' },
+      { label: 'PARTNERSHIP', path: '/about/partnership', active: fullPath.startsWith('/about/partnership') },
+      {
+        label: 'CONTRIBUTORS',
+        path: '/about/contributors',
+        active: fullPath === '/about/contributors' || fullPath.startsWith('/about/contributors/'),
+        children: [
+          { label: 'Contribute', path: '/about/contributors/contribute', active: fullPath === '/about/contributors/contribute' },
+        ],
+      },
       { label: 'CONTACT', path: '/contact' },
     ];
   }
@@ -179,9 +207,11 @@ export function getSecondaryNavItems(pathname: string): NavItem[] {
   // Surrey page
   if (basePath === 'surrey') {
     return [
-      { label: 'OVERVIEW', path: '/surrey', active: fullPath === '/surrey' },
+      { label: 'SURREY LGR HUB', path: '/surrey', active: fullPath === '/surrey' },
+      { label: 'LESSONS', path: '/surrey/lessons', active: fullPath === '/surrey/lessons' },
+      { label: 'AREA PROFILE', path: '/surrey/area-profile', active: fullPath === '/surrey/area-profile' },
+      { label: 'ELECTION TRACKER', path: '/surrey/election-tracker', active: fullPath.startsWith('/surrey/election-tracker') },
       { label: 'HUB', path: '/surrey/hub' },
-      { label: 'ELECTION TRACKER', path: '/surrey/election-tracker' },
     ];
   }
 
@@ -285,9 +315,15 @@ export function getPrimaryNavItems(pathname: string): NavItem[] {
       { label: 'About', path: '/about', active: fullPath === '/about' },
       { label: 'Overview', path: '/about/overview', active: fullPath === '/about/overview' },
       { label: 'Leadership', path: '/about/leadership', active: fullPath.startsWith('/about/leadership') },
-      { label: 'Contributors', path: '/about/contributors', active: fullPath === '/about/contributors' },
-      { label: 'Contribute', path: '/about/contribute', active: fullPath === '/about/contribute' },
-      { label: 'Methodology', path: '/about/methodology', active: fullPath === '/about/methodology' },
+      { label: 'Partnership', path: '/about/partnership', active: fullPath.startsWith('/about/partnership') },
+      {
+        label: 'Contributors',
+        path: '/about/contributors',
+        active: fullPath === '/about/contributors' || fullPath.startsWith('/about/contributors/'),
+        children: [
+          { label: 'Contribute', path: '/about/contributors/contribute', active: fullPath === '/about/contributors/contribute' },
+        ],
+      },
       { label: 'Contact', path: '/contact' },
     ];
   }
@@ -304,9 +340,11 @@ export function getPrimaryNavItems(pathname: string): NavItem[] {
   // Surrey page primary nav
   if (basePath === 'surrey') {
     return [
-      { label: 'Overview', path: '/surrey', active: fullPath === '/surrey' },
+      { label: 'Surrey LGR Hub', path: '/surrey', active: fullPath === '/surrey' },
+      { label: 'Lessons', path: '/surrey/lessons', active: fullPath === '/surrey/lessons' },
+      { label: 'Area profile', path: '/surrey/area-profile', active: fullPath === '/surrey/area-profile' },
+      { label: 'Election Tracker', path: '/surrey/election-tracker', active: fullPath.startsWith('/surrey/election-tracker') },
       { label: 'Hub', path: '/surrey/hub' },
-      { label: 'Election Tracker', path: '/surrey/election-tracker' },
     ];
   }
 

@@ -42,7 +42,7 @@ const hubCards: HubCard[] = [
   {
     id: 'best-practices',
     title: 'Best Practices',
-    description: 'Practical guidance drawn from the first wave of Local Government Reorganisation. Curated best practices, checklists and lessons from the LGRI.',
+    description: 'Practical guidance drawn from the first wave of Local Government Reorganisation. Curated best practices, checklists and lessons from the LGR Initiative.',
     icon: FileText,
     color: 'from-slate-500 to-slate-700',
     route: '/lessons/best-practices',

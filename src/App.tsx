@@ -24,10 +24,10 @@ const Surrey = lazy(() => import('./pages/Surrey'));
 const SurreyElectionTracker = lazy(() => import('./pages/SurreyElectionTracker'));
 const SurreyElectionSimulator = lazy(() => import('./pages/SurreyElectionSimulator'));
 const SurreyHub = lazy(() => import('./pages/SurreyHub'));
+const SurreyLGRHub = lazy(() => import('./pages/SurreyLGRHub'));
 const Article = lazy(() => import('./pages/Article'));
 const Insights = lazy(() => import('./pages/Insights'));
 const Reports = lazy(() => import('./pages/insights/Reports'));
-const Councils = lazy(() => import('./pages/Councils'));
 const Subscribe = lazy(() => import('./pages/Subscribe'));
 const Unsubscribe = lazy(() => import('./pages/Unsubscribe'));
 const HundredDays = lazy(() => import('./pages/HundredDays'));
@@ -77,15 +77,18 @@ const LessonsBestPractices = lazy(() => import('./pages/lessons/BestPractices'))
 // About sub-pages - lazy loaded
 const AboutHub = lazy(() => import('./pages/about/AboutHub'));
 const AboutOverview = lazy(() => import('./pages/about/AboutOverview'));
-const AboutMethodology = lazy(() => import('./pages/about/Methodology'));
 const AboutContribute = lazy(() => import('./pages/about/Contribute'));
-const AboutCoalface = lazy(() => import('./pages/about/Coalface'));
 const AboutContributors = lazy(() => import('./pages/about/Contributors'));
 const Leadership = lazy(() => import('./pages/about/Leadership'));
 const LeadershipBio = lazy(() => import('./pages/about/LeadershipBio'));
+const Partnership = lazy(() => import('./pages/about/Partnership'));
 
-// Editor pages - lazy loaded
+// Editor / leadership profile pages - lazy loaded
 const RowanCole = lazy(() => import('./pages/editor/RowanCole'));
+const ProfessorAmeliaHadfield = lazy(() => import('./pages/about/ProfessorAmeliaHadfield'));
+const OliverDeed = lazy(() => import('./pages/about/OliverDeed'));
+const MatthewMasters = lazy(() => import('./pages/about/MatthewMasters'));
+const CharlieMoir = lazy(() => import('./pages/about/CharlieMoir'));
 
 // Topic pages - lazy loaded
 const LocalGovernment = lazy(() => import('./pages/topics/LocalGovernment'));
@@ -123,7 +126,7 @@ function PageLoader() {
         <div className="mb-8 flex justify-center animate-fade-in">
           <img 
             src="/lgr.png" 
-            alt="LGRI Logo" 
+            alt="LGR Initiative Logo" 
             className="h-24 w-auto object-contain drop-shadow-sm"
             loading="eager"
             fetchpriority="high"
@@ -198,6 +201,10 @@ function RedirectLeadershipToAbout() {
   const { slug } = useParams<{ slug: string }>();
   return <Navigate to={slug ? `/about/leadership/${slug}` : '/about/leadership'} replace />;
 }
+function RedirectCouncilProfilesToSurreyAreaProfile() {
+  const { slug } = useParams<{ slug: string }>();
+  return <Navigate to={slug ? `/surrey/area-profile/${slug}` : '/surrey/area-profile'} replace />;
+}
 
 function GlossaryWrapper() {
   return <Glossary />;
@@ -248,7 +255,7 @@ function AppContent() {
                 <Route path="/learn" element={<PageWrapper>{(nav) => <Learn onNavigate={nav} />}</PageWrapper>} />
             <Route path="/discover" element={<PageWrapper>{(nav) => <Discover onNavigate={nav} />}</PageWrapper>} />
             <Route path="/research" element={<PageWrapper>{(nav) => <Research onNavigate={nav} />}</PageWrapper>} />
-            {/* Redirects to canonical URLs */}
+            {/* Legacy URL redirects – old paths auto-redirect to new canonical URLs */}
             <Route path="/article/:slug" element={<RedirectArticleToInsights />} />
             <Route path="/facts" element={<Navigate to="/facts/key-facts" replace />} />
             <Route path="/facts/facts" element={<Navigate to="/facts/key-facts" replace />} />
@@ -291,22 +298,38 @@ function AppContent() {
             <Route path="/about" element={<PageWrapper>{(nav) => <AboutHub onNavigate={nav} />}</PageWrapper>} />
             <Route path="/about/overview" element={<PageWrapper>{(nav) => <AboutOverview onNavigate={nav} />}</PageWrapper>} />
             <Route path="/partnerships" element={<PageWrapper>{(nav) => <Partnerships />}</PageWrapper>} />
-            <Route path="/about/methodology" element={<PageWrapper>{(nav) => <AboutMethodology onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/about/contribute" element={<PageWrapper>{(nav) => <AboutContribute onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/about/coalface" element={<PageWrapper>{(nav) => <AboutCoalface onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/about/methodology" element={<Navigate to="/about/overview#methodology" replace />} />
+            <Route path="/contribute" element={<Navigate to="/about/contributors/contribute" replace />} />
+            <Route path="/about/contribute" element={<Navigate to="/about/contributors/contribute" replace />} />
+            <Route path="/about/coalface" element={<Navigate to="/about/partnership" replace />} />
             <Route path="/about/contributors" element={<PageWrapper>{(nav) => <AboutContributors onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/about/contributors/contribute" element={<PageWrapper>{(nav) => <AboutContribute onNavigate={nav} />}</PageWrapper>} />
             <Route path="/about/leadership" element={<PageWrapper>{(nav) => <Leadership onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/about/partnership" element={<PageWrapper>{(nav) => <Partnership onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/about/leadership/rowan-cole" element={<Navigate to="/rowan-cole-local-government-reorganisation" replace />} />
+            <Route path="/about/leadership/amelia-hadfield" element={<Navigate to="/professor-amelia-hadfield-governance-reform" replace />} />
+            <Route path="/about/leadership/oliver-deed" element={<Navigate to="/oliver-deed-strategic-communications-local-government" replace />} />
+            <Route path="/about/leadership/matthew-masters" element={<Navigate to="/matthew-masters-local-government-leadership" replace />} />
+            <Route path="/about/leadership/charlie-moir" element={<Navigate to="/charlie-moir-digital-engagement-local-government" replace />} />
             <Route path="/about/leadership/:slug" element={<LeadershipBio />} />
-            <Route path="/editor/rowan-cole" element={<Navigate to="/about/leadership/rowan-cole" replace />} />
+            <Route path="/rowan-cole-local-government-reorganisation" element={<PageWrapper>{(nav) => <RowanCole onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/professor-amelia-hadfield-governance-reform" element={<ProfessorAmeliaHadfield />} />
+            <Route path="/oliver-deed-strategic-communications-local-government" element={<OliverDeed />} />
+            <Route path="/matthew-masters-local-government-leadership" element={<MatthewMasters />} />
+            <Route path="/charlie-moir-digital-engagement-local-government" element={<CharlieMoir />} />
+            <Route path="/editor/rowan-cole" element={<Navigate to="/rowan-cole-local-government-reorganisation" replace />} />
             <Route path="/podcast" element={<PageWrapper>{(nav) => <Interviews onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/surrey" element={<PageWrapper>{(nav) => <Surrey onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/surrey/lessons" element={<PageWrapper>{(nav) => <Surrey onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/surrey/area-profile" element={<CouncilProfiles />} />
+            <Route path="/surrey/area-profile/:slug" element={<CouncilProfileDetail />} />
             <Route path="/surrey/election-tracker" element={<PageWrapper>{(nav) => <SurreyElectionTracker onNavigate={nav} />}</PageWrapper>} />
             <Route path="/surrey/election-tracker/simulator" element={<PageWrapper>{(nav) => <SurreyElectionSimulator onNavigate={nav} />}</PageWrapper>} />
             <Route path="/surrey/hub" element={<PageWrapper>{(nav) => <SurreyHub onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/surrey" element={<PageWrapper>{(nav) => <SurreyLGRHub onNavigate={nav} />}</PageWrapper>} />
             <Route path="/contact" element={<PageWrapper>{(nav) => <Contact onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/councils" element={<Councils />} />
-            <Route path="/council-profiles" element={<CouncilProfiles />} />
-            <Route path="/council-profiles/:slug" element={<CouncilProfileDetail />} />
+            <Route path="/councils" element={<Navigate to="/surrey/area-profile" replace />} />
+            <Route path="/council-profiles" element={<Navigate to="/surrey/area-profile" replace />} />
+            <Route path="/council-profiles/:slug" element={<RedirectCouncilProfilesToSurreyAreaProfile />} />
             <Route path="/subscribe" element={<PageWrapper>{(nav) => <Subscribe onNavigate={nav} />}</PageWrapper>} />
             <Route path="/unsubscribe" element={<Unsubscribe />} />
             <Route path="/news" element={<News />} />

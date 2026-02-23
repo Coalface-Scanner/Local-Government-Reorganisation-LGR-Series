@@ -6,7 +6,6 @@ import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import CollectionPageStructuredData from '../../components/CollectionPageStructuredData';
 import OptimizedImage from '../../components/OptimizedImage';
-import MembersPasswordProtection from '../../components/MembersPasswordProtection';
 import FAQSection from '../../components/FAQSection';
 
 interface Report {
@@ -85,16 +84,15 @@ export default function Reports({ onNavigate }: ReportsProps) {
   }
 
   return (
-    <MembersPasswordProtection>
-      <div className="min-h-screen bg-academic-cream">
+    <div className="min-h-screen bg-academic-cream">
         <MetaTags
           title="Reports - LGR Research Reports"
-          description="Browse research reports on local government reorganisation, planning, and governance. Comprehensive analysis and findings from the LGRI."
+          description="Browse research reports on local government reorganisation, planning, and governance. Comprehensive analysis and findings from the LGR Initiative."
           keywords="LGR reports, research reports, local government reports, council reform reports, reorganisation analysis"
         />
         <CollectionPageStructuredData
           name="Reports"
-          description="Browse research reports on local government reorganisation, planning, and governance. Comprehensive analysis and findings from the LGRI."
+          description="Browse research reports on local government reorganisation, planning, and governance. Comprehensive analysis and findings from the LGR Initiative."
           url="/insights/reports"
           numberOfItems={reports.length}
           items={reports.map(report => ({
@@ -246,7 +244,6 @@ export default function Reports({ onNavigate }: ReportsProps) {
         </div>
 
       <FAQSection page="insights" />
-      </div>
-    </MembersPasswordProtection>
+    </div>
   );
 }

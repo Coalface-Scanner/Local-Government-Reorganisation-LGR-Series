@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { supabase } from '../../lib/supabase';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import FAQSection from '../../components/FAQSection';
 import DatasetStructuredData from '../../components/DatasetStructuredData';
 import RelatedContent from '../../components/RelatedContent';
-import { ArrowLeft, Users, DollarSign, FileText, CheckCircle, AlertCircle, ArrowRight, type LucideIcon } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { ArrowLeft, Users, DollarSign, FileText, CheckCircle, AlertCircle, ArrowRight, ExternalLink, type LucideIcon } from 'lucide-react';
+import { useNavigate, useLocation, useSearchParams, Link } from 'react-router-dom';
 
 interface Fact {
   id: string;
@@ -14,13 +14,38 @@ interface Fact {
   content: string;
   category: string | null;
   order_index: number;
+  source_url?: string | null;
 }
+
+const ALL_CATEGORIES = 'all';
 
 export default function KeyFacts() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [facts, setFacts] = useState<Fact[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const categoryFilter = searchParams.get('category') || ALL_CATEGORIES;
+  const setCategoryFilter = (value: string) => {
+    if (value === ALL_CATEGORIES) {
+      searchParams.delete('category');
+      setSearchParams(searchParams, { replace: true });
+    } else {
+      setSearchParams({ ...Object.fromEntries(searchParams), category: value }, { replace: true });
+    }
+  };
+
+  const categories = useMemo(() => {
+    const set = new Set<string>();
+    facts.forEach((f) => f.category && set.add(f.category));
+    return Array.from(set).sort();
+  }, [facts]);
+
+  const filteredFacts = useMemo(() => {
+    if (categoryFilter === ALL_CATEGORIES) return facts;
+    return facts.filter((f) => f.category === categoryFilter);
+  }, [facts, categoryFilter]);
 
   const categoryIcons: Record<string, LucideIcon> = {
     'Workforce Impact': Users,
@@ -31,11 +56,11 @@ export default function KeyFacts() {
   };
 
   const categoryColors: Record<string, string> = {
-    'Workforce Impact': 'from-blue-500 to-cyan-600',
+    'Workforce Impact': 'from-teal-600 to-cyan-700',
     'Financial Performance': 'from-emerald-500 to-teal-600',
-    'Service Delivery': 'from-purple-500 to-indigo-600',
-    'Democratic Impact': 'from-amber-500 to-orange-600',
-    'Overview': 'from-slate-500 to-slate-700',
+    'Service Delivery': 'from-teal-500 to-cyan-600',
+    'Democratic Impact': 'from-cyan-600 to-teal-700',
+    'Overview': 'from-teal-700 to-teal-800',
   };
 
   const generateSlug = (title: string): string => {
@@ -50,7 +75,10 @@ export default function KeyFacts() {
         .order('order_index');
 
       if (!error && data) {
-        setFacts(data);
+        const isPlaceholder = (f: Fact) =>
+          /placeholder|example fact|test fact|lorem/i.test(f.title) ||
+          f.content.trim().toLowerCase().startsWith('lorem ipsum');
+        setFacts(data.filter((f) => !isPlaceholder(f)));
       }
       setLoading(false);
     };
@@ -76,72 +104,112 @@ export default function KeyFacts() {
         datePublished={facts.length > 0 ? facts[0]?.order_index ? new Date().toISOString() : undefined : undefined}
         url="/facts/key-facts"
         creator={{
-          name: 'LGRI',
+          name: 'LGR Initiative',
           url: baseUrl
         }}
       />
       <PageBanner
         heroLabel="FACTS & DATA"
         heroTitle="Key Facts"
-        heroSubtitle="Evidence from recent reorganisations across England. What recent experience shows and what this means for future reorganisations."
+        heroSubtitle="Evidence from recent reorganisations across England."
         currentPath={location.pathname}
       />
       <div className="layout-container layout-content-sub">
         <button
-          onClick={() => navigate('/facts')}
+          onClick={() => navigate('/facts-and-data')}
           className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
         >
           <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
           Back to Facts & Data
         </button>
       </div>
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {loading ? (
           <div className="text-center py-6 text-slate-600">Loading facts...</div>
         ) : facts.length > 0 ? (
-          <div className="grid md:grid-cols-2 gap-6 mb-12">
-            {facts.map((fact) => {
-              const Icon = categoryIcons[fact.category || 'Overview'] || AlertCircle;
-              const gradientClass = categoryColors[fact.category || 'Overview'] || 'from-slate-500 to-slate-700';
-              const slug = generateSlug(fact.title);
-              const excerpt = fact.content.replace(/<[^>]*>/g, '').substring(0, 150) + '...';
-
-              return (
+          <>
+            <div className="flex flex-wrap items-center gap-2 mb-6">
+              <span className="text-sm font-medium text-slate-600 mr-1">Category:</span>
+              <button
+                onClick={() => setCategoryFilter(ALL_CATEGORIES)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  categoryFilter === ALL_CATEGORIES
+                    ? 'bg-teal-600 text-white'
+                    : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
+                }`}
+              >
+                All
+              </button>
+              {categories.map((cat) => (
                 <button
-                  key={fact.id}
-                  onClick={() => navigate(`/facts/${slug}`)}
-                  className="group bg-white rounded-2xl overflow-hidden shadow-lg border-2 border-slate-200 hover:border-teal-400 hover:shadow-2xl transition-all duration-300 text-left"
+                  key={cat}
+                  onClick={() => setCategoryFilter(cat)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                    categoryFilter === cat ? 'bg-teal-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
+                  }`}
                 >
-                  <div className={`bg-gradient-to-br ${gradientClass} p-6 text-white`}>
-                    <div className="flex items-start gap-4">
-                      <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                        <Icon className="text-white" size={28} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        {fact.category && (
-                          <div className="text-xs font-bold tracking-wider text-white/90 mb-2 uppercase">
-                            {fact.category}
-                          </div>
-                        )}
-                        <h3 className="text-xl font-bold leading-tight group-hover:underline">
-                          {fact.title}
-                        </h3>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <p className="text-slate-600 leading-relaxed mb-4 line-clamp-3">
-                      {excerpt}
-                    </p>
-                    <div className="flex items-center gap-2 text-teal-600 font-semibold group-hover:gap-3 transition-all">
-                      <span>Read more</span>
-                      <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </div>
+                  {cat}
                 </button>
-              );
-            })}
-          </div>
+              ))}
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {filteredFacts.map((fact) => {
+                const Icon = categoryIcons[fact.category || 'Overview'] || AlertCircle;
+                const gradientClass = categoryColors[fact.category || 'Overview'] || 'from-slate-500 to-slate-700';
+                const slug = generateSlug(fact.title);
+                const excerpt = fact.content.replace(/<[^>]*>/g, '').substring(0, 150) + '...';
+
+                return (
+                  <div
+                    key={fact.id}
+                    className="group bg-white rounded-2xl overflow-hidden shadow-lg border-2 border-slate-200 hover:border-teal-400 hover:shadow-2xl transition-all duration-300 text-left flex flex-col"
+                  >
+                    <Link to={`/facts/${slug}`} className="flex flex-col flex-1 min-w-0">
+                      <div className={`bg-gradient-to-br ${gradientClass} p-6 text-white`}>
+                        <div className="flex items-start gap-4">
+                          <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                            <Icon className="text-white" size={28} />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            {fact.category && (
+                              <div className="text-xs font-bold tracking-wider text-white/90 mb-2 uppercase">
+                                {fact.category}
+                              </div>
+                            )}
+                            <h3 className="text-xl font-bold leading-tight group-hover:underline">
+                              {fact.title}
+                            </h3>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="p-6 flex-1 flex flex-col">
+                        <p className="text-slate-600 leading-relaxed mb-4 line-clamp-3">
+                          {excerpt}
+                        </p>
+                        <div className="flex items-center gap-2 text-teal-600 font-semibold group-hover:gap-3 transition-all mt-auto">
+                          <span>Read more</span>
+                          <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                        </div>
+                      </div>
+                    </Link>
+                    {fact.source_url && (
+                      <div className="px-6 pb-4 pt-0">
+                        <a
+                          href={fact.source_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-teal-600"
+                        >
+                          <ExternalLink size={14} />
+                          Source
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </>
         ) : (
           <div className="bg-white rounded-2xl p-8 shadow-lg border border-slate-200 text-center">
             <p className="text-slate-600">No facts available yet.</p>
@@ -149,7 +217,7 @@ export default function KeyFacts() {
         )}
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <RelatedContent
           currentSlug="key-facts"
           contentType="fact"

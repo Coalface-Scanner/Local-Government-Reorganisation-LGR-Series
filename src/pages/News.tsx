@@ -197,7 +197,7 @@ export default function News() {
             <div className="sticky top-24 space-y-6">
               <div className="bg-teal-800 text-white p-6">
                 <h3 className="text-xl font-black text-white mb-3">
-                  LGR Series Newsletter
+                  LGR Initiative Newsletter
                 </h3>
                 <p className="text-sm text-white mb-4">
                   Receive our regular update direct to your inbox. Subscribe here.

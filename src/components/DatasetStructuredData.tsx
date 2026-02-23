@@ -23,7 +23,7 @@ export default function DatasetStructuredData({
   dateModified,
   url,
   creator = {
-    name: 'LGRI',
+    name: 'LGR Initiative',
     url: 'https://localgovernmentreorganisation.co.uk'
   },
   distribution = []
@@ -45,7 +45,7 @@ export default function DatasetStructuredData({
     },
     "publisher": {
       "@type": "Organization",
-      "name": "LGRI",
+      "name": "LGR Initiative",
       "url": baseUrl
     },
     "license": "https://creativecommons.org/licenses/by/4.0/",

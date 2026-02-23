@@ -1,231 +1,135 @@
-import { supabase } from './supabase';
+/**
+ * Phrase → path map for automatic internal site links in content (e.g. key facts).
+ * Longest phrases first so "First 100 Days" is matched before "100 Days".
+ */
+export const internalLinkMap: { phrase: string; path: string }[] = [
+  { phrase: 'First 100 Days', path: '/first-100-days' },
+  { phrase: 'LGR timetable', path: '/facts/lgr-timeline' },
+  { phrase: 'LGR Timetable 2026', path: '/facts/lgr-timeline' },
+  { phrase: 'lessons learned', path: '/lessons' },
+  { phrase: 'lessons from implementation', path: '/lessons' },
+  { phrase: 'reasons for reorganisation', path: '/reasons' },
+  { phrase: 'roadmap', path: '/roadmap' },
+  { phrase: 'council profiles', path: '/surrey/area-profile' },
+  { phrase: 'insights', path: '/insights' },
+  { phrase: 'podcast', path: '/podcast' },
+  { phrase: 'What is LGR', path: '/what-is-lgr' },
+  { phrase: 'beginners guide', path: '/beginners-guide' },
+  { phrase: 'Facts & Data', path: '/facts-and-data' },
+  { phrase: 'key facts', path: '/facts/key-facts' },
+  { phrase: 'reorganisations', path: '/reorganisations' },
+  { phrase: 'interviews', path: '/podcast' },
+  { phrase: 'library', path: '/library' },
+  { phrase: 'glossary', path: '/glossary' },
+  { phrase: 'LGR timeline', path: '/facts/lgr-timeline' },
+  { phrase: 'questions and answers', path: '/questions-and-answers' },
+  { phrase: 'best practice', path: '/lessons/best-practices' },
+  { phrase: 'case studies', path: '/lessons/case-studies' },
+].sort((a, b) => b.phrase.length - a.phrase.length);
 
-export interface LinkableContent {
-  id: string;
-  title: string;
-  slug: string;
-  type: 'article' | 'material';
+function toTextContent(value: unknown): string {
+  if (typeof value === 'string') return value;
+  if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+  return '';
 }
 
-/**
- * Fetch all linkable content (articles and materials) for link detection
- */
-export async function getAllLinkableContent(): Promise<LinkableContent[]> {
-  try {
-    const [articlesResult, materialsResult] = await Promise.all([
-      supabase
-        .from('articles')
-        .select('id, title, slug')
-        .eq('status', 'published'),
-      supabase
-        .from('materials')
-        .select('id, title, slug')
-    ]);
-
-    const articles: LinkableContent[] = (articlesResult.data || []).map(item => ({
-      id: item.id,
-      title: item.title,
-      slug: item.slug,
-      type: 'article' as const
-    }));
-
-    const materials: LinkableContent[] = (materialsResult.data || []).map(item => ({
-      id: item.id,
-      title: item.title,
-      slug: item.slug,
-      type: 'material' as const
-    }));
-
-    return [...articles, ...materials];
-  } catch (error) {
-    console.error('Error fetching linkable content:', error);
-    return [];
-  }
+export interface InternalLinkMention {
+  phrase: string;
+  path: string;
+  position: number;
+  matchedText: string;
 }
 
-/**
- * Find mentions of article/material titles in text content
- */
-export function findContentMentions(
-  content: string,
-  linkableContent: LinkableContent[],
-  excludeSlug?: string
-): Array<{ title: string; slug: string; type: 'article' | 'material'; position: number }> {
-  if (!content) return [];
-
-  const mentions: Array<{ title: string; slug: string; type: 'article' | 'material'; position: number }> = [];
-  const textContent = content.replace(/<[^>]*>/g, ' '); // Remove HTML tags for matching
-
-  // Sort by title length (longest first) to match longer titles before shorter ones
-  const sortedContent = [...linkableContent]
-    .filter(item => item.slug !== excludeSlug)
-    .sort((a, b) => b.title.length - a.title.length);
-
-  for (const item of sortedContent) {
-    // Create case-insensitive regex for the title
-    const titleRegex = new RegExp(`\\b${item.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
-    const matches = [...textContent.matchAll(titleRegex)];
-
-    for (const match of matches) {
-      // Check if this title is already inside a link tag
-      const position = match.index || 0;
-      const beforeMatch = content.substring(0, position);
-      
-      // Check if we're inside an <a> tag
-      const lastOpenTag = beforeMatch.lastIndexOf('<a');
-      const lastCloseTag = beforeMatch.lastIndexOf('</a>');
-      
-      if (lastOpenTag > lastCloseTag) {
-        // We're inside a link, skip
+function textIndexToHtmlPosition(source: string, textIndex: number): number {
+  let htmlPos = 0;
+  let textIdx = 0;
+  for (let j = 0; j < source.length; j++) {
+    if (textIdx === textIndex) return j;
+    if (source[j] === '<') {
+      const tagEnd = source.indexOf('>', j);
+      if (tagEnd !== -1) {
+        j = tagEnd;
         continue;
       }
-
-      mentions.push({
-        title: item.title,
-        slug: item.slug,
-        type: item.type,
-        position
-      });
     }
+    textIdx++;
   }
+  return source.length;
+}
 
-  // Remove duplicates and sort by position
-  const uniqueMentions = mentions.filter((mention, index, self) =>
-    index === self.findIndex(m => m.slug === mention.slug && m.position === mention.position)
-  );
-
-  return uniqueMentions.sort((a, b) => a.position - b.position);
+function isInsideLink(source: string, htmlPosition: number): boolean {
+  const before = source.substring(0, htmlPosition);
+  const lastOpen = before.lastIndexOf('<a');
+  const lastClose = before.lastIndexOf('</a>');
+  return lastOpen > lastClose;
 }
 
 /**
- * Generate internal links in HTML content
- * This adds links to mentions of article/material titles
+ * Find first occurrence of each internal-link phrase in content (not inside existing <a>).
  */
-export function enhanceContentWithLinks(
-  content: string,
-  linkableContent: LinkableContent[],
-  excludeSlug?: string
+export function findInternalLinkMentions(
+  content: unknown,
+  options: { onlyFirstOccurrence?: boolean } = {}
+): InternalLinkMention[] {
+  const source = toTextContent(content);
+  if (!source) return [];
+
+  const onlyFirst = options.onlyFirstOccurrence !== false;
+  const textContent = source.replace(/<[^>]*>/g, ' ');
+  const mentions: InternalLinkMention[] = [];
+  const linkedPhrases = new Set<string>();
+
+  for (const { phrase, path } of internalLinkMap) {
+    if (onlyFirst && linkedPhrases.has(phrase)) continue;
+
+    const pattern = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`\\b${pattern}\\b`, 'gi');
+    const match = regex.exec(textContent);
+    if (!match || match.index === undefined) continue;
+
+    const textPosition = match.index;
+    const matchedText = match[0];
+    const htmlPosition = textIndexToHtmlPosition(source, textPosition);
+
+    if (isInsideLink(source, htmlPosition)) continue;
+
+    mentions.push({ phrase, path, position: textPosition, matchedText });
+    linkedPhrases.add(phrase);
+  }
+
+  return mentions.sort((a, b) => a.position - b.position);
+}
+
+/**
+ * Enhance HTML content with internal site links (first occurrence per phrase only).
+ */
+export function enhanceContentWithInternalLinks(
+  content: unknown,
+  options: { linkClass?: string } = {}
 ): string {
-  if (!content) return content;
+  const source = toTextContent(content);
+  if (!source) return '';
 
-  const mentions = findContentMentions(content, linkableContent, excludeSlug);
-  
-  if (mentions.length === 0) return content;
+  const linkClass = options.linkClass ?? 'internal-link text-teal-700 hover:text-teal-800 underline font-medium';
+  const mentions = findInternalLinkMentions(source, { onlyFirstOccurrence: true });
 
-  // Process mentions in reverse order to maintain positions
-  let enhancedContent = content;
+  if (mentions.length === 0) return source;
+
+  let enhancedContent = source;
   for (let i = mentions.length - 1; i >= 0; i--) {
-    const mention = mentions[i];
-    const route = mention.type === 'article' 
-      ? `/insights/${mention.slug}`
-      : `/materials/${mention.slug}`;
-    
-    // Find the position in the original HTML content
+    const { path, matchedText, position: fromIndex } = mentions[i];
     const textContent = enhancedContent.replace(/<[^>]*>/g, ' ');
-    const textPosition = textContent.indexOf(mention.title, mention.position);
-    
+    const textPosition = textContent.indexOf(matchedText, fromIndex);
     if (textPosition === -1) continue;
 
-    // Find the actual position in HTML (accounting for tags)
-    let htmlPosition = 0;
-    let textIndex = 0;
-    for (let j = 0; j < enhancedContent.length; j++) {
-      if (textIndex === textPosition) {
-        htmlPosition = j;
-        break;
-      }
-      if (enhancedContent[j] === '<') {
-        // Skip HTML tag
-        const tagEnd = enhancedContent.indexOf('>', j);
-        if (tagEnd !== -1) {
-          j = tagEnd;
-          continue;
-        }
-      }
-      textIndex++;
-    }
+    const htmlPosition = textIndexToHtmlPosition(enhancedContent, textPosition);
+    if (isInsideLink(enhancedContent, htmlPosition)) continue;
 
-    // Check if already linked
-    const beforeLink = enhancedContent.substring(0, htmlPosition);
-    const lastOpenTag = beforeLink.lastIndexOf('<a');
-    const lastCloseTag = beforeLink.lastIndexOf('</a>');
-    
-    if (lastOpenTag > lastCloseTag) {
-      // Already inside a link
-      continue;
-    }
-
-    // Insert link
     const before = enhancedContent.substring(0, htmlPosition);
-    const after = enhancedContent.substring(htmlPosition + mention.title.length);
-    enhancedContent = `${before}<a href="${route}" class="internal-link">${mention.title}</a>${after}`;
+    const after = enhancedContent.substring(htmlPosition + matchedText.length);
+    const link = `<a href="${path}" class="${linkClass}">${matchedText}</a>`;
+    enhancedContent = `${before}${link}${after}`;
   }
 
   return enhancedContent;
-}
-
-/**
- * Extract links from HTML content
- */
-export function extractLinks(content: string): Array<{ href: string; text: string; isInternal: boolean }> {
-  if (!content) return [];
-
-  const links: Array<{ href: string; text: string; isInternal: boolean }> = [];
-  const linkRegex = /<a\s+[^>]*href=["']([^"']+)["'][^>]*>([^<]+)<\/a>/gi;
-  const matches = [...content.matchAll(linkRegex)];
-
-  for (const match of matches) {
-    const href = match[1];
-    const text = match[2];
-    const isInternal = href.startsWith('/') || href.startsWith('#');
-    
-    links.push({ href, text, isInternal });
-  }
-
-  return links;
-}
-
-/**
- * Validate internal links - check if linked content exists
- */
-export async function validateInternalLinks(content: string): Promise<Array<{ href: string; exists: boolean }>> {
-  const links = extractLinks(content);
-  const internalLinks = links.filter(link => link.isInternal && link.href.startsWith('/'));
-  
-  const validations = await Promise.all(
-    internalLinks.map(async (link) => {
-      const path = link.href;
-      let exists = false;
-
-      // Check if it's an article link
-      if (path.startsWith('/insights/')) {
-        const slug = path.replace('/insights/', '');
-        const { data } = await supabase
-          .from('articles')
-          .select('id')
-          .eq('slug', slug)
-          .eq('status', 'published')
-          .maybeSingle();
-        exists = !!data;
-      }
-      // Check if it's a material link
-      else if (path.startsWith('/materials/')) {
-        const slug = path.replace('/materials/', '');
-        const { data } = await supabase
-          .from('materials')
-          .select('id')
-          .eq('slug', slug)
-          .maybeSingle();
-        exists = !!data;
-      }
-      // Other internal paths (facts, topics, etc.) - assume valid
-      else {
-        exists = true;
-      }
-
-      return { href: link.href, exists };
-    })
-  );
-
-  return validations;
 }

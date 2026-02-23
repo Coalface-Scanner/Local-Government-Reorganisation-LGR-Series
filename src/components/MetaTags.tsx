@@ -22,6 +22,15 @@ interface MetaTagsProps {
   };
 }
 
+const SEO_TITLE_MAX = 60;
+const SEO_DESCRIPTION_MAX = 160;
+
+function truncate(str: string, maxLen: number): string {
+  const s = String(str).trim();
+  if (s.length <= maxLen) return s;
+  return s.slice(0, maxLen - 1).trim() + '…';
+}
+
 function toMetaContent(value: unknown): string {
   if (typeof value === 'string') return value;
   if (typeof value === 'number' || typeof value === 'boolean') return String(value);
@@ -42,16 +51,18 @@ export default function MetaTags({
   ogImage = '/LGR-Series-Tumbnail.jpg',
   ogImageWidth = 600,
   ogImageHeight = 350,
-  ogImageAlt = 'LGRI banner',
+  ogImageAlt = 'LGR Initiative banner',
   ogTitle,
   ogDescription,
   noindex = false,
   canonical,
   article
 }: MetaTagsProps) {
-  const fullTitle = `${title} | LGRI by COALFACE`;
-  const finalOgTitle = ogTitle || fullTitle;
-  const finalOgDescription = ogDescription || description;
+  const fullTitleRaw = `${title.trim()} | LGR Initiative`;
+  const fullTitle = truncate(fullTitleRaw, SEO_TITLE_MAX);
+  const finalOgTitle = truncate(ogTitle || fullTitleRaw, SEO_TITLE_MAX);
+  const finalOgDescription = truncate(ogDescription || description, SEO_DESCRIPTION_MAX);
+  const metaDescription = truncate(description, SEO_DESCRIPTION_MAX);
   
   // Build canonical URL - remove query params, ensure HTTPS, handle trailing slashes
   const getCanonicalUrl = (): string => {
@@ -88,7 +99,7 @@ export default function MetaTags({
     const fullOgImage = ogImage.startsWith('http') ? ogImage : `${baseUrl}${ogImage}`;
 
     const metaTags: Array<{ name?: string; property?: string; content: string }> = [
-      { name: 'description', content: toMetaContent(description) },
+      { name: 'description', content: toMetaContent(metaDescription) },
       { property: 'og:title', content: toMetaContent(finalOgTitle) },
       { property: 'og:description', content: toMetaContent(finalOgDescription) },
       { property: 'og:type', content: toMetaContent(ogType) },
@@ -97,7 +108,7 @@ export default function MetaTags({
       { property: 'og:image:width', content: toMetaContent(ogImageWidth) },
       { property: 'og:image:height', content: toMetaContent(ogImageHeight) },
       { property: 'og:image:alt', content: toMetaContent(ogImageAlt) },
-      { property: 'og:site_name', content: 'LGRI' },
+      { property: 'og:site_name', content: 'LGR Initiative' },
       { property: 'og:locale', content: 'en_GB' },
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:title', content: toMetaContent(finalOgTitle) },

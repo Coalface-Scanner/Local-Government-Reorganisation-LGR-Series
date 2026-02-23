@@ -399,7 +399,7 @@ export default function Home({ onNavigate }: HomeProps) {
       <MetaTags
         title="Local Government Reorganisation Initiative | Governance & Devolution"
         description="Independent analysis and practical guidance on local government reorganisation, governance reform and devolution, supporting the design of effective new unitary councils."
-        keywords="LGR, Local Government Reorganisation, LGRI, LGR governance, LGR timetable 2026, council reform, English devolution, unitary authorities, council reorganisation, local government reform UK, local government reorganisation England, council restructuring, devolution England, local authority reorganisation"
+        keywords="LGR, Local Government Reorganisation, LGR Initiative, LGR governance, LGR timetable 2026, council reform, English devolution, unitary authorities, council reorganisation, local government reform UK, local government reorganisation England, council restructuring, devolution England, local authority reorganisation"
       />
       <OrganizationStructuredData />
       <WebSiteStructuredData />
@@ -600,7 +600,7 @@ export default function Home({ onNavigate }: HomeProps) {
                       All our materials
                     </h3>
                     <p className="text-white/90 text-academic-sm md:text-academic-base font-serif">
-                      Explore all research, insights, case studies, and resources from the LGRI
+                      Explore all research, insights, case studies, and resources from the LGR Initiative
                     </p>
                   </div>
                 </Link>
@@ -619,7 +619,7 @@ export default function Home({ onNavigate }: HomeProps) {
                       Research Stream {i}
                     </h3>
                     <p className="text-white/90 text-academic-sm md:text-academic-base font-serif">
-                      Research stream description coming soon
+                      Evidence and analysis from the LGR research programme.
                     </p>
                   </div>
                 </div>
@@ -628,7 +628,7 @@ export default function Home({ onNavigate }: HomeProps) {
           )}
         </section>
 
-        {/* Meet LGRI Section */}
+        {/* Meet LGR Initiative Section */}
         <section className="mb-16">
           <div className="flex items-center justify-start mb-8 relative">
             <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-px bg-gradient-to-r from-teal-600 via-teal-600 to-transparent opacity-30"></div>
@@ -638,7 +638,7 @@ export default function Home({ onNavigate }: HomeProps) {
           </div>
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
             <Link
-              to="/about/leadership/rowan-cole"
+              to="/rowan-cole-local-government-reorganisation"
               className="group relative overflow-hidden bg-gradient-to-br from-teal-800 via-teal-700 to-teal-800 p-6 rounded-lg transition-all duration-300 hover:scale-105 text-center min-h-[140px] flex flex-col justify-center"
               style={{
                 backgroundImage: "url('/rowan-cole-coalface-engagement-director-headshot-folded-arms.jpg')",
@@ -654,12 +654,12 @@ export default function Home({ onNavigate }: HomeProps) {
                   Our Team
                 </h3>
                 <p className="text-white/90 text-academic-xs font-serif">
-                  Learn about the people behind the LGRI
+                  Learn about the people behind the LGR Initiative
                 </p>
               </div>
             </Link>
             <Link
-              to="/about/contribute"
+              to="/about/contributors/contribute"
               className="group relative overflow-hidden bg-gradient-to-br from-teal-800 via-teal-700 to-teal-800 p-6 rounded-lg transition-all duration-300 hover:scale-105 text-center min-h-[140px] flex flex-col justify-center"
               style={{
                 backgroundImage: "url('/Oliver_TNail_Article.png')",
@@ -675,7 +675,7 @@ export default function Home({ onNavigate }: HomeProps) {
                   Contributors
                 </h3>
                 <p className="text-white/90 text-academic-xs font-serif">
-                  How to contribute to the LGRI
+                  How to contribute to the LGR Initiative
                 </p>
               </div>
             </Link>
@@ -708,7 +708,7 @@ export default function Home({ onNavigate }: HomeProps) {
                 About
               </h3>
               <p className="text-white/90 text-academic-xs font-serif">
-                Learn more about the LGRI
+                Learn more about the LGR Initiative
               </p>
             </Link>
           </div>

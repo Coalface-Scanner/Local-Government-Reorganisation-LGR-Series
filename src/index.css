@@ -123,7 +123,7 @@
   --lgr-button-hover: #f2fafa;
   --lgr-nav-border: #e6ecec;
   --lgr-section-neutral: #f7f9f9;
-  --lgr-data-band: #1e1e1e;
+  --lgr-data-band: #dce8e8;
   --lgr-tab-inactive: #f2f4f4;
   --lgr-stage-panel: #edf4fa;
   --lgr-quiz-bg: #dceeee;
@@ -3440,6 +3440,28 @@ nav img.lgr-highred-logo[src*="LGR_HighRed_Logo"],
   display: block !important;
 }
 
+/* Nav header masthead logo - size reduced by 15% from previous (51/61/71px), must override generic nav img[alt] rules */
+nav img.nav-header-masthead-logo {
+  height: 51px !important;
+  max-height: 51px !important;
+  width: auto !important;
+  max-width: none !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+@media (min-width: 640px) {
+  nav img.nav-header-masthead-logo {
+    height: 61px !important;
+    max-height: 61px !important;
+  }
+}
+@media (min-width: 768px) {
+  nav img.nav-header-masthead-logo {
+    height: 71px !important;
+    max-height: 71px !important;
+  }
+}
+
 /* Hero banner intro: headline can extend full width; paragraph stays within 50% */
 .hero-banner-intro {
   display: table !important;
@@ -3448,6 +3470,8 @@ nav img.lgr-highred-logo[src*="LGR_HighRed_Logo"],
 
 .hero-banner-intro-body {
   max-width: 65% !important;
+  /* WCAG AA: ensure body-sized text on dark backgrounds meets 4.5:1 contrast */
+  color: rgba(255, 255, 255, 0.95) !important;
 }
 
 /* Hero banner headline: slightly wider than bulk text so Local Government Reorganisation fits on one line */

@@ -202,7 +202,7 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
 
   // Enhance title with geography when available, ensuring it stays under 70 chars total
   const getTitle = () => {
-    const maxTitleLength = 52; // 70 - 18 (" | LGRI")
+    const maxTitleLength = 52; // 70 - 18 (" | LGR Initiative")
     let title = article.title;
     
     // Add geography prefix if available and not already in title
@@ -293,7 +293,7 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
         ogImage={article.featured_image || undefined}
         article={{
           publishedTime: article.published_date || article.created_at,
-          author: article.author || 'LGRI Editorial Team',
+          author: article.author || 'LGR Initiative Editorial Team',
           section: article.theme || article.category || 'Insights',
           tags: [
             'LGR',
@@ -308,7 +308,7 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
       <ArticleStructuredData
         title={article.title}
         description={article.excerpt || ''}
-        author={article.author || "LGRI Editorial Team"}
+        author={article.author || "LGR Initiative Editorial Team"}
         publishedDate={article.published_date || article.created_at}
         updatedDate={article.updated_at}
         imageUrl={article.featured_image || undefined}
@@ -398,7 +398,7 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
               <div className="mt-16">
                 <AuthorBio
                   name={article.author}
-                  affiliation={article.theme ? `LGRI - ${getThemeDisplayName(article.theme)}` : 'LGRI'}
+                  affiliation={article.theme ? `LGR Initiative - ${getThemeDisplayName(article.theme)}` : 'LGR Initiative'}
                 />
               </div>
             )}

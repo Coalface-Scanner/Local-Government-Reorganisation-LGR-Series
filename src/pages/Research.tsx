@@ -1,44 +1,29 @@
-import { Database, Search, GraduationCap, FileBarChart2 } from 'lucide-react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { Database, Search, GraduationCap, FileBarChart2, Hand } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
+import FAQSection from '../components/FAQSection';
+import HubCtaBand from '../components/HubCtaBand';
+import { ContentContainer } from '../components/layout';
 
 interface ResearchProps {
   onNavigate: (page: string, data?: unknown) => void;
 }
 
-const researchSections = [
-  {
-    id: 'facts-and-data',
-    title: 'Facts & Data',
-    description: 'Evidence-based facts, reference material, and structured datasets for LGR.',
-    route: 'facts-and-data',
-    icon: Database,
-  },
-  {
-    id: 'library',
-    title: 'Library',
-    description: 'Search articles, reports, and materials across the full content archive.',
-    route: 'library',
-    icon: Search,
-  },
-  {
-    id: 'lessons',
-    title: 'Lessons',
-    description: 'Case-grounded insights and practical lessons from prior reorganisations.',
-    route: 'lessons',
-    icon: GraduationCap,
-  },
-  {
-    id: 'insights-reports',
-    title: 'Reports',
-    description: 'Long-form analysis and report outputs from the LGRI programme.',
-    route: 'insights/reports',
-    icon: FileBarChart2,
-  },
+const featuredPathway = [
+  { label: 'Facts & data', url: '/facts-and-data' },
+  { label: 'Library', url: '/library' },
+  { label: 'Lessons', url: '/lessons' },
 ];
 
-export default function Research({ onNavigate }: ResearchProps) {
+const subPageCards = [
+  { title: 'Facts & data', path: '/facts-and-data', description: 'Research overview: verified facts, datasets and sources.', icon: Database },
+  { title: 'Library', path: '/library', description: 'Search and browse the LGR library of reports and materials.', icon: Search },
+  { title: 'Lessons', path: '/lessons', description: 'Case-grounded insights and lessons from prior reorganisations.', icon: GraduationCap },
+  { title: 'Reports', path: '/insights/reports', description: 'Long-form analysis and report outputs from the programme.', icon: FileBarChart2 },
+];
+
+export default function Research(_props: ResearchProps) {
   const location = useLocation();
 
   return (
@@ -52,31 +37,74 @@ export default function Research({ onNavigate }: ResearchProps) {
       <PageBanner
         heroVariant="research"
         heroLabel="RESEARCH"
-        heroTitle="Research and Evidence"
+        heroTitle="Research and Evidence on LGR reform"
         heroSubtitle="Find the data, reports, and case-grounded lessons that support rigorous LGR decision-making."
         currentPath={location.pathname}
+        breadcrumbVariant="inline"
       />
 
-      <div className="layout-container layout-content-hub py-10">
-        <div className="grid md:grid-cols-2 gap-6">
-          {researchSections.map((section) => {
-            const Icon = section.icon;
-            return (
-              <button
-                key={section.id}
-                onClick={() => onNavigate(section.route)}
-                className="academic-card p-6 text-left hover:shadow-lg transition-shadow"
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <Icon size={20} className="text-teal-700" />
-                  <h2 className="text-academic-xl font-display font-bold text-academic-charcoal">{section.title}</h2>
-                </div>
-                <p className="text-academic-neutral-700 font-serif">{section.description}</p>
-              </button>
-            );
-          })}
-        </div>
-      </div>
+      <ContentContainer variant="hub">
+        <section className="layout-section hub-section-plain">
+          <div className="hub-intro">
+            <p className="text-academic-base font-serif leading-relaxed">
+              The Research section gives you access to evidence, reports, and lessons from practice. Use Facts & Data for reference material and datasets, the Library to search across articles and reports, Lessons for case-based insights, and Reports for longer analysis from the LGR Initiative programme.
+            </p>
+          </div>
+        </section>
+
+        <section className="layout-section hub-section-pathway">
+          <h2 className="font-display font-bold text-academic-charcoal mb-4 hub-section-heading">
+            <span className="block text-academic-2xl">Not sure where to begin?</span>
+            <span className="block text-academic-lg text-academic-neutral-700 mt-1">
+              The most popular pages in Research are:
+            </span>
+          </h2>
+          <div className="layout-pathway-grid">
+            {featuredPathway.map((step, idx) => (
+              <Link key={step.url} to={step.url} className={`hub-pathway-card ${idx === 0 ? 'hub-pathway-card-primary' : ''}`}>
+                <Hand className="w-8 h-8 hub-pathway-icon" strokeWidth={1.5} />
+                {step.label}
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section className="layout-section hub-section-plain">
+          <h2 className="text-academic-2xl font-display font-bold text-academic-charcoal mb-6 hub-section-heading">
+            All pages in this section
+          </h2>
+          <div className="layout-card-grid hub-card-grid">
+            {subPageCards.map((card) => {
+              const Icon = card.icon;
+              return (
+                <Link
+                  key={card.path}
+                  to={card.path}
+                  className="group academic-card p-6 text-left transition-all hover:shadow-lg duration-300 flex flex-col h-full"
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="hub-card-icon">
+                      <Icon size={24} strokeWidth={1.5} />
+                    </div>
+                  </div>
+                  <h3 className="text-academic-xl font-display font-bold text-academic-charcoal mb-3 group-hover:text-teal-700 transition-colors">
+                    {card.title}
+                  </h3>
+                  <p className="text-academic-sm text-academic-neutral-700 mb-4 font-serif flex-grow">
+                    {card.description}
+                  </p>
+                  <div className="text-academic-sm font-display font-semibold text-teal-700">
+                    View page →
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      </ContentContainer>
+
+      <FAQSection page="research" variant="hub" />
+      <HubCtaBand />
     </div>
   );
 }

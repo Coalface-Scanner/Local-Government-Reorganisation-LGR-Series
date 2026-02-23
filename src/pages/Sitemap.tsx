@@ -31,22 +31,7 @@ export default function Sitemap() {
         });
       }
 
-      // Fetch published materials
-      const { data: materials } = await supabase
-        .from('materials')
-        .select('slug, updated_at, published_date')
-        .eq('published', true);
-
-      if (materials) {
-        materials.forEach(material => {
-          urls.push({
-            loc: `/materials/${material.slug}`,
-            lastmod: material.updated_at || material.published_date || undefined,
-            changefreq: 'monthly' as const,
-            priority: 0.6,
-          });
-        });
-      }
+      // Materials: no /materials/:slug route (materials live under /library); omit from sitemap to avoid 404s
 
       // Fetch published news
       const { data: news } = await supabase

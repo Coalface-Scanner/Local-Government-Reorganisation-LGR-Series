@@ -199,7 +199,7 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
       <MetaTags
         title="LGR Governance Interviews - Council Leaders & Practitioners"
         description="In-depth interviews with council leaders, officers, and practitioners on Local Government Reorganisation (LGR) and LGR governance. First-hand accounts and expert perspectives on local government reorganisation reform."
-        keywords="LGR interviews, LGR governance interviews, Local Government Reorganisation interviews, council leader interviews, local government insights, reorganisation experiences, practitioner perspectives, LGRI interviews"
+        keywords="LGR interviews, LGR governance interviews, Local Government Reorganisation interviews, council leader interviews, local government insights, reorganisation experiences, practitioner perspectives, LGR Initiative interviews"
       />
       <PageBanner
         heroLabel="EXPERT PERSPECTIVES"
@@ -295,7 +295,7 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
                     <div className="absolute top-4 right-4 flex gap-2">
                       {interview.status === 'coming_soon' && (
                         <span className="inline-block px-4 py-2 bg-slate-900/90 backdrop-blur-sm text-white text-sm font-semibold rounded-full border border-slate-700">
-                          Coming Soon
+                          Episode coming soon
                         </span>
                       )}
                       {interview.status === 'published' && (
@@ -493,7 +493,7 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
                 Learn More About Local Government Reorganisation
               </h3>
               <p className="text-academic-neutral-700 mb-4 font-serif">
-                Explore the <a href="/facts/what-is-lgr" className="text-teal-700 hover:text-teal-800 underline font-medium">LGRI hub</a> for comprehensive guides on Local Government Reorganisation, LGR governance, and the LGR timetable 2026.
+                Explore the <a href="/facts/what-is-lgr" className="text-teal-700 hover:text-teal-800 underline font-medium">LGR Initiative hub</a> for comprehensive guides on Local Government Reorganisation, LGR governance, and the LGR timetable 2026.
               </p>
               <a
                 href="/facts/what-is-lgr"

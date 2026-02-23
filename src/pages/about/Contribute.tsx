@@ -39,15 +39,15 @@ export default function Contribute({ onNavigate: _onNavigate }: ContributeProps)
   return (
     <div className="bg-academic-cream min-h-screen">
       <MetaTags
-        title="How to Contribute - LGRI"
-        description="Get involved in the LGRI by sharing your experience, suggesting topics, providing data, or contributing expert commentary."
-        keywords="contribute to LGRI, share experience, suggest topics, provide data, expert commentary, local government reorganisation"
+        title="How to Contribute - LGR Initiative"
+        description="Get involved in the LGR Initiative by sharing your experience, suggesting topics, providing data, or contributing expert commentary."
+        keywords="contribute to LGR Initiative, share experience, suggest topics, provide data, expert commentary, local government reorganisation"
       />
       
       <PageBanner
         heroLabel="ABOUT"
         heroTitle="How to Contribute"
-        heroSubtitle="Get involved in the LGRI by sharing your experience, suggesting topics, or contributing to our research."
+        heroSubtitle="Get involved in the LGR Initiative by sharing your experience, suggesting topics, or contributing to our research."
         currentPath={location.pathname}
       />
 
@@ -67,7 +67,7 @@ export default function Contribute({ onNavigate: _onNavigate }: ContributeProps)
                       Get Involved
                     </h2>
                     <p className="mb-6">
-                      The LGRI welcomes contributions from practitioners, local authority officers, elected members, developers, and other stakeholders involved in local government reorganisation and planning.
+                      The LGR Initiative welcomes contributions from practitioners, local authority officers, elected members, developers, and other stakeholders involved in local government reorganisation and planning.
                     </p>
                   </>
                 )}
@@ -142,8 +142,8 @@ export default function Contribute({ onNavigate: _onNavigate }: ContributeProps)
                 To discuss contributions or suggest topics, please contact:
               </p>
               <p className="text-academic-lg font-display font-semibold text-teal-700 mb-6">
-                <a href="mailto:editor@localgovernmentreorganisation.com" className="hover:text-teal-800 transition-colors">
-                  editor@localgovernmentreorganisation.com
+                <a href="mailto:office@lgr-initiative.co.uk" className="hover:text-teal-800 transition-colors">
+                  office@lgr-initiative.co.uk
                 </a>
               </p>
               <p className="text-academic-sm text-academic-neutral-600 font-serif">
@@ -192,28 +192,28 @@ export default function Contribute({ onNavigate: _onNavigate }: ContributeProps)
                     Overview
                   </Link>
                   <Link
-                    to="/about/leadership/rowan-cole"
+                    to="/rowan-cole-local-government-reorganisation"
                     className="block px-3 py-2 text-academic-sm text-academic-neutral-700 hover:bg-teal-50 hover:text-teal-700 transition-colors rounded"
                   >
                     Editor Profile
                   </Link>
                   <Link
-                    to="/about/methodology"
+                    to="/about/overview#methodology"
                     className="block px-3 py-2 text-academic-sm text-academic-neutral-700 hover:bg-teal-50 hover:text-teal-700 transition-colors rounded"
                   >
                     Methodology
                   </Link>
                   <Link
-                    to="/about/contribute"
+                    to="/about/contributors/contribute"
                     className="block px-3 py-2 text-academic-sm text-teal-700 bg-teal-50 font-semibold rounded"
                   >
                     Contribute
                   </Link>
                   <Link
-                    to="/about/coalface"
+                    to="/about/partnership"
                     className="block px-3 py-2 text-academic-sm text-academic-neutral-700 hover:bg-teal-50 hover:text-teal-700 transition-colors rounded"
                   >
-                    About COALFACE
+                    Partnership
                   </Link>
                 </nav>
               </div>

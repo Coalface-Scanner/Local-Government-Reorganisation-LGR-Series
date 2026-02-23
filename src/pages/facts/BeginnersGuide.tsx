@@ -1,60 +1,20 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import FAQSection from '../../components/FAQSection';
+import PageNavigation from '../../components/PageNavigation';
 import ElectoralSystemsMap from '../../components/ElectoralSystemsMap';
+import GovernmentStructureMap from '../../components/GovernmentStructureMap';
 import { 
   ArrowLeft, Crown, Building2, Users, Vote, MapPin, 
   Scale, FileText, Home, Gavel, Globe, CheckCircle2,
-  AlertCircle, Info, ChevronRight, List, Sparkles
+  AlertCircle, Info, ChevronRight, Sparkles
 } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 
 export default function BeginnersGuide() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeSection, setActiveSection] = useState('');
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = [
-        'four-tier-framework',
-        'the-crown',
-        'parliament-vs-government',
-        'devolution',
-        'england-anomaly',
-        'local-government-england',
-        'local-government-outside',
-        'hyper-local',
-        'terminology',
-        'electoral-systems',
-        'voting-participation',
-        'councillor-responsibilities'
-      ];
-
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 150 && rect.bottom >= 150) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
 
   const tocSections = [
     { id: 'four-tier-framework', label: 'The 4-Tier Framework', icon: Building2 },
@@ -70,6 +30,12 @@ export default function BeginnersGuide() {
     { id: 'voting-participation', label: 'Voting & Participation', icon: Users },
     { id: 'councillor-responsibilities', label: 'What Councillors Do', icon: CheckCircle2 }
   ];
+
+  const navItems = tocSections.map((s) => ({
+    id: s.id,
+    label: s.label,
+    icon: <s.icon size={16} />
+  }));
 
   return (
     <>
@@ -96,55 +62,77 @@ export default function BeginnersGuide() {
           description="A comprehensive introduction to UK government structure, local councils, and electoral systems. Learn how government works and how councillors are elected."
           keywords="UK government structure, local councils, electoral systems, how government works, councillor elections, devolution"
         />
-        <div className="layout-container">
-        <p className="text-xl text-academic-neutral-700 leading-relaxed max-w-3xl mb-8">
-          Understanding UK government structure, local councils, and how councillors are elected.
-        </p>
-      </div>
-
-      <div className="layout-container layout-content-sub">
-        <div className="grid lg:grid-cols-4 gap-8">
-          {/* Table of Contents Sidebar */}
-          <aside className="lg:col-span-1">
-            <div className="sticky top-8 bg-white rounded-xl p-6 shadow-lg border border-slate-200">
-              <div className="flex items-center gap-2 mb-4">
-                <List size={18} className="text-teal-700" />
-                <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wide">Contents</h2>
+        <div className="layout-container layout-content-sub">
+          {/* Visual intro strip */}
+          <div className="mb-6 rounded-2xl bg-gradient-to-r from-teal-900/90 via-cyan-900/80 to-slate-800/90 p-6 md:p-8 border-2 border-teal-700/30 shadow-xl">
+            <div className="flex flex-col md:flex-row md:items-center gap-6">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur flex items-center justify-center border border-white/20">
+                  <Building2 size={32} className="text-teal-300" />
+                </div>
+                <div>
+                  <h2 className="text-2xl md:text-3xl font-black text-white">A Beginners Guide</h2>
+                  <p className="text-teal-200/90 text-lg mt-1">Government structure, councils & elections</p>
+                </div>
               </div>
-              <nav className="space-y-1">
-                {tocSections.map((section) => {
-                  const Icon = section.icon;
-                  return (
-                    <button
-                      key={section.id}
-                      onClick={() => scrollToSection(section.id)}
-                      className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all text-left ${
-                        activeSection === section.id
-                          ? 'bg-teal-50 text-teal-700 font-semibold border-l-4 border-teal-700'
-                          : 'text-slate-600 hover:bg-slate-50 hover:text-teal-700'
-                      }`}
-                    >
-                      <Icon size={16} className="shrink-0" />
-                      <span className="truncate">{section.label}</span>
-                    </button>
-                  );
-                })}
-              </nav>
+              <p className="text-slate-200 leading-relaxed max-w-2xl md:ml-auto">
+                Understanding UK government structure, local councils, and how councillors are elected. Use the interactive maps below to explore the four-tier framework and electoral systems.
+              </p>
             </div>
-          </aside>
+          </div>
 
-          {/* Main Content */}
-          <div className="lg:col-span-3 space-y-12">
-            {/* Section 1: How Government is structured */}
-            <section id="four-tier-framework" className="scroll-mt-8">
-              <div className="bg-white rounded-2xl p-8 md:p-12 shadow-lg border border-slate-200">
+          {/* On this page — jump to main sections */}
+          <nav aria-label="Guide sections" className="mb-10 rounded-xl bg-white border-2 border-slate-200 p-5 shadow-sm">
+            <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">In this guide</h3>
+            <div className="flex flex-wrap gap-3">
+              <a href="#four-tier-framework" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-50 text-teal-800 font-semibold text-sm hover:bg-teal-100 border border-teal-200 transition-colors">
+                <Building2 size={16} />
+                Government structure
+              </a>
+              <a href="#the-crown" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-50 text-slate-700 font-medium text-sm hover:bg-slate-100 border border-slate-200 transition-colors">
+                <Crown size={16} />
+                Crown & Westminster
+              </a>
+              <a href="#devolution" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-50 text-slate-700 font-medium text-sm hover:bg-slate-100 border border-slate-200 transition-colors">
+                <Globe size={16} />
+                Devolution
+              </a>
+              <a href="#local-government-england" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-50 text-slate-700 font-medium text-sm hover:bg-slate-100 border border-slate-200 transition-colors">
+                <MapPin size={16} />
+                Local government
+              </a>
+              <a href="#terminology" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-50 text-slate-700 font-medium text-sm hover:bg-slate-100 border border-slate-200 transition-colors">
+                <FileText size={16} />
+                Terminology
+              </a>
+              <a href="#electoral-systems" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-50 text-purple-800 font-semibold text-sm hover:bg-purple-100 border border-purple-200 transition-colors">
+                <Vote size={16} />
+                Electoral systems
+              </a>
+            </div>
+          </nav>
+
+          <div className="grid lg:grid-cols-4 gap-8">
+            {/* Main Content - left */}
+            <div className="lg:col-span-3 space-y-12">
+            {/* Part 1: Government structure — section banner */}
+            <div className="flex items-center gap-3 py-2">
+              <span className="text-xs font-bold text-teal-600 uppercase tracking-widest">Part 1</span>
+              <span className="h-px flex-1 bg-teal-200" aria-hidden />
+              <h2 className="text-lg font-bold text-slate-700">Government structure</h2>
+            </div>
+
+            {/* Section 1.1: Four-tier framework + interactive map */}
+            <section id="four-tier-framework" className="scroll-mt-24">
+              <div className="bg-white rounded-2xl p-8 md:p-12 shadow-xl border border-slate-200 overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-teal-100 to-transparent rounded-bl-3xl opacity-50 pointer-events-none" aria-hidden />
                 <div className="mb-8">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl flex items-center justify-center text-white">
+                    <div className="w-12 h-12 bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl flex items-center justify-center text-white shadow-lg">
                       <Building2 size={28} />
                     </div>
                     <h2 className="text-3xl font-black text-slate-900">
-                      How Government is structured - what do councils do?
+                      How Government is structured — what do councils do?
                     </h2>
                   </div>
                   <p className="text-lg text-slate-600 italic">
@@ -152,54 +140,62 @@ export default function BeginnersGuide() {
                   </p>
                 </div>
 
-                {/* 4-Tier Framework Visual */}
-                <div className="mb-12">
-                  <h3 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
-                    <Building2 className="text-teal-700" size={28} />
-                    The UK Administrative Framework
+                {/* Interactive Government Structure Map */}
+                <div className="mb-10">
+                  <h3 className="text-xl font-bold text-slate-900 mb-3 flex items-center gap-2">
+                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-teal-100 text-teal-700">
+                      <Building2 size={18} />
+                    </span>
+                    Interactive map: UK Government Structure
                   </h3>
-                  <p className="leading-relaxed mb-6 text-slate-700">
-                    The UK system is asymmetric—different parts of the country follow different rules. However, these four tiers provide the foundational structure:
+                  <p className="leading-relaxed mb-4 text-slate-700">
+                    Click each tier to expand and see how power flows from the Crown down to local councils.
                   </p>
-                  
-                  {/* Visual Tier Cards */}
-                  <div className="grid md:grid-cols-2 gap-4 mb-6">
-                    <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl p-6 text-white shadow-xl">
-                      <div className="flex items-center gap-3 mb-3">
-                        <Crown size={24} className="text-yellow-400" />
-                        <h4 className="text-xl font-bold">Tier 1: The Crown</h4>
-                      </div>
-                      <p className="text-slate-200">Supreme authority. Deals with national matters like foreign policy, defence, and overall economic policy.</p>
-                    </div>
-                    
-                    <div className="bg-gradient-to-br from-purple-600 to-purple-800 rounded-xl p-6 text-white shadow-xl">
-                      <div className="flex items-center gap-3 mb-3">
-                        <Scale size={24} />
-                        <h4 className="text-xl font-bold">Tier 2: Westminster</h4>
-                      </div>
-                      <p className="text-purple-100">Parliament (legislature) and Government (executive) - applies to all, but England is directly ruled here.</p>
-                    </div>
-                    
-                    <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-6 text-white shadow-xl">
-                      <div className="flex items-center gap-3 mb-3">
-                        <Globe size={24} />
-                        <h4 className="text-xl font-bold">Tier 3: Devolved Nations</h4>
-                      </div>
-                      <p className="text-blue-100">Scotland, Wales, and Northern Ireland have their own parliaments for specific laws.</p>
-                    </div>
-                    
-                    <div className="bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl p-6 text-white shadow-xl">
-                      <div className="flex items-center gap-3 mb-3">
-                        <Building2 size={24} />
-                        <h4 className="text-xl font-bold">Tier 4: Local Government</h4>
-                      </div>
-                      <p className="text-teal-100">Responsible for local services like waste management, social care, and housing. Operates through councils across the UK.</p>
-                    </div>
+                  <div className="rounded-xl overflow-hidden border-2 border-slate-200 shadow-lg">
+                    <GovernmentStructureMap />
                   </div>
                 </div>
 
-                {/* The Crown */}
-                <div id="the-crown" className="scroll-mt-8 mb-12">
+                {/* Supporting tier cards — at a glance */}
+                <div className="mb-12">
+                  <h3 className="text-lg font-bold text-slate-800 mb-4 uppercase tracking-wider">The four tiers at a glance</h3>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl p-5 text-white shadow-lg hover:shadow-xl transition-shadow">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Crown size={22} className="text-yellow-400" />
+                        <h4 className="font-bold">Tier 1: The Crown</h4>
+                      </div>
+                      <p className="text-slate-300 text-sm">Supreme authority. National matters: foreign policy, defence, economy.</p>
+                    </div>
+                    <div className="bg-gradient-to-br from-purple-600 to-purple-800 rounded-xl p-5 text-white shadow-lg hover:shadow-xl transition-shadow">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Scale size={22} />
+                        <h4 className="font-bold">Tier 2: Westminster</h4>
+                      </div>
+                      <p className="text-purple-100 text-sm">Parliament & Government. England is directly ruled here.</p>
+                    </div>
+                    <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-5 text-white shadow-lg hover:shadow-xl transition-shadow">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Globe size={22} />
+                        <h4 className="font-bold">Tier 3: Devolved Nations</h4>
+                      </div>
+                      <p className="text-blue-100 text-sm">Scotland, Wales, NI — their own parliaments for specific laws.</p>
+                    </div>
+                    <div className="bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl p-5 text-white shadow-lg hover:shadow-xl transition-shadow">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Building2 size={22} />
+                        <h4 className="font-bold">Tier 4: Local Government</h4>
+                      </div>
+                      <p className="text-teal-100 text-sm">Councils: waste, social care, housing, planning, education.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Section 1.2: The Crown */}
+            <section id="the-crown" className="scroll-mt-24">
+              <div className="bg-white rounded-2xl p-8 md:p-10 shadow-lg border border-slate-200">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center">
                       <Crown size={20} className="text-white" />
@@ -232,10 +228,12 @@ export default function BeginnersGuide() {
                       <strong>Key Insight:</strong> The Monarch's power is formal, not functional. Political sovereignty resides in Parliament.
                     </p>
                   </div>
-                </div>
+              </div>
+            </section>
 
-                {/* Parliament vs Government */}
-                <div id="parliament-vs-government" className="scroll-mt-8 mb-12">
+            {/* Section 1.3: Parliament vs Government */}
+            <section id="parliament-vs-government" className="scroll-mt-24">
+              <div className="bg-white rounded-2xl p-8 md:p-10 shadow-lg border border-slate-200">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center">
                       <Scale size={20} className="text-white" />
@@ -281,10 +279,12 @@ export default function BeginnersGuide() {
                       <strong>Crucial Difference:</strong> Parliament debates and votes. The Government decides and acts.
                     </p>
                   </div>
-                </div>
+              </div>
+            </section>
 
-                {/* Devolution */}
-                <div id="devolution" className="scroll-mt-8 mb-12">
+            {/* Section 1.4: Devolution */}
+            <section id="devolution" className="scroll-mt-24">
+              <div className="bg-white rounded-2xl p-8 md:p-10 shadow-lg border border-slate-200">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center">
                       <Globe size={20} className="text-white" />
@@ -339,10 +339,12 @@ export default function BeginnersGuide() {
                       </div>
                     </div>
                   </div>
-                </div>
+              </div>
+            </section>
 
-                {/* England Anomaly */}
-                <div id="england-anomaly" className="scroll-mt-8 mb-12">
+            {/* Section 1.5: England anomaly */}
+            <section id="england-anomaly" className="scroll-mt-24">
+              <div className="bg-white rounded-2xl p-6 md:p-8 shadow-lg border border-slate-200">
                   <div className="bg-amber-50 border-2 border-amber-300 rounded-xl p-6">
                     <div className="flex items-start gap-3">
                       <AlertCircle size={24} className="text-amber-700 shrink-0 mt-1" />
@@ -354,10 +356,12 @@ export default function BeginnersGuide() {
                       </div>
                     </div>
                   </div>
-                </div>
+              </div>
+            </section>
 
-                {/* Local Government in England */}
-                <div id="local-government-england" className="scroll-mt-8 mb-12">
+            {/* Section 1.6: Local government in England */}
+            <section id="local-government-england" className="scroll-mt-24">
+              <div className="bg-white rounded-2xl p-8 md:p-10 shadow-lg border border-slate-200">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-lg flex items-center justify-center">
                       <Building2 size={20} className="text-white" />
@@ -391,10 +395,9 @@ export default function BeginnersGuide() {
                       <p className="text-slate-700 text-sm">Combined Authorities: Transport & Economy (e.g., Greater Manchester)</p>
                     </div>
                   </div>
-                </div>
 
                 {/* Find Your Local Councillors */}
-                <div className="mb-12">
+                <div>
                   <div className="bg-teal-50 border-2 border-teal-200 rounded-xl p-6">
                     <div className="bg-white rounded-lg p-4 border border-teal-200">
                       <p className="text-slate-800 font-semibold flex items-center gap-2">
@@ -404,9 +407,12 @@ export default function BeginnersGuide() {
                     </div>
                   </div>
                 </div>
+              </div>
+            </section>
 
-                {/* Local Government Outside England */}
-                <div id="local-government-outside" className="scroll-mt-8 mb-12">
+            {/* Section 1.7: Local government outside England */}
+            <section id="local-government-outside" className="scroll-mt-24">
+              <div className="bg-white rounded-2xl p-8 md:p-10 shadow-lg border border-slate-200">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
                       <MapPin size={20} className="text-white" />
@@ -436,10 +442,12 @@ export default function BeginnersGuide() {
                       <p className="text-slate-700 text-sm"><strong>Stormont:</strong> Roads and Schools are managed centrally by the NI Assembly, NOT the local council.</p>
                     </div>
                   </div>
-                </div>
+              </div>
+            </section>
 
-                {/* Hyper-Local Level */}
-                <div id="hyper-local" className="scroll-mt-8 mb-12">
+            {/* Section 1.8: Hyper-local level */}
+            <section id="hyper-local" className="scroll-mt-24">
+              <div className="bg-white rounded-2xl p-8 md:p-10 shadow-lg border border-slate-200">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
                       <Home size={20} className="text-white" />
@@ -472,10 +480,12 @@ export default function BeginnersGuide() {
                       <p className="text-sm text-slate-700">No Official Tier - Community groups exist but are not part of the formal government structure.</p>
                     </div>
                   </div>
-                </div>
+              </div>
+            </section>
 
-                {/* Terminology */}
-                <div id="terminology" className="scroll-mt-8 mb-12">
+            {/* Section 1.9: Terminology */}
+            <section id="terminology" className="scroll-mt-24">
+              <div className="bg-white rounded-2xl p-8 md:p-10 shadow-lg border border-slate-200">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-slate-800 rounded-lg flex items-center justify-center">
                       <FileText size={20} className="text-white" />
@@ -526,9 +536,12 @@ export default function BeginnersGuide() {
                       <p className="text-sm text-slate-700">Permanent staff who run administration. Not politicians. Do not change with elections.</p>
                     </div>
                   </div>
-                </div>
+              </div>
+            </section>
 
-                {/* Summary */}
+            {/* Section 1.10: Summary */}
+            <section className="scroll-mt-24">
+              <div className="bg-white rounded-2xl p-8 md:p-10 shadow-lg border border-slate-200">
                 <div className="bg-gradient-to-br from-teal-50 to-cyan-50 border-l-4 border-teal-700 p-6 rounded-r-lg">
                   <h3 className="text-xl font-bold text-slate-900 mb-3 flex items-center gap-2">
                     <CheckCircle2 className="text-teal-700" size={24} />
@@ -546,9 +559,17 @@ export default function BeginnersGuide() {
               </div>
             </section>
 
-            {/* Section 2: How do we elect Councillors */}
-            <section id="electoral-systems" className="scroll-mt-8">
-              <div className="bg-white rounded-2xl p-8 md:p-12 shadow-lg border border-slate-200">
+            {/* Part 2: Elections — section banner */}
+            <div className="flex items-center gap-3 py-2">
+              <span className="text-xs font-bold text-purple-600 uppercase tracking-widest">Part 2</span>
+              <span className="h-px flex-1 bg-purple-200" aria-hidden />
+              <h2 className="text-lg font-bold text-slate-700">Elections & representation</h2>
+            </div>
+
+            {/* Section 2.1: Electoral systems intro + map */}
+            <section id="electoral-systems" className="scroll-mt-24">
+              <div className="bg-white rounded-2xl p-8 md:p-12 shadow-xl border border-slate-200 overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-purple-100 to-transparent rounded-bl-3xl opacity-60" aria-hidden />
                 <div className="mb-8">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-xl flex items-center justify-center text-white">
@@ -594,21 +615,29 @@ export default function BeginnersGuide() {
                   </div>
                 </div>
 
-                <div className="mb-8">
-                  <h3 className="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-2">
-                    <Vote className="text-purple-700" size={28} />
-                    Interactive Electoral Systems Map
-                  </h3>
-                  <p className="leading-relaxed mb-6 text-slate-700">
-                    Explore different electoral systems used around the world. Click on categories and systems to expand and learn more about how votes are translated into representation.
-                  </p>
-                  <div className="mb-6">
+                {/* Interactive Electoral Systems Map */}
+                <div className="mb-10">
+                  <div className="rounded-xl border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-indigo-50 p-4 mb-4">
+                    <h3 className="text-xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+                      <span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-purple-600 text-white">
+                        <Vote size={20} />
+                      </span>
+                      Interactive map: Electoral Systems
+                    </h3>
+                    <p className="leading-relaxed text-slate-700 text-sm">
+                      Explore how votes become representation. Click categories to expand; drag or scroll to pan. Different systems are used for UK councils, devolved elections, and the London Mayor.
+                    </p>
+                  </div>
+                  <div className="rounded-xl overflow-hidden border-2 border-slate-200 shadow-xl">
                     <ElectoralSystemsMap />
                   </div>
                 </div>
+              </div>
+            </section>
 
-                {/* Voting & Participation */}
-                <div id="voting-participation" className="scroll-mt-8 mb-8">
+            {/* Section 2.2: Voting & participation + What councillors do */}
+            <section id="voting-participation" className="scroll-mt-24">
+              <div className="bg-white rounded-2xl p-8 md:p-10 shadow-lg border border-slate-200">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
                       <Users size={20} className="text-white" />
@@ -657,7 +686,6 @@ export default function BeginnersGuide() {
                       </div>
                     </div>
                   </div>
-                </div>
 
                 {/* What Councillors Do */}
                 <div id="councillor-responsibilities" className="scroll-mt-8">
@@ -696,8 +724,55 @@ export default function BeginnersGuide() {
                 </div>
               </div>
             </section>
+            </div>
+
+            {/* Right sidebar: Contents, Subscribe, Elsewhere */}
+            <aside className="lg:col-span-1">
+              <div className="sticky top-24 space-y-5">
+                <PageNavigation items={navItems} />
+                <div className="lgr-insights-cta">
+                  <h3 className="lgr-insights-cta__title">LGR Insights & Updates</h3>
+                  <p className="lgr-insights-cta__body">
+                    Receive our regular update direct to your inbox. Subscribe here.
+                  </p>
+                  <Link to="/subscribe" className="lgr-insights-cta__btn">
+                    Subscribe
+                  </Link>
+                </div>
+                <div className="border-2 border-neutral-900 bg-white p-5">
+                  <h4 className="font-black text-neutral-900 mb-3 text-sm tracking-wider border-b-2 border-neutral-200 pb-2">
+                    ELSEWHERE
+                  </h4>
+                  <div className="space-y-2.5">
+                    <Link
+                      to="/what-is-lgr"
+                      className="block w-full text-left px-4 py-3 bg-academic-warm hover:bg-teal-50 border border-academic-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-academic-charcoal hover:text-teal-700 font-display"
+                    >
+                      What is LGR? →
+                    </Link>
+                    <Link
+                      to="/facts"
+                      className="block w-full text-left px-4 py-3 bg-academic-warm hover:bg-teal-50 border border-academic-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-academic-charcoal hover:text-teal-700 font-display"
+                    >
+                      Facts & Data →
+                    </Link>
+                    <Link
+                      to="/first-100-days"
+                      className="block w-full text-left px-4 py-3 bg-academic-warm hover:bg-teal-50 border border-academic-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-academic-charcoal hover:text-teal-700 font-display"
+                    >
+                      First 100 Days →
+                    </Link>
+                    <Link
+                      to="/glossary"
+                      className="block w-full text-left px-4 py-3 bg-academic-warm hover:bg-teal-50 border border-academic-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-academic-charcoal hover:text-teal-700 font-display"
+                    >
+                      Glossary →
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </aside>
           </div>
-        </div>
         </div>
 
         <FAQSection page="facts" />

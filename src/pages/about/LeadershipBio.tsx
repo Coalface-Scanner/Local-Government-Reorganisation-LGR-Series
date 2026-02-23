@@ -38,8 +38,8 @@ export default function LeadershipBio() {
     <div className="min-h-screen bg-academic-cream">
       <MetaTags
         title={profile.name}
-        description={`${profile.name} profile for the LGRI, including role, organisational affiliation, and full biography.`}
-        keywords={`${profile.name}, LGRI, ${profile.organisation}, leadership, local government reorganisation`}
+        description={`${profile.name} profile for the LGR Initiative, including role, organisational affiliation, and full biography.`}
+        keywords={`${profile.name}, LGR Initiative, ${profile.organisation}, leadership, local government reorganisation`}
       />
       <script
         type="application/ld+json"

@@ -115,9 +115,9 @@ export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
   return (
     <div className="min-h-screen bg-academic-cream">
       <MetaTags
-        title="Local Government Reorganisation Facts & Data - LGRI"
-        description="Comprehensive facts, statistics, and data about Local Government Reorganisation (LGR) in England. Explore LGR timelines, councils involved, methodology, and sources from the LGRI."
-        keywords="LGR facts, Local Government Reorganisation data, LGRI facts, reorganisation data, unitary authority evidence, local government reorganisation analysis, LGR statistics, LGR timetable"
+        title="Local Government Reorganisation Facts & Data - LGR Initiative"
+        description="Comprehensive facts, statistics, and data about Local Government Reorganisation (LGR) in England. Explore LGR timelines, councils involved, methodology, and sources from the LGR Initiative."
+        keywords="LGR facts, Local Government Reorganisation data, LGR Initiative facts, reorganisation data, unitary authority evidence, local government reorganisation analysis, LGR statistics, LGR timetable"
       />
       <CollectionPageStructuredData
         name="Facts & Figures"
@@ -134,7 +134,7 @@ export default function Facts({ onNavigate: _onNavigate }: FactsProps) {
       <PageBanner
         heroLabel="EVIDENCE-BASED ANALYSIS"
         heroTitle="Local Government Reorganisation Facts & Data"
-        heroSubtitle="What is Local Government Reorganisation? Local Government Reorganisation (LGR) is the process of restructuring local government structures in England, typically moving from a two-tier system (county and district councils) to single-tier unitary authorities. This section provides comprehensive evidence-based analysis of LGR timelines, councils involved, key facts, methodology, sources, and additional resources from the LGRI."
+        heroSubtitle="What is Local Government Reorganisation? Local Government Reorganisation (LGR) is the process of restructuring local government structures in England, typically moving from a two-tier system (county and district councils) to single-tier unitary authorities. This section provides comprehensive evidence-based analysis of LGR timelines, councils involved, key facts, methodology, sources, and additional resources from the LGR Initiative."
         currentPath={location.pathname}
       />
 

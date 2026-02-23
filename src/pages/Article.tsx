@@ -157,7 +157,7 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
 
   // Enhance title with geography when available, ensuring it stays under 70 chars total
   const getTitle = () => {
-    const maxTitleLength = 52; // 70 - 18 (" | LGRI")
+    const maxTitleLength = 52; // 70 - 18 (" | LGR Initiative")
     let title = material.title;
     
     // Add geography prefix if available and not already in title
@@ -253,7 +253,7 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
       <ArticleStructuredData
         title={material.title}
         description={material.description}
-        author={material.author_name || material.author || "LGRI Editorial Team"}
+        author={material.author_name || material.author || "LGR Initiative Editorial Team"}
         publishedDate={material.published_date}
         updatedDate={material.updated_at}
         imageUrl={material.main_image_url || material.image_url || undefined}

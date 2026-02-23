@@ -7,7 +7,6 @@
   "scripts": {
     "dev": "node ./node_modules/vite/bin/vite.js",
     "open-local": "open http://localhost:5173",
-    "prebuild": "node scripts/generate-sitemap.js",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -20,7 +19,6 @@
     "import-substack": "node scripts/import-substack-rss.js",
     "import-substack:update": "node scripts/import-substack-rss.js --update",
     "add-moran-article": "node scripts/add-robert-moran-article.js",
-    "generate-sitemap": "node scripts/generate-sitemap.js",
     "check:contrast": "node scripts/check-color-contrast.js",
     "test:performance": "node scripts/lighthouse-audit.js",
     "audit:images": "node scripts/audit-images.js",

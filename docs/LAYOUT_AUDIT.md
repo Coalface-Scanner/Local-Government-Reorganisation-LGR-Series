@@ -33,7 +33,7 @@
 
 ### Sub-page template
 
-- **Use for**: Content pages under a section (e.g. Methodology, What is LGR, Contact, Coalface).
+- **Use for**: Content pages under a section (e.g. Methodology, What is LGR, Contact, Partnership).
 - **Structure**:
   1. Full-width `PageBanner`.
   2. (Optional) Back / nav strip with `data-page-nav` (subject pages with sidebar).
@@ -68,9 +68,9 @@
 | `/first-100-days` | Sub | HundredDays.tsx |
 | `/roadmap` | Sub | JourneyMap.tsx |
 | `/about/overview` | Sub | AboutOverview.tsx |
-| `/about/methodology` | Sub | Methodology.tsx |
+| `/about/methodology` | Redirects to `/about/overview#methodology` (methodology merged into About this programme) |
 | `/about/contribute` | Sub | Contribute.tsx |
-| `/about/coalface` | Sub | Coalface.tsx |
+| `/about/coalface` | Redirects to `/about/partnership` |
 | `/about/contributors` | Sub | Contributors.tsx |
 | `/about/leadership` | Sub | Leadership.tsx |
 | `/about/leadership/:slug` | Sub | LeadershipBio.tsx |
@@ -146,7 +146,7 @@
   - `layout-container layout-content-hub` where vertical padding was `py-12`,
   - `layout-container layout-content-sub` where vertical padding was `py-6` or `py-8`,
   - or `layout-container` only where no vertical padding was applied.
-- **Methodology**, **Coalface**, **Contribute**, **Contributors**, **AboutOverview**, **Contact**, **Partnerships**, **About**, **Editor/RowanCole**, **News**, **CouncilProfileDetail**, **BestPractices**, **CaseStudies**, **Insights** (lessons), **Facts**, **Subscribe**, **Surrey**, **Reasons**, **CouncilCases**, **KeyFacts**, **FurtherReading**, **LGRTimeline**, **WhatIsLGR** (back strip only), **BeginnersGuide**, **Materials**, **Reorganisations**, **HundredDays**, **Interviews**, **JourneyMap**, **Search**, **SurreyElectionTracker**, **SurreyElectionSimulator**, **Reports**, **TopicHub**, **Glossary term page**: updated to use `layout-container` and, where appropriate, `layout-content-sub` or `layout-content-hub`.
+- **Methodology**, **Contribute**, **Contributors**, **AboutOverview**, **Contact**, **Partnerships**, **About**, **Editor/RowanCole**, **News**, **CouncilProfileDetail**, **BestPractices**, **CaseStudies**, **Insights** (lessons), **Facts**, **Subscribe**, **Surrey**, **Reasons**, **CouncilCases**, **KeyFacts**, **FurtherReading**, **LGRTimeline**, **WhatIsLGR** (back strip only), **BeginnersGuide**, **Materials**, **Reorganisations**, **HundredDays**, **Interviews**, **JourneyMap**, **Search**, **SurreyElectionTracker**, **SurreyElectionSimulator**, **Reports**, **TopicHub**, **Glossary term page**: updated to use `layout-container` and, where appropriate, `layout-content-sub` or `layout-content-hub`.
 
 ### Global components
 

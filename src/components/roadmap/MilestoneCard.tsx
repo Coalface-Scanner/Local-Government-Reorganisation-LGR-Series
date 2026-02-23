@@ -81,7 +81,7 @@ export default function MilestoneCard({
               e.stopPropagation();
               onToggleSave();
             }}
-            className="p-2 rounded-lg text-academic-neutral-500 hover:text-teal-600 hover:bg-teal-50 shrink-0"
+            className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-academic-neutral-500 hover:text-teal-600 hover:bg-teal-50 shrink-0"
             aria-label={isSaved ? 'Remove from reading list' : 'Add to reading list'}
           >
             {isSaved ? (

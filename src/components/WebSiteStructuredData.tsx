@@ -14,8 +14,8 @@ export default function WebSiteStructuredData() {
     "@type": "WebSite",
     "name": "Local Government Reorganisation Initiative",
     "alternateName": [
-      "LGRI",
-      "LGRI by COALFACE",
+      "LGR Initiative",
+      "LGR Initiative by COALFACE",
       "LGR Series"
     ],
     "url": baseUrl,
@@ -23,8 +23,8 @@ export default function WebSiteStructuredData() {
     "inLanguage": "en-GB",
     "publisher": {
       "@type": "Organization",
-      "name": "LGRI",
-      "alternateName": ["LGRI by COALFACE", "COALFACE"],
+      "name": "LGR Initiative",
+      "alternateName": ["LGR Initiative by COALFACE", "LGR Series", "COALFACE"],
       "legalName": "Coalface Engagement Ltd",
       "url": baseUrl,
       "logo": {
@@ -34,7 +34,7 @@ export default function WebSiteStructuredData() {
     },
     "copyrightHolder": {
       "@type": "Organization",
-      "name": "LGRI",
+      "name": "LGR Initiative",
       "legalName": "Coalface Engagement Ltd"
     },
     "copyrightYear": new Date().getFullYear().toString(),

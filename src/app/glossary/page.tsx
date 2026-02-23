@@ -32,7 +32,7 @@ export default function GlossaryPage() {
 
   // Generate metadata (Next.js Metadata API pattern)
   const metadata = {
-    title: 'Glossary | LGRI',
+    title: 'Glossary | LGR Initiative',
     description: 'Comprehensive glossary of Local Government Reorganisation terms and definitions. Learn about shadow authorities, vesting day, unitary councils, and more key LGR concepts.',
     keywords: 'LGR glossary, Local Government Reorganisation terms, shadow authority definition, vesting day, unitary authority, LGR timetable, LGR governance terms'
   };

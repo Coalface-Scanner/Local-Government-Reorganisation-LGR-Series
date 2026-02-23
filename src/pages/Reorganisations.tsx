@@ -1,12 +1,11 @@
 import { useEffect, useState, useCallback } from 'react';
-import { supabase } from '../lib/supabase';
+import { supabase, hasValidSupabase } from '../lib/supabase';
 import { useLocation } from 'react-router-dom';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import ErrorDisplay from '../components/ErrorDisplay';
-import MembersPasswordProtection from '../components/MembersPasswordProtection';
 import { Search, Filter, ArrowUpDown, Calendar, Building2 } from 'lucide-react';
-import { LGRReorganisation, ReorganisationType, REORGANISATION_TYPE_LABELS } from '../types/reorganisations';
+import { LGRReorganisation, ReorganisationType, REORGANISATION_TYPE_LABELS, REORGANISATION_REASON_LABELS } from '../types/reorganisations';
 import FAQSection from '../components/FAQSection';
 
 interface ReorganisationsProps {
@@ -59,6 +58,15 @@ export default function Reorganisations({ onNavigate }: ReorganisationsProps) {
   const fetchReorganisations = async () => {
     try {
       setLoading(true);
+      setError(null);
+      if (!hasValidSupabase) {
+        setReorganisations([]);
+        setLoading(false);
+        setError(
+          'Reorganisations data is loaded from the database. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env, then run the Supabase migrations (e.g. supabase db push) to see data here.'
+        );
+        return;
+      }
       const { data, error: fetchError } = await supabase
         .from('lgr_reorganisations')
         .select('*')
@@ -69,10 +77,11 @@ export default function Reorganisations({ onNavigate }: ReorganisationsProps) {
       }
 
       setReorganisations(data || []);
-      setError(null);
     } catch (err) {
       console.error('Error fetching reorganisations:', err);
-      setError('Failed to load reorganisations. Please try refreshing the page.');
+      setError(
+        'Failed to load reorganisations. If the database is set up, ensure the lgr_reorganisations table exists (run migrations: supabase db push or apply the SQL in supabase/migrations).'
+      );
     } finally {
       setLoading(false);
     }
@@ -103,15 +112,15 @@ export default function Reorganisations({ onNavigate }: ReorganisationsProps) {
       filtered = filtered.filter((r) => selectedTypes.includes(r.type));
     }
 
-    // Sort
-    switch (sortBy) {
-      case 'newest':
-        filtered.sort((a, b) => b.year - a.year || (b.effective_date || '').localeCompare(a.effective_date || ''));
-        break;
-      case 'oldest':
-        filtered.sort((a, b) => a.year - b.year || (a.effective_date || '').localeCompare(b.effective_date || ''));
-        break;
-    }
+    // Sort: newest/oldest by year, with boundary_change first then merger then unitary_creation
+    const typeOrder = { boundary_change: 0, merger: 1, unitary_creation: 2, abolition: 3 };
+    const yearSort = sortBy === 'newest' ? -1 : 1;
+    filtered.sort((a, b) => {
+      const typeA = typeOrder[a.type] ?? 3;
+      const typeB = typeOrder[b.type] ?? 3;
+      if (typeA !== typeB) return typeA - typeB;
+      return yearSort * (a.year - b.year) || (yearSort * (a.effective_date || '').localeCompare(b.effective_date || ''));
+    });
 
     setFilteredReorganisations(filtered);
   }, [reorganisations, searchQuery, sortBy, selectedYears, selectedTypes]);
@@ -149,8 +158,7 @@ export default function Reorganisations({ onNavigate }: ReorganisationsProps) {
   };
 
   return (
-    <MembersPasswordProtection>
-      <div id="main-content" className="min-h-screen bg-academic-cream">
+    <div id="main-content" className="min-h-screen bg-academic-cream">
         <MetaTags
           title="Local Government Reorganisations Since 2010"
           description="Comprehensive list of all local government reorganisations in England since 2010. Filter by year and type including unitary creations, mergers, boundary changes, and council abolitions."
@@ -291,71 +299,132 @@ export default function Reorganisations({ onNavigate }: ReorganisationsProps) {
                   </div>
                 ) : (
                   <>
-                    <div className="space-y-6">
-                      {paginatedReorganisations.map((reorganisation) => (
-                        <div
-                          key={reorganisation.id}
-                          className="academic-card p-8 hover:border-teal-700 transition-all duration-300"
-                        >
-                          <div className="flex flex-col gap-4">
-                            <div className="flex flex-wrap items-start gap-3">
-                              <h2 className="text-academic-2xl font-display font-bold text-academic-charcoal flex-1">
-                                {reorganisation.name}
-                              </h2>
-                              <span className={`px-3 py-1 text-academic-xs font-display font-semibold ${
-                                reorganisation.status === 'completed'
-                                  ? 'bg-green-50 text-green-800'
-                                  : reorganisation.status === 'proposed'
-                                  ? 'bg-blue-50 text-blue-800'
-                                  : 'bg-gray-50 text-gray-800'
-                              }`} style={{ borderRadius: '2px' }}>
-                                {reorganisation.status.charAt(0).toUpperCase() + reorganisation.status.slice(1)}
-                              </span>
-                            </div>
+                    <div className="space-y-10">
+                      {paginatedReorganisations.map((reorganisation, index) => {
+                        const isFirstBoundaryOnPage =
+                          reorganisation.type === 'boundary_change' &&
+                          !paginatedReorganisations
+                            .slice(0, index)
+                            .some((r) => r.type === 'boundary_change');
+                        const isFirstMajorOnPage =
+                          (reorganisation.type === 'merger' || reorganisation.type === 'unitary_creation') &&
+                          !paginatedReorganisations
+                            .slice(0, index)
+                            .some((r) => r.type === 'merger' || r.type === 'unitary_creation');
 
-                            <div className="flex flex-wrap gap-2">
-                              <span className="px-3 py-1 bg-teal-50 text-teal-800 text-academic-xs font-display font-semibold flex items-center gap-1" style={{ borderRadius: '2px' }}>
-                                <Calendar size={14} />
-                                {reorganisation.year}
-                              </span>
-                              <span className="px-3 py-1 bg-blue-50 text-blue-800 text-academic-xs font-display font-semibold" style={{ borderRadius: '2px' }}>
-                                {REORGANISATION_TYPE_LABELS[reorganisation.type]}
-                              </span>
-                              {reorganisation.effective_date && (
-                                <span className="px-3 py-1 bg-academic-neutral-100 text-academic-neutral-700 text-academic-xs font-display font-semibold" style={{ borderRadius: '2px' }}>
-                                  {new Date(reorganisation.effective_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
-                                </span>
-                              )}
-                            </div>
-
-                            {reorganisation.description && (
-                              <p className="text-academic-base text-academic-neutral-700 font-serif leading-relaxed">
-                                {reorganisation.description}
-                              </p>
-                            )}
-
-                            {reorganisation.councils_involved && reorganisation.councils_involved.length > 0 && (
-                              <div>
-                                <h3 className="text-academic-sm font-display font-semibold text-academic-charcoal mb-2 flex items-center gap-2">
-                                  <Building2 size={16} />
-                                  Councils Involved
-                                </h3>
-                                <div className="flex flex-wrap gap-2">
-                                  {reorganisation.councils_involved.map((council, index) => (
-                                    <span
-                                      key={index}
-                                      className="px-3 py-1 bg-academic-warm text-academic-neutral-700 text-academic-xs font-serif"
-                                      style={{ borderRadius: '2px' }}
-                                    >
-                                      {council}
-                                    </span>
-                                  ))}
-                                </div>
+                        return (
+                          <div key={reorganisation.id} className="space-y-6">
+                            {isFirstBoundaryOnPage && (
+                              <div className="pb-2">
+                                <h2 className="text-academic-xl font-display font-bold text-academic-charcoal mb-2">
+                                  Minor Boundary Changes (2012–2025)
+                                </h2>
+                                <p className="text-academic-base text-academic-neutral-700 font-serif leading-relaxed">
+                                  These changes involved moving the administrative borders between existing councils to resolve geographic anomalies, usually caused by new housing developments, rather than structural unifications.
+                                </p>
                               </div>
                             )}
+                            {isFirstMajorOnPage && (
+                              <div className="pb-2">
+                                <h2 className="text-academic-xl font-display font-bold text-academic-charcoal mb-2">
+                                  Major Structural Changes (Council Mergers & Unitary Creations)
+                                </h2>
+                                <p className="text-academic-base text-academic-neutral-700 font-serif leading-relaxed">
+                                  Between 2019 and 2023, a major wave of &ldquo;unitarisation&rdquo; and district mergers occurred to reduce administrative costs, leading to the abolition of several historic county and district councils.
+                                </p>
+                              </div>
+                            )}
+                            <div className="academic-card p-8 hover:border-teal-700 transition-all duration-300">
+                              <div className="flex flex-col gap-4">
+                                <div className="flex flex-wrap items-start gap-3">
+                                  <h3 className="text-academic-2xl font-display font-bold text-academic-charcoal flex-1">
+                                    {reorganisation.name}
+                                  </h3>
+                                  <span className={`px-3 py-1 text-academic-xs font-display font-semibold ${
+                                    reorganisation.status === 'completed'
+                                      ? 'bg-green-50 text-green-800'
+                                      : reorganisation.status === 'proposed'
+                                      ? 'bg-blue-50 text-blue-800'
+                                      : 'bg-gray-50 text-gray-800'
+                                  }`} style={{ borderRadius: '2px' }}>
+                                    {reorganisation.status.charAt(0).toUpperCase() + reorganisation.status.slice(1)}
+                                  </span>
+                                </div>
+
+                                {(reorganisation.name_before || reorganisation.name_after) && (
+                                  <div className="grid gap-2 sm:grid-cols-2">
+                                    {reorganisation.name_before && (
+                                      <div>
+                                        <span className="text-academic-xs font-display font-semibold text-academic-charcoal uppercase tracking-wide">Name Before</span>
+                                        <p className="text-academic-sm text-academic-neutral-700 font-serif mt-0.5">{reorganisation.name_before}</p>
+                                      </div>
+                                    )}
+                                    {reorganisation.name_after && (
+                                      <div>
+                                        <span className="text-academic-xs font-display font-semibold text-academic-charcoal uppercase tracking-wide">Name After</span>
+                                        <p className="text-academic-sm text-academic-neutral-700 font-serif mt-0.5">{reorganisation.name_after}</p>
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
+
+                                <div className="flex flex-wrap gap-2">
+                                  <span className="px-3 py-1 bg-teal-50 text-teal-800 text-academic-xs font-display font-semibold flex items-center gap-1" style={{ borderRadius: '2px' }}>
+                                    <Calendar size={14} />
+                                    {reorganisation.year}
+                                  </span>
+                                  <span className="px-3 py-1 bg-blue-50 text-blue-800 text-academic-xs font-display font-semibold" style={{ borderRadius: '2px' }}>
+                                    {REORGANISATION_REASON_LABELS[reorganisation.type]}
+                                  </span>
+                                  {reorganisation.effective_date && (
+                                    <span className="px-3 py-1 bg-academic-neutral-100 text-academic-neutral-700 text-academic-xs font-display font-semibold" style={{ borderRadius: '2px' }}>
+                                      {new Date(reorganisation.effective_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+                                    </span>
+                                  )}
+                                </div>
+
+                                {(reorganisation.merger_headline || reorganisation.description) && (
+                                  <div>
+                                    <span className="text-academic-xs font-display font-semibold text-academic-charcoal uppercase tracking-wide">Merger Headline</span>
+                                    <p className="text-academic-base text-academic-neutral-700 font-serif leading-relaxed mt-0.5">
+                                      {reorganisation.merger_headline ?? reorganisation.description}
+                                    </p>
+                                  </div>
+                                )}
+
+                                {reorganisation.current_status && (
+                                  <div>
+                                    <span className="text-academic-xs font-display font-semibold text-academic-charcoal uppercase tracking-wide">Current Status</span>
+                                    <p className="text-academic-base text-academic-neutral-700 font-serif leading-relaxed mt-0.5">
+                                      {reorganisation.current_status}
+                                    </p>
+                                  </div>
+                                )}
+
+                                {reorganisation.councils_involved && reorganisation.councils_involved.length > 0 && (
+                                  <div>
+                                    <h4 className="text-academic-sm font-display font-semibold text-academic-charcoal mb-2 flex items-center gap-2">
+                                      <Building2 size={16} />
+                                      Councils Involved
+                                    </h4>
+                                    <div className="flex flex-wrap gap-2">
+                                      {reorganisation.councils_involved.map((council, i) => (
+                                        <span
+                                          key={i}
+                                          className="px-3 py-1 bg-academic-warm text-academic-neutral-700 text-academic-xs font-serif"
+                                          style={{ borderRadius: '2px' }}
+                                        >
+                                          {council}
+                                        </span>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
 
                     {totalPages > 1 && (
@@ -418,7 +487,6 @@ export default function Reorganisations({ onNavigate }: ReorganisationsProps) {
         <div className="layout-container">
         </div>
       </div>
-    </MembersPasswordProtection>
   );
 }
 

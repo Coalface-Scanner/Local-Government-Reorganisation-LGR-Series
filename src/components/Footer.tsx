@@ -51,7 +51,7 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
                   href="https://x.com/LGRSeries"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-8 h-8 flex items-center justify-center text-academic-neutral-200 hover:text-teal-400 transition-colors"
+                  className="min-w-[44px] min-h-[44px] w-10 h-10 flex items-center justify-center text-academic-neutral-200 hover:text-teal-400 transition-colors"
                   aria-label="Follow on Twitter"
                 >
                   <Twitter size={18} aria-hidden="true" />
@@ -62,7 +62,7 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
                   href="https://www.linkedin.com/showcase/local-government-reorganisation"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-8 h-8 flex items-center justify-center text-academic-neutral-200 hover:text-teal-400 transition-colors"
+                  className="min-w-[44px] min-h-[44px] w-10 h-10 flex items-center justify-center text-academic-neutral-200 hover:text-teal-400 transition-colors"
                   aria-label="Follow on LinkedIn"
                 >
                   <Linkedin size={18} aria-hidden="true" />
@@ -70,8 +70,8 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
               </li>
               <li>
                 <a
-                  href="mailto:editor@localgovernmentreorganisation.com"
-                  className="w-8 h-8 flex items-center justify-center text-academic-neutral-200 hover:text-teal-400 transition-colors"
+                  href="mailto:office@lgr-initiative.co.uk"
+                  className="min-w-[44px] min-h-[44px] w-10 h-10 flex items-center justify-center text-academic-neutral-200 hover:text-teal-400 transition-colors"
                   aria-label="Email us"
                 >
                   <Mail size={18} aria-hidden="true" />
@@ -158,16 +158,16 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
             <ul className="space-y-2 text-sm mb-4">
               <li>
                 <Link to="/about" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
-                  About the LGRI
+                  About the LGR Initiative
                 </Link>
               </li>
               <li>
-                <Link to="/about/leadership/rowan-cole" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
+                <Link to="/rowan-cole-local-government-reorganisation" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
                   Editor
                 </Link>
               </li>
               <li>
-                <Link to="/about/methodology" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
+                <Link to="/about/overview#methodology" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
                   Methodology
                 </Link>
               </li>
@@ -177,13 +177,13 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
                 </Link>
               </li>
               <li>
-                <Link to="/about/contribute" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
+                <Link to="/about/contributors/contribute" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
                   Contribute
                 </Link>
               </li>
               <li>
-                <Link to="/about/coalface" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
-                  About COALFACE
+                <Link to="/about/partnership" className="text-academic-neutral-200 hover:text-teal-400 transition-colors font-serif">
+                  Partnership
                 </Link>
               </li>
               <li>
@@ -213,11 +213,11 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
               <p>Prebend House, 72 London Road</p>
               <p>Leicester, LE2 0QR</p>
               <div className="pt-2 space-y-1">
-                <a href="mailto:LGR@coalfaceengagement.co.uk" className="text-teal-400 hover:text-teal-300 transition-colors block text-xs">
-                  LGR@coalfaceengagement.co.uk
+                <a href="mailto:office@lgr-initiative.co.uk" className="text-teal-400 hover:text-teal-300 transition-colors block text-xs">
+                  office@lgr-initiative.co.uk
                 </a>
-                <a href="mailto:editor@localgovernmentreorganisation.com" className="text-teal-400 hover:text-teal-300 transition-colors block text-xs">
-                  editor@localgovernmentreorganisation.com
+                <a href="mailto:office@lgr-initiative.co.uk" className="text-teal-400 hover:text-teal-300 transition-colors block text-xs">
+                  office@lgr-initiative.co.uk
                 </a>
               </div>
             </div>

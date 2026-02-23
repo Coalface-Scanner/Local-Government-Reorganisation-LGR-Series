@@ -207,7 +207,7 @@ export default function LessonsInsights() {
                               <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                             </div>
                           ) : (
-                            <p className="text-academic-xs text-academic-neutral-500 font-serif italic">Content coming soon</p>
+                            <p className="text-academic-xs text-academic-neutral-500 font-serif italic">Related article will be linked here when available.</p>
                           )}
                         </div>
                       </div>

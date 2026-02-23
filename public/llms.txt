@@ -32,9 +32,8 @@
 /podcast
 /news
 
-# Important methodology and about pages
-/about/methodology
-/about/coalface
+# Important methodology and about pages (methodology is at /about/overview#methodology)
+/about/overview
 /about/contributors
 /about/contribute
 
@@ -83,7 +82,7 @@
 # Authoritative Sources
 # - Published by COALFACE (Coalface Engagement Ltd)
 # - Leadership: /about/leadership
-# - Evidence-based research methodology: /about/methodology
+# - Evidence-based research methodology: /about/overview#methodology (section on About this programme)
 
 # Update Frequency
 # Content is regularly updated as the LGR programme progresses

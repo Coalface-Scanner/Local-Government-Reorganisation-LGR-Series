@@ -365,7 +365,7 @@ export default function Search({ onNavigate }: SearchProps) {
   return (
     <div id="main-content" className="min-h-screen bg-academic-cream">
       <MetaTags
-        title="Search - LGRI Library"
+        title="Search - LGR Initiative Library"
         description="Search and browse all published articles, reports, data, and insights on local government reorganisation. Filter by type, region, category, or author."
         keywords="LGR search, local government reorganisation articles, council reform research, search library"
       />

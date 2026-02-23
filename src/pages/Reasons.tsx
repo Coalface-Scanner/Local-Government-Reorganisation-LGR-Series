@@ -29,13 +29,13 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
   return (
     <div className="min-h-screen bg-academic-cream">
       <MetaTags
-        title="About the LGRI - Methodology & Purpose"
-        description="Learn about the LGRI methodology, editorial approach, and purpose. Discover how we examine local government reorganisation through evidence-based analysis."
+        title="About the LGR Initiative - Methodology & Purpose"
+        description="Learn about the LGR Initiative methodology, editorial approach, and purpose. Discover how we examine local government reorganisation through evidence-based analysis."
         keywords="LGR series, local government reorganisation methodology, council reform research, editorial approach, COALFACE insights"
       />
       <PageBanner
         heroLabel="ABOUT"
-        heroTitle="About the LGRI"
+        heroTitle="About the LGR Initiative"
         heroSubtitle="Editorial approach, methodology, and how to contribute"
         currentPath={location.pathname}
       />
@@ -71,7 +71,7 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
                       Personal thoughts and reflections as we begin to launch the LGR Series, exploring the intricacies of the most far reaching restructuring of English local government in a generation.
                     </p>
 
-                            <h4 className="text-academic-lg font-display font-semibold text-academic-charcoal mb-3">What is the LGRI?</h4>
+                            <h4 className="text-academic-lg font-display font-semibold text-academic-charcoal mb-3">What is the LGR Initiative?</h4>
                             <p className="text-academic-neutral-700 leading-relaxed mb-4 font-serif">
                               <span className="font-semibold">Local Government Reorganisation: Decisions, Power and Place</span> examines a programme that will reshape not only how planning authorities operate, but how the wider local government system functions around them. Driven by the Government's ambition to deliver 1.5 million new homes, reorganisation will influence governance, capacity, accountability and delivery across the whole development cycle.
                             </p>
@@ -135,7 +135,7 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
                         className="h-16 mb-2"
                       />
                       <p className="text-slate-900 font-semibold text-lg">Rowan Cole</p>
-                      <p className="text-slate-600">LGRI</p>
+                      <p className="text-slate-600">LGR Initiative</p>
                     </div>
 
                     <div className="mt-8 pt-6 border-t border-slate-200">
@@ -151,7 +151,7 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
                             Rowan Cole is Engagement Director at COALFACE, where he leads research and analysis on local government governance, planning performance, and democratic accountability. His work focuses on how institutional structures and political conditions shape development outcomes across England.
                           </p>
                           <p className="text-academic-neutral-700 leading-relaxed font-serif">
-                            The LGRI draws on COALFACE's Council Scanner™ methodology, which examines planning committee behaviour, officer delegation patterns, decision-making consistency, and governance effectiveness across all English planning authorities.
+                            The LGR Initiative draws on COALFACE's Council Scanner™ methodology, which examines planning committee behaviour, officer delegation patterns, decision-making consistency, and governance effectiveness across all English planning authorities.
                           </p>
                           <p className="mt-4">
                             <span className="text-academic-neutral-700 font-serif">Author ID: </span>
@@ -197,7 +197,7 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
                 <div className="prose max-w-none">
                   <h3 className="text-xl font-bold text-academic-charcoal mb-3 font-display">Research Approach</h3>
                   <p className="text-academic-neutral-700 leading-relaxed mb-4 font-serif">
-                    The LGRI is built on COALFACE's Council Scanner™ methodology, which provides systematic analysis of planning authority governance, decision-making patterns, and institutional behaviour across England.
+                    The LGR Initiative is built on COALFACE's Council Scanner™ methodology, which provides systematic analysis of planning authority governance, decision-making patterns, and institutional behaviour across England.
                   </p>
 
                   <h4 className="text-lg font-semibold text-academic-charcoal mb-3 font-display">What Data Do We Use?</h4>
@@ -253,7 +253,7 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
                 <div className="prose max-w-none">
                   <h3 className="text-xl font-bold text-academic-charcoal mb-4 font-display">Get Involved</h3>
                   <p className="text-academic-neutral-700 leading-relaxed mb-6 font-serif">
-                    The LGRI welcomes contributions from practitioners, local authority officers, elected members, developers, and other stakeholders involved in local government reorganisation and planning.
+                    The LGR Initiative welcomes contributions from practitioners, local authority officers, elected members, developers, and other stakeholders involved in local government reorganisation and planning.
                   </p>
 
                   <h4 className="text-lg font-semibold text-academic-charcoal mb-3 font-display">Ways to Contribute</h4>
@@ -292,8 +292,8 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
                     To discuss contributions or suggest topics, please contact:
                   </p>
                   <p className="text-academic-charcoal font-medium font-display">
-                    <a href="mailto:LGR@coalfaceengagement.co.uk" className="text-teal-700 hover:text-teal-800">
-                      LGR@coalfaceengagement.co.uk
+                    <a href="mailto:office@lgr-initiative.co.uk" className="text-teal-700 hover:text-teal-800">
+                      office@lgr-initiative.co.uk
                     </a>
                   </p>
                 </div>
@@ -307,7 +307,7 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
                 className="w-full bg-white rounded-xl p-6 shadow-md border border-academic-neutral-200 hover:border-teal-400 transition-all text-left academic-card"
               >
               <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold text-academic-charcoal font-display">About the LGRI</h2>
+                <h2 className="text-2xl font-bold text-academic-charcoal font-display">About the LGR Initiative</h2>
                 <ChevronDown
                   className={`w-6 h-6 text-academic-neutral-600 transition-transform ${
                     openSection === 'about' ? 'rotate-180' : ''
@@ -320,12 +320,12 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
                 <div className="prose max-w-none">
                   <h3 className="text-xl font-bold text-academic-charcoal mb-4 font-display">About This Research Programme</h3>
                   <p className="text-academic-neutral-700 leading-relaxed mb-6 font-serif">
-                    The LGRI is a dedicated research and analysis programme examining the 2024-2025 wave of English local government reorganisation, with particular focus on its implications for planning, governance, and development delivery.
+                    The LGR Initiative is a dedicated research and analysis programme examining the 2024-2025 wave of English local government reorganisation, with particular focus on its implications for planning, governance, and development delivery.
                   </p>
 
                   <h4 className="text-lg font-semibold text-academic-charcoal mb-3 font-display">What Are Our Objectives?</h4>
                   <p className="text-academic-neutral-700 leading-relaxed mb-3 font-serif">
-                    The LGRI aims to:
+                    The LGR Initiative aims to:
                   </p>
                   <ul className="list-disc pl-6 space-y-2 text-academic-neutral-700 mb-6 font-serif">
                     <li>Document the reorganisation process and its impact on planning authority functions</li>
@@ -348,7 +348,7 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
 
                   <h4 className="text-lg font-semibold text-academic-charcoal mb-3 font-display">About COALFACE</h4>
                   <p className="text-academic-neutral-700 leading-relaxed mb-4 font-serif">
-                    The LGRI is produced by COALFACE, a research and engagement practice specialising in planning governance, political behaviour, and institutional analysis. COALFACE works with developers, local authorities, and sector bodies to strengthen understanding of how governance conditions shape development outcomes.
+                    The LGR Initiative is produced by COALFACE, a research and engagement practice specialising in planning governance, political behaviour, and institutional analysis. COALFACE works with developers, local authorities, and sector bodies to strengthen understanding of how governance conditions shape development outcomes.
                   </p>
                   <p className="text-slate-700 leading-relaxed">
                     Coalface Engagement Ltd provides consultancy services under the COALFACE brand, including Council Scanner™, COALFACE Insights, and COALFACE Engagement.

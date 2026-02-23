@@ -9,14 +9,14 @@ export default function Partnerships() {
   return (
     <div className="bg-academic-cream min-h-screen">
       <MetaTags
-        title="Partnerships - LGRI"
-        description="The LGRI was formed by a partnership between Coalface Engagement Ltd and the Centre for Britain and Europe, University of Surrey, along with others."
-        keywords="LGRI partnerships, Coalface Engagement, Centre for Britain and Europe, University of Surrey"
+        title="Partnerships - LGR Initiative"
+        description="The LGR Initiative was formed by a partnership between Coalface Engagement Ltd and the Centre for Britain and Europe, University of Surrey, along with others."
+        keywords="LGR Initiative partnerships, Coalface Engagement, Centre for Britain and Europe, University of Surrey"
       />
       <PageBanner
         heroLabel="ABOUT"
         heroTitle="Partnerships"
-        heroSubtitle="The LGRI was formed by a partnership between Coalface Engagement Ltd and the Centre for Britain and Europe, University of Surrey, along with others."
+        heroSubtitle="The LGR Initiative was formed by a partnership between Coalface Engagement Ltd and the Centre for Britain and Europe, University of Surrey, along with others."
         currentPath={location.pathname}
       />
 
@@ -24,7 +24,7 @@ export default function Partnerships() {
         <section className="academic-card p-8 max-w-3xl">
           <div className="academic-prose space-y-4">
             <p>
-              The LGRI was formed by a partnership between Coalface Engagement Ltd and the Centre for Britain and Europe, University of Surrey, along with others.
+              The LGR Initiative was formed by a partnership between Coalface Engagement Ltd and the Centre for Britain and Europe, University of Surrey, along with others.
             </p>
             <p>
               This collaboration brings together expertise in local government, public policy, and research to deliver independent analysis of local government reorganisation and its implications for planning, governance, and development delivery across England.

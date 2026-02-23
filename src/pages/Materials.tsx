@@ -346,9 +346,9 @@ export default function Materials({ onNavigate }: MaterialsProps) {
   return (
     <div id="main-content" className="min-h-screen bg-academic-cream">
       <MetaTags
-        title="LGRI Materials & Resources"
+        title="LGR Initiative Materials & Resources"
         description="Comprehensive library of articles, research papers, factsheets, and interviews from the Local Government Reorganisation (LGR) Series. Expert analysis on LGR governance, council reform, and unitary authorities."
-        keywords="LGRI, Local Government Reorganisation materials, LGR research, council reform materials, reorganisation case studies, local government resources, unitary authority research, LGR governance"
+        keywords="LGR Initiative, Local Government Reorganisation materials, LGR research, council reform materials, reorganisation case studies, local government resources, unitary authority research, LGR governance"
       />
       <CollectionPageStructuredData
         name="Research Library - Materials & Resources"
@@ -363,8 +363,8 @@ export default function Materials({ onNavigate }: MaterialsProps) {
       />
       <PageBanner
         heroLabel="RESEARCH LIBRARY"
-heroTitle="LGRI Materials"
-          heroSubtitle="Search and explore all research, insights, case studies, and resources from the LGRI on local government reorganisation and LGR governance"
+heroTitle="LGR Initiative Materials"
+          heroSubtitle="Search and explore all research, insights, case studies, and resources from the LGR Initiative on local government reorganisation and LGR governance"
         currentPath={location.pathname}
       />
 

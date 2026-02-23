@@ -30,8 +30,8 @@ export default function Contact({ onNavigate }: ContactProps) {
     <div className="bg-academic-cream min-h-screen">
       <MetaTags
         title="Contact - Editorial Team & Inquiries"
-        description="Get in touch with the LGRI editorial team. For editorial inquiries, research questions, contributions, or newsletter subscriptions."
-        keywords="LGR contact, editorial inquiries, research questions, contribute to LGRI, newsletter subscription, local government reorganisation"
+        description="Get in touch with the LGR Initiative editorial team. For editorial inquiries, research questions, contributions, or newsletter subscriptions."
+        keywords="LGR contact, editorial inquiries, research questions, contribute to LGR Initiative, newsletter subscription, local government reorganisation"
       />
       <PageBanner
         heroLabel={heroLabel?.content || 'GET IN TOUCH'}
@@ -65,10 +65,10 @@ export default function Contact({ onNavigate }: ContactProps) {
               Email us
             </h3>
             <a
-              href="mailto:contact@lgr-Initiative.co.uk"
+              href="mailto:office@lgr-initiative.co.uk"
               className="text-academic-lg font-serif text-teal-700 hover:text-teal-800 underline underline-offset-2 transition-colors break-all"
             >
-              contact@lgr-Initiative.co.uk
+              office@lgr-initiative.co.uk
             </a>
           </div>
           <div className="academic-card p-8 flex flex-col items-center text-center">
@@ -79,12 +79,12 @@ export default function Contact({ onNavigate }: ContactProps) {
               Tweet us
             </h3>
             <a
-              href="https://twitter.com/LGRInitiative"
+              href="https://twitter.com/LGR Initiativenitiative"
               target="_blank"
               rel="noopener noreferrer"
               className="text-academic-lg font-serif text-teal-700 hover:text-teal-800 underline underline-offset-2 transition-colors"
             >
-              @LGRInitiative
+              @LGR Initiativenitiative
             </a>
           </div>
         </section>
@@ -124,10 +124,10 @@ export default function Contact({ onNavigate }: ContactProps) {
                   {cardEditorialDescription?.content || 'For editorial inquiries, research questions, or to contribute case studies:'}
                 </p>
                 <a
-                  href={`mailto:${cardEditorialEmail?.content || 'editor@localgovernmentreorganisation.com'}`}
+                  href={`mailto:${cardEditorialEmail?.content || 'office@lgr-initiative.co.uk'}`}
                   className="inline-flex items-center gap-2 text-teal-700 font-display font-bold hover:text-teal-800 transition-colors text-academic-base"
                 >
-                  {cardEditorialEmail?.content || 'editor@localgovernmentreorganisation.com'}
+                  {cardEditorialEmail?.content || 'office@lgr-initiative.co.uk'}
                   <ArrowRight size={16} />
                 </a>
               </div>
@@ -161,7 +161,7 @@ export default function Contact({ onNavigate }: ContactProps) {
               </h2>
               <div className="grid md:grid-cols-2 gap-6">
                 <Link
-                  to="/about/contribute"
+                  to="/about/contributors/contribute"
                   className="group flex items-start gap-4 p-4 bg-teal-50 hover:bg-teal-100 rounded-lg transition-colors"
                 >
                   <div className="flex-shrink-0 w-10 h-10 bg-teal-700 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -178,7 +178,7 @@ export default function Contact({ onNavigate }: ContactProps) {
                 </Link>
 
                 <Link
-                  to="/about/methodology"
+                  to="/about/overview#methodology"
                   className="group flex items-start gap-4 p-4 bg-teal-50 hover:bg-teal-100 rounded-lg transition-colors"
                 >
                   <div className="flex-shrink-0 w-10 h-10 bg-teal-700 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -207,10 +207,10 @@ export default function Contact({ onNavigate }: ContactProps) {
                 from real reorganisations to support better decision-making.
               </p>
               <Link
-                to="/about/coalface"
+                to="/about/partnership"
                 className="inline-flex items-center gap-2 text-teal-300 font-display font-bold hover:text-teal-200 transition-colors text-academic-base"
               >
-                Learn more about COALFACE
+                Learn more about our partners
                 <ArrowRight size={16} />
               </Link>
             </section>
@@ -271,28 +271,28 @@ export default function Contact({ onNavigate }: ContactProps) {
                     Overview
                   </Link>
                   <Link
-                    to="/about/leadership/rowan-cole"
+                    to="/rowan-cole-local-government-reorganisation"
                     className="block px-3 py-2 text-academic-sm text-academic-neutral-700 hover:bg-teal-50 hover:text-teal-700 transition-colors rounded"
                   >
                     Editor Profile
                   </Link>
                   <Link
-                    to="/about/methodology"
+                    to="/about/overview#methodology"
                     className="block px-3 py-2 text-academic-sm text-academic-neutral-700 hover:bg-teal-50 hover:text-teal-700 transition-colors rounded"
                   >
                     Methodology
                   </Link>
                   <Link
-                    to="/about/contribute"
+                    to="/about/contributors/contribute"
                     className="block px-3 py-2 text-academic-sm text-academic-neutral-700 hover:bg-teal-50 hover:text-teal-700 transition-colors rounded"
                   >
                     Contribute
                   </Link>
                   <Link
-                    to="/about/coalface"
+                    to="/about/partnership"
                     className="block px-3 py-2 text-academic-sm text-academic-neutral-700 hover:bg-teal-50 hover:text-teal-700 transition-colors rounded"
                   >
-                    About COALFACE
+                    Partnership
                   </Link>
                 </nav>
               </div>

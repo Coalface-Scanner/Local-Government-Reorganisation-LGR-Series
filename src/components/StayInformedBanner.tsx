@@ -109,6 +109,9 @@ export default function StayInformedBanner() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2">
+                <label htmlFor={emailInputId} className="sr-only">
+                  Email address for newsletter subscription
+                </label>
                 <input
                   id={emailInputId}
                   type="email"

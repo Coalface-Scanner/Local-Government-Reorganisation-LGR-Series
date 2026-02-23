@@ -910,7 +910,7 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
                       </div>
                       <div className="flex items-center gap-2.5">
                         <button
-                          className="w-8 h-8 flex items-center justify-center rounded-lg text-sm font-bold cursor-pointer bg-gradient-to-br from-red-50 to-red-100 text-red-700 hover:from-red-500 hover:to-red-600 hover:text-white border border-red-200/50 shadow-sm hover:shadow-md transition-all duration-200 active:scale-90 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-sm font-bold cursor-pointer bg-gradient-to-br from-red-50 to-red-100 text-red-700 hover:from-red-500 hover:to-red-600 hover:text-white border border-red-200/50 shadow-sm hover:shadow-md transition-all duration-200 active:scale-90 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
                           onClick={() => updateSim('West', party, -1)}
                           disabled={simulation.West.composition[party] <= 0}
                         >
@@ -920,7 +920,7 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
                           {simulation.West.composition[party]}
                         </span>
                         <button
-                          className="w-8 h-8 flex items-center justify-center rounded-lg text-sm font-bold cursor-pointer bg-gradient-to-br from-green-50 to-green-100 text-green-700 hover:from-green-500 hover:to-green-600 hover:text-white border border-green-200/50 shadow-sm hover:shadow-md transition-all duration-200 active:scale-90 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-sm font-bold cursor-pointer bg-gradient-to-br from-green-50 to-green-100 text-green-700 hover:from-green-500 hover:to-green-600 hover:text-white border border-green-200/50 shadow-sm hover:shadow-md transition-all duration-200 active:scale-90 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
                           onClick={() => updateSim('West', party, 1)}
                           disabled={getSimRemaining('West') <= 0}
                         >
@@ -1036,7 +1036,7 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
                       </div>
                       <div className="flex items-center gap-2.5">
                         <button
-                          className="w-8 h-8 flex items-center justify-center rounded-lg text-sm font-bold cursor-pointer bg-gradient-to-br from-red-50 to-red-100 text-red-700 hover:from-red-500 hover:to-red-600 hover:text-white border border-red-200/50 shadow-sm hover:shadow-md transition-all duration-200 active:scale-90 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-sm font-bold cursor-pointer bg-gradient-to-br from-red-50 to-red-100 text-red-700 hover:from-red-500 hover:to-red-600 hover:text-white border border-red-200/50 shadow-sm hover:shadow-md transition-all duration-200 active:scale-90 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
                           onClick={() => updateSim('East', party, -1)}
                           disabled={simulation.East.composition[party] <= 0}
                         >
@@ -1046,7 +1046,7 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
                           {simulation.East.composition[party]}
                         </span>
                         <button
-                          className="w-8 h-8 flex items-center justify-center rounded-lg text-sm font-bold cursor-pointer bg-gradient-to-br from-green-50 to-green-100 text-green-700 hover:from-green-500 hover:to-green-600 hover:text-white border border-green-200/50 shadow-sm hover:shadow-md transition-all duration-200 active:scale-90 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-sm font-bold cursor-pointer bg-gradient-to-br from-green-50 to-green-100 text-green-700 hover:from-green-500 hover:to-green-600 hover:text-white border border-green-200/50 shadow-sm hover:shadow-md transition-all duration-200 active:scale-90 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
                           onClick={() => updateSim('East', party, 1)}
                           disabled={getSimRemaining('East') <= 0}
                         >
@@ -1191,7 +1191,7 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
                 Learn More About Local Government Reorganisation
               </h3>
               <p className="text-neutral-600 mb-4">
-                Explore the <a href="/facts/what-is-lgr" className="text-teal-700 hover:text-teal-800 underline font-medium">LGRI hub</a> for comprehensive guides on Local Government Reorganisation, LGR governance, and the LGR timetable 2026.
+                Explore the <a href="/facts/what-is-lgr" className="text-teal-700 hover:text-teal-800 underline font-medium">LGR Initiative hub</a> for comprehensive guides on Local Government Reorganisation, LGR governance, and the LGR timetable 2026.
               </p>
               <button
                 onClick={() => navigate('/facts/what-is-lgr')}

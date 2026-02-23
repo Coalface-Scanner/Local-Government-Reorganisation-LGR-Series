@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef, useLayoutEffect } from 'react';
 import type { ReactNode } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Search, Twitter, Linkedin, Mail, ChevronDown } from 'lucide-react';
+import { createPortal } from 'react-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { ChevronDown } from 'lucide-react';
 import { getStandardPrimaryNavItems, getSecondaryNavItemsForPrimaryNav } from '../utils/pageNavigation';
 import { getBreadcrumbItems } from '../utils/breadcrumbRoutes';
 import Breadcrumbs from './Breadcrumbs';
@@ -10,6 +11,8 @@ export interface NavItem {
   label: string;
   path: string;
   active?: boolean;
+  /** Optional sub-menu items (e.g. Topics -> Governance and Reform, etc.) */
+  children?: NavItem[];
 }
 
 export interface HeroCta {
@@ -29,13 +32,25 @@ interface PageBannerProps {
   /** Learn hub: secondary CTA (ghost/outline) */
   heroSecondaryCta?: HeroCta;
   /** When a hub key, hero uses hub bg image, deep teal overlay, max-width 1100px, and optional CTAs */
-  heroVariant?: 'default' | 'learn' | 'discover' | 'research' | 'tools' | 'about';
+  heroVariant?: 'default' | 'learn' | 'discover' | 'research' | 'insights' | 'tools' | 'about';
   primaryNavItems?: NavItem[];
   secondaryNavItems?: NavItem[];
   currentPath?: string;
   /** Label for the current page in breadcrumbs (e.g. article title, person name, glossary term) */
   breadcrumbCurrentLabel?: string;
+  /** On hub pages: show a small inline link instead of the full breadcrumb strip */
+  breadcrumbVariant?: 'full' | 'inline';
 }
+
+/** Background image path for each hub hero (picture behind the banner). */
+const HUB_HERO_BACKGROUNDS: Record<string, string | null> = {
+  learn: '/Images/LearnHubBackground.png',
+  discover: '/Images/DiscoverHubBAckground.png',
+  research: '/Images/ResearchHubBackground.png',
+  insights: '/InsightsHubBanner.png',
+  tools: '/ToolsHubBackground.png',
+  about: '/AboutUsHubBackground.png',
+};
 
 export default function PageBanner({
   isHomepage = false,
@@ -52,11 +67,12 @@ export default function PageBanner({
   breadcrumbCurrentLabel,
   breadcrumbVariant = 'full',
 }: PageBannerProps) {
-  const [showSearch, setShowSearch] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const [hoveredPrimaryNav, setHoveredPrimaryNav] = useState<string | null>(null);
-  const [currentDate, setCurrentDate] = useState('');
+  const [openSecondarySubmenuIndex, setOpenSecondarySubmenuIndex] = useState<number | null>(null);
+  const [submenuPosition, setSubmenuPosition] = useState<{ top: number; left: number } | null>(null);
   const navHideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const secondarySubmenuCloseRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const submenuTriggerRef = useRef<HTMLDivElement | null>(null);
 
   const cancelNavHide = () => {
     if (navHideTimeoutRef.current) {
@@ -70,30 +86,29 @@ export default function PageBanner({
     navHideTimeoutRef.current = setTimeout(() => {
       const isOverPrimary = document.querySelector('[data-primary-nav-item]:hover') !== null;
       const isOverSecondary = document.querySelector('.secondary-nav:hover') !== null;
-      if (!isOverPrimary && !isOverSecondary) {
+      const isOverSubmenu = document.querySelector('[data-secondary-submenu]:hover') !== null;
+      if (!isOverPrimary && !isOverSecondary && !isOverSubmenu) {
         setHoveredPrimaryNav(null);
+        setOpenSecondarySubmenuIndex(null);
+        setSubmenuPosition(null);
       }
       navHideTimeoutRef.current = null;
-    }, 350);
+    }, 400);
   };
-  const navigate = useNavigate();
   const location = useLocation();
-  
-  useEffect(() => {
-    const updateDate = () => {
-      const now = new Date();
-      const options: Intl.DateTimeFormatOptions = { 
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
-      };
-      setCurrentDate(now.toLocaleDateString('en-GB', options));
-    };
-    updateDate();
-    const interval = setInterval(updateDate, 60000); // Update every minute
-    return () => clearInterval(interval);
-  }, []);
+
+  // Position the submenu dropdown via portal (so it isn't clipped by overflow)
+  useLayoutEffect(() => {
+    if (openSecondarySubmenuIndex === null) {
+      setSubmenuPosition(null);
+      return;
+    }
+    const el = submenuTriggerRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    // Slight overlap (4px) so there's no dead zone between trigger and dropdown
+    setSubmenuPosition({ top: rect.bottom - 4, left: rect.left });
+  }, [openSecondarySubmenuIndex, hoveredPrimaryNav]);
 
   // Helper function to wrap hyphenated words in non-breaking spans
   const wrapHyphenatedWords = (text: string): ReactNode[] => {
@@ -134,7 +149,7 @@ export default function PageBanner({
   const pathname = location?.pathname ?? '';
   const firstSegment = pathname.split('/').filter(Boolean)[0] ?? '';
   const hubPaths = new Set(['/', '/learn', '/discover', '/research', '/lgr-hub', '/surrey/hub', '/about', '/lessons', '/facts-and-data', '/insights', '/topics', '/library', '/subscribe', '/surrey']);
-  const isHubOrSpecial = isHomepage || hubPaths.has(pathname) || ['admin', 'councils', 'council-profiles', 'contact', 'unsubscribe'].includes(firstSegment);
+  const isHubOrSpecial = isHomepage || hubPaths.has(pathname) || ['admin', 'councils', 'contact', 'unsubscribe'].includes(firstSegment);
   const heroTextMaxWidth = isHubOrSpecial ? 'max-w-4xl' : 'max-w-[70vw]';
   
   // All six hubs have dropdowns (grey sub-nav)
@@ -159,9 +174,9 @@ export default function PageBanner({
     const current = currentPath || location.pathname;
     if (current === '/learn' || current.startsWith('/what-is-lgr') || current.startsWith('/beginners-guide') || current.startsWith('/questions-and-answers') || current.startsWith('/glossary') || current.startsWith('/first-100-days')) return 'learn';
     if (current === '/tools' || current.startsWith('/roadmap') || current.startsWith('/surrey/election-tracker') || current.startsWith('/surrey/simulator')) return 'tools';
-    if (current === '/discover' || current.startsWith('/topics') || current.startsWith('/reorganisations') || current.startsWith('/councils') || current.startsWith('/council-profiles') || current.startsWith('/surrey')) return 'discover';
+    if (current === '/discover' || current.startsWith('/topics') || current.startsWith('/reorganisations')) return 'discover';
     if (current === '/research' || current.startsWith('/facts-and-data') || current.startsWith('/facts') || current.startsWith('/library') || current.startsWith('/lessons')) return 'research';
-    if (current.startsWith('/insights') || current.startsWith('/news') || current.startsWith('/podcast') || current.startsWith('/interviews')) return 'insights';
+    if (current.startsWith('/insights') || current.startsWith('/news') || current.startsWith('/podcast') || current.startsWith('/interviews') || current.startsWith('/surrey')) return 'insights';
     if (current.startsWith('/about') || current.startsWith('/contact') || current.startsWith('/subscribe')) return 'about';
     if (current === '/') return null;
     return null;
@@ -184,11 +199,11 @@ export default function PageBanner({
       case 'learn':
         return current === '/learn' || current.startsWith('/what-is-lgr') || current.startsWith('/beginners-guide') || current.startsWith('/questions-and-answers') || current.startsWith('/glossary') || current.startsWith('/first-100-days');
       case 'discover':
-        return current === '/discover' || current.startsWith('/topics') || current.startsWith('/reorganisations') || current.startsWith('/councils') || current.startsWith('/council-profiles') || current.startsWith('/surrey');
+        return current === '/discover' || current.startsWith('/topics') || current.startsWith('/reorganisations');
       case 'research':
         return current === '/research' || current.startsWith('/facts-and-data') || current.startsWith('/facts') || current.startsWith('/library') || current.startsWith('/lessons');
       case 'insights':
-        return current.startsWith('/insights') || current.startsWith('/news') || current.startsWith('/podcast') || current.startsWith('/interviews');
+        return current.startsWith('/insights') || current.startsWith('/news') || current.startsWith('/podcast') || current.startsWith('/interviews') || current.startsWith('/surrey');
       case 'tools':
         return current === '/tools' || current.startsWith('/roadmap') || current.startsWith('/surrey/election-tracker') || current.startsWith('/surrey/simulator');
       case 'about':
@@ -198,173 +213,12 @@ export default function PageBanner({
     }
   };
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/library?q=${encodeURIComponent(searchQuery.trim())}`);
-      setSearchQuery('');
-      setShowSearch(false);
-    } else {
-      navigate('/library');
-      setShowSearch(false);
-    }
-  };
-
   // Mission statement for homepage
   const missionStatement = "The LGR Initiative provides independent analysis of local government reorganisation, ensuring new unitary councils are governable, legitimate and capable of delivering services sustainably, creating the conditions for meaningful devolution.";
 
   return (
     <div className="banner-full-width" data-full-width-banner>
       <div className="bg-white border-b border-academic-neutral-300">
-      {/* Top Stripe - same dark green as nav bar */}
-      <div className="border-b border-teal-900 bg-teal-800 py-1.5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="flex justify-between items-center text-[0.625rem] md:text-[0.6875rem] tracking-wider text-white/90 font-display font-medium" style={{ lineHeight: '1.1' }}>
-            <div className="hidden md:block">
-              EST. 2005 AS{' '}
-              <Link
-                to="/about"
-                className="text-white hover:text-white/80 transition-colors underline"
-              >
-                LGR SERIES
-              </Link>
-            </div>
-            <div className="md:hidden text-[0.5rem]">EST. 2005 AS <Link to="/about" className="text-white underline">LGR SERIES</Link></div>
-            <div className="hidden sm:block text-[0.625rem] md:text-[0.6875rem] font-display font-medium text-white/90 text-center absolute left-1/2 -translate-x-1/2" style={{ lineHeight: '1.1' }}>
-              {currentDate || 'Loading...'}
-            </div>
-            <div className="flex gap-2 sm:gap-3 text-[0.5rem] sm:text-[0.625rem]">
-              <Link
-                to="/admin/login"
-                aria-label="Members login"
-                className="text-white hover:text-white/80 transition-colors px-1.5 flex items-center justify-center"
-                style={{ paddingTop: '2px', paddingBottom: '2px', minHeight: 'auto', lineHeight: '1.1' }}
-              >
-                MEMBERS LOGIN
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Top Utility Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          {/* Logo and Tagline */}
-          <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
-            <Link to="/" className="flex items-center hover:opacity-90 transition-opacity flex-shrink-0">
-              <img 
-                src="/LGR_HighRed_Logo.png" 
-                alt="LGR Series" 
-                className="lgr-highred-logo h-7 sm:h-8 w-auto"
-                loading="eager"
-                decoding="sync"
-                style={{
-                  height: '28px',
-                  maxHeight: '28px',
-                  width: 'auto',
-                  objectFit: 'contain',
-                  display: 'block'
-                }}
-              />
-            </Link>
-            <div className="hidden sm:block border-l border-academic-neutral-300 pl-3 sm:pl-4 min-w-0">
-              <p className="text-academic-xs sm:text-academic-sm text-academic-neutral-600 font-serif italic truncate">
-                Insight on local governance reform & devolution
-              </p>
-            </div>
-          </div>
-
-          {/* Right Side: Subscribe, Social, Search - enlarged */}
-          <div className="flex items-center gap-4 sm:gap-6 w-full sm:w-auto justify-end flex-shrink-0">
-            {/* Subscribe Button */}
-            <Link
-              to="/subscribe"
-              className="px-6 py-3 sm:px-8 sm:py-4 bg-teal-700 hover:bg-teal-800 text-white font-display font-bold text-sm sm:text-base uppercase tracking-wider rounded transition-colors whitespace-nowrap flex-shrink-0"
-            >
-              Subscribe
-            </Link>
-
-            {/* Visual Separator */}
-            <div className="hidden sm:block h-5 w-px bg-academic-neutral-300 flex-shrink-0" aria-hidden="true" />
-
-            {/* Social Media Icons */}
-            <div className="flex items-center gap-1.5 flex-shrink-0">
-              <a
-                href="https://x.com/LGRSeries"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center bg-teal-800 hover:bg-teal-900 text-white rounded transition-colors"
-                aria-label="Follow on Twitter"
-              >
-                <Twitter size={14} />
-              </a>
-              <a
-                href="https://www.linkedin.com/showcase/local-government-reorganisation"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center bg-teal-800 hover:bg-teal-900 text-white rounded transition-colors"
-                aria-label="Follow on LinkedIn"
-              >
-                <Linkedin size={14} />
-              </a>
-              <a
-                href="mailto:editor@localgovernmentreorganisation.com"
-                className="w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center bg-teal-800 hover:bg-teal-900 text-white rounded transition-colors"
-                aria-label="Email us"
-              >
-                <Mail size={14} />
-              </a>
-            </div>
-
-            {/* Visual Separator */}
-            <div className="hidden sm:block h-5 w-px bg-academic-neutral-300 flex-shrink-0" aria-hidden="true" />
-
-            {/* Search */}
-            <div className="relative flex-shrink-0">
-              {showSearch ? (
-                <form onSubmit={handleSearchSubmit} className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search..."
-                    className="px-2 py-1.5 border border-academic-neutral-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 w-28 sm:w-36"
-                    autoFocus
-                  />
-                  <button
-                    type="submit"
-                    className="p-1.5 bg-teal-700 hover:bg-teal-800 text-white rounded transition-colors"
-                    aria-label="Submit search"
-                  >
-                    <Search size={14} />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowSearch(false);
-                      setSearchQuery('');
-                    }}
-                    className="p-2 text-academic-neutral-600 hover:text-academic-charcoal transition-colors text-xl leading-none"
-                    aria-label="Close search"
-                  >
-                    ×
-                  </button>
-                </form>
-              ) : (
-                <button
-                  onClick={() => setShowSearch(true)}
-                  className="p-1.5 text-academic-neutral-600 hover:text-academic-charcoal transition-colors"
-                  aria-label="Open search"
-                >
-                  <Search size={18} />
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Primary Navigation Bar */}
       <div 
         className="bg-teal-800 border-b border-teal-900 relative"
@@ -420,7 +274,7 @@ export default function PageBanner({
       {/* Secondary Navigation Bar - Show only when hovering over primary nav with dropdown */}
       {hoveredPrimaryNav && displaySecondaryNav.length > 0 && (
         <div 
-          className="bg-academic-neutral-200 border-b border-academic-neutral-300 secondary-nav"
+          className="relative z-[100] bg-academic-neutral-200 border-b border-academic-neutral-300 secondary-nav"
           onMouseEnter={() => {
             cancelNavHide();
             setHoveredPrimaryNav(hoveredPrimaryNav);
@@ -431,27 +285,114 @@ export default function PageBanner({
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav className="flex items-center justify-center gap-1 overflow-x-auto py-1.5 sm:py-2 scrollbar-hide">
-              {displaySecondaryNav.map((item, index) => (
-                <Link
-                  key={index}
-                  to={item.path}
-                  className={`px-3 sm:px-4 py-1.5 text-[0.6875rem] sm:text-[0.75rem] font-display font-bold text-academic-charcoal hover:text-teal-800 transition-colors whitespace-nowrap min-h-[22px] flex items-center justify-center ${
-                    index < displaySecondaryNav.length - 1 ? 'border-r border-academic-neutral-400' : ''
-                  } ${item.active || (currentPath && item.path === currentPath) ? 'text-teal-700 font-bold' : ''}`}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {displaySecondaryNav.map((item, index) => {
+                const isHub = index === 0;
+                const hasSubmenu = item.children && item.children.length > 0;
+                const isSubmenuOpen = openSecondarySubmenuIndex === index;
+
+                const handleSubmenuEnter = () => {
+                  if (secondarySubmenuCloseRef.current) {
+                    clearTimeout(secondarySubmenuCloseRef.current);
+                    secondarySubmenuCloseRef.current = null;
+                  }
+                  setOpenSecondarySubmenuIndex(index);
+                };
+                const handleSubmenuLeave = () => {
+                  secondarySubmenuCloseRef.current = setTimeout(() => setOpenSecondarySubmenuIndex(null), 400);
+                };
+
+                if (hasSubmenu) {
+                  return (
+                    <div
+                      key={index}
+                      ref={hasSubmenu ? submenuTriggerRef : undefined}
+                      className={`relative flex items-center ${index < displaySecondaryNav.length - 1 ? 'border-r border-academic-neutral-400' : ''}`}
+                      onMouseEnter={handleSubmenuEnter}
+                      onMouseLeave={handleSubmenuLeave}
+                    >
+                      <Link
+                        to={item.path}
+                        className={`px-3 sm:px-4 py-1.5 text-[0.6875rem] sm:text-[0.75rem] font-display font-bold transition-colors whitespace-nowrap min-h-[22px] flex items-center justify-center gap-0.5 ${
+                          isHub
+                            ? 'bg-teal-100/80 text-teal-800 border-l-2 border-teal-600 -ml-px pl-3 hover:bg-teal-200/80'
+                            : 'text-academic-charcoal hover:text-teal-800'
+                        } ${(item.active || (currentPath && item.path === currentPath)) ? 'text-teal-700 font-bold' : ''}`}
+                      >
+                        {item.label}
+                        <ChevronDown size={12} className={`flex-shrink-0 transition-transform ${isSubmenuOpen ? 'rotate-180' : ''}`} />
+                      </Link>
+                      {/* Dropdown is rendered via portal below so it is not clipped by nav overflow */}
+                    </div>
+                  );
+                }
+
+                return (
+                  <Link
+                    key={index}
+                    to={item.path}
+                    className={`px-3 sm:px-4 py-1.5 text-[0.6875rem] sm:text-[0.75rem] font-display font-bold transition-colors whitespace-nowrap min-h-[22px] flex items-center justify-center ${
+                      index < displaySecondaryNav.length - 1 ? 'border-r border-academic-neutral-400' : ''
+                    } ${
+                      isHub
+                        ? 'bg-teal-100/80 text-teal-800 border-l-2 border-teal-600 -ml-px pl-3 hover:bg-teal-200/80'
+                        : 'text-academic-charcoal hover:text-teal-800'
+                    } ${
+                      !isHub && (item.active || (currentPath && item.path === currentPath)) ? 'text-teal-700 font-bold' : ''
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
             </nav>
           </div>
         </div>
       )}
 
-      {/* Hero Banner */}
+      {/* Topics (submenu) dropdown rendered in a portal so it is never clipped by overflow */}
+      {submenuPosition !== null &&
+        openSecondarySubmenuIndex !== null &&
+        displaySecondaryNav[openSecondarySubmenuIndex]?.children &&
+        createPortal(
+          <div
+            data-secondary-submenu
+            className="fixed z-[9999] min-w-[220px] py-2 bg-white rounded-md shadow-lg border border-academic-neutral-200"
+            style={{ top: submenuPosition.top, left: submenuPosition.left }}
+            onMouseEnter={() => {
+              if (secondarySubmenuCloseRef.current) {
+                clearTimeout(secondarySubmenuCloseRef.current);
+                secondarySubmenuCloseRef.current = null;
+              }
+              setOpenSecondarySubmenuIndex(openSecondarySubmenuIndex);
+            }}
+            onMouseLeave={() => {
+              secondarySubmenuCloseRef.current = setTimeout(() => setOpenSecondarySubmenuIndex(null), 400);
+            }}
+          >
+            {displaySecondaryNav[openSecondarySubmenuIndex].children!.map((child, childIndex) => (
+              <Link
+                key={childIndex}
+                to={child.path}
+                className={`block px-4 py-2 text-[0.6875rem] sm:text-[0.75rem] font-display font-bold tracking-wider text-left transition-colors ${
+                  child.active ? 'text-teal-700 bg-teal-50' : 'text-academic-charcoal hover:bg-teal-50 hover:text-teal-800'
+                }`}
+              >
+                {child.label}
+              </Link>
+            ))}
+          </div>,
+          document.body
+        )}
+
+      {/* Hero Banner - z-0 so secondary nav pop-out (z-[100]/z-[110]) stays on top */}
       <div 
-        className={`relative overflow-hidden ${isHomepage ? 'min-h-[180px] sm:min-h-[200px] md:min-h-[220px] lg:min-h-[240px]' : ''}`}
+        className={`relative z-0 overflow-hidden ${
+          isHomepage ? 'min-h-[180px] sm:min-h-[200px] md:min-h-[220px] lg:min-h-[240px]' 
+          : heroVariant && HUB_HERO_BACKGROUNDS[heroVariant] ? 'min-h-[200px] sm:min-h-[240px] md:min-h-[280px] lg:min-h-[320px]' 
+          : ''
+        }`}
       >
-        {/* Background image with filter */}
+        {/* Background image with filter – homepage (20% more visible) */}
         {isHomepage && (
           <div 
             className="absolute inset-0"
@@ -460,13 +401,30 @@ export default function PageBanner({
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
-              filter: 'brightness(0.9) saturate(1.1) contrast(1.05)',
+              filter: 'brightness(1.02) saturate(1.1) contrast(1.05)',
             }}
           />
         )}
-        {/* Gradient overlay with transparency + minimal glass effect */}
+        {/* Background image – hub pages (20% more visible) */}
+        {heroVariant && HUB_HERO_BACKGROUNDS[heroVariant] && (
+          <div 
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `url("${HUB_HERO_BACKGROUNDS[heroVariant]}")`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              filter: 'brightness(0.92) saturate(1.05) contrast(1.02)',
+            }}
+          />
+        )}
+        {/* Gradient overlay – reduced opacity so background image is ~20% more visible */}
         <div 
-          className={`absolute inset-0 backdrop-blur-sm ${isHomepage ? 'bg-gradient-to-r from-teal-800/85 via-cyan-800/85 to-teal-900/85' : 'bg-gradient-to-r from-teal-700 via-cyan-700 to-teal-800'}`}
+          className={`absolute inset-0 backdrop-blur-[2px] ${
+            isHomepage ? 'bg-gradient-to-r from-teal-800/68 via-cyan-800/68 to-teal-900/68' 
+            : heroVariant && HUB_HERO_BACKGROUNDS[heroVariant] ? 'bg-gradient-to-r from-teal-900/33 via-teal-800/35 to-teal-900/33' 
+            : 'bg-gradient-to-r from-teal-700 via-cyan-700 to-teal-800'
+          }`}
         />
         {/* Subtle background pattern */}
         <div 
@@ -476,7 +434,11 @@ export default function PageBanner({
           }}
         />
         
-        <div className={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${isHomepage ? 'py-8 sm:py-10 md:py-12 lg:py-14' : 'py-3 sm:py-4 md:py-5 lg:py-6'}`}>
+        <div className={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${
+          isHomepage ? 'py-8 sm:py-10 md:py-12 lg:py-14' 
+          : heroVariant && HUB_HERO_BACKGROUNDS[heroVariant] ? 'py-8 sm:py-10 md:py-12 lg:py-14' 
+          : 'py-3 sm:py-4 md:py-5 lg:py-6'
+        }`}>
           <div className={heroTextMaxWidth}>
             {isHomepage ? (
               <div className="hero-banner-intro max-w-full" style={{ display: 'table', width: 'auto' }}>
@@ -491,7 +453,7 @@ export default function PageBanner({
                     textShadow: '0 2px 4px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.4), 0 0 1px rgba(0,0,0,0.5)',
                   }}
                 >
-                  {wrapHyphenatedWords('Local Government Reorganisation (LGR) Initiative')}
+                  {wrapHyphenatedWords("Local Government Reorganisation is more than a merger: It's a redesign of local democracy.")}
                 </h1>
                 <p className="hero-banner-intro-body text-white/90 text-[0.79rem] sm:text-[0.9rem] md:text-[1.01rem] lg:text-[1.13rem] leading-relaxed font-display hero-banner-text max-w-full my-10">
                   {wrapHyphenatedWords('The LGR Initiative provides independent analysis of local government reorganisation, ensuring new unitary councils are governable, legitimate and capable of delivering services sustainably, creating the conditions for meaningful devolution.')}
@@ -501,25 +463,25 @@ export default function PageBanner({
                     to="/facts/what-is-lgr"
                     className="min-w-[180px] sm:min-w-[200px] px-2.5 py-1 sm:px-3 sm:py-1.5 bg-teal-700 hover:bg-teal-800 text-white font-display font-bold text-[0.73rem] sm:text-[0.84rem] uppercase tracking-wider rounded transition-colors whitespace-nowrap flex items-center justify-center"
                   >
-                    What is LGR?
+                    WHAT IS LGR?
                   </Link>
                   <Link
                     to="/tools"
                     className="min-w-[180px] sm:min-w-[200px] px-2.5 py-1 sm:px-3 sm:py-1.5 bg-teal-700 hover:bg-teal-800 text-white font-display font-bold text-[0.73rem] sm:text-[0.84rem] uppercase tracking-wider rounded transition-colors whitespace-nowrap flex items-center justify-center"
                   >
-                    Helpful Toolkits
+                    HELPFUL TOOLKITS
                   </Link>
                   <Link
                     to="/surrey/election-tracker"
                     className="min-w-[180px] sm:min-w-[200px] px-2.5 py-1 sm:px-3 sm:py-1.5 bg-teal-700 hover:bg-teal-800 text-white font-display font-bold text-[0.73rem] sm:text-[0.84rem] uppercase tracking-wider rounded transition-colors whitespace-nowrap flex items-center justify-center"
                   >
-                    Track Surrey&apos;s LGR
+                    TRACK SURREY&apos;S LGR
                   </Link>
                 </div>
-                <p className="mt-10 text-white/80 text-[0.7rem] sm:text-[0.75rem] leading-relaxed font-display max-w-[72%]">
+                <p className="mt-10 text-white/95 text-[0.7rem] sm:text-[0.75rem] leading-relaxed font-display max-w-[72%]">
                   The LGR Initiative was formed by a partnership between Coalface Engagement Ltd and the Centre for Britain and Europe, University of Surrey, along with others. To learn more{' '}
                   <Link to="/partnerships" className="text-teal-200 hover:text-white underline transition-colors">
-                    click here
+                    read about our partnership
                   </Link>
                   .
                 </p>
@@ -527,13 +489,13 @@ export default function PageBanner({
             ) : (
               <>
                 {heroLabel && (
-                  <div className={`font-display font-bold uppercase tracking-wider hub-label-uppercase mb-4 ${['learn', 'discover', 'research', 'tools', 'about'].includes(heroVariant ?? '') ? 'text-white text-[0.75rem] sm:text-[0.8125rem]' : 'text-teal-200 text-[0.79rem] sm:text-[0.9rem]'}`}>
+                  <div className={`font-display font-bold uppercase tracking-wider hub-label-uppercase mb-4 ${['learn', 'discover', 'research', 'insights', 'tools', 'about'].includes(heroVariant ?? '') ? 'text-white text-[0.75rem] sm:text-[0.8125rem]' : 'text-teal-200 text-[0.79rem] sm:text-[0.9rem]'}`}>
                     {heroLabel}
                   </div>
                 )}
                 {heroTitle && (
                   <h1
-                    className={`hero-banner-headline text-white font-display text-left tracking-wider font-bold ${['learn', 'discover', 'research', 'tools', 'about'].includes(heroVariant ?? '') ? 'mb-4 text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem]' : 'mb-4 text-lg sm:text-xl md:text-2xl lg:text-3xl'}`}
+                    className={`hero-banner-headline text-white font-display text-left tracking-wider font-bold ${['learn', 'discover', 'research', 'insights', 'tools', 'about'].includes(heroVariant ?? '') ? 'mb-4 text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem]' : 'mb-4 text-lg sm:text-xl md:text-2xl lg:text-3xl'}`}
                     style={{
                       hyphens: 'none',
                       WebkitHyphens: 'none',
@@ -547,16 +509,16 @@ export default function PageBanner({
                   </h1>
                 )}
                 {heroSubtitle && (
-                  <p className={`hero-banner-intro-body text-white font-display max-w-full ${['learn', 'discover', 'research', 'tools', 'about'].includes(heroVariant ?? '') ? 'text-base sm:text-lg md:text-xl leading-relaxed text-white/95' : 'text-white/90 text-[0.79rem] sm:text-[0.9rem] md:text-[1.01rem] lg:text-[1.13rem] leading-relaxed'}`}>
+                  <p className={`hero-banner-intro-body text-white font-display max-w-full ${['learn', 'discover', 'research', 'insights', 'tools', 'about'].includes(heroVariant ?? '') ? 'text-base sm:text-lg md:text-xl leading-relaxed text-white/95' : 'text-white/90 text-[0.79rem] sm:text-[0.9rem] md:text-[1.01rem] lg:text-[1.13rem] leading-relaxed'}`}>
                     {typeof heroSubtitle === 'string' ? wrapHyphenatedWords(heroSubtitle) : heroSubtitle}
                   </p>
                 )}
-                {['learn', 'discover', 'research', 'tools', 'about'].includes(heroVariant ?? '') && heroSupportingLine && (
+                {['learn', 'discover', 'research', 'insights', 'tools', 'about'].includes(heroVariant ?? '') && heroSupportingLine && (
                   <p className="mt-3 text-white/85 font-serif text-sm sm:text-base font-normal leading-relaxed">
                     {heroSupportingLine}
                   </p>
                 )}
-                {['learn', 'discover', 'research', 'tools', 'about'].includes(heroVariant ?? '') && (heroPrimaryCta || heroSecondaryCta) && (
+                {['learn', 'discover', 'research', 'insights', 'tools', 'about'].includes(heroVariant ?? '') && (heroPrimaryCta || heroSecondaryCta) && (
                   <div className="mt-6 sm:mt-8 flex flex-wrap gap-3">
                     {heroPrimaryCta && (
                       <Link
@@ -583,15 +545,29 @@ export default function PageBanner({
         </div>
       </div>
 
-      {/* Breadcrumb strip – route map under the banner */}
-      <div className="bg-academic-neutral-100 border-b border-academic-neutral-300">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
-          <Breadcrumbs
-            items={getBreadcrumbItems(location?.pathname ?? '/', breadcrumbCurrentLabel)}
-            className="text-academic-neutral-600"
-          />
+      {/* Breadcrumb: full strip or minimal inline (hub pages) */}
+      {breadcrumbVariant === 'inline' ? (
+        <div className="border-b border-academic-neutral-200 bg-white/80">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5">
+            <nav aria-label="Breadcrumb" className="text-xs text-academic-neutral-600 font-display">
+              <Link to="/" className="hover:text-teal-700 transition-colors">Home</Link>
+              <span className="mx-1.5" aria-hidden="true">/</span>
+              <span className="text-academic-charcoal font-medium" aria-current="page">
+                {heroTitle ?? getBreadcrumbItems(location?.pathname ?? '/', breadcrumbCurrentLabel)[0]?.label ?? 'Page'}
+              </span>
+            </nav>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="bg-academic-neutral-100 border-b border-academic-neutral-300">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
+            <Breadcrumbs
+              items={getBreadcrumbItems(location?.pathname ?? '/', breadcrumbCurrentLabel)}
+              className="text-academic-neutral-600"
+            />
+          </div>
+        </div>
+      )}
       </div>
     </div>
   );

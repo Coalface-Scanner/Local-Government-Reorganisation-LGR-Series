@@ -1,6 +1,6 @@
 # Glossary System - How to Add Terms
 
-This guide explains how to add new terms to the LGRI glossary system.
+This guide explains how to add new terms to the LGR Initiative glossary system.
 
 ## Quick Start
 
@@ -190,6 +190,15 @@ src/lib/glossaryData.ts
 ```
 
 The `glossaryTerms` array contains all terms. Add new terms to this array.
+
+## Linking from Key Facts (and other content)
+
+Key facts and some other pages automatically link the **first occurrence** of each glossary term (and synonym) to the glossary. When you add or edit key facts:
+
+- Add **new terms** to `glossaryData.ts` for any new concepts so they auto-link.
+- Add **synonyms** to existing terms if the fact uses different wording (e.g. "two-tier" for Two-Tier System).
+
+Internal links to other site pages (e.g. First 100 Days, lessons, roadmap) are handled by `src/lib/internalLinks.ts`. To link a new phrase to a page, add a `{ phrase, path }` entry there. See [docs/KEY_FACTS_LINKING.md](../../../docs/KEY_FACTS_LINKING.md) for full details.
 
 ## Need Help?
 

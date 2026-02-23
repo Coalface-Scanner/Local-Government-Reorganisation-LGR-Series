@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Download, CheckCircle2, AlertTriangle, Target, FileText, Loader2, ArrowRight } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, Target, ArrowRight, BookOpen, Users, LayoutList, Send, Calendar, Bell, PenTool } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import PageNavigation from '../components/PageNavigation';
 import PageBanner from '../components/PageBanner';
@@ -188,12 +188,12 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
         </head>
         <body>
           <div class="summary-notice">
-            This is a summary. The full playbook, including complete 100-day framework with detailed implementation guidance, will be released in Spring.
+            The First 100 Days Playbook is in active development. We are in the evidence-gathering and consultation phase. This PDF is a summary of the current page. The full playbook will be released in Spring.
           </div>
           <div class="header-section">
             <h1>The First 100 Days:<br><span class="subtitle">A Playbook for Unitary Transition</span></h1>
             <p>Drawing on evidence from recent reorganisations, this playbook identifies critical actions for new unitary authorities in their first 100 days. It examines the governance, planning, and political challenges that emerge during transition and provides a framework for managing them.</p>
-            <p style="margin-top: 1em; font-size: 0.9em; color: #6b7280;">LGRI | Published ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+            <p style="margin-top: 1em; font-size: 0.9em; color: #6b7280;">LGR Initiative | Published ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
           </div>
           
           <h2>Why The First 100 Days Matter</h2>
@@ -253,22 +253,11 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
             </div>
           </div>
           
-          <div class="quote-box">
-            <blockquote>"The agreement is the easy part. Implementation is the real hurdle."</blockquote>
-            <cite>— Rowan Cole, Series Editor</cite>
-          </div>
-          
-          <h2>Using This Playbook</h2>
-          <p>This playbook provides:</p>
-          <ul>
-            <li>A week-by-week framework for the first 100 days</li>
-            <li>Critical decision points and governance milestones</li>
-            <li>Risk indicators drawn from real reorganisation experiences</li>
-            <li>Practical tools for monitoring transition progress</li>
-          </ul>
+          <h2>Playbook in Development</h2>
+          <p>The playbook is being built through structured engagement with those who have led, scrutinised or experienced reorganisation. We are inviting contributions (questionnaire, interviews, roundtables, evidence). The full playbook will be released in Spring. Register for updates via the site.</p>
           
           <div class="footer-note">
-            <p><strong>LGRI</strong> | A COALFACE Insight Project</p>
+            <p><strong>LGR Initiative</strong> | A COALFACE Insight Project</p>
             <p>For more resources and analysis, visit: ${window.location.origin}</p>
             <p style="margin-top: 1em;">© ${new Date().getFullYear()} COALFACE Insights. All rights reserved.</p>
           </div>
@@ -293,7 +282,12 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
     { id: 'why-matters', label: 'Why 100 Days Matter', icon: <AlertTriangle size={16} /> },
     { id: 'priorities', label: 'Key Priorities', icon: <Target size={16} /> },
     { id: 'evidence', label: 'Evidence', icon: <CheckCircle2 size={16} /> },
-    { id: 'using', label: 'Using This Playbook', icon: <FileText size={16} /> }
+    { id: 'playbook', label: 'Playbook in Development', icon: <BookOpen size={16} /> },
+    { id: 'contribute-why', label: 'Why We Need Contributions', icon: <Users size={16} /> },
+    { id: 'research-architecture', label: 'Research Architecture', icon: <LayoutList size={16} /> },
+    { id: 'contribute', label: 'Contribute to the Playbook', icon: <Send size={16} /> },
+    { id: 'timeline', label: 'Publication Timeline', icon: <Calendar size={16} /> },
+    { id: 'interim-access', label: 'Get Updates', icon: <Bell size={16} /> }
   ];
 
   const location = useLocation();
@@ -301,9 +295,9 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
   return (
     <div className="bg-academic-cream min-h-screen">
       <MetaTags
-        title="LGRI: The First 100 Days Playbook"
-        description="Strategic framework for managing the critical first 100 days of Local Government Reorganisation (LGR) unitary transition. Evidence-based guidance on LGR governance, priorities, risks, and success factors from the LGRI."
-        keywords="LGRI, Local Government Reorganisation playbook, unitary transition, first 100 days, LGR implementation, LGR governance, council transition plan, reorganisation playbook"
+        title="The First 100 Days Playbook for Unitary Transition"
+        description="The First 100 Days Playbook is in development: an evidence-based framework for councillors, officers and transition teams for the critical period after vesting day. We are in the evidence-gathering and consultation phase. Full publication Spring. Contribute your experience or register for updates."
+        keywords="first 100 days playbook, unitary transition, LGR playbook, vesting day, reorganisation governance, planning integration, Section 114, reorganisation evidence, contribute playbook, LGR Initiative"
       />
       <PageBanner
         heroLabel="RESEARCH SERIES"
@@ -313,30 +307,36 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
       />
 
       <div className="layout-container layout-content-sub">
-        <InBriefSection content="The first 100 days after vesting day are critical for new unitary authorities created through Local Government Reorganisation (LGR). This playbook draws on evidence from recent reorganisations to identify key priorities: establishing governance structures, managing service integration, addressing councillor transitions, and maintaining democratic legitimacy. Effective LGR governance during this period sets the foundation for long-term success." />
+        <InBriefSection content="The First 100 Days Playbook is in active development: an evidence-informed framework for the first 100 days after vesting day, for councillors, senior officers and transition teams. We are in the evidence-gathering and consultation phase. Register for updates or contribute your experience." />
+        <div className="relative bg-gradient-to-r from-teal-50 to-cyan-50/50 border-2 border-teal-600 rounded-xl p-4 sm:p-6 mb-6 shadow-sm overflow-hidden">
+          <span className="absolute top-3 right-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-700 text-white text-xs font-bold uppercase tracking-wider">
+            <PenTool size={12} aria-hidden />
+            Development in Progress
+          </span>
+          <p className="text-neutral-800 font-serif text-base sm:text-lg leading-relaxed pr-28 sm:pr-32">
+            The First 100 Days Playbook is currently in active development. We are in the evidence-gathering and consultation phase.
+          </p>
+        </div>
         <div className="flex flex-wrap gap-4 mb-6">
-          <button
-            onClick={handleDownloadPDF}
-            disabled={isDownloading}
-            className="flex items-center gap-2 px-6 py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-full transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+          <Link
+            to="/subscribe"
+            className="flex items-center gap-2 px-6 py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-full transition-all"
           >
-            {isDownloading ? (
-              <>
-                <Loader2 size={18} className="animate-spin" />
-                PREPARING PDF...
-              </>
-            ) : (
-              <>
-                <Download size={18} />
-                DOWNLOAD PLAYBOOK
-              </>
-            )}
-          </button>
+            <Bell size={18} />
+            REGISTER FOR PLAYBOOK UPDATES
+          </Link>
           <button
             onClick={() => onNavigate('materials')}
             className="px-6 py-3 bg-white border-2 border-academic-charcoal hover:bg-academic-warm text-academic-charcoal font-bold rounded-full transition-all font-display"
           >
             VIEW ALL MATERIALS
+          </button>
+          <button
+            onClick={handleDownloadPDF}
+            disabled={isDownloading}
+            className="text-sm text-teal-700 hover:text-teal-800 underline underline-offset-2 font-medium disabled:opacity-60"
+          >
+            {isDownloading ? 'Preparing…' : 'Download summary (PDF)'}
           </button>
         </div>
       </div>
@@ -346,14 +346,17 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
           <div className="grid lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
               <div className="prose prose-lg max-w-none">
-                <h2 id="why-matters" className="text-3xl font-black text-neutral-900 mb-4 mt-8">
+                <p className="text-xs font-bold text-teal-700 uppercase tracking-widest mt-8 mb-2">
+                  Context
+                </p>
+                <h2 id="why-matters" className="text-3xl font-black text-neutral-900 mb-4">
                   Why The First 100 Days Matter
                 </h2>
 
             <p className="text-neutral-700 leading-relaxed mb-4">
-              The first 100 days of a new unitary authority are critical. This is when governance structures
+              The <Link to="/glossary/first-100-days" className="text-teal-700 hover:text-teal-800 underline underline-offset-2">first 100 days</Link> of a new <Link to="/glossary/unitary-authority" className="text-teal-700 hover:text-teal-800 underline underline-offset-2">unitary authority</Link> are critical. This is when governance structures
               are established, planning systems are integrated, and political relationships are formed. Evidence
-              from recent reorganisations shows that decisions made during this period have lasting impacts on
+              from recent <Link to="/glossary/local-government-reorganisation-lgr" className="text-teal-700 hover:text-teal-800 underline underline-offset-2">reorganisations</Link> shows that decisions made during this period have lasting impacts on
               authority performance, democratic accountability, and service delivery.
             </p>
 
@@ -371,7 +374,10 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
               </div>
             </div>
 
-                <h2 id="priorities" className="text-3xl font-black text-neutral-900 mb-6 mt-12">
+                <p className="text-xs font-bold text-teal-700 uppercase tracking-widest mt-12 mb-2">
+                  The framework
+                </p>
+                <h2 id="priorities" className="text-3xl font-black text-neutral-900 mb-6">
                   Key Priorities
                 </h2>
 
@@ -441,14 +447,17 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
                     </h3>
                     <p className="text-neutral-700 leading-relaxed">
                       Establish unified financial systems, budget monitoring, and reserves management. Early
-                      financial control failures can lead to Section 114 notices within the first two years.
+                      financial control failures can lead to <Link to="/glossary/section-114" className="text-teal-700 hover:text-teal-800 underline underline-offset-2">Section 114</Link> notices within the first two years.
                     </p>
                   </div>
                 </div>
               </div>
             </div>
 
-                <h2 id="evidence" className="text-3xl font-black text-neutral-900 mb-6 mt-12">
+                <p className="text-xs font-bold text-teal-700 uppercase tracking-widest mt-12 mb-2">
+                  Evidence
+                </p>
+                <h2 id="evidence" className="text-3xl font-black text-neutral-900 mb-6">
                   Evidence From Recent Transitions
                 </h2>
 
@@ -479,47 +488,229 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
               </div>
             </div>
 
-            <div className="bg-neutral-900 text-white p-8 my-12">
-              <blockquote className="text-2xl font-serif italic mb-4">
-                "The agreement is the easy part. Implementation is the real hurdle."
-              </blockquote>
-              <cite className="text-neutral-400 not-italic">— Rowan Cole, Series Editor</cite>
+            <div className="my-12 flex items-center gap-6">
+              <span className="flex-1 h-px bg-neutral-200" aria-hidden />
+              <span className="text-lg sm:text-xl font-black text-teal-800 uppercase tracking-widest text-center px-2">How we&apos;re building the playbook</span>
+              <span className="flex-1 h-px bg-neutral-200" aria-hidden />
             </div>
 
-                <h2 id="using" className="text-3xl font-black text-neutral-900 mb-6 mt-12">
-                  Using This Playbook
+                <p className="text-xs font-bold text-teal-700 uppercase tracking-widest mb-2">
+                  Development
+                </p>
+                <h2 id="playbook" className="text-3xl font-black text-neutral-900 mb-4">
+                  The First 100 Days: A Playbook for Unitary Transition — Development in Progress
                 </h2>
 
             <p className="text-neutral-700 leading-relaxed mb-4">
-              This playbook provides:
+              The First 100 Days Playbook is currently in active development.
+            </p>
+            <p className="text-neutral-700 leading-relaxed mb-4">
+              It is being designed as a practical, evidence-informed framework to support <Link to="/glossary/councillor" className="text-teal-700 hover:text-teal-800 underline underline-offset-2">councillors</Link>, senior officers and transition teams through the first 100 days following <Link to="/glossary/vesting-day" className="text-teal-700 hover:text-teal-800 underline underline-offset-2">vesting day</Link> under <Link to="/glossary/local-government-reorganisation-lgr" className="text-teal-700 hover:text-teal-800 underline underline-offset-2">Local Government Reorganisation</Link>.
+            </p>
+            <p className="text-neutral-700 leading-relaxed mb-4">
+              The final publication will provide:
+            </p>
+            <ul className="space-y-2 mb-6 text-neutral-700 list-disc pl-6">
+              <li>A structured week-by-week governance and delivery framework</li>
+              <li>Defined decision gateways and sequencing guidance</li>
+              <li>Risk indicators drawn from recent reorganisation experience</li>
+              <li>Practical tools for political cohesion, planning integration and financial control</li>
+              <li>A monitoring structure to track transition stability</li>
+            </ul>
+            <p className="text-neutral-700 leading-relaxed mb-8">
+              However, this is not being written in isolation. It is being built through structured engagement with those who have led, scrutinised or experienced reorganisation first hand. We are now entering the evidence gathering and consultation phase.
             </p>
 
-            <ul className="space-y-3 mb-8 text-neutral-700">
-              <li className="flex items-start gap-3">
-                <span className="text-teal-700 font-bold">•</span>
-                <span>A week-by-week framework for the first 100 days</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-teal-700 font-bold">•</span>
-                <span>Critical decision points and governance milestones</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-teal-700 font-bold">•</span>
-                <span>Risk indicators drawn from real reorganisation experiences</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-teal-700 font-bold">•</span>
-                <span>Practical tools for monitoring transition progress</span>
-              </li>
-            </ul>
+                <p className="text-xs font-bold text-teal-700 uppercase tracking-widest mt-12 mb-2">
+                  Your experience
+                </p>
+                <h2 id="contribute-why" className="text-3xl font-black text-neutral-900 mb-4">
+                  Why We Are Inviting Contributions
+                </h2>
 
-                <div className="border-t-2 border-neutral-900 pt-8 mt-12">
-                  <h3 className="text-xl font-black text-neutral-900 mb-4">
-                    Download the Full Playbook
-                  </h3>
-                  <p className="text-neutral-700 mb-6">
-                    The full playbook, including complete 100-day framework with detailed implementation guidance, will be released in Spring.
+            <p className="text-neutral-700 leading-relaxed mb-4">
+              The first 100 days after <Link to="/glossary/vesting-day" className="text-teal-700 hover:text-teal-800 underline underline-offset-2">vesting day</Link> determine the operational credibility and political stability of a new authority.
+            </p>
+            <p className="text-neutral-700 leading-relaxed mb-4">
+              Evidence from recent transitions shows consistent patterns:
+            </p>
+            <ul className="space-y-2 mb-6 text-neutral-700 list-disc pl-6">
+              <li>Early clarity in governance design reduces political conflict and accelerates decision making</li>
+              <li>Delays in planning system integration correlate with service performance decline</li>
+              <li>Weak financial consolidation increases the risk of audit challenge and <Link to="/glossary/section-114" className="text-teal-700 hover:text-teal-800 underline underline-offset-2">Section 114</Link> notices</li>
+              <li>Political fragmentation during transition increases reputational exposure</li>
+            </ul>
+            <p className="text-neutral-700 leading-relaxed mb-4">
+              The Playbook must therefore reflect real operational experience rather than theoretical design.
+            </p>
+            <p className="text-neutral-700 leading-relaxed mb-4">
+              We are inviting contributions from those who have:
+            </p>
+            <ul className="space-y-2 mb-8 text-neutral-700 list-disc pl-6">
+              <li>Served as councillors during reorganisation</li>
+              <li>Held senior officer roles in transition teams</li>
+              <li>Worked within programme management or integration boards</li>
+              <li>Observed reorganisation through audit, <Link to="/glossary/scrutiny" className="text-teal-700 hover:text-teal-800 underline underline-offset-2">scrutiny</Link> or external advisory roles</li>
+              <li>Represented communities navigating governance change</li>
+            </ul>
+            <p className="text-neutral-700 leading-relaxed mb-8">
+              Our intention is to capture what worked, what failed, and what was underestimated.
+            </p>
+
+                <p className="text-xs font-bold text-teal-700 uppercase tracking-widest mt-12 mb-2">
+                  Four evidence streams
+                </p>
+                <h2 id="research-architecture" className="text-3xl font-black text-neutral-900 mb-4">
+                  Research Architecture
+                </h2>
+            <p className="text-neutral-700 leading-relaxed mb-6">
+              The Playbook is being developed through four structured evidence streams.
+            </p>
+
+            <div className="space-y-6 mb-8">
+              <div className="border-2 border-neutral-200 border-l-4 border-l-teal-500 rounded-r-lg p-6 bg-white shadow-sm">
+                <span className="inline-block text-xs font-bold text-teal-700 uppercase tracking-wider mb-2">Evidence stream 1 of 4</span>
+                <h3 className="text-xl font-black text-neutral-900 mb-3">Structured Questionnaire Programme</h3>
+                <p className="text-neutral-700 mb-3">A detailed questionnaire is being prepared for circulation to:</p>
+                <ul className="list-disc pl-6 text-neutral-700 space-y-1 mb-3">
+                  <li>Elected Members from newly formed <Link to="/glossary/unitary-authority" className="text-teal-700 hover:text-teal-800 underline underline-offset-2">unitary authorities</Link></li>
+                  <li>Chief Executives and statutory officers</li>
+                  <li>Programme directors and transition leads</li>
+                  <li>Scrutiny chairs and audit committee members</li>
+                </ul>
+                <p className="text-neutral-700 mb-2">The questionnaire will focus on:</p>
+                <ul className="list-disc pl-6 text-neutral-700 space-y-1">
+                  <li><strong>Governance Design</strong> — timing of constitutional adoption, committee system configuration, delegation structures, cabinet and scrutiny balance</li>
+                  <li><strong>Planning Integration</strong> — system harmonisation, case backlog management, Local Plan continuity, development management performance</li>
+                  <li><strong>Financial Consolidation</strong> — budget alignment, reserves management, financial systems integration, early warning indicators</li>
+                  <li><strong>Political Cohesion</strong> — cross party engagement, member induction, expectation management, media and reputational risk</li>
+                </ul>
+                <p className="text-neutral-700 mt-3">Participation will be invited shortly. Details of how to contribute will be published on this site and through direct outreach.</p>
+              </div>
+
+              <div className="border-2 border-neutral-200 border-l-4 border-l-teal-500 rounded-r-lg p-6 bg-white shadow-sm">
+                <span className="inline-block text-xs font-bold text-teal-700 uppercase tracking-wider mb-2">Evidence stream 2 of 4</span>
+                <h3 className="text-xl font-black text-neutral-900 mb-3">Structured Interviews</h3>
+                <p className="text-neutral-700 mb-3">In depth interviews are being undertaken with selected individuals who have held senior roles during reorganisation. These interviews are designed to explore:</p>
+                <ul className="list-disc pl-6 text-neutral-700 space-y-1 mb-3">
+                  <li>Decisions that appeared minor at the time but later proved pivotal</li>
+                  <li>Governance sequencing errors</li>
+                  <li>Political tensions that were not visible publicly</li>
+                  <li>Financial or planning integration risks that escalated</li>
+                  <li>Lessons that would change the first 90 days if repeated</li>
+                </ul>
+                <p className="text-neutral-700">A further round of interviews will be opened shortly. Expressions of interest will be invited in the coming weeks.</p>
+              </div>
+
+              <div className="border-2 border-neutral-200 border-l-4 border-l-teal-500 rounded-r-lg p-6 bg-white shadow-sm">
+                <span className="inline-block text-xs font-bold text-teal-700 uppercase tracking-wider mb-2">Evidence stream 3 of 4</span>
+                <h3 className="text-xl font-black text-neutral-900 mb-3">Roundtable Events</h3>
+                <p className="text-neutral-700 mb-3">A series of small, policy focused roundtables will be convened. These sessions will examine:</p>
+                <ul className="list-disc pl-6 text-neutral-700 space-y-1 mb-3">
+                  <li>The first 30 days: governance establishment</li>
+                  <li>The first 60 days: service integration and systems</li>
+                  <li>The first 90 days: political stabilisation and scrutiny maturity</li>
+                  <li>Risk management frameworks for new unitaries</li>
+                  <li>AI governance and digital system integration during transition</li>
+                </ul>
+                <p className="text-neutral-700">These will not be promotional events. They will be structured working sessions, Chatham House where appropriate, designed to test assumptions and refine the framework. Event dates and participation details will be announced shortly.</p>
+              </div>
+
+              <div className="border-2 border-neutral-200 border-l-4 border-l-teal-500 rounded-r-lg p-6 bg-white shadow-sm">
+                <span className="inline-block text-xs font-bold text-teal-700 uppercase tracking-wider mb-2">Evidence stream 4 of 4</span>
+                <h3 className="text-xl font-black text-neutral-900 mb-3">Data and Performance Review</h3>
+                <p className="text-neutral-700 mb-3">Alongside qualitative evidence, we are reviewing:</p>
+                <ul className="list-disc pl-6 text-neutral-700 space-y-1">
+                  <li>Audit findings from recent reorganisations</li>
+                  <li>Section 114 triggers and financial intervention cases</li>
+                  <li>Planning performance data pre and post vesting</li>
+                  <li>Governance dispute records where publicly available</li>
+                </ul>
+                <p className="text-neutral-700 mt-3">This quantitative strand will ensure the Playbook is grounded in measurable outcomes rather than anecdote.</p>
+              </div>
+            </div>
+
+                <p className="text-xs font-bold text-teal-700 uppercase tracking-widest mt-12 mb-2">
+                  Get involved
+                </p>
+                <h2 id="contribute" className="text-3xl font-black text-neutral-900 mb-4">
+                  Contribute to the Playbook
+                </h2>
+            <p className="text-neutral-700 leading-relaxed mb-4">
+              If you have direct experience of <Link to="/glossary/local-government-reorganisation-lgr" className="text-teal-700 hover:text-teal-800 underline underline-offset-2">Local Government Reorganisation</Link> and wish to contribute insight, we welcome early engagement.
+            </p>
+            <p className="text-neutral-700 leading-relaxed mb-4">
+              You may register interest in:
+            </p>
+            <ul className="space-y-2 mb-6 text-neutral-700 list-disc pl-6">
+              <li>Completing the structured questionnaire</li>
+              <li>Participating in an interview</li>
+              <li>Attending a roundtable session</li>
+              <li>Sharing documentary or performance evidence</li>
+              <li>Reviewing draft sections of the Playbook</li>
+            </ul>
+            <p className="text-neutral-700 leading-relaxed mb-6">
+              A formal call for contributions will be issued shortly, with clear timelines and participation guidance. You can also <Link to="/contribute" className="text-teal-700 hover:text-teal-800 underline underline-offset-2">get involved in the LGR Initiative</Link> more broadly.
+            </p>
+            <a
+              href="mailto:office@lgr-initiative.co.uk"
+              className="inline-flex items-center gap-3 mt-6 mb-2 px-8 py-4 bg-teal-700 hover:bg-teal-800 text-white text-lg font-black rounded-xl shadow-lg hover:shadow-xl transition-all border-2 border-teal-800"
+            >
+              <Send size={24} aria-hidden />
+              Please contribute by contacting us
+            </a>
+
+                <p className="text-xs font-bold text-teal-700 uppercase tracking-widest mt-12 mb-2">
+                  When to expect it
+                </p>
+                <h2 id="timeline" className="text-3xl font-black text-neutral-900 mb-4">
+                  Publication Timeline
+                </h2>
+            <p className="text-neutral-700 leading-relaxed mb-4">
+              The full Playbook will be released in Spring.
+            </p>
+            <p className="text-neutral-700 leading-relaxed mb-4">
+              Ahead of publication we will:
+            </p>
+            <ul className="space-y-2 mb-8 text-neutral-700 list-disc pl-6">
+              <li>Share emerging themes and interim findings</li>
+              <li>Publish selected evidence summaries</li>
+              <li>Announce event dates and participation details</li>
+              <li>Provide opportunities for review and challenge</li>
+            </ul>
+            <p className="text-neutral-700 leading-relaxed mb-8">
+              This is intended to be a practical tool for those leading reorganisation in real time. It will be shaped by those who have lived it.
+            </p>
+
+                <div id="interim-access" className="mt-12 rounded-xl bg-gradient-to-br from-teal-50 to-teal-100/80 border-2 border-teal-600 p-6 sm:p-8 shadow-md">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Bell className="text-teal-700" size={22} aria-hidden />
+                    <p className="text-xs font-bold text-teal-800 uppercase tracking-widest">
+                      Stay updated
+                    </p>
+                  </div>
+                  <h2 className="text-2xl font-black text-neutral-900 mb-4">
+                    Interim Access
+                  </h2>
+                  <p className="text-neutral-700 leading-relaxed mb-4">
+                    If you would like to be notified when:
                   </p>
+                  <ul className="space-y-2 mb-6 text-neutral-700 list-disc pl-6">
+                    <li>Questionnaires open</li>
+                    <li>Interviews are scheduled</li>
+                    <li>Events are announced</li>
+                    <li>Draft sections are released</li>
+                  </ul>
+                  <p className="text-neutral-800 font-medium mb-4">
+                    Register for updates and we&apos;ll keep you informed.
+                  </p>
+                  <Link
+                    to="/subscribe"
+                    className="inline-flex items-center gap-2 px-5 py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-full transition-all text-sm"
+                  >
+                    <Bell size={18} />
+                    Register for updates
+                  </Link>
                 </div>
               </div>
             </div>
@@ -542,6 +733,12 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
                     RELATED CONTENT
                   </h4>
                   <div className="space-y-2.5">
+                    <Link
+                      to="/contribute"
+                      className="block w-full text-left px-4 py-3 bg-academic-warm hover:bg-teal-50 border border-academic-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-academic-charcoal hover:text-teal-700 font-display"
+                    >
+                      How to Contribute →
+                    </Link>
                     <button
                       onClick={() => onNavigate('lessons')}
                       className="w-full text-left px-4 py-3 bg-academic-warm hover:bg-teal-50 border border-academic-neutral-200 hover:border-teal-700 transition-all text-sm font-bold text-academic-charcoal hover:text-teal-700 font-display"
@@ -609,6 +806,27 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
             Explore Related Resources
           </h2>
           <div className="flex flex-wrap gap-4">
+            <Link
+              to="/contribute"
+              className="academic-button academic-button-outline inline-flex items-center gap-2"
+            >
+              How to Contribute
+              <ArrowRight size={16} />
+            </Link>
+            <button
+              onClick={() => onNavigate('lessons')}
+              className="academic-button academic-button-outline inline-flex items-center gap-2"
+            >
+              Lessons from Reorganisation
+              <ArrowRight size={16} />
+            </button>
+            <button
+              onClick={() => onNavigate('facts')}
+              className="academic-button academic-button-outline inline-flex items-center gap-2"
+            >
+              Facts & Data
+              <ArrowRight size={16} />
+            </button>
             <button
               onClick={() => onNavigate('topics/statecraft-and-system-design')}
               className="academic-button academic-button-outline inline-flex items-center gap-2"

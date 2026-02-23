@@ -17,7 +17,7 @@ export default function LessonsBestPractices() {
     <div className="min-h-screen bg-academic-cream">
       <MetaTags
         title="Best Practices - Lessons from Reorganisation"
-        description="Practical guidance drawn from the first wave of Local Government Reorganisation. Curated best practices, checklists and lessons from the LGRI."
+        description="Practical guidance drawn from the first wave of Local Government Reorganisation. Curated best practices, checklists and lessons from the LGR Initiative."
         keywords="LGR best practices, reorganisation planning, governance design, transition delivery, local government reorganisation guidance, unitary authority checklists"
       />
       <PageBanner
@@ -44,7 +44,7 @@ export default function LessonsBestPractices() {
 
           <div className="academic-card p-8 md:p-10 space-y-6">
             <p className="text-academic-base font-serif text-academic-neutral-700 leading-relaxed">
-              This section will bring together curated best practices, checklists and lessons drawn from the LGRI to date.
+              This section will bring together curated best practices, checklists and lessons drawn from the LGR Initiative to date.
             </p>
             <p className="text-academic-base font-serif text-academic-neutral-700 leading-relaxed">
               Rather than abstract theory, it will focus on the decisions that have mattered most in practice across recently reorganised councils, and the consequences where they were delayed, diluted or avoided.

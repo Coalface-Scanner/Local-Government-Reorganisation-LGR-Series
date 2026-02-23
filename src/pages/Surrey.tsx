@@ -25,7 +25,7 @@ export default function Surrey({ onNavigate }: SurreyProps) {
     <div className="min-h-screen bg-academic-cream">
       <MetaTags
         title="Surrey LGR Timetable 2026 - Analysis & Transition Guide"
-        description="Detailed analysis of Surrey's local government reorganisation and LGR timetable 2026. Risks, opportunities, and practical guidance for the transition to East and West Surrey unitary authorities. Part of the LGRI."
+        description="Detailed analysis of Surrey's local government reorganisation and LGR timetable 2026. Risks, opportunities, and practical guidance for the transition to East and West Surrey unitary authorities. Part of the LGR Initiative."
         keywords="Surrey reorganisation, Surrey LGR, LGR timetable 2026, Surrey reorganisation elections, East Surrey council, West Surrey council, Surrey devolution, Surrey unitary, Local Government Reorganisation Surrey"
       />
       <LocalPlaceStructuredData
@@ -45,7 +45,7 @@ export default function Surrey({ onNavigate }: SurreyProps) {
           "Reigate and Banstead", "Runnymede", "Spelthorne", "Surrey Heath",
           "Tandridge", "Waverley", "Woking", "Surrey County Council"
         ]}
-        url="/surrey"
+        url="/surrey/lessons"
       />
       <PageBanner
         heroLabel="CASE STUDY"

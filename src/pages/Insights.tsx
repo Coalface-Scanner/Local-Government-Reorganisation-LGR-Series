@@ -128,8 +128,9 @@ export default function Insights({ onNavigate }: InsightsProps) {
       />
 
       <PageBanner
-        heroLabel="EXPERT ANALYSIS"
-        heroTitle="Insights & Analysis"
+        heroVariant="insights"
+        heroLabel="INSIGHTS"
+        heroTitle="Insights & Analysis on LGR"
         heroSubtitle="Expert perspectives on local government reorganisation, planning policy, and democratic governance"
         currentPath={location.pathname}
       />

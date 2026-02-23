@@ -7,6 +7,7 @@ import ArticleStructuredData from '../components/ArticleStructuredData';
 import FAQSection from '../components/FAQSection';
 import { ArrowLeft, AlertCircle, Users, DollarSign, FileText, CheckCircle, type LucideIcon } from 'lucide-react';
 import { enhanceContentWithGlossaryLinks } from '../lib/glossaryLinks';
+import { enhanceContentWithInternalLinks } from '../lib/internalLinks';
 import { sanitizeHtmlContent } from '../lib/htmlSanitizer';
 
 interface Fact {
@@ -15,6 +16,7 @@ interface Fact {
   content: string;
   category: string | null;
   order_index: number;
+  source_url?: string | null;
 }
 
 const categoryIcons: Record<string, LucideIcon> = {
@@ -26,11 +28,11 @@ const categoryIcons: Record<string, LucideIcon> = {
 };
 
 const categoryColors: Record<string, string> = {
-  'Workforce Impact': 'from-blue-500 to-cyan-600',
+  'Workforce Impact': 'from-teal-600 to-cyan-700',
   'Financial Performance': 'from-emerald-500 to-teal-600',
-  'Service Delivery': 'from-purple-500 to-indigo-600',
-  'Democratic Impact': 'from-amber-500 to-orange-600',
-  'Overview': 'from-slate-500 to-slate-700',
+  'Service Delivery': 'from-teal-500 to-cyan-600',
+  'Democratic Impact': 'from-cyan-600 to-teal-700',
+  'Overview': 'from-teal-700 to-teal-800',
 };
 
 const generateSlug = (title: string): string => {
@@ -80,6 +82,19 @@ export default function FactDetail() {
     }
   }, [slug, fetchFact]);
 
+  // Must run unconditionally (before any early return) to satisfy Rules of Hooks
+  const linkClass = 'text-teal-700 hover:text-teal-800 underline font-medium';
+  const enhancedContent = useMemo(() => {
+    if (!fact?.content) return '';
+    const withGlossary = enhanceContentWithGlossaryLinks(fact.content, {
+      onlyFirstOccurrence: true,
+      excludeSlugs: [],
+      linkClass: `glossary-link ${linkClass}`
+    });
+    const withInternalLinks = enhanceContentWithInternalLinks(withGlossary, { linkClass });
+    return sanitizeHtmlContent(withInternalLinks);
+  }, [fact?.content]);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-academic-cream flex items-center justify-center">
@@ -96,20 +111,20 @@ export default function FactDetail() {
       <div className="min-h-screen bg-academic-cream">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <button
-            onClick={() => navigate('/facts')}
+            onClick={() => navigate('/facts-and-data')}
             className="flex items-center gap-2 text-teal-700 hover:text-teal-800 font-medium mb-8 group font-display"
           >
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-            Back to Facts
+            Back to Facts & Data
           </button>
           <div className="bg-white rounded-2xl p-12 shadow-lg border border-academic-neutral-200 text-center academic-card">
             <h1 className="text-3xl font-bold text-academic-charcoal mb-4 font-display">Fact Not Found</h1>
             <p className="text-academic-neutral-600 mb-6 font-serif">The fact you're looking for doesn't exist.</p>
             <button
-              onClick={() => navigate('/facts')}
+              onClick={() => navigate('/facts-and-data')}
               className="px-6 py-3 bg-teal-700 text-white rounded-lg hover:bg-teal-800 transition-colors font-display font-bold"
             >
-              View All Facts
+              View All Facts & Data
             </button>
           </div>
         </div>
@@ -119,16 +134,6 @@ export default function FactDetail() {
 
   const Icon = categoryIcons[fact.category || 'Overview'] || AlertCircle;
   const gradientClass = categoryColors[fact.category || 'Overview'] || 'from-slate-500 to-slate-700';
-
-  // Enhance content with glossary links
-  const enhancedContent = useMemo(() => {
-    if (!fact?.content) return '';
-    return sanitizeHtmlContent(enhanceContentWithGlossaryLinks(fact.content, {
-      onlyFirstOccurrence: true,
-      excludeSlugs: [],
-      linkClass: 'glossary-link text-teal-700 hover:text-teal-800 underline font-medium'
-    }));
-  }, [fact?.content]);
 
   const getDescription = () => {
     const textContent = fact.content.replace(/<[^>]*>/g, '').trim();
@@ -156,14 +161,14 @@ export default function FactDetail() {
     let title = fact.title;
     if (fact.category) {
       const categoryTitle = `${fact.category}: ${fact.title}`;
-      const maxTitleLength = 52; // 70 - 18 (" | LGRI")
+      const maxTitleLength = 52; // 70 - 18 (" | LGR Initiative")
       if (categoryTitle.length <= maxTitleLength) {
         title = categoryTitle;
       }
     }
     
     const fullTitle = `${title} - Facts & Figures`;
-    const maxTitleLength = 52; // 70 - 18 (" | LGRI")
+    const maxTitleLength = 52; // 70 - 18 (" | LGR Initiative")
     return fullTitle.length > maxTitleLength ? fullTitle.substring(0, maxTitleLength - 3) + '...' : fullTitle;
   };
 
@@ -179,7 +184,7 @@ export default function FactDetail() {
       <div data-page-nav className="bg-academic-cream">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5">
           <button
-            onClick={() => navigate('/facts')}
+            onClick={() => navigate('/facts-and-data')}
             className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-6 group"
           >
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
@@ -197,7 +202,7 @@ export default function FactDetail() {
         <ArticleStructuredData
           title={fact.title}
           description={getDescription()}
-          author="LGRI Editorial Team"
+          author="LGR Initiative Editorial Team"
           publishedDate={new Date().toISOString()}
           imageUrl={undefined}
           slug={generateSlug(fact.title)}
@@ -271,15 +276,28 @@ export default function FactDetail() {
             className="bg-white rounded-2xl p-8 md:p-12 shadow-lg border border-academic-neutral-200 academic-card"
             dangerouslySetInnerHTML={{ __html: enhancedContent }}
           />
+          {fact.source_url && (
+            <p className="mt-6 text-sm text-slate-600">
+              Source:{' '}
+              <a
+                href={fact.source_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-teal-700 hover:text-teal-800 underline font-medium"
+              >
+                View source
+              </a>
+            </p>
+          )}
         </article>
 
         <div className="mt-12 pt-8 border-t border-academic-neutral-200">
           <button
-            onClick={() => navigate('/facts')}
+            onClick={() => navigate('/facts-and-data')}
             className="flex items-center gap-2 text-teal-700 hover:text-teal-800 font-medium group font-display"
           >
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-            View All Facts
+            View All Facts & Data
           </button>
         </div>
         </div>

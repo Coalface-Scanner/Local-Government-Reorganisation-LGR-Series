@@ -4,7 +4,6 @@ import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import { getCouncilBySlug, surreyCouncils } from '../data/surreyCouncils';
 import FAQSection from '../components/FAQSection';
-import CouncilProfilesPasswordProtection from '../components/CouncilProfilesPasswordProtection';
 import LocalPlaceStructuredData from '../components/LocalPlaceStructuredData';
 import CouncilContentLinks from '../components/CouncilContentLinks';
 
@@ -15,21 +14,19 @@ export default function CouncilProfileDetail() {
 
   if (!council) {
     return (
-      <CouncilProfilesPasswordProtection>
-        <div className="min-h-screen bg-academic-cream flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-3xl font-black text-academic-charcoal mb-4 font-display">Council Not Found</h1>
-            <p className="text-academic-neutral-600 mb-6 font-serif">The council profile you're looking for doesn't exist.</p>
-            <Link
-              to="/council-profiles"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-teal-700 text-white font-bold rounded-lg hover:bg-teal-800 transition-colors font-display"
-            >
-              <ArrowLeft size={18} />
-              Back to Council Profiles
-            </Link>
-          </div>
+      <div className="min-h-screen bg-academic-cream flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-3xl font-black text-academic-charcoal mb-4 font-display">Council Not Found</h1>
+          <p className="text-academic-neutral-600 mb-6 font-serif">The council profile you're looking for doesn't exist.</p>
+          <Link
+            to="/surrey/area-profile"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-teal-700 text-white font-bold rounded-lg hover:bg-teal-800 transition-colors font-display"
+          >
+            <ArrowLeft size={18} />
+            Back to Council Profiles
+          </Link>
         </div>
-      </CouncilProfilesPasswordProtection>
+      </div>
     );
   }
 
@@ -69,12 +66,11 @@ export default function CouncilProfileDetail() {
   );
 
   return (
-    <CouncilProfilesPasswordProtection>
     <div className="min-h-screen bg-academic-cream">
       <MetaTags
         title={(() => {
           const title = `${council.name} Profile - Surrey Council Profiles`;
-          const maxTitleLength = 52; // 70 - 18 (" | LGRI")
+          const maxTitleLength = 52; // 70 - 18 (" | LGR Initiative")
           return title.length > maxTitleLength ? title.substring(0, maxTitleLength - 3) + '...' : title;
         })()}
         description={(() => {
@@ -103,7 +99,7 @@ export default function CouncilProfileDetail() {
           type: "AdministrativeArea"
         }}
         areaServed={[council.name.replace(' Council', '')]}
-        url={`/council-profiles/${council.slug}`}
+        url={`/surrey/area-profile/${council.slug}`}
       />
       <PageBanner
         heroLabel={council.type ? council.type.toUpperCase() : 'SURREY COUNCIL'}
@@ -117,7 +113,7 @@ export default function CouncilProfileDetail() {
       <div className="layout-container layout-content-sub">
         <div className="flex items-center justify-between mb-6">
           <Link
-            to="/council-profiles"
+            to="/surrey/area-profile"
             className="inline-flex items-center gap-2 text-sm font-bold text-teal-700 hover:text-teal-800 transition-colors font-display"
           >
             <ArrowLeft size={16} />
@@ -348,7 +344,7 @@ export default function CouncilProfileDetail() {
                     {relatedCouncils.map((related) => (
                       <Link
                         key={related.id}
-                        to={`/council-profiles/${related.slug}`}
+                        to={`/surrey/area-profile/${related.slug}`}
                         className="block p-3 rounded-lg hover:bg-teal-50 border border-neutral-200 hover:border-teal-300 transition-all"
                       >
                         <div className="font-bold text-sm text-neutral-900 mb-1">
@@ -397,6 +393,5 @@ export default function CouncilProfileDetail() {
 
       <FAQSection page="council-profile" />
     </div>
-    </CouncilProfilesPasswordProtection>
   );
 }
