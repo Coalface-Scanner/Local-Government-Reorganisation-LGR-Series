@@ -9,7 +9,7 @@ INSERT INTO footer_content (section, content, link_text, link_url, order_index)
 VALUES
   ('sponsorship', 'The LGR Series is an Insight Project by COALFACE™', 'COALFACE', 'https://coalfaceengagement.co.uk', 1),
   ('subscription_cta', 'The LGR Series is constantly updated with new information added frequently.', 'Subscribe to stay updated with new materials', '/subscribe', 2),
-  ('disclaimer', 'Content on this site is for general information only and is not a substitute for technical, planning, legal or professional advice. Coalface Engagement Ltd / COALFACE™ accepts no liability for decisions made on the basis of this material. Please contact us for advice relating to specific sites, schemes or authorities.', NULL, NULL, 3),
+  ('disclaimer', 'Content on this site is for general information only and is not a substitute for technical, planning, legal or professional advice. Coalface Engagement Ltd / COALFACE® and its partners accepts no liability for decisions made on the basis of this material. Please contact us for advice relating to specific sites, schemes or authorities.', NULL, NULL, 3),
   ('tagline', 'Planning consultation and engagement shaped by political behaviour, governance conditions and planning system realities.', NULL, NULL, 4)
 ON CONFLICT (section) DO UPDATE SET
   content = EXCLUDED.content,

@@ -118,6 +118,17 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
     }
   }, [slug, fetchMaterial]);
 
+  // Enhance content with glossary links (must be before any early return to satisfy rules-of-hooks)
+  const enhancedContent = useMemo(() => {
+    const content = material?.rich_content || material?.content;
+    if (!content) return '';
+    return sanitizeHtmlContent(enhanceContentWithGlossaryLinks(content, {
+      onlyFirstOccurrence: true,
+      excludeSlugs: [],
+      linkClass: 'glossary-link text-teal-700 hover:text-teal-800 underline font-medium'
+    }));
+  }, [material?.rich_content, material?.content]);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-academic-cream flex items-center justify-center">
@@ -177,17 +188,6 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
     
     return title;
   };
-
-  // Enhance content with glossary links
-  const enhancedContent = useMemo(() => {
-    const content = material?.rich_content || material?.content;
-    if (!content) return '';
-    return sanitizeHtmlContent(enhanceContentWithGlossaryLinks(content, {
-      onlyFirstOccurrence: true,
-      excludeSlugs: [],
-      linkClass: 'glossary-link text-teal-700 hover:text-teal-800 underline font-medium'
-    }));
-  }, [material?.rich_content, material?.content]);
 
   // Generate description from material description or content, including geography context (25-160 chars)
   const getDescription = () => {

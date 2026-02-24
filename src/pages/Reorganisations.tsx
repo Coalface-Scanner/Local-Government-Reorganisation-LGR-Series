@@ -36,7 +36,7 @@ const getYearOptions = (): number[] => {
 
 const YEAR_OPTIONS = getYearOptions();
 
-export default function Reorganisations({ onNavigate }: ReorganisationsProps) {
+export default function Reorganisations({ onNavigate: _onNavigate }: ReorganisationsProps) {
   const [reorganisations, setReorganisations] = useState<LGRReorganisation[]>([]);
   const [filteredReorganisations, setFilteredReorganisations] = useState<LGRReorganisation[]>([]);
   const [searchQuery, setSearchQuery] = useState('');

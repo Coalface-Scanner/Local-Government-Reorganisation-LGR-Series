@@ -2,15 +2,14 @@ import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import PageBanner from '../components/PageBanner';
-import Footer from '../components/Footer';
 import MetaTags from '../components/MetaTags';
-import { Mail, CheckCircle, XCircle } from 'lucide-react';
+import { CheckCircle, XCircle } from 'lucide-react';
 import FAQSection from '../components/FAQSection';
 
 export default function Unsubscribe() {
   const navigate = useNavigate();
   const location = useLocation();
-  const handleNavigate = (page: string) => navigate(`/${page}`);
+  const _handleNavigate = (page: string) => navigate(`/${page}`);
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{ type: 'success' | 'error' | 'not-found'; message: string } | null>(null);

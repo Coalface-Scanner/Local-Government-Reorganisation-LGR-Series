@@ -66,7 +66,7 @@ export default function FAQSection({ page, minItems = DEFAULT_MIN_ITEMS, maxItem
       return fromDb.slice(0, maxItems);
     }
 
-    let combined = [...fromDb];
+    const combined = [...fromDb];
     for (const item of faqFallback) {
       if (combined.length >= maxItems) break;
       const key = item.question.trim().toLowerCase();

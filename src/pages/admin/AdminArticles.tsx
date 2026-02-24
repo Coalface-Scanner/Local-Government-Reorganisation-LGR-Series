@@ -464,7 +464,7 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                     placeholder="Enter article title"
                     aria-required="true"
                     aria-label="Article title"
-                    aria-invalid={!!getFieldError(validationErrors, 'title') ? 'true' : 'false'}
+                    aria-invalid={getFieldError(validationErrors, 'title') ? 'true' : 'false'}
                     aria-describedby={getFieldError(validationErrors, 'title') ? 'title-error' : undefined}
                   />
                   {getFieldError(validationErrors, 'title') && (
@@ -511,7 +511,7 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                     placeholder="article-url-slug"
                     aria-required="true"
                     aria-label="Article URL slug"
-                    aria-invalid={!!getFieldError(validationErrors, 'slug') ? 'true' : 'false'}
+                    aria-invalid={getFieldError(validationErrors, 'slug') ? 'true' : 'false'}
                     aria-describedby={getFieldError(validationErrors, 'slug') ? 'slug-error' : undefined}
                   />
                   {getFieldError(validationErrors, 'slug') ? (
@@ -727,7 +727,7 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                         }`}
                         required
                         aria-label="Content type"
-                        aria-invalid={!!getFieldError(validationErrors, 'content_type') ? 'true' : 'false'}
+                        aria-invalid={getFieldError(validationErrors, 'content_type') ? 'true' : 'false'}
                         aria-describedby={getFieldError(validationErrors, 'content_type') ? 'content-type-error' : undefined}
                       >
                         <option value="News Update">News Update</option>
@@ -768,7 +768,7 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
                         }`}
                         required={!!(editingArticle.content_type && editingArticle.content_type !== 'FAQ' && editingArticle.content_type !== 'Other' && editingArticle.status === 'published')}
                         aria-label="Core theme"
-                        aria-invalid={!!getFieldError(validationErrors, 'theme') ? 'true' : 'false'}
+                        aria-invalid={getFieldError(validationErrors, 'theme') ? 'true' : 'false'}
                         aria-describedby={getFieldError(validationErrors, 'theme') ? 'theme-error' : undefined}
                         ref={(selectEl) => {
                           // Clean up any invalid options added by browser extensions

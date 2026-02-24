@@ -10,19 +10,11 @@ import WhyThisMattersNow from '../../components/WhyThisMattersNow';
 import LGRDataStatementBlock from '../../components/LGRDataStatementBlock';
 import {
   ArrowLeft,
-  BookOpen,
-  Calendar,
-  MapPin,
-  Building2,
-  Users,
   ChevronRight,
-  Target,
   User,
   Landmark,
   Briefcase,
   Search,
-  CheckCircle2,
-  XCircle,
 } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 

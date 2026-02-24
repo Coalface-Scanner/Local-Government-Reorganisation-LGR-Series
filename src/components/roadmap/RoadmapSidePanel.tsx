@@ -134,16 +134,14 @@ export default function RoadmapSidePanel({
                   </Link>
                 </li>
               )}
-              {(milestone.links.facts[0] || '/facts/lgr-timeline') && (
-                <li>
-                  <Link
-                    to={milestone.links.facts[0] || '/facts/lgr-timeline'}
-                    className="text-base font-semibold text-teal-800 hover:text-teal-700 underline underline-offset-3"
-                  >
-                    Facts & timeline
-                  </Link>
-                </li>
-              )}
+              <li>
+                <Link
+                  to={milestone.links.facts[0] || '/facts/lgr-timeline'}
+                  className="text-base font-semibold text-teal-800 hover:text-teal-700 underline underline-offset-3"
+                >
+                  Facts & timeline
+                </Link>
+              </li>
               {milestone.links.glossary[0] ? (
                 <li>
                   <Link

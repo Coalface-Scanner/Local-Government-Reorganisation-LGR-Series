@@ -122,7 +122,7 @@ const colorClasses: Record<
   rose: { badge: 'bg-rose-600 text-white', icon: 'bg-rose-600', border: 'border-rose-200', bg: 'bg-rose-50' },
 };
 
-export default function LGRProcessTimeline({ hideDurationCallout }: LGRProcessTimelineProps = {}) {
+export default function LGRProcessTimeline({ hideDurationCallout: _hideDurationCallout }: LGRProcessTimelineProps = {}) {
   const [activeStep, setActiveStep] = useState<number>(1);
   const step = timelineSteps.find((s) => s.id === activeStep) ?? timelineSteps[0];
   const colors = colorClasses[step.color];

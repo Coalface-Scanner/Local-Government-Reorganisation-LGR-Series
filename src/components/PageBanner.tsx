@@ -62,7 +62,7 @@ export default function PageBanner({
   heroSecondaryCta,
   heroVariant = 'default',
   primaryNavItems,
-  secondaryNavItems,
+  secondaryNavItems: _secondaryNavItems,
   currentPath,
   breadcrumbCurrentLabel,
   breadcrumbVariant = 'full',
@@ -170,7 +170,7 @@ export default function PageBanner({
   };
 
   // Determine which primary nav section the current page belongs to (six hubs)
-  const getCurrentPrimaryNavId = (): string | null => {
+  const _getCurrentPrimaryNavId = (): string | null => {
     const current = currentPath || location.pathname;
     if (current === '/learn' || current.startsWith('/what-is-lgr') || current.startsWith('/beginners-guide') || current.startsWith('/questions-and-answers') || current.startsWith('/glossary') || current.startsWith('/first-100-days')) return 'learn';
     if (current === '/tools' || current.startsWith('/roadmap') || current.startsWith('/surrey/election-tracker') || current.startsWith('/surrey/simulator')) return 'tools';
@@ -214,7 +214,7 @@ export default function PageBanner({
   };
 
   // Mission statement for homepage
-  const missionStatement = "The LGR Initiative provides independent analysis of local government reorganisation, ensuring new unitary councils are governable, legitimate and capable of delivering services sustainably, creating the conditions for meaningful devolution.";
+  const _missionStatement = "The LGR Initiative provides independent analysis of local government reorganisation, ensuring new unitary councils are governable, legitimate and capable of delivering services sustainably, creating the conditions for meaningful devolution.";
 
   return (
     <div className="banner-full-width" data-full-width-banner>
@@ -480,7 +480,7 @@ export default function PageBanner({
                 </div>
                 <p className="mt-10 text-white/95 text-[0.7rem] sm:text-[0.75rem] leading-relaxed font-display max-w-[72%]">
                   The LGR Initiative was formed by a partnership between Coalface Engagement Ltd and the Centre for Britain and Europe, University of Surrey, along with others. To learn more{' '}
-                  <Link to="/partnerships" className="text-teal-200 hover:text-white underline transition-colors">
+                  <Link to="/about/partnership" className="text-teal-200 hover:text-white underline transition-colors">
                     read about our partnership
                   </Link>
                   .

@@ -481,7 +481,7 @@ export default function WYSIWYGEditor({ value, onChange, placeholder, className 
               Edit
             </button>
           </div>
-          <div className="preview-mode" dangerouslySetInnerHTML={{ __html: sanitizeHtmlContent(value || '<p class=\"text-slate-400 italic\">No content to preview</p>') }} />
+          <div className="preview-mode" dangerouslySetInnerHTML={{ __html: sanitizeHtmlContent(value || '<p class="text-slate-400 italic">No content to preview</p>') }} />
         </>
       ) : (
         <>

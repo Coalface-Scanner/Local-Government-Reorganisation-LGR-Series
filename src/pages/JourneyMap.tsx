@@ -65,7 +65,7 @@ export default function JourneyMap({ onNavigate: _onNavigate }: JourneyMapProps)
   const milestoneRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [activeZone, setActiveZone] = useState('');
+  const [_activeZone, setActiveZone] = useState('');
   const [savedIds, setSavedIds] = useState<Set<string>>(parseSavedIds);
   const [panelOpen, setPanelOpen] = useState(false);
   const [showReadingList, setShowReadingList] = useState(false);

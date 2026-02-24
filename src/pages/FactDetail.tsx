@@ -132,8 +132,8 @@ export default function FactDetail() {
     );
   }
 
-  const Icon = categoryIcons[fact.category || 'Overview'] || AlertCircle;
-  const gradientClass = categoryColors[fact.category || 'Overview'] || 'from-slate-500 to-slate-700';
+  const _Icon = categoryIcons[fact.category || 'Overview'] || AlertCircle;
+  const _gradientClass = categoryColors[fact.category || 'Overview'] || 'from-slate-500 to-slate-700';
 
   const getDescription = () => {
     const textContent = fact.content.replace(/<[^>]*>/g, '').trim();

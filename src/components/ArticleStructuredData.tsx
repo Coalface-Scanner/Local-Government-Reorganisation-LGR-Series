@@ -100,7 +100,7 @@ export default function ArticleStructuredData({
       "sameAs": [
         "https://localgovernmentreorganisation.co.uk",
         "https://www.linkedin.com/showcase/local-government-reorganisation",
-        "https://x.com/LGRSeries"
+        "https://x.com/LGRInitiative"
       ]
     },
     "mainEntityOfPage": {

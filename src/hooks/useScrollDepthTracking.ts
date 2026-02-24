@@ -13,7 +13,7 @@ export function useScrollDepthTracking() {
     if (typeof window === 'undefined') return;
 
     const milestones = [25, 50, 75, 100];
-    const observerOptions = {
+    const _observerOptions = {
       root: null,
       rootMargin: '0px',
       threshold: milestones.map(m => m / 100),

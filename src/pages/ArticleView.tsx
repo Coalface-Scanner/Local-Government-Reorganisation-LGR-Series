@@ -23,7 +23,7 @@ import ArticleNavigation from '../components/ArticleNavigation';
 import ContentTypeTag from '../components/ContentTypeTag';
 import { trackArticleView } from '../utils/analytics';
 import { ArrowLeft, Calendar } from 'lucide-react';
-import { retryWithBackoff, generateSlug, getThemeDisplayName, getThemeSlug, extractHeadings } from '../lib/utils';
+import { retryWithBackoff, generateSlug, getThemeDisplayName, extractHeadings } from '../lib/utils';
 import { enhanceContentWithGlossaryLinks } from '../lib/glossaryLinks';
 import { sanitizeHtmlContent } from '../lib/htmlSanitizer';
 import { useScrollDepthTracking } from '../hooks/useScrollDepthTracking';

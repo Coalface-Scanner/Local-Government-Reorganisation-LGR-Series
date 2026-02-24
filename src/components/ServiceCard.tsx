@@ -25,7 +25,7 @@ export interface ServiceCardProps {
 }
 
 export default function ServiceCard({
-  id,
+  id: _id,
   title,
   description,
   icon: Icon,

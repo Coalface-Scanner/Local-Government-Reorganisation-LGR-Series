@@ -48,10 +48,10 @@ export default function MetaTags({
   description,
   keywords,
   ogType = 'website',
-  ogImage = '/LGR-Series-Tumbnail.jpg',
+  ogImage = '/LGRI-Open-Graph.png',
   ogImageWidth = 600,
   ogImageHeight = 350,
-  ogImageAlt = 'LGR Initiative banner',
+  ogImageAlt = 'Local Government Reorganisation Initiative',
   ogTitle,
   ogDescription,
   noindex = false,
@@ -189,7 +189,7 @@ export default function MetaTags({
         }
       });
     };
-  }, [fullTitle, description, keywords, ogType, ogImage, ogImageWidth, ogImageHeight, ogImageAlt, canonicalUrl, article, noindex, finalOgTitle, finalOgDescription]);
+  }, [fullTitle, description, metaDescription, keywords, ogType, ogImage, ogImageWidth, ogImageHeight, ogImageAlt, canonicalUrl, article, noindex, finalOgTitle, finalOgDescription]);
 
   return null;
 }

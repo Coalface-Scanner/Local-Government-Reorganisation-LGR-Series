@@ -79,7 +79,7 @@ export default function Contact({ onNavigate }: ContactProps) {
               Tweet us
             </h3>
             <a
-              href="https://twitter.com/LGR Initiativenitiative"
+              href="https://x.com/LGRInitiative"
               target="_blank"
               rel="noopener noreferrer"
               className="text-academic-lg font-serif text-teal-700 hover:text-teal-800 underline underline-offset-2 transition-colors"

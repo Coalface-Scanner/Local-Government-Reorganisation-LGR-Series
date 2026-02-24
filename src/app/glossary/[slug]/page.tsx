@@ -16,7 +16,7 @@ import FAQSection from '../../../components/FAQSection';
 export default function GlossaryTermPage() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  
+  const location = useLocation();
   const term = slug ? getGlossaryTerm(slug) : undefined;
 
   if (!term) {
@@ -42,8 +42,6 @@ export default function GlossaryTermPage() {
 
   // Generate metadata (Next.js Metadata API pattern)
   const metadata = generateMetadata(term);
-
-  const location = useLocation();
 
   return (
     <>

@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Twitter, Linkedin, Mail, ExternalLink } from 'lucide-react';
+import { Twitter, Linkedin, Mail } from 'lucide-react';
 import { useFooterContent } from '../hooks/useFooterContent';
 
 interface FooterProps {
@@ -8,78 +8,20 @@ interface FooterProps {
 
 export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
   const location = useLocation();
-  const isHomePage = location.pathname === '/';
+  const _isHomePage = location.pathname === '/';
   const { getSection } = useFooterContent();
 
   // Get CMS content with fallbacks
-  const sponsorship = getSection('sponsorship');
-  const subscriptionCta = getSection('subscription_cta');
-  const disclaimer = getSection('disclaimer');
-  const tagline = getSection('tagline');
+  const _sponsorship = getSection('sponsorship');
+  const _subscriptionCta = getSection('subscription_cta');
+  const _disclaimer = getSection('disclaimer');
+  const _tagline = getSection('tagline');
 
   return (
     <footer className="bg-academic-charcoal/95 text-academic-neutral-300 mt-16">
       <div className="layout-container">
         {/* Main Footer Content */}
-        <div className="py-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-6">
-          {/* Brand Section */}
-          <div className="text-center">
-            <a
-              href="https://coalfaceengagement.co.uk"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block mb-3"
-            >
-              <img
-                src="/LGR-COALFACE-FOOTER-LOGO.png"
-                alt="COALFACE Insights"
-                loading="eager"
-                fetchpriority="high"
-                decoding="sync"
-                className="h-16 md:h-20 w-auto"
-                width={320}
-                height={64}
-              />
-            </a>
-            <p className="text-academic-xs text-academic-neutral-200 leading-relaxed font-serif mb-4">
-              Independent insight by <a href="https://coalfaceengagement.co.uk" target="_blank" rel="noopener noreferrer" className="text-teal-400 hover:text-teal-300 transition-colors whitespace-nowrap">COALFACE</a>
-            </p>
-            {/* Social Media Links */}
-            <ul className="flex items-center gap-3" aria-label="Social media links">
-              <li>
-                <a
-                  href="https://x.com/LGRSeries"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="min-w-[44px] min-h-[44px] w-10 h-10 flex items-center justify-center text-academic-neutral-200 hover:text-teal-400 transition-colors"
-                  aria-label="Follow on Twitter"
-                >
-                  <Twitter size={18} aria-hidden="true" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.linkedin.com/showcase/local-government-reorganisation"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="min-w-[44px] min-h-[44px] w-10 h-10 flex items-center justify-center text-academic-neutral-200 hover:text-teal-400 transition-colors"
-                  aria-label="Follow on LinkedIn"
-                >
-                  <Linkedin size={18} aria-hidden="true" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="mailto:office@lgr-initiative.co.uk"
-                  className="min-w-[44px] min-h-[44px] w-10 h-10 flex items-center justify-center text-academic-neutral-200 hover:text-teal-400 transition-colors"
-                  aria-label="Email us"
-                >
-                  <Mail size={18} aria-hidden="true" />
-                </a>
-              </li>
-            </ul>
-          </div>
-
+        <div className="py-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-8">
           {/* Navigation Sections */}
           <div>
             <h3 className="text-white font-display font-semibold text-sm mb-3">LGR Hub</h3>
@@ -110,6 +52,17 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
                 </Link>
               </li>
             </ul>
+            <div className="mt-4">
+              <p className="text-academic-xs text-academic-neutral-200 font-serif mb-2">
+                LGR Insights & Updates
+              </p>
+              <Link
+                to="/subscribe"
+                className="inline-block bg-teal-700 hover:bg-teal-600 text-white px-4 py-2 rounded-md font-display font-semibold text-xs uppercase tracking-wider transition-colors"
+              >
+                Subscribe
+              </Link>
+            </div>
           </div>
 
           <div>
@@ -192,21 +145,10 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
                 </Link>
               </li>
             </ul>
-            <div>
-              <p className="text-academic-xs text-academic-neutral-200 font-serif mb-2">
-                LGR Insights & Updates
-              </p>
-              <Link
-                to="/subscribe"
-                className="inline-block bg-teal-700 hover:bg-teal-600 text-white px-4 py-2 rounded-md font-display font-semibold text-xs uppercase tracking-wider transition-colors"
-              >
-                Subscribe
-              </Link>
-            </div>
           </div>
 
           <div>
-            <h3 className="text-white font-display font-semibold text-sm mb-3">Contact</h3>
+            <h3 className="text-white font-display font-semibold text-sm mb-3">Published by:</h3>
             <div className="text-sm text-academic-neutral-200 space-y-2 font-serif">
               <p className="whitespace-nowrap">Coalface Engagement Ltd</p>
               <p className="text-academic-xs text-academic-neutral-300">(11741464)</p>
@@ -216,11 +158,41 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
                 <a href="mailto:office@lgr-initiative.co.uk" className="text-teal-400 hover:text-teal-300 transition-colors block text-xs">
                   office@lgr-initiative.co.uk
                 </a>
-                <a href="mailto:office@lgr-initiative.co.uk" className="text-teal-400 hover:text-teal-300 transition-colors block text-xs">
-                  office@lgr-initiative.co.uk
-                </a>
               </div>
             </div>
+            <ul className="flex items-center gap-3 mt-4" aria-label="Social media links">
+              <li>
+                <a
+                  href="https://x.com/LGRInitiative"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="min-w-[44px] min-h-[44px] w-10 h-10 flex items-center justify-center text-academic-neutral-200 hover:text-teal-400 transition-colors"
+                  aria-label="Follow on Twitter"
+                >
+                  <Twitter size={18} aria-hidden="true" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.linkedin.com/showcase/local-government-reorganisation"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="min-w-[44px] min-h-[44px] w-10 h-10 flex items-center justify-center text-academic-neutral-200 hover:text-teal-400 transition-colors"
+                  aria-label="Follow on LinkedIn"
+                >
+                  <Linkedin size={18} aria-hidden="true" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href="mailto:office@lgr-initiative.co.uk"
+                  className="min-w-[44px] min-h-[44px] w-10 h-10 flex items-center justify-center text-academic-neutral-200 hover:text-teal-400 transition-colors"
+                  aria-label="Email us"
+                >
+                  <Mail size={18} aria-hidden="true" />
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
 
@@ -229,7 +201,7 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
             {/* Disclaimer - spans columns 1, 2, 3 */}
             <div className="lg:col-span-3 text-xs text-academic-neutral-200 leading-relaxed font-serif">
-              <span className="font-semibold text-academic-neutral-100">Disclaimer:</span> Content on this site is for general information only and is not a substitute for technical, planning, legal or professional advice. Coalface Engagement Ltd / COALFACE™ accepts no liability for decisions made on the basis of this material. Please contact us for advice relating to specific sites, schemes or authorities.
+              <span className="font-semibold text-academic-neutral-100">Disclaimer:</span> Content on this site is for general information only and is not a substitute for technical, planning, legal or professional advice. Coalface Engagement Ltd / COALFACE® and its partners accepts no liability for decisions made on the basis of this material. Please contact us for advice relating to specific sites, schemes or authorities.
             </div>
 
             {/* Legal Links - spans columns 4, 5 */}

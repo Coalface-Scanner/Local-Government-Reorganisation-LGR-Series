@@ -15,8 +15,8 @@ import { trackPageView } from './utils/analytics';
 // Lazy load pages for code splitting - improves initial load time
 const Home = lazy(() => import('./pages/Home'));
 const Search = lazy(() => import('./pages/Search'));
-const Materials = lazy(() => import('./pages/Materials'));
-const Facts = lazy(() => import('./pages/Facts'));
+const _Materials = lazy(() => import('./pages/Materials'));
+const _Facts = lazy(() => import('./pages/Facts'));
 const Lessons = lazy(() => import('./pages/Lessons'));
 const Reasons = lazy(() => import('./pages/Reasons'));
 const Interviews = lazy(() => import('./pages/Interviews'));
@@ -25,7 +25,7 @@ const SurreyElectionTracker = lazy(() => import('./pages/SurreyElectionTracker')
 const SurreyElectionSimulator = lazy(() => import('./pages/SurreyElectionSimulator'));
 const SurreyHub = lazy(() => import('./pages/SurreyHub'));
 const SurreyLGRHub = lazy(() => import('./pages/SurreyLGRHub'));
-const Article = lazy(() => import('./pages/Article'));
+const _Article = lazy(() => import('./pages/Article'));
 const Insights = lazy(() => import('./pages/Insights'));
 const Reports = lazy(() => import('./pages/insights/Reports'));
 const Subscribe = lazy(() => import('./pages/Subscribe'));
@@ -168,14 +168,6 @@ function ScrollToTop() {
   return null;
 }
 
-function ArticleWrapper() {
-  const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
-  const handleNavigate = (page: string) => navigate(`/${page}`);
-
-  return <Article slug={slug} onNavigate={handleNavigate} />;
-}
-
 function ArticleViewWrapper() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -234,7 +226,7 @@ function AppContent() {
   const location = useLocation();
   const navigate = useNavigate();
   const handleNavigate = (page: string) => navigate(`/${page}`);
-  const getCurrentPage = () => {
+  const _getCurrentPage = () => {
     const path = location.pathname.split('/')[1] || 'home';
     return path;
   };
@@ -251,10 +243,10 @@ function AppContent() {
           <SidebarTocProvider>
             <Routes>
               <Route element={<PageLayout />}>
-                <Route path="/" element={<PageWrapper>{(nav) => <Home onNavigate={nav} />}</PageWrapper>} />
-                <Route path="/learn" element={<PageWrapper>{(nav) => <Learn onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/discover" element={<PageWrapper>{(nav) => <Discover onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/research" element={<PageWrapper>{(nav) => <Research onNavigate={nav} />}</PageWrapper>} />
+                <Route path="/" element={<PageWrapper>{(_nav) => <Home onNavigate={_nav} />}</PageWrapper>} />
+                <Route path="/learn" element={<PageWrapper>{(_nav) => <Learn onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/discover" element={<PageWrapper>{(_nav) => <Discover onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/research" element={<PageWrapper>{(_nav) => <Research onNavigate={_nav} />}</PageWrapper>} />
             {/* Legacy URL redirects – old paths auto-redirect to new canonical URLs */}
             <Route path="/article/:slug" element={<RedirectArticleToInsights />} />
             <Route path="/facts" element={<Navigate to="/facts/key-facts" replace />} />
@@ -268,7 +260,7 @@ function AppContent() {
             <Route path="/interviews" element={<Navigate to="/podcast" replace />} />
             <Route path="/leadership" element={<Navigate to="/about/leadership" replace />} />
             <Route path="/leadership/:slug" element={<RedirectLeadershipToAbout />} />
-            <Route path="/library" element={<PageWrapper>{(nav) => <Search onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/library" element={<PageWrapper>{(_nav) => <Search onNavigate={_nav} />}</PageWrapper>} />
             <Route path="/facts/timescales" element={<Timescales />} />
             <Route path="/facts/councils-involved" element={<CouncilsInvolved />} />
             <Route path="/facts/key-facts" element={<KeyFacts />} />
@@ -284,71 +276,71 @@ function AppContent() {
             <Route path="/questions-and-answers" element={<QuestionsAndAnswers />} />
             <Route path="/councilopedia" element={<Councilopedia />} />
             <Route path="/hundred-days" element={<Navigate to="/first-100-days" replace />} />
-            <Route path="/first-100-days" element={<PageWrapper>{(nav) => <HundredDays onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/roadmap" element={<PageWrapper>{(nav) => <JourneyMap onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/lgr-hub" element={<PageWrapper>{(nav) => <LGRHub onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/facts-and-data" element={<PageWrapper>{(nav) => <FactsAndData onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/reorganisations" element={<PageWrapper>{(nav) => <Reorganisations onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/first-100-days" element={<PageWrapper>{(_nav) => <HundredDays onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/roadmap" element={<PageWrapper>{(_nav) => <JourneyMap onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/lgr-hub" element={<PageWrapper>{(_nav) => <LGRHub onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/facts-and-data" element={<PageWrapper>{(_nav) => <FactsAndData onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/reorganisations" element={<PageWrapper>{(_nav) => <Reorganisations onNavigate={_nav} />}</PageWrapper>} />
             <Route path="/sitemap.xml" element={<Sitemap />} />
-            <Route path="/lessons/insights" element={<PageWrapper>{(nav) => <LessonsInsights />}</PageWrapper>} />
-            <Route path="/lessons/case-studies" element={<PageWrapper>{(nav) => <LessonsCaseStudies />}</PageWrapper>} />
-            <Route path="/lessons/best-practices" element={<PageWrapper>{(nav) => <LessonsBestPractices />}</PageWrapper>} />
-            <Route path="/lessons" element={<PageWrapper>{(nav) => <Lessons onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/reasons" element={<PageWrapper>{(nav) => <Reasons onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/about" element={<PageWrapper>{(nav) => <AboutHub onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/about/overview" element={<PageWrapper>{(nav) => <AboutOverview onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/partnerships" element={<PageWrapper>{(nav) => <Partnerships />}</PageWrapper>} />
+            <Route path="/lessons/insights" element={<PageWrapper>{(_nav) => <LessonsInsights />}</PageWrapper>} />
+            <Route path="/lessons/case-studies" element={<PageWrapper>{(_nav) => <LessonsCaseStudies />}</PageWrapper>} />
+            <Route path="/lessons/best-practices" element={<PageWrapper>{(_nav) => <LessonsBestPractices />}</PageWrapper>} />
+            <Route path="/lessons" element={<PageWrapper>{(_nav) => <Lessons onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/reasons" element={<PageWrapper>{(_nav) => <Reasons onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/about" element={<PageWrapper>{(_nav) => <AboutHub onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/about/overview" element={<PageWrapper>{(_nav) => <AboutOverview onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/partnerships" element={<PageWrapper>{(_nav) => <Partnerships />}</PageWrapper>} />
             <Route path="/about/methodology" element={<Navigate to="/about/overview#methodology" replace />} />
             <Route path="/contribute" element={<Navigate to="/about/contributors/contribute" replace />} />
             <Route path="/about/contribute" element={<Navigate to="/about/contributors/contribute" replace />} />
             <Route path="/about/coalface" element={<Navigate to="/about/partnership" replace />} />
-            <Route path="/about/contributors" element={<PageWrapper>{(nav) => <AboutContributors onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/about/contributors/contribute" element={<PageWrapper>{(nav) => <AboutContribute onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/about/leadership" element={<PageWrapper>{(nav) => <Leadership onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/about/partnership" element={<PageWrapper>{(nav) => <Partnership onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/about/contributors" element={<PageWrapper>{(_nav) => <AboutContributors onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/about/contributors/contribute" element={<PageWrapper>{(_nav) => <AboutContribute onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/about/leadership" element={<PageWrapper>{(_nav) => <Leadership onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/about/partnership" element={<PageWrapper>{(_nav) => <Partnership onNavigate={_nav} />}</PageWrapper>} />
             <Route path="/about/leadership/rowan-cole" element={<Navigate to="/rowan-cole-local-government-reorganisation" replace />} />
             <Route path="/about/leadership/amelia-hadfield" element={<Navigate to="/professor-amelia-hadfield-governance-reform" replace />} />
             <Route path="/about/leadership/oliver-deed" element={<Navigate to="/oliver-deed-strategic-communications-local-government" replace />} />
             <Route path="/about/leadership/matthew-masters" element={<Navigate to="/matthew-masters-local-government-leadership" replace />} />
             <Route path="/about/leadership/charlie-moir" element={<Navigate to="/charlie-moir-digital-engagement-local-government" replace />} />
             <Route path="/about/leadership/:slug" element={<LeadershipBio />} />
-            <Route path="/rowan-cole-local-government-reorganisation" element={<PageWrapper>{(nav) => <RowanCole onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/rowan-cole-local-government-reorganisation" element={<PageWrapper>{(_nav) => <RowanCole onNavigate={_nav} />}</PageWrapper>} />
             <Route path="/professor-amelia-hadfield-governance-reform" element={<ProfessorAmeliaHadfield />} />
             <Route path="/oliver-deed-strategic-communications-local-government" element={<OliverDeed />} />
             <Route path="/matthew-masters-local-government-leadership" element={<MatthewMasters />} />
             <Route path="/charlie-moir-digital-engagement-local-government" element={<CharlieMoir />} />
             <Route path="/editor/rowan-cole" element={<Navigate to="/rowan-cole-local-government-reorganisation" replace />} />
-            <Route path="/podcast" element={<PageWrapper>{(nav) => <Interviews onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/surrey/lessons" element={<PageWrapper>{(nav) => <Surrey onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/podcast" element={<PageWrapper>{(_nav) => <Interviews onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/surrey/lessons" element={<PageWrapper>{(_nav) => <Surrey onNavigate={_nav} />}</PageWrapper>} />
             <Route path="/surrey/area-profile" element={<CouncilProfiles />} />
             <Route path="/surrey/area-profile/:slug" element={<CouncilProfileDetail />} />
-            <Route path="/surrey/election-tracker" element={<PageWrapper>{(nav) => <SurreyElectionTracker onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/surrey/election-tracker/simulator" element={<PageWrapper>{(nav) => <SurreyElectionSimulator onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/surrey/hub" element={<PageWrapper>{(nav) => <SurreyHub onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/surrey" element={<PageWrapper>{(nav) => <SurreyLGRHub onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/contact" element={<PageWrapper>{(nav) => <Contact onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/surrey/election-tracker" element={<PageWrapper>{(_nav) => <SurreyElectionTracker onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/surrey/election-tracker/simulator" element={<PageWrapper>{(_nav) => <SurreyElectionSimulator onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/surrey/hub" element={<PageWrapper>{(_nav) => <SurreyHub onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/surrey" element={<PageWrapper>{(_nav) => <SurreyLGRHub onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/contact" element={<PageWrapper>{(_nav) => <Contact onNavigate={_nav} />}</PageWrapper>} />
             <Route path="/councils" element={<Navigate to="/surrey/area-profile" replace />} />
             <Route path="/council-profiles" element={<Navigate to="/surrey/area-profile" replace />} />
             <Route path="/council-profiles/:slug" element={<RedirectCouncilProfilesToSurreyAreaProfile />} />
-            <Route path="/subscribe" element={<PageWrapper>{(nav) => <Subscribe onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/subscribe" element={<PageWrapper>{(_nav) => <Subscribe onNavigate={_nav} />}</PageWrapper>} />
             <Route path="/unsubscribe" element={<Unsubscribe />} />
             <Route path="/news" element={<News />} />
-            <Route path="/insights" element={<PageWrapper>{(nav) => <Insights onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/insights/reports" element={<PageWrapper>{(nav) => <Reports onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/insights" element={<PageWrapper>{(_nav) => <Insights onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/insights/reports" element={<PageWrapper>{(_nav) => <Reports onNavigate={_nav} />}</PageWrapper>} />
             <Route path="/insights/:slug" element={<ArticleViewWrapper />} />
-            <Route path="/topics" element={<PageWrapper>{(nav) => <Topics onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/topics/local-government" element={<PageWrapper>{(nav) => <LocalGovernment onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/topics/democracy" element={<PageWrapper>{(nav) => <Democracy onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/topics/governance-and-reform" element={<PageWrapper>{(nav) => <GovernanceAndReform onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/topics/democratic-legitimacy" element={<PageWrapper>{(nav) => <DemocraticLegitimacy onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/topics/statecraft-and-system-design" element={<PageWrapper>{(nav) => <StatecraftAndSystemDesign onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/tools" element={<PageWrapper>{(nav) => <Tools onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/topics" element={<PageWrapper>{(_nav) => <Topics onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/topics/local-government" element={<PageWrapper>{(_nav) => <LocalGovernment onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/topics/democracy" element={<PageWrapper>{(_nav) => <Democracy onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/topics/governance-and-reform" element={<PageWrapper>{(_nav) => <GovernanceAndReform onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/topics/democratic-legitimacy" element={<PageWrapper>{(_nav) => <DemocraticLegitimacy onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/topics/statecraft-and-system-design" element={<PageWrapper>{(_nav) => <StatecraftAndSystemDesign onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/tools" element={<PageWrapper>{(_nav) => <Tools onNavigate={_nav} />}</PageWrapper>} />
             <Route path="/glossary" element={<GlossaryWrapper />} />
             <Route path="/glossary/:slug" element={<GlossaryTermWrapper />} />
-            <Route path="/admin/login" element={<PageWrapper>{(nav) => <AdminLogin onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/admin/dashboard" element={<PageWrapper>{(nav) => <AdminDashboard onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/admin/articles/login" element={<PageWrapper>{(nav) => <AdminArticleLogin onNavigate={nav} />}</PageWrapper>} />
-            <Route path="/admin/articles" element={<PageWrapper>{(nav) => <AdminArticles onNavigate={nav} />}</PageWrapper>} />
+            <Route path="/admin/login" element={<PageWrapper>{(_nav) => <AdminLogin onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/admin/dashboard" element={<PageWrapper>{(_nav) => <AdminDashboard onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/admin/articles/login" element={<PageWrapper>{(_nav) => <AdminArticleLogin onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/admin/articles" element={<PageWrapper>{(_nav) => <AdminArticles onNavigate={_nav} />}</PageWrapper>} />
                 <Route path="*" element={<NotFound />} />
               </Route>
             </Routes>

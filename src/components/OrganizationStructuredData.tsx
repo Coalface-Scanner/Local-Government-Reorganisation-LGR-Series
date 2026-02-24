@@ -47,7 +47,7 @@ export default function OrganizationStructuredData() {
     "sameAs": [
       baseUrl,
       "https://www.linkedin.com/showcase/local-government-reorganisation",
-      "https://x.com/LGRSeries"
+      "https://x.com/LGRInitiative"
     ]
   };
 

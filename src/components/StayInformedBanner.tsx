@@ -1,5 +1,4 @@
 import { useState, useId } from 'react';
-import { Link } from 'react-router-dom';
 import { trackSubscription } from '../utils/analytics';
 
 export default function StayInformedBanner() {
@@ -32,7 +31,7 @@ export default function StayInformedBanner() {
         if (existingSubscription.active) {
           setMessage({ type: 'error', text: 'This email is already subscribed.' });
         } else {
-          const { data: updateData, error: updateError } = await supabase
+          const { data: _updateData, error: updateError } = await supabase
             .from('subscriptions')
             .update({ active: true, unsubscribed_at: null })
             .eq('id', existingSubscription.id)
@@ -47,7 +46,7 @@ export default function StayInformedBanner() {
           setEmail('');
         }
       } else {
-        const { data: insertData, error: insertError } = await supabase
+        const { data: _insertData, error: insertError } = await supabase
           .from('subscriptions')
           .insert([{ email, active: true }])
           .select();

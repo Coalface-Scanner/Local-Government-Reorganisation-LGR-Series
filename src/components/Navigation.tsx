@@ -24,7 +24,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
   const [currentDate, setCurrentDate] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearch, setShowSearch] = useState(false);
-  const [showSearchDropdown, setShowSearchDropdown] = useState(false);
+  const [_showSearchDropdown, setShowSearchDropdown] = useState(false);
   const learnDropdownRef = useRef<HTMLDivElement>(null);
   const discoverDropdownRef = useRef<HTMLDivElement>(null);
   const researchDropdownRef = useRef<HTMLDivElement>(null);
@@ -32,7 +32,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
   const toolsDropdownRef = useRef<HTMLDivElement>(null);
   const aboutDropdownRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const menuBarRef = useRef<HTMLDivElement>(null);
+  const _menuBarRef = useRef<HTMLDivElement>(null);
   const topBannerRef = useRef<HTMLDivElement>(null);
   const mainContainerRef = useRef<HTMLDivElement>(null);
   const logoContainerRef = useRef<HTMLDivElement>(null);
@@ -94,7 +94,7 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
     }
   };
 
-  const handleSearchKeyDown = (e: React.KeyboardEvent) => {
+  const _handleSearchKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Escape') {
       setShowSearch(false);
       setSearchQuery('');
@@ -154,10 +154,8 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
       <div ref={topBannerRef} className="border-b border-teal-900 bg-teal-800 py-0.5" style={{ paddingLeft: 0, paddingRight: 0, margin: 0 }}>
         <div className="layout-container relative" style={{ paddingTop: 0, paddingBottom: 0 }}>
           <div className="flex justify-between items-center text-[0.625rem] md:text-[0.6875rem] tracking-wider text-white/95 font-display font-medium" style={{ lineHeight: '1.1', margin: 0, padding: 0 }}>
-            <div className="hidden md:block" style={{ lineHeight: '1.1', margin: 0, padding: 0 }}>EST. 2025 | By{' '}
-              <a href="https://www.coalfaceengagement.co.uk" target="_blank" rel="noopener noreferrer" className="text-white hover:text-teal-200 transition-colors underline">COALFACE</a>
-            </div>
-            <div className="md:hidden text-[0.5rem]" style={{ lineHeight: '1.1', margin: 0, padding: 0 }}>EST. 2025</div>
+            <div className="hidden md:block" style={{ lineHeight: '1.1', margin: 0, padding: 0 }}>EST. 2025 | Formerly the LGR Series</div>
+            <div className="md:hidden text-[0.5rem]" style={{ lineHeight: '1.1', margin: 0, padding: 0 }}>EST. 2025 | Formerly the LGR Series</div>
             <div className="hidden sm:block text-[0.625rem] md:text-[0.6875rem] font-display font-medium text-white/95 text-center absolute left-1/2 -translate-x-1/2" style={{ lineHeight: '1.1' }}>{currentDate || 'Loading...'}</div>
             <div className="flex gap-2 sm:gap-3 text-[0.5rem] sm:text-[0.625rem]" style={{ margin: 0, padding: 0 }}>
               <Link
@@ -196,19 +194,13 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
           </Link>
           <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
             <Link
-              to="/glossary"
-              className="px-3 py-1.5 text-academic-neutral-700 hover:text-teal-700 text-[0.625rem] font-display font-bold tracking-wider transition-colors whitespace-nowrap"
-            >
-              Glossary
-            </Link>
-            <Link
               to="/subscribe"
               className="px-3 py-1.5 bg-teal-700 hover:bg-teal-800 text-white text-[0.625rem] font-display font-bold tracking-wider rounded transition-colors whitespace-nowrap"
             >
               Subscribe
             </Link>
             <a
-              href="https://x.com/LGRSeries"
+              href="https://x.com/LGRInitiative"
               target="_blank"
               rel="noopener noreferrer"
               className="w-8 h-8 flex items-center justify-center bg-teal-700 hover:bg-teal-800 text-white rounded transition-colors"

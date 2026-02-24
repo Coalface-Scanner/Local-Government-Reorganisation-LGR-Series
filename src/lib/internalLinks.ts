@@ -41,7 +41,6 @@ export interface InternalLinkMention {
 }
 
 function textIndexToHtmlPosition(source: string, textIndex: number): number {
-  let htmlPos = 0;
   let textIdx = 0;
   for (let j = 0; j < source.length; j++) {
     if (textIdx === textIndex) return j;

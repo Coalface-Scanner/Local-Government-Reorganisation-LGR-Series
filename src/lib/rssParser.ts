@@ -91,7 +91,7 @@ function sanitizeXML(xmlString: string): string {
   
   // Fix unclosed tags in descriptions by wrapping CDATA or escaping
   // This is a common issue with Anchor.fm feeds that include HTML in descriptions
-  sanitized = sanitized.replace(/<description><!\[CDATA\[([\s\S]*?)\]\]><\/description>/gi, (match, content) => {
+  sanitized = sanitized.replace(/<description><!\[CDATA\[([\s\S]*?)\]\]><\/description>/gi, (match, _content) => {
     // If CDATA exists, keep it
     return match;
   });

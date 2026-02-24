@@ -1,17 +1,15 @@
-import { useEffect, useState, lazy, Suspense, useCallback } from 'react';
-import { ArrowRight, MapPin, Quote, FileText, BookOpen, Mail, Building2, Vote, Palette, Calendar, Users, CheckCircle2, Sparkles, Headphones } from 'lucide-react';
+import { useEffect, useState, useCallback } from 'react';
+import { ArrowRight, FileText, Building2, Vote, Palette, CheckCircle2 } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
 import MetaTags from '../components/MetaTags';
 import OrganizationStructuredData from '../components/OrganizationStructuredData';
 import WebSiteStructuredData from '../components/WebSiteStructuredData';
-import ThemeChip from '../components/ThemeChip';
 import PageBanner from '../components/PageBanner';
 import FAQSection from '../components/FAQSection';
 import { supabase } from '../lib/supabase';
-import OptimizedImage from '../components/OptimizedImage';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 import ContentTypeTag from '../components/ContentTypeTag';
-import { parseRSSFeed, extractGuestName, generateIdFromString, type RSSItem } from '../lib/rssParser';
+import { parseRSSFeed, extractGuestName, generateIdFromString } from '../lib/rssParser';
 import { useScrollDepthTracking } from '../hooks/useScrollDepthTracking';
 import { useTimeOnPageTracking } from '../hooks/useTimeOnPageTracking';
 
@@ -59,10 +57,10 @@ const RSS_FEED_URL = import.meta.env.PROD
 
 export default function Home({ onNavigate }: HomeProps) {
   const [recentArticles, setRecentArticles] = useState<Article[]>([]);
-  const [loadingArticles, setLoadingArticles] = useState(true);
+  const [_loadingArticles, setLoadingArticles] = useState(true);
   const [themes, setThemes] = useState<ThemeData[]>([]);
   const [loadingThemes, setLoadingThemes] = useState(true);
-  const [editorsPicks, setEditorsPicks] = useState<Article[]>([]);
+  const [_editorsPicks, setEditorsPicks] = useState<Article[]>([]);
   const [latestEpisodes, setLatestEpisodes] = useState<Interview[]>([]);
   const [loadingEpisodes, setLoadingEpisodes] = useState(true);
   const location = useLocation();
@@ -348,7 +346,7 @@ export default function Home({ onNavigate }: HomeProps) {
     fetchLatestEpisodes();
   }, [fetchLatestEpisodes]);
 
-  const getThemeForArticle = (article: Article): string | null => {
+  const _getThemeForArticle = (article: Article): string | null => {
     if (article.theme) {
       const themeLower = article.theme.toLowerCase().trim();
       if (themeLower.includes('governance') || themeLower.includes('local government')) {
@@ -373,7 +371,7 @@ export default function Home({ onNavigate }: HomeProps) {
     return null;
   };
 
-  const getTopicSlugForTheme = (themeName: string | null): string | null => {
+  const _getTopicSlugForTheme = (themeName: string | null): string | null => {
     if (!themeName) return null;
     const themeMap: Record<string, string> = {
       'Governance and Reform': '/topics/governance-and-reform',
