@@ -1,0 +1,7 @@
+{
+  "title": "Example Key Fact",
+  "content": "This is the content of the fact. It can contain multiple paragraphs and formatting.",
+  "category": "Financial",
+  "order_index": 1
+}
+

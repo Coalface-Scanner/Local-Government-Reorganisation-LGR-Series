@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Google tag (gtag.js) - Deferred for performance and respects cookie consent -->
+    <script>
+      // Initialize dataLayer
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      
+      // Check cookie consent before loading analytics
+      function checkConsentAndLoadAnalytics() {
+        const consent = localStorage.getItem('lgr-cookie-consent');
+        if (consent) {
+          try {
+            const consentData = JSON.parse(consent);
+            if (consentData.analytics === true) {
+              loadGoogleAnalytics();
+            }
+          } catch (e) {
+            // If consent data is invalid, don't load analytics
+            console.warn('Invalid consent data, analytics not loaded');
+          }
+        }
+        // If no consent, analytics will not load until user accepts
+      }
+      
+      function loadGoogleAnalytics() {
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-1CQR5MEY37';
+        document.head.appendChild(script);
+        script.onload = function() {
+          gtag('js', new Date());
+          gtag('config', 'G-1CQR5MEY37');
+        };
+      }
+      
+      // Check consent on page load
+      window.addEventListener('load', checkConsentAndLoadAnalytics);
+      
+      // Listen for consent changes (when user accepts/rejects)
+      window.addEventListener('storage', function(e) {
+        if (e.key === 'lgr-cookie-consent') {
+          checkConsentAndLoadAnalytics();
+        }
+      });
+    </script>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/lgr.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <!-- Resource Hints for Performance -->
+    <link rel="dns-prefetch" href="https://app.supabase.co" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    
+    <!-- Preconnect to critical domains -->
+    <link rel="preconnect" href="https://app.supabase.co" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" as="image" href="/lgr.png" fetchpriority="high" />
+    <link rel="preload" as="image" href="/LGR-Banner-Masthead.png" fetchpriority="high" />
+    <link rel="preload" as="image" href="/polling-station-background.jpg" fetchpriority="high" />
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <meta name="theme-color" content="#0f766e" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="LGR Initiative" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>Local Government Reorganisation | LGR Initiative</title>
+    <meta name="description" content="Expert analysis and insights on Local Government Reorganisation (LGR) and devolution. Evidence-based research on council reform, unitary authorities, and LGR governance across England." />
+    <meta property="og:title" content="LGR Initiative by COALFACE" />
+    <meta property="og:description" content="Expert analysis and insights on Local Government Reorganisation (LGR) and devolution. Evidence-based research on council reform, unitary authorities, and LGR governance across England." />
+    <meta property="og:site_name" content="LGR Initiative" />
+    <meta property="og:image" content="https://localgovernmentreorganisation.co.uk/LGRI-Open-Graph.png" />
+    <meta property="og:image:width" content="600" />
+    <meta property="og:image:height" content="350" />
+    <meta property="og:image:alt" content="Local Government Reorganisation Initiative" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://localgovernmentreorganisation.co.uk" />
+    <meta property="og:locale" content="en_GB" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Local Government Reorganisation Insights" />
+    <meta name="twitter:description" content="Expert analysis and insights on local government reorganisation in England." />
+    <meta name="twitter:image" content="https://localgovernmentreorganisation.co.uk/LGRI-Open-Graph.png" />
+    <meta name="geo.region" content="GB" />
+    <meta name="geo.placename" content="United Kingdom" />
+    <meta name="geo.position" content="51.5074;-0.1278" />
+    <meta name="ICBM" content="51.5074, -0.1278" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <!-- ElevenLabs widget - Deferred for performance -->
+    <script>
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(function() {
+          var convai = document.createElement('elevenlabs-convai');
+          convai.setAttribute('agent-id', 'agent_0601kdkcebt6erjbx8bv26x75c46');
+          document.body.appendChild(convai);
+          var script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed@beta';
+          script.type = 'text/javascript';
+          document.body.appendChild(script);
+        });
+      } else {
+        setTimeout(function() {
+          var convai = document.createElement('elevenlabs-convai');
+          convai.setAttribute('agent-id', 'agent_0601kdkcebt6erjbx8bv26x75c46');
+          document.body.appendChild(convai);
+          var script = document.createElement('script');
+          script.async = true;
+          if (window.trustedTypes) {
+            const trustedURL = window.trustedTypes.createPolicy('default', {
+              createScriptURL: (url) => url
+            }).createScriptURL('https://unpkg.com/@elevenlabs/convai-widget-embed@beta');
+            script.src = trustedURL;
+          } else {
+            script.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed@beta';
+          }
+          script.type = 'text/javascript';
+          document.body.appendChild(script);
+        }, 2000);
+      }
+    </script>
+  </body>
+</html>

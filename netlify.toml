@@ -1,0 +1,46 @@
+# Netlify Configuration
+# This file defines build settings and deployment configuration
+# Note: Redirects are handled by public/_redirects
+# Note: Headers are handled by public/_headers
+# These files take precedence if they exist in the build output
+
+[build]
+  # Build command to run
+  command = "npm run build"
+  
+  # Directory containing the built files to publish
+  publish = "dist"
+  
+  # Environment variables should be set in Netlify Dashboard:
+  # Site Settings > Environment variables
+  # Required variables:
+  #   - VITE_SUPABASE_URL
+  #   - VITE_SUPABASE_ANON_KEY
+  # Optional variables:
+  #   - VITE_SITE_PASSWORD
+  #   - VITE_ADMIN_PASSWORD
+
+# Build settings per branch/context (optional)
+# Uncomment and customize if you need different Node versions per environment
+# [context.production]
+#   command = "npm run build"
+# 
+# [context.deploy-preview]
+#   command = "npm run build"
+# 
+# [context.branch-deploy]
+#   command = "npm run build"
+
+# Edge Functions configuration
+# Edge functions in netlify/edge-functions/ are automatically discovered
+# The function rss-proxy.ts will be available at /rss-proxy
+
+# Plugin configuration (optional - if you're using Netlify plugins)
+# Examples:
+# [[plugins]]
+#   package = "@netlify/plugin-sitemap"
+#
+# [[plugins]]
+#   package = "@netlify/plugin-submit-sitemap"
+#   [plugins.inputs]
+#     sitemap_url = "https://localgovernmentreorganisation.co.uk/sitemap.xml"

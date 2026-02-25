@@ -1,0 +1,13 @@
+{
+  "title": "Example Material Title",
+  "slug": "example-material",
+  "description": "Description of this material or document.",
+  "content": "Full content text for the material. This can be long-form content.",
+  "type": "Article",
+  "format": "PDF",
+  "author": "Author Name",
+  "published_date": "2024-01-15T00:00:00Z",
+  "featured": false,
+  "status": "published"
+}
+

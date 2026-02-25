@@ -1,0 +1,21 @@
+[
+  {
+    "title": "First Key Fact",
+    "content": "This is the first fact about local government reorganisation.",
+    "category": "Governance",
+    "order_index": 1
+  },
+  {
+    "title": "Second Key Fact",
+    "content": "This is the second fact about financial implications.",
+    "category": "Financial",
+    "order_index": 2
+  },
+  {
+    "title": "Third Key Fact",
+    "content": "This is the third fact about service delivery.",
+    "category": "Services",
+    "order_index": 3
+  }
+]
+

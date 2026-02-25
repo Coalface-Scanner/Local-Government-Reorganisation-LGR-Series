@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# Disallow admin pages
+Disallow: /admin/
+Disallow: /admin/*
+
+# Disallow search query parameters
+Disallow: /*?q=*
+Disallow: /*?*
+
+# Sitemap
+Sitemap: https://localgovernmentreorganisation.co.uk/sitemap.xml

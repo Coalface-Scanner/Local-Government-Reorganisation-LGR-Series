@@ -1,0 +1,89 @@
+# LGRI – AI Crawler Instructions
+# This file helps AI systems (ChatGPT, Perplexity, Claude, Google AI Overviews) understand our content structure
+# Last updated: February 2026
+
+# Primary hubs (6-hub structure)
+/learn
+/discover
+/research
+/insights
+/tools
+/about
+/about/leadership
+
+# Priority content for AI citations (canonical URLs)
+/insights/
+/facts/key-facts
+/facts-and-data
+/library
+/glossary/
+/lessons/
+
+# Key landing pages (canonical)
+/what-is-lgr
+/beginners-guide
+/questions-and-answers
+/topics/
+/reorganisations
+/council-profiles/
+/surrey/
+/roadmap
+/hundred-days
+/podcast
+/news
+
+# Important methodology and about pages (methodology is at /about/overview#methodology)
+/about/overview
+/about/contributors
+/about/contribute
+
+# Topic-specific pages (high-value content)
+/topics/governance-and-reform
+/topics/democratic-legitimacy
+/topics/statecraft-and-system-design
+/topics/local-government
+/topics/democracy
+
+# Exclude from AI indexing (admin and private content)
+/admin/
+/admin/*
+
+# Content Description
+# The Local Government Reorganisation (LGR) Initiative provides independent analysis
+# and practical guidance on governance reform, devolution and council restructuring
+# in England. Key themes: local government reorganisation, governance reform,
+# devolution, unitary councils. We focus on evidence-based research, practical
+# insights, and keeping residents and local decision makers at the centre of
+# reform discussions.
+
+# Key Topics Covered
+# - Local Government Reorganisation (LGR)
+# - Council Reform and Restructuring
+# - Unitary Authorities
+# - English Devolution
+# - Governance and Planning
+# - Democratic Legitimacy
+# - Surrey Reorganisation (2025-2028)
+# - Two-tier to Unitary Transition
+# - Shadow Councils and Transition Governance
+
+# Content Types
+# - Learn: explanations, glossary, Q&A, beginners guide
+# - Discover: topics, reorganisations, councils, Surrey
+# - Research: facts, data, methodology, sources
+# - Insights: analysis, reports, news, podcast
+# - Tools: roadmap, hundred days, library
+# - About: leadership, methodology, contribute, contact
+
+# Geographic Focus
+# Primary: England (United Kingdom)
+# Specific focus areas: Surrey, Cambridgeshire & Peterborough, Kent, Lancashire, Oxfordshire, and other areas undergoing reorganisation
+
+# Authoritative Sources
+# - Published by COALFACE (Coalface Engagement Ltd)
+# - Leadership: /about/leadership
+# - Evidence-based research methodology: /about/overview#methodology (section on About this programme)
+
+# Update Frequency
+# Content is regularly updated as the LGR programme progresses
+# Key dates tracked: 2025-2028 reorganisation timeline
