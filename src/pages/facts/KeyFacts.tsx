@@ -176,7 +176,7 @@ export default function KeyFacts() {
                                 {fact.category}
                               </div>
                             )}
-                            <h3 className="text-xl font-bold leading-tight group-hover:underline">
+                            <h3 className="text-xl font-bold leading-tight text-white group-hover:underline">
                               {fact.title}
                             </h3>
                           </div>

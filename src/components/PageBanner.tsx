@@ -480,7 +480,7 @@ export default function PageBanner({
             ) : (
               <>
                 {heroLabel && (
-                  <div className={`font-display font-bold uppercase tracking-wider hub-label-uppercase mb-4 ${['learn', 'discover', 'research', 'insights', 'tools', 'about'].includes(heroVariant ?? '') ? 'text-white text-[0.75rem] sm:text-[0.8125rem]' : 'text-teal-200 text-[0.79rem] sm:text-[0.9rem]'}`}>
+                  <div className={`font-display font-bold uppercase tracking-wider hub-label-uppercase mb-4 ${['learn', 'discover', 'research', 'insights', 'tools', 'about'].includes(heroVariant ?? '') ? 'text-white text-[0.75rem] sm:text-[0.8125rem]' : 'text-white text-[0.79rem] sm:text-[0.9rem]'}`}>
                     {heroLabel}
                   </div>
                 )}
