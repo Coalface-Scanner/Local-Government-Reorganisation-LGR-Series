@@ -458,24 +458,15 @@ export default function PageBanner({
                 <p className="hero-banner-intro-body text-white/90 text-[0.79rem] sm:text-[0.9rem] md:text-[1.01rem] lg:text-[1.13rem] leading-relaxed font-display hero-banner-text max-w-full my-10">
                   {wrapHyphenatedWords('The LGR Initiative provides independent analysis of local government reorganisation, ensuring new unitary councils are governable, legitimate and capable of delivering services sustainably, creating the conditions for meaningful devolution.')}
                 </p>
-                <div className="flex flex-wrap gap-2 sm:gap-3">
+                <p className="hero-banner-intro-body text-white/90 text-[0.79rem] sm:text-[0.9rem] md:text-[1.01rem] lg:text-[1.13rem] leading-relaxed font-display hero-banner-text max-w-full mb-6 font-bold">
+                  {wrapHyphenatedWords('Start with a journey along our virtual LGR motorway.')}
+                </p>
+                <div className="flex flex-wrap gap-3 sm:gap-4 items-center mb-6">
                   <Link
-                    to="/facts/what-is-lgr"
-                    className="min-w-[180px] sm:min-w-[200px] px-2.5 py-1 sm:px-3 sm:py-1.5 bg-teal-700 hover:bg-teal-800 text-white font-display font-bold text-[0.73rem] sm:text-[0.84rem] uppercase tracking-wider rounded transition-colors whitespace-nowrap flex items-center justify-center"
+                    to="/roadmap"
+                    className="hero-feature-btn inline-flex items-center gap-2 px-5 py-3 sm:px-6 sm:py-3.5 bg-white text-teal-800 hover:bg-teal-50 font-display font-bold text-sm sm:text-base uppercase tracking-wider rounded-lg transition-all shadow-lg hover:shadow-xl border-2 border-teal-500 hover:border-teal-400"
                   >
-                    WHAT IS LGR?
-                  </Link>
-                  <Link
-                    to="/tools"
-                    className="min-w-[180px] sm:min-w-[200px] px-2.5 py-1 sm:px-3 sm:py-1.5 bg-teal-700 hover:bg-teal-800 text-white font-display font-bold text-[0.73rem] sm:text-[0.84rem] uppercase tracking-wider rounded transition-colors whitespace-nowrap flex items-center justify-center"
-                  >
-                    HELPFUL TOOLKITS
-                  </Link>
-                  <Link
-                    to="/surrey/election-tracker"
-                    className="min-w-[180px] sm:min-w-[200px] px-2.5 py-1 sm:px-3 sm:py-1.5 bg-teal-700 hover:bg-teal-800 text-white font-display font-bold text-[0.73rem] sm:text-[0.84rem] uppercase tracking-wider rounded transition-colors whitespace-nowrap flex items-center justify-center"
-                  >
-                    TRACK SURREY&apos;S LGR
+                    THE ROAD TO LGR
                   </Link>
                 </div>
                 <p className="mt-10 text-white/95 text-[0.7rem] sm:text-[0.75rem] leading-relaxed font-display max-w-[72%]">
