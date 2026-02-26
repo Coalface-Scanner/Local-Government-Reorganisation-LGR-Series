@@ -40,8 +40,6 @@ export default function MilestoneCard({
   isSaved,
   side,
   audience,
-  featuredLink: _featuredLink,
-  featuredGlossary: _featuredGlossary,
   hideConnector = false,
 }: MilestoneCardProps) {
   const isSurreyPrimary = milestone.appliesTo?.length === 1 && milestone.appliesTo[0] === 'surrey';
