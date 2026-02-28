@@ -23,7 +23,7 @@ export const glossaryTerms: GlossaryTerm[] = [
     relatedTerms: ['unitary-authority', 'shadow-authority', 'vesting-day'],
     category: 'Core Concepts',
     relatedLink: '/facts/what-is-lgr',
-    synonyms: ['Reorganisation', 'reorganisation', 'local government reorganisation'],
+    synonyms: ['Reorganisation', 'reorganisation', 'local government reorganisation', 'LGR', 'structural reform', 'council restructuring', 'restructuring', 'governance reform'],
     lastUpdated: '2026-02-23'
   },
   {
@@ -32,7 +32,7 @@ export const glossaryTerms: GlossaryTerm[] = [
     definition: 'A single-tier local authority that is responsible for all local government functions within its area. Unitary authorities combine the responsibilities of both county and district councils, providing a single point of accountability for local services.',
     relatedTerms: ['local-government-reorganisation-lgr', 'two-tier-system'],
     category: 'Core Concepts',
-    synonyms: ['unitary authorities', 'unitary councils', 'unitary'],
+    synonyms: ['unitary authorities', 'unitary councils', 'unitary', 'unitary authority', 'new unitary', 'new unitaries'],
     lastUpdated: '2026-02-23'
   },
   {
@@ -73,6 +73,7 @@ export const glossaryTerms: GlossaryTerm[] = [
   {
     term: 'LGR Governance',
     slug: 'lgr-governance',
+    synonyms: ['governance', 'Governance', 'democratic legitimacy'],
     definition: 'The systems, processes, and structures for managing Local Government Reorganisation effectively. This includes managing the transition period, ensuring continuity of services, addressing councillor transitions, and maintaining democratic legitimacy throughout the process.',
     relatedTerms: ['shadow-authority', 'transition-period', 'lgr-governance'],
     category: 'Governance',
@@ -110,7 +111,7 @@ export const glossaryTerms: GlossaryTerm[] = [
     definition: 'The time between the election of a shadow authority and vesting day, during which both old and new authorities operate in parallel. This period involves extensive planning, service transfer preparation, and strategic decision-making.',
     relatedTerms: ['shadow-authority', 'vesting-day', 'transition-period'],
     category: 'Timeline',
-    synonyms: ['Transition', 'transition period', 'transition costs'],
+    synonyms: ['Transition', 'transition period', 'transition costs', 'transition', 'during transition', 'transition planning'],
     lastUpdated: '2026-02-23'
   },
   {

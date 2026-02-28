@@ -31,6 +31,7 @@ const Reports = lazy(() => import('./pages/insights/Reports'));
 const Subscribe = lazy(() => import('./pages/Subscribe'));
 const Unsubscribe = lazy(() => import('./pages/Unsubscribe'));
 const HundredDays = lazy(() => import('./pages/HundredDays'));
+const FAQ = lazy(() => import('./pages/FAQ'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Partnerships = lazy(() => import('./pages/Partnerships'));
 const News = lazy(() => import('./pages/News'));
@@ -277,6 +278,7 @@ function AppContent() {
             <Route path="/councilopedia" element={<Councilopedia />} />
             <Route path="/hundred-days" element={<Navigate to="/first-100-days" replace />} />
             <Route path="/first-100-days" element={<PageWrapper>{(_nav) => <HundredDays onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/faq" element={<FAQ />} />
             <Route path="/roadmap" element={<PageWrapper>{(_nav) => <JourneyMap onNavigate={_nav} />}</PageWrapper>} />
             <Route path="/lgr-hub" element={<PageWrapper>{(_nav) => <LGRHub onNavigate={_nav} />}</PageWrapper>} />
             <Route path="/facts-and-data" element={<PageWrapper>{(_nav) => <FactsAndData onNavigate={_nav} />}</PageWrapper>} />

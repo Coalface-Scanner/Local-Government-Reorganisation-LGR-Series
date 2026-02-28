@@ -1,6 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams, useLocation, Link } from 'react-router-dom';
 import { Search as SearchIcon, Filter, MapPin, User, Tag, Calendar, Map } from 'lucide-react';
+
+const SEARCH_DEBOUNCE_MS = 350;
 import { supabase } from '../lib/supabase';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
@@ -48,6 +50,7 @@ export default function Search({ onNavigate }: SearchProps) {
   const [availableRegions, setAvailableRegions] = useState<string[]>([]);
   const [availableCategories, setAvailableCategories] = useState<string[]>([]);
   const [availableAuthors, setAvailableAuthors] = useState<string[]>([]);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const loadSearchHistory = () => {
     try {
@@ -127,14 +130,24 @@ export default function Search({ onNavigate }: SearchProps) {
 
     const shouldSearchType = (type: string) => filters.type === 'all' || filters.type === type;
 
-    const sanitizedQuery = searchQuery.trim().replace(/[%_]/g, '\\$&');
+    const trimmed = searchQuery.trim();
+    const sanitizedQuery = trimmed.replace(/[%_\\]/g, '\\$&');
+    // For multi-word: build OR of each word so we match docs containing any word, then rank by match count
+    const searchWords = trimmed ? trimmed.split(/\s+/).filter(Boolean).map((w) => w.replace(/[%_\\]/g, '\\$&')) : [];
+
+    const buildTextFilter = (columns: string[]) => {
+      if (searchWords.length === 0) return null;
+      const patterns = searchWords.map((w) => columns.map((c) => `${c}.ilike.%${w}%`).join(',')).join(',');
+      return patterns;
+    };
 
     try {
       if (shouldSearchType('article')) {
         let queryBuilder = supabase.from('articles').select('*').eq('status', 'published');
 
-        if (sanitizedQuery) {
-          queryBuilder = queryBuilder.or(`title.ilike.%${sanitizedQuery}%,body.ilike.%${sanitizedQuery}%,excerpt.ilike.%${sanitizedQuery}%`);
+        const articleFilter = buildTextFilter(['title', 'body', 'excerpt']);
+        if (articleFilter) {
+          queryBuilder = queryBuilder.or(articleFilter);
         }
         if (filters.region !== 'all') queryBuilder = queryBuilder.eq('region', filters.region);
         if (filters.category !== 'all') queryBuilder = queryBuilder.eq('category', filters.category);
@@ -159,12 +172,12 @@ export default function Search({ onNavigate }: SearchProps) {
       }
 
       if (shouldSearchType('fact')) {
-        let queryBuilder = supabase.from('facts').select('*').eq('published', true);
+        let queryBuilder = supabase.from('facts').select('*');
 
-        if (sanitizedQuery) {
-          queryBuilder = queryBuilder.or(`title.ilike.%${sanitizedQuery}%,content.ilike.%${sanitizedQuery}%`);
+        const factFilter = buildTextFilter(['title', 'content']);
+        if (factFilter) {
+          queryBuilder = queryBuilder.or(factFilter);
         }
-        if (filters.region !== 'all') queryBuilder = queryBuilder.eq('region', filters.region);
         if (filters.category !== 'all') queryBuilder = queryBuilder.eq('category', filters.category);
 
         const { data, error } = await queryBuilder;
@@ -183,12 +196,12 @@ export default function Search({ onNavigate }: SearchProps) {
       }
 
       if (shouldSearchType('lesson')) {
-        let queryBuilder = supabase.from('lessons').select('*').eq('published', true);
+        let queryBuilder = supabase.from('lessons').select('*');
 
-        if (sanitizedQuery) {
-          queryBuilder = queryBuilder.or(`title.ilike.%${sanitizedQuery}%,content.ilike.%${sanitizedQuery}%`);
+        const lessonFilter = buildTextFilter(['title', 'content']);
+        if (lessonFilter) {
+          queryBuilder = queryBuilder.or(lessonFilter);
         }
-        if (filters.region !== 'all') queryBuilder = queryBuilder.eq('region', filters.region);
         if (filters.category !== 'all') queryBuilder = queryBuilder.eq('category', filters.category);
 
         const { data, error } = await queryBuilder;
@@ -207,10 +220,11 @@ export default function Search({ onNavigate }: SearchProps) {
       }
 
       if (shouldSearchType('interview')) {
-        let queryBuilder = supabase.from('interviews').select('*').eq('published', true);
+        let queryBuilder = supabase.from('interviews').select('*').eq('status', 'published');
 
-        if (sanitizedQuery) {
-          queryBuilder = queryBuilder.or(`title.ilike.%${sanitizedQuery}%,interviewee.ilike.%${sanitizedQuery}%,description.ilike.%${sanitizedQuery}%`);
+        const interviewFilter = buildTextFilter(['name', 'title', 'description']);
+        if (interviewFilter) {
+          queryBuilder = queryBuilder.or(interviewFilter);
         }
 
         const { data, error } = await queryBuilder;
@@ -218,20 +232,21 @@ export default function Search({ onNavigate }: SearchProps) {
         if (data) {
           allResults.push(...data.map(item => ({
             id: item.id,
-            title: item.title,
+            title: item.name || item.title,
             excerpt: item.description || '',
             type: 'interview' as const,
-            author: item.interviewee,
-            date: item.interview_date,
+            author: item.name,
+            date: item.created_at,
         })));
       }
     }
 
       if (shouldSearchType('material')) {
-        let queryBuilder = supabase.from('materials').select('*').eq('published', true);
+        let queryBuilder = supabase.from('materials').select('*').eq('status', 'published');
 
-        if (sanitizedQuery) {
-          queryBuilder = queryBuilder.or(`title.ilike.%${sanitizedQuery}%,description.ilike.%${sanitizedQuery}%`);
+        const materialFilter = buildTextFilter(['title', 'description', 'content']);
+        if (materialFilter) {
+          queryBuilder = queryBuilder.or(materialFilter);
         }
         if (filters.region !== 'all') queryBuilder = queryBuilder.eq('region', filters.region);
         if (filters.category !== 'all') queryBuilder = queryBuilder.eq('category', filters.category);
@@ -248,34 +263,40 @@ export default function Search({ onNavigate }: SearchProps) {
             author: item.author,
             region: item.region,
             category: item.category,
-            date: item.publication_date,
+            date: item.published_date,
+            slug: item.slug,
           })));
         }
       }
 
-      // Improved ranking algorithm
+      // Improved ranking algorithm - multi-word: score by how many words match
       const rankedResults = allResults.map(result => {
         let score = 0;
-        const queryLower = sanitizedQuery.toLowerCase();
         const titleLower = result.title.toLowerCase();
         const excerptLower = result.excerpt.toLowerCase();
 
-        // Title matches score higher
-        if (titleLower.includes(queryLower)) {
-          score += 10;
-          if (titleLower.startsWith(queryLower)) {
-            score += 5; // Exact start match scores even higher
+        if (searchWords.length > 0) {
+          let wordsMatched = 0;
+          for (const word of searchWords) {
+            const w = word.toLowerCase().replace(/\\/g, '');
+            if (titleLower.includes(w)) {
+              score += 10;
+              wordsMatched += 1;
+              if (titleLower.startsWith(w)) score += 5;
+            }
+            if (excerptLower.includes(w)) {
+              score += 3;
+              if (!titleLower.includes(w)) wordsMatched += 1;
+            }
+          }
+          // Boost for matching all words
+          if (wordsMatched === searchWords.length && searchWords.length > 1) {
+            score += 15;
           }
         }
-
         // Exact title match scores highest
-        if (titleLower === queryLower) {
+        if (trimmed && titleLower === trimmed.toLowerCase()) {
           score += 20;
-        }
-
-        // Excerpt matches score lower
-        if (excerptLower.includes(queryLower)) {
-          score += 3;
         }
 
         // Featured articles get a boost
@@ -305,10 +326,10 @@ export default function Search({ onNavigate }: SearchProps) {
       });
 
       // Save to search history if query exists
-      if (sanitizedQuery) {
-        saveToHistory(sanitizedQuery);
+      if (trimmed) {
+        saveToHistory(trimmed);
         // Track search
-        trackSearch(sanitizedQuery, rankedResults.length);
+        trackSearch(trimmed, rankedResults.length);
       }
 
       setResults(rankedResults);
@@ -320,11 +341,23 @@ export default function Search({ onNavigate }: SearchProps) {
     }
   }, [searchQuery, filters, saveToHistory]);
 
+  // Run search on mount (including browse mode) and when query/filters change, with debounce while typing
+  const hasSearchedRef = useRef(false);
   useEffect(() => {
-    if (searchQuery.trim() || initialQuery) {
-      performSearch();
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+      debounceRef.current = null;
     }
-  }, [performSearch, initialQuery, searchQuery]);
+    if (!hasSearchedRef.current) {
+      hasSearchedRef.current = true;
+      performSearch();
+      return;
+    }
+    debounceRef.current = setTimeout(performSearch, SEARCH_DEBOUNCE_MS);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [performSearch, searchQuery, filters]);
 
   const getTypeLabel = (type: string) => {
     const labels: Record<string, string> = {
@@ -349,16 +382,16 @@ export default function Search({ onNavigate }: SearchProps) {
   };
 
   const handleResultClick = (result: SearchResult) => {
-    if (result.type === 'article' && result.slug) {
+    if ((result.type === 'article' || result.type === 'material') && result.slug) {
       onNavigate('insights', result.slug);
     } else if (result.type === 'fact') {
       onNavigate('facts');
     } else if (result.type === 'lesson') {
       onNavigate('lessons');
     } else if (result.type === 'interview') {
-      onNavigate('interviews');
+      onNavigate('podcast');
     } else if (result.type === 'material') {
-      onNavigate('materials');
+      onNavigate('library');
     }
   };
 
@@ -385,6 +418,13 @@ export default function Search({ onNavigate }: SearchProps) {
               placeholder="Search by keyword, title, author..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  if (debounceRef.current) clearTimeout(debounceRef.current);
+                  performSearch();
+                }
+              }}
               aria-label="Search content"
               className="w-full pl-14 pr-4 py-4 text-lg border-2 border-academic-neutral-200 rounded-xl focus:border-teal-500 focus:outline-none transition-colors bg-white text-academic-charcoal font-serif"
             />

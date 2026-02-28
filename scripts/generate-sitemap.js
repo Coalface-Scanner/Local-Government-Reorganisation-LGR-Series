@@ -43,6 +43,7 @@ const staticPages = [
   { url: '/about', priority: '0.7', changefreq: 'monthly' },
   { url: '/contact', priority: '0.6', changefreq: 'monthly' },
   { url: '/subscribe', priority: '0.6', changefreq: 'monthly' },
+  { url: '/faq', priority: '0.9', changefreq: 'monthly' },
   { url: '/facts/timescales', priority: '0.8', changefreq: 'weekly' },
   { url: '/facts/councils-involved', priority: '0.8', changefreq: 'weekly' },
   { url: '/facts/key-facts', priority: '0.8', changefreq: 'weekly' },

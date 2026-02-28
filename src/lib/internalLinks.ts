@@ -25,6 +25,10 @@ export const internalLinkMap: { phrase: string; path: string }[] = [
   { phrase: 'questions and answers', path: '/questions-and-answers' },
   { phrase: 'best practice', path: '/lessons/best-practices' },
   { phrase: 'case studies', path: '/lessons/case-studies' },
+  { phrase: 'LGR', path: '/what-is-lgr' },
+  { phrase: 'about the Initiative', path: '/about' },
+  { phrase: 'leadership', path: '/about/leadership' },
+  { phrase: 'contributors', path: '/about/contributors' },
 ].sort((a, b) => b.phrase.length - a.phrase.length);
 
 function toTextContent(value: unknown): string {

@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { User, MessageSquare, Info, Users, Mail, Hand, BookOpen } from 'lucide-react';
+import { User, MessageSquare, Info, Users, Mail, Hand, BookOpen, HelpCircle } from 'lucide-react';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import FAQSection from '../../components/FAQSection';
@@ -23,6 +23,7 @@ const subPageCards = [
   { title: 'Partnership', path: '/about/partnership', description: 'Lead and strategic partners delivering the LGR Initiative.', icon: BookOpen },
   { title: 'Contributors', path: '/about/contributors', description: 'People and organisations who contribute to the LGRI.', icon: Users },
   { title: 'Contribute', path: '/about/contributors/contribute', description: 'How to get involved: share experience or suggest topics.', icon: MessageSquare },
+  { title: 'FAQ', path: '/faq', description: 'Frequently asked questions about LGR and the LGR Initiative.', icon: HelpCircle },
   { title: 'Contact', path: '/contact', description: 'Get in touch with the LGRI team.', icon: Mail },
 ];
 

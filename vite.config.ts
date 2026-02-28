@@ -36,6 +36,20 @@ export default defineConfig({
   server: {
     port: 5173,
     strictPort: false,
+    watch: {
+      ignored: [
+        '**/node_modules/**',
+        '**/.git/**',
+        '**/dist/**',
+        '**/supabase/migrations/**',
+        '**/content-to-upload/**',
+        '**/.cursor/**',
+        '**/.bolt/**',
+        '**/*.md',
+        '**/scripts/**',
+        '**/netlify/**',
+      ],
+    },
   },
   build: {
     // Code splitting optimization
