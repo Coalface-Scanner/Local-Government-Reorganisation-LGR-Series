@@ -73,6 +73,7 @@ export default function KeyFacts() {
     const fetchFacts = async () => {
       const { data, error } = await prerenderSafe(
         supabase.from('facts').select('*').order('order_index'),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         { data: [], error: null } as any
       );
 

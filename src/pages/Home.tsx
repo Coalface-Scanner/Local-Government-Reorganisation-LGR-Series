@@ -103,6 +103,7 @@ export default function Home({ onNavigate }: HomeProps) {
         // Fetch featured site material (featured_site takes priority over featured)
         const { data: featuredData, error: featuredError } = await prerenderSafe(
           supabase.from('articles').select('id, title, slug, excerpt, featured_image, published_date, featured, content_type, featured_site').eq('status', 'published').eq('featured_site', true).order('published_date', { ascending: false }).limit(1).maybeSingle(),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           { data: null, error: null } as any
         );
 
@@ -111,6 +112,7 @@ export default function Home({ onNavigate }: HomeProps) {
         if (!featuredData) {
           const { data: legacyFeatured } = await prerenderSafe(
             supabase.from('articles').select('id, title, slug, excerpt, featured_image, published_date, featured, content_type, featured_site').eq('status', 'published').eq('featured', true).order('published_date', { ascending: false }).limit(1).maybeSingle(),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             { data: null, error: null } as any
           );
           finalFeaturedData = legacyFeatured;
@@ -123,6 +125,7 @@ export default function Home({ onNavigate }: HomeProps) {
         // Fetch recent articles (excluding featured one)
         const { data: recentData, error: recentError } = await prerenderSafe(
           supabase.from('articles').select('id, title, slug, excerpt, featured_image, published_date, featured, content_type, featured_site, theme, category').eq('status', 'published').order('published_date', { ascending: false }).limit(6),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           { data: [], error: null } as any
         );
 
@@ -181,6 +184,7 @@ export default function Home({ onNavigate }: HomeProps) {
           // Fetch all published articles once
         const { data: allArticles } = await prerenderSafe(
           supabase.from('articles').select('id, title, slug, excerpt, featured_image, published_date, featured, content_type, featured_site, featured_theme, theme, category').eq('status', 'published').order('published_date', { ascending: false }),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           { data: [], error: null } as any
         );
 
@@ -275,6 +279,7 @@ export default function Home({ onNavigate }: HomeProps) {
       // Try database first - get episodes with video URLs
       const { data: dbInterviews } = await prerenderSafe(
         supabase.from('interviews').select('*').eq('status', 'published').not('video_url', 'is', null).order('order_index').limit(5),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         { data: [], error: null } as any
       );
 

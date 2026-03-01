@@ -55,6 +55,7 @@ export default function Insights({ onNavigate }: InsightsProps) {
       }
       const { data, error: fetchError } = await prerenderSafe(
         supabase.from('articles').select('*').eq('status', 'published').order('published_date', { ascending: false }),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         { data: [], error: null } as any
       );
 

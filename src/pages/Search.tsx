@@ -93,10 +93,26 @@ export default function Search({ onNavigate }: SearchProps) {
     const categories = new Set<string>();
     const authors = new Set<string>();
 
-    const { data: articles } = await prerenderSafe(supabase.from('articles').select('region, category, author'), { data: [], error: null } as any);
-    const { data: facts } = await prerenderSafe(supabase.from('facts').select('region, category'), { data: [], error: null } as any);
-    const { data: lessons } = await prerenderSafe(supabase.from('lessons').select('region, category'), { data: [], error: null } as any);
-    const { data: materials } = await prerenderSafe(supabase.from('materials').select('region, category, author'), { data: [], error: null } as any);
+    const { data: articles } = await prerenderSafe(
+      supabase.from('articles').select('region, category, author'),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      { data: [], error: null } as any
+    );
+    const { data: facts } = await prerenderSafe(
+      supabase.from('facts').select('region, category'),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      { data: [], error: null } as any
+    );
+    const { data: lessons } = await prerenderSafe(
+      supabase.from('lessons').select('region, category'),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      { data: [], error: null } as any
+    );
+    const { data: materials } = await prerenderSafe(
+      supabase.from('materials').select('region, category, author'),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      { data: [], error: null } as any
+    );
 
     articles?.forEach(item => {
       if (item.region) regions.add(item.region);
@@ -155,7 +171,11 @@ export default function Search({ onNavigate }: SearchProps) {
         if (filters.category !== 'all') queryBuilder = queryBuilder.eq('category', filters.category);
         if (filters.author !== 'all') queryBuilder = queryBuilder.eq('author', filters.author);
 
-        const { data, error } = await prerenderSafe(queryBuilder, { data: [], error: null } as any);
+        const { data, error } = await prerenderSafe(
+          queryBuilder,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          { data: [], error: null } as any
+        );
         if (error) throw error;
         if (data) {
           allResults.push(...data.map(item => ({
@@ -182,7 +202,11 @@ export default function Search({ onNavigate }: SearchProps) {
         }
         if (filters.category !== 'all') queryBuilder = queryBuilder.eq('category', filters.category);
 
-        const { data, error } = await prerenderSafe(queryBuilder, { data: [], error: null } as any);
+        const { data, error } = await prerenderSafe(
+          queryBuilder,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          { data: [], error: null } as any
+        );
         if (error) throw error;
         if (data) {
           allResults.push(...data.map(item => ({
@@ -206,7 +230,11 @@ export default function Search({ onNavigate }: SearchProps) {
         }
         if (filters.category !== 'all') queryBuilder = queryBuilder.eq('category', filters.category);
 
-        const { data, error } = await prerenderSafe(queryBuilder, { data: [], error: null } as any);
+        const { data, error } = await prerenderSafe(
+          queryBuilder,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          { data: [], error: null } as any
+        );
         if (error) throw error;
         if (data) {
           allResults.push(...data.map(item => ({
@@ -229,7 +257,11 @@ export default function Search({ onNavigate }: SearchProps) {
           queryBuilder = queryBuilder.or(interviewFilter);
         }
 
-        const { data, error } = await prerenderSafe(queryBuilder, { data: [], error: null } as any);
+        const { data, error } = await prerenderSafe(
+          queryBuilder,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          { data: [], error: null } as any
+        );
         if (error) throw error;
         if (data) {
           allResults.push(...data.map(item => ({
@@ -254,7 +286,11 @@ export default function Search({ onNavigate }: SearchProps) {
         if (filters.category !== 'all') queryBuilder = queryBuilder.eq('category', filters.category);
         if (filters.author !== 'all') queryBuilder = queryBuilder.eq('author', filters.author);
 
-        const { data, error } = await prerenderSafe(queryBuilder, { data: [], error: null } as any);
+        const { data, error } = await prerenderSafe(
+          queryBuilder,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          { data: [], error: null } as any
+        );
         if (error) throw error;
         if (data) {
           allResults.push(...data.map(item => ({

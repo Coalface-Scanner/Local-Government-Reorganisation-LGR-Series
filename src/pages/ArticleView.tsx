@@ -102,6 +102,7 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
       const data = await retryWithBackoff(async () => {
         const { data, error } = await prerenderSafe(
           supabase.from('articles').select('*').eq('slug', slug).eq('status', 'published').maybeSingle(),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           { data: null, error: null } as any
         );
 

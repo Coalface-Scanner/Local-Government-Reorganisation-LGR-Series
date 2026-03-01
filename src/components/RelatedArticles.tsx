@@ -38,6 +38,7 @@ export default function RelatedArticles({
       if (currentTheme) {
         const { data: themeData, error: themeError } = await prerenderSafe(
           supabase.from('articles').select('id, title, slug, excerpt, featured_image, published_date').eq('status', 'published').neq('slug', currentSlug).eq('theme', currentTheme).order('published_date', { ascending: false }).limit(3),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           { data: [], error: null } as any
         );
 
@@ -52,6 +53,7 @@ export default function RelatedArticles({
       if ((!data || data.length === 0) && currentCategory) {
         const { data: categoryData, error: categoryError } = await prerenderSafe(
           supabase.from('articles').select('id, title, slug, excerpt, featured_image, published_date').eq('status', 'published').neq('slug', currentSlug).eq('category', currentCategory).order('published_date', { ascending: false }).limit(3),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           { data: [], error: null } as any
         );
 
@@ -64,6 +66,7 @@ export default function RelatedArticles({
       if (!data || data.length === 0) {
         const { data: recentData, error: recentError } = await prerenderSafe(
           supabase.from('articles').select('id, title, slug, excerpt, featured_image, published_date').eq('status', 'published').neq('slug', currentSlug).order('published_date', { ascending: false }).limit(3),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           { data: [], error: null } as any
         );
 

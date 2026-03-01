@@ -51,6 +51,7 @@ export default function Reports({ onNavigate }: ReportsProps) {
     try {
       const { data, error } = await prerenderSafe(
         supabase.from('materials').select('*').eq('format', 'Report').order('published_date', { ascending: false }),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         { data: [], error: null } as any
       );
 

@@ -35,6 +35,7 @@ export function useFooterContent(): UseFooterContentResult {
         const { prerenderSafe } = await import('../utils/prerender');
         const { data, error: fetchError } = await prerenderSafe(
           supabase.from('footer_content').select('*').order('order_index'),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           { data: [], error: null } as any
         );
         if (fetchError) throw fetchError;

@@ -143,18 +143,21 @@ export default function Materials({ onNavigate }: MaterialsProps) {
       // Fetch from materials table
       const { data: materialsData } = await prerenderSafe(
         supabase.from('materials').select('*').order('published_date', { ascending: false }),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         { data: [], error: null } as any
       );
 
       // Fetch published articles from articles table
       const { data: articlesData } = await prerenderSafe(
         supabase.from('articles').select('*').eq('status', 'published').order('published_date', { ascending: false }),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         { data: [], error: null } as any
       );
 
       // Fetch published news from news table
       const { data: newsData } = await prerenderSafe(
         supabase.from('news').select('*').eq('published', true).order('published_date', { ascending: false }),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         { data: [], error: null } as any
       );
 

@@ -40,6 +40,7 @@ export default function FAQSection({ page, minItems = DEFAULT_MIN_ITEMS, maxItem
     async function fetchFAQs() {
       const { data, error } = await prerenderSafe(
         supabase.from('faqs').select('*').eq('page', page).order('order_index', { ascending: true }),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         { data: [], error: null } as any
       );
 

@@ -29,6 +29,7 @@ export function useAboutPage(pageSlug: string): UseAboutPageResult {
         
         const { data, error: fetchError } = await prerenderSafe(
           supabase.from('about_pages').select('*').eq('page_slug', pageSlug).maybeSingle(),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           { data: null, error: null } as any
         );
 

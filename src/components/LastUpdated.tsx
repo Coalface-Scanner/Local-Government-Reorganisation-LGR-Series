@@ -9,6 +9,7 @@ export default function LastUpdated() {
     async function fetchLastUpdated() {
       const { data, error } = await prerenderSafe(
         supabase.from('site_metadata').select('last_updated').eq('id', 1).maybeSingle(),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         { data: null, error: null } as any
       );
 

@@ -125,6 +125,7 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
     try {
       const { data, error: fetchError } = await prerenderSafe(
         supabase.from('interviews').select('*').eq('status', 'published').order('order_index'),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         { data: [], error: null } as any
       );
 

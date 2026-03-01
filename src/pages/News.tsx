@@ -51,12 +51,14 @@ export default function News() {
       setError(null);
       let { data, error: fetchError } = await prerenderSafe(
         supabase.from('news').select('*').eq('status', 'published').order('display_order', { ascending: true }).order('published_date', { ascending: false }),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         { data: [], error: null } as any
       );
 
       if (fetchError && fetchError.message.toLowerCase().includes('status')) {
         const fallback = await prerenderSafe(
           supabase.from('news').select('*').eq('published', true).order('display_order', { ascending: true }).order('published_date', { ascending: false }),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           { data: [], error: null } as any
         );
         data = fallback.data;

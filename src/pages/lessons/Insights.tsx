@@ -82,6 +82,7 @@ export default function LessonsInsights() {
     const fetchLessons = async () => {
       const { data, error } = await prerenderSafe(
         supabase.from('lessons').select('*').order('order_index'),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         { data: [], error: null } as any
       );
       if (!error && data) setLessons(data);
@@ -89,6 +90,7 @@ export default function LessonsInsights() {
     const fetchRelated = async () => {
       const { data } = await prerenderSafe(
         supabase.from('articles').select('id, title, slug, excerpt, theme, category').eq('status', 'published').or('theme.ilike.%Governance%,theme.ilike.%Planning%,theme.ilike.%Democracy%,category.ilike.%Governance%,category.ilike.%Planning%').order('published_date', { ascending: false }).limit(8),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         { data: [], error: null } as any
       );
       if (data) setRelatedArticles(data);
