@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Twitter, Linkedin, Mail } from 'lucide-react';
 import { useFooterContent } from '../hooks/useFooterContent';
 
@@ -7,15 +7,8 @@ interface FooterProps {
 }
 
 export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
-  const location = useLocation();
-  const _isHomePage = location.pathname === '/';
   const { getSection } = useFooterContent();
-
-  // Get CMS content with fallbacks
-  const _sponsorship = getSection('sponsorship');
-  const _subscriptionCta = getSection('subscription_cta');
-  const _disclaimer = getSection('disclaimer');
-  const _tagline = getSection('tagline');
+  void getSection; // CMS content available for future use
 
   return (
     <footer className="bg-academic-charcoal/95 text-academic-neutral-300 mt-16">

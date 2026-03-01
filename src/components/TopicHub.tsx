@@ -151,7 +151,7 @@ export default function TopicHub({
         if (articlesData && articlesData.length > 0) {
           // Filter out pillar article if it exists
           const filtered = pillarData
-            ? articlesData.filter(a => a.id !== pillarData.id)
+            ? articlesData.filter((a: any) => a.id !== pillarData.id)
             : articlesData;
           setRelatedArticles(filtered.slice(0, 11));
         }

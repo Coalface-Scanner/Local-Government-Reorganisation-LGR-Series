@@ -133,12 +133,12 @@ export default function Home({ onNavigate }: HomeProps) {
         if (recentData && recentData.length > 0) {
           // Filter out featured material if it exists
           const filtered = finalFeaturedData 
-            ? recentData.filter(a => a.id !== finalFeaturedData.id)
+            ? recentData.filter((a: any) => a.id !== finalFeaturedData.id)
             : recentData;
           setRecentArticles(filtered.slice(0, 4));
           
           // Get editor's picks (featured articles)
-          const picks = filtered.filter(a => a.featured || a.featured_site).slice(0, 3);
+          const picks = filtered.filter((a: any) => a.featured || a.featured_site).slice(0, 3);
           setEditorsPicks(picks);
           
           // If there was an error but we got data, silently continue (data is available)
@@ -227,13 +227,13 @@ export default function Home({ onNavigate }: HomeProps) {
 
           // Find articles matching this theme, excluding already assigned ones
           const candidateArticles = allArticles
-            .filter(article => !assignedArticleIds.has(article.id))
-            .map(article => ({
+            .filter((article: any) => !assignedArticleIds.has(article.id))
+            .map((article: any) => ({
               article,
               matchScore: articleMatchesTheme(article, config.themeValues)
             }))
-            .filter(item => item.matchScore > 0)
-            .sort((a, b) => {
+            .filter((item: any) => item.matchScore > 0)
+            .sort((a: any, b: any) => {
               // Sort by: match score (higher first), then featured_theme, then featured, then date
               if (b.matchScore !== a.matchScore) return b.matchScore - a.matchScore;
               if (b.article.featured_theme !== a.article.featured_theme) return b.article.featured_theme ? 1 : -1;
@@ -284,7 +284,7 @@ export default function Home({ onNavigate }: HomeProps) {
       );
 
       if (dbInterviews && dbInterviews.length > 0) {
-        const episodes = dbInterviews.map(interview => ({
+        const episodes = dbInterviews.map((interview: any) => ({
           id: interview.id,
           name: interview.name,
           title: interview.title,
@@ -312,7 +312,7 @@ export default function Home({ onNavigate }: HomeProps) {
         const xmlText = await response.text();
         if (xmlText && xmlText.trim().length > 0) {
           const rssData = parseRSSFeed(xmlText);
-          const episodes = rssData.items.slice(0, 5).map(item => {
+          const episodes = rssData.items.slice(0, 5).map((item: any) => {
             const guestName = extractGuestName(item.title);
             return {
               id: generateIdFromString(item.guid || item.title),
@@ -338,41 +338,6 @@ export default function Home({ onNavigate }: HomeProps) {
   useEffect(() => {
     fetchLatestEpisodes();
   }, [fetchLatestEpisodes]);
-
-  const _getThemeForArticle = (article: Article): string | null => {
-    if (article.theme) {
-      const themeLower = article.theme.toLowerCase().trim();
-      if (themeLower.includes('governance') || themeLower.includes('local government')) {
-        return 'Governance and Reform';
-      }
-      if (themeLower.includes('democracy') || themeLower.includes('democratic')) {
-        return 'Democratic Legitimacy';
-      }
-      if (themeLower.includes('public design') || themeLower.includes('statecraft')) {
-        return 'Statecraft and System Design';
-      }
-    }
-    if (article.category) {
-      const categoryLower = article.category.toLowerCase().trim();
-      if (categoryLower.includes('governance') || categoryLower.includes('planning')) {
-        return 'Governance and Reform';
-      }
-      if (categoryLower.includes('democracy')) {
-        return 'Democratic Legitimacy';
-      }
-    }
-    return null;
-  };
-
-  const _getTopicSlugForTheme = (themeName: string | null): string | null => {
-    if (!themeName) return null;
-    const themeMap: Record<string, string> = {
-      'Governance and Reform': '/topics/governance-and-reform',
-      'Democratic Legitimacy': '/topics/democratic-legitimacy',
-      'Statecraft and System Design': '/topics/statecraft-and-system-design',
-    };
-    return themeMap[themeName] || null;
-  };
 
   // Format date for article cards (e.g., "2 FEBRUARY 2026")
   const formatArticleDate = (dateString: string | null) => {
@@ -413,7 +378,7 @@ export default function Home({ onNavigate }: HomeProps) {
               </h2>
             </div>
             <div className="grid md:grid-cols-2 gap-8">
-              {recentArticles.slice(0, 6).map((article) => (
+              {recentArticles.slice(0, 6).map((article: any) => (
                 <Link
                   key={article.id}
                   to={`/insights/${article.slug}`}
@@ -540,7 +505,7 @@ export default function Home({ onNavigate }: HomeProps) {
             <LoadingSkeleton variant="card" count={4} className="grid sm:grid-cols-2 gap-6" />
           ) : themes.length > 0 ? (
             <div className="grid sm:grid-cols-2 gap-6">
-              {themes.map((theme) => {
+              {themes.map((theme: any) => {
                 const gradientColors = {
                   'governance-and-reform': 'from-purple-900 via-purple-800 to-purple-900',
                   'democratic-legitimacy': 'from-blue-900 via-blue-800 to-blue-900',
@@ -825,7 +790,7 @@ export default function Home({ onNavigate }: HomeProps) {
                 Latest Episodes
               </h3>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {latestEpisodes.map((episode) => {
+                {latestEpisodes.map((episode: any) => {
                   const embedUrl = convertToEmbedUrl(episode.video_url);
                   if (!embedUrl) return null;
                   

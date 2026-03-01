@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import PageBanner from '../components/PageBanner';
 import { SEOHead } from '../components/SEOHead';
@@ -8,9 +8,7 @@ import { CheckCircle, XCircle } from 'lucide-react';
 import FAQSection from '../components/FAQSection';
 
 export default function Unsubscribe() {
-  const navigate = useNavigate();
   const location = useLocation();
-  const _handleNavigate = (page: string) => navigate(`/${page}`);
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{ type: 'success' | 'error' | 'not-found'; message: string } | null>(null);

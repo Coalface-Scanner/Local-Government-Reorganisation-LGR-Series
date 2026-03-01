@@ -36,7 +36,7 @@ export default function CouncilContentLinks({ councilName, maxItems = 6 }: Counc
         );
 
         if (articles) {
-          articles.forEach(article => {
+          articles.forEach((article: any) => {
             allContent.push({
               id: article.id,
               title: article.title,
@@ -55,7 +55,7 @@ export default function CouncilContentLinks({ councilName, maxItems = 6 }: Counc
         );
 
         if (materials) {
-          materials.forEach(material => {
+          materials.forEach((material: any) => {
             allContent.push({
               id: material.id,
               title: material.title,
@@ -74,7 +74,7 @@ export default function CouncilContentLinks({ councilName, maxItems = 6 }: Counc
         );
 
         if (facts) {
-          facts.forEach(fact => {
+          facts.forEach((fact: any) => {
             const generateSlug = (title: string): string => {
               return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
             };
@@ -140,7 +140,7 @@ export default function CouncilContentLinks({ councilName, maxItems = 6 }: Counc
         Related Content About {councilName}
       </h2>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {content.map((item) => {
+        {content.map((item: any) => {
           const Icon = getIcon(item.type);
           return (
             <Link

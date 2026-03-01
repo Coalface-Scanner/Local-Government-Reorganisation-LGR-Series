@@ -42,13 +42,6 @@ function decodeHTMLEntities(text: string): string {
 }
 
 /**
- * Parse RFC 822 date format (e.g., "Fri, 23 Jan 2026 14:26:29 GMT")
- */
-function _parseRFC822Date(_dateString: string): Date {
-  return new Date(_dateString);
-}
-
-/**
  * Extract text content from an XML element, handling CDATA sections
  */
 function getTextContent(element: Element | null): string {
@@ -62,20 +55,6 @@ function getTextContent(element: Element | null): string {
 function getAttribute(element: Element | null, attribute: string): string | null {
   if (!element) return null;
   return element.getAttribute(attribute);
-}
-
-/**
- * Get elements by tag name with namespace support
- */
-function _getElementsByTagNameNS(
-  _parent: Element | Document,
-  _namespace: string | null,
-  _tagName: string
-): Element[] {
-  if (_namespace) {
-    return Array.from(_parent.getElementsByTagNameNS(_namespace, _tagName));
-  }
-  return Array.from(_parent.getElementsByTagName(_tagName));
 }
 
 /**

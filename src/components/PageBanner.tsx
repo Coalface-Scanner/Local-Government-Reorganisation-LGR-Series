@@ -169,19 +169,6 @@ export default function PageBanner({
     return '';
   };
 
-  // Determine which primary nav section the current page belongs to (six hubs)
-  const _getCurrentPrimaryNavId = (): string | null => {
-    const current = currentPath || location.pathname;
-    if (current === '/learn' || current.startsWith('/what-is-lgr') || current.startsWith('/beginners-guide') || current.startsWith('/questions-and-answers') || current.startsWith('/glossary') || current.startsWith('/first-100-days')) return 'learn';
-    if (current === '/tools' || current.startsWith('/roadmap') || current.startsWith('/surrey/election-tracker') || current.startsWith('/surrey/simulator')) return 'tools';
-    if (current === '/discover' || current.startsWith('/topics') || current.startsWith('/reorganisations')) return 'discover';
-    if (current === '/research' || current.startsWith('/facts-and-data') || current.startsWith('/facts') || current.startsWith('/library') || current.startsWith('/lessons')) return 'research';
-    if (current.startsWith('/insights') || current.startsWith('/news') || current.startsWith('/podcast') || current.startsWith('/interviews') || current.startsWith('/surrey')) return 'insights';
-    if (current.startsWith('/about') || current.startsWith('/contact') || current.startsWith('/subscribe')) return 'about';
-    if (current === '/') return null;
-    return null;
-  };
-  
   // Determine which primary nav to show secondary nav for (only on hover, not on matching page)
   const activePrimaryNavForSecondary = hoveredPrimaryNav;
   
@@ -212,9 +199,6 @@ export default function PageBanner({
         return current === path || current.startsWith(path + '/');
     }
   };
-
-  // Mission statement for homepage
-  const _missionStatement = "The LGR Initiative provides independent analysis of local government reorganisation, ensuring new unitary councils are governable, legitimate and capable of delivering services sustainably, creating the conditions for meaningful devolution.";
 
   return (
     <div className="banner-full-width" data-full-width-banner>

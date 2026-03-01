@@ -165,7 +165,7 @@ export default function Materials({ onNavigate }: MaterialsProps) {
 
       // Add materials as-is
       if (materialsData) {
-        allMaterials.push(...materialsData.map(m => ({
+        allMaterials.push(...materialsData.map((m: any) => ({
           ...m,
           source: 'materials' as const
         })));
@@ -173,7 +173,7 @@ export default function Materials({ onNavigate }: MaterialsProps) {
 
       // Transform articles to material format
       if (articlesData) {
-        const articleMaterials: Material[] = articlesData.map(article => ({
+        const articleMaterials: Material[] = articlesData.map((article: any) => ({
           id: article.id,
           title: article.title,
           slug: article.slug,
@@ -201,7 +201,7 @@ export default function Materials({ onNavigate }: MaterialsProps) {
 
       // Transform news to material format
       if (newsData) {
-        const newsMaterials: Material[] = newsData.map(news => ({
+        const newsMaterials: Material[] = newsData.map((news: any) => ({
           id: news.id,
           title: news.title,
           slug: news.slug,

@@ -116,13 +116,13 @@ export default function Topics({ onNavigate }: TopicsProps) {
 
           // Find articles matching this theme, excluding already assigned ones
           const candidateArticles = allArticles
-            .filter(article => !assignedArticleIds.has(article.id))
-            .map(article => ({
+            .filter((article: any) => !assignedArticleIds.has(article.id))
+            .map((article: any) => ({
               article,
               matchScore: articleMatchesTheme(article, config.themeValues)
             }))
-            .filter(item => item.matchScore > 0)
-            .sort((a, b) => {
+            .filter((item: any) => item.matchScore > 0)
+            .sort((a: any, b: any) => {
               // Sort by: match score (higher first), then featured_theme, then featured, then date
               if (b.matchScore !== a.matchScore) return b.matchScore - a.matchScore;
               if (b.article.featured_theme !== a.article.featured_theme) return b.article.featured_theme ? 1 : -1;
@@ -184,7 +184,7 @@ export default function Topics({ onNavigate }: TopicsProps) {
             <LoadingSkeleton variant="card" count={3} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" />
           ) : themes.length > 0 ? (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8" aria-label="Theme cards">
-              {themes.map((theme) => {
+              {themes.map((theme: any) => {
                 // Map theme slugs to banner images
                 const bannerImages: Record<string, { src: string; position: string }> = {
                   'democratic-legitimacy': { src: '/Democracy_Banner_Image.jpg', position: 'center' },

@@ -1,4 +1,3 @@
-import React from 'react';
 import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';

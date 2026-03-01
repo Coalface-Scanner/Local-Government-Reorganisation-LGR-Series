@@ -198,7 +198,7 @@ export default function Reorganisations({ onNavigate: _onNavigate }: Reorganisat
                     title="Year"
                     options={YEAR_OPTIONS}
                     selected={selectedYears}
-                    onChange={setSelectedYears}
+                    onChange={setSelectedYears as (val: any[]) => void}
                     toggleFilter={toggleFilter}
                   />
 
@@ -206,7 +206,7 @@ export default function Reorganisations({ onNavigate: _onNavigate }: Reorganisat
                     title="Type"
                     options={TYPE_OPTIONS}
                     selected={selectedTypes}
-                    onChange={setSelectedTypes}
+                    onChange={setSelectedTypes as (val: any[]) => void}
                     toggleFilter={toggleFilter}
                     getLabel={(value) => REORGANISATION_TYPE_LABELS[value as ReorganisationType]}
                   />

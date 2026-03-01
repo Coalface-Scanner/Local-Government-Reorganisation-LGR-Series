@@ -40,13 +40,13 @@ export default function KeyFacts() {
 
   const categories = useMemo(() => {
     const set = new Set<string>();
-    facts.forEach((f) => f.category && set.add(f.category));
+    facts.forEach((f: any) => f.category && set.add(f.category));
     return Array.from(set).sort();
   }, [facts]);
 
   const filteredFacts = useMemo(() => {
     if (categoryFilter === ALL_CATEGORIES) return facts;
-    return facts.filter((f) => f.category === categoryFilter);
+    return facts.filter((f: any) => f.category === categoryFilter);
   }, [facts, categoryFilter]);
 
   const categoryIcons: Record<string, LucideIcon> = {
@@ -81,7 +81,7 @@ export default function KeyFacts() {
         const isPlaceholder = (f: Fact) =>
           /placeholder|example fact|test fact|lorem/i.test(f.title) ||
           f.content.trim().toLowerCase().startsWith('lorem ipsum');
-        setFacts(data.filter((f) => !isPlaceholder(f)));
+        setFacts(data.filter((f: any) => !isPlaceholder(f)));
       }
       setLoading(false);
     };

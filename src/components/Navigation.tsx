@@ -32,7 +32,6 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
   const toolsDropdownRef = useRef<HTMLDivElement>(null);
   const aboutDropdownRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const _menuBarRef = useRef<HTMLDivElement>(null);
   const topBannerRef = useRef<HTMLDivElement>(null);
   const mainContainerRef = useRef<HTMLDivElement>(null);
   const logoContainerRef = useRef<HTMLDivElement>(null);
@@ -91,13 +90,6 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
       navigate('/library');
       setShowSearch(false);
       setMobileMenuOpen(false);
-    }
-  };
-
-  const _handleSearchKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      setShowSearch(false);
-      setSearchQuery('');
     }
   };
 

@@ -114,23 +114,23 @@ export default function Search({ onNavigate }: SearchProps) {
       { data: [], error: null } as any
     );
 
-    articles?.forEach(item => {
+    articles?.forEach((item: any) => {
       if (item.region) regions.add(item.region);
       if (item.category) categories.add(item.category);
       if (item.author) authors.add(item.author);
     });
 
-    facts?.forEach(item => {
+    facts?.forEach((item: any) => {
       if (item.region) regions.add(item.region);
       if (item.category) categories.add(item.category);
     });
 
-    lessons?.forEach(item => {
+    lessons?.forEach((item: any) => {
       if (item.region) regions.add(item.region);
       if (item.category) categories.add(item.category);
     });
 
-    materials?.forEach(item => {
+    materials?.forEach((item: any) => {
       if (item.region) regions.add(item.region);
       if (item.category) categories.add(item.category);
       if (item.author) authors.add(item.author);
@@ -149,7 +149,6 @@ export default function Search({ onNavigate }: SearchProps) {
     const shouldSearchType = (type: string) => filters.type === 'all' || filters.type === type;
 
     const trimmed = searchQuery.trim();
-    const _sanitizedQuery = trimmed.replace(/[%_\\]/g, '\\$&');
     // For multi-word: build OR of each word so we match docs containing any word, then rank by match count
     const searchWords = trimmed ? trimmed.split(/\s+/).filter(Boolean).map((w) => w.replace(/[%_\\]/g, '\\$&')) : [];
 
@@ -178,7 +177,7 @@ export default function Search({ onNavigate }: SearchProps) {
         );
         if (error) throw error;
         if (data) {
-          allResults.push(...data.map(item => ({
+          allResults.push(...data.map((item: any) => ({
             id: item.id,
             title: item.title,
             excerpt: item.excerpt || '',
@@ -209,7 +208,7 @@ export default function Search({ onNavigate }: SearchProps) {
         );
         if (error) throw error;
         if (data) {
-          allResults.push(...data.map(item => ({
+          allResults.push(...data.map((item: any) => ({
             id: item.id,
             title: item.title,
             excerpt: item.content?.substring(0, 150) + '...' || '',
@@ -237,7 +236,7 @@ export default function Search({ onNavigate }: SearchProps) {
         );
         if (error) throw error;
         if (data) {
-          allResults.push(...data.map(item => ({
+          allResults.push(...data.map((item: any) => ({
             id: item.id,
             title: item.title,
             excerpt: item.content?.substring(0, 150) + '...' || '',
@@ -264,7 +263,7 @@ export default function Search({ onNavigate }: SearchProps) {
         );
         if (error) throw error;
         if (data) {
-          allResults.push(...data.map(item => ({
+          allResults.push(...data.map((item: any) => ({
             id: item.id,
             title: item.name || item.title,
             excerpt: item.description || '',
@@ -293,7 +292,7 @@ export default function Search({ onNavigate }: SearchProps) {
         );
         if (error) throw error;
         if (data) {
-          allResults.push(...data.map(item => ({
+          allResults.push(...data.map((item: any) => ({
             id: item.id,
             title: item.title,
             excerpt: item.description || '',

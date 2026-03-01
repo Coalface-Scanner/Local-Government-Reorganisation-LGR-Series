@@ -7,7 +7,7 @@ import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import ArticleStructuredData from '../components/ArticleStructuredData';
 import FAQSection from '../components/FAQSection';
-import { ArrowLeft, AlertCircle, Users, DollarSign, FileText, CheckCircle, type LucideIcon } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { enhanceContentWithGlossaryLinks } from '../lib/glossaryLinks';
 import { enhanceContentWithInternalLinks } from '../lib/internalLinks';
 import { sanitizeHtmlContent } from '../lib/htmlSanitizer';
@@ -20,22 +20,6 @@ interface Fact {
   order_index: number;
   source_url?: string | null;
 }
-
-const categoryIcons: Record<string, LucideIcon> = {
-  'Workforce Impact': Users,
-  'Financial Performance': DollarSign,
-  'Service Delivery': FileText,
-  'Democratic Impact': CheckCircle,
-  'Overview': AlertCircle,
-};
-
-const categoryColors: Record<string, string> = {
-  'Workforce Impact': 'from-teal-600 to-cyan-700',
-  'Financial Performance': 'from-emerald-500 to-teal-600',
-  'Service Delivery': 'from-teal-500 to-cyan-600',
-  'Democratic Impact': 'from-cyan-600 to-teal-700',
-  'Overview': 'from-teal-700 to-teal-800',
-};
 
 const generateSlug = (title: string): string => {
   return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -66,7 +50,7 @@ export default function FactDetail() {
 
     if (facts && slug) {
       // Find fact by matching slug (generated from title)
-      const matchedFact = facts.find(f => generateSlug(f.title) === slug);
+      const matchedFact = facts.find((f: any) => generateSlug(f.title) === slug);
 
       if (matchedFact) {
         setFact(matchedFact);
@@ -134,9 +118,6 @@ export default function FactDetail() {
       </div>
     );
   }
-
-  const _Icon = categoryIcons[fact.category || 'Overview'] || AlertCircle;
-  const _gradientClass = categoryColors[fact.category || 'Overview'] || 'from-slate-500 to-slate-700';
 
   const getDescription = () => {
     const textContent = fact.content.replace(/<[^>]*>/g, '').trim();

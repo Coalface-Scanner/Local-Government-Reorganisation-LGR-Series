@@ -15,8 +15,6 @@ import { trackPageView } from './utils/analytics';
 // Lazy load pages for code splitting - improves initial load time
 const Home = lazy(() => import('./pages/Home'));
 const Search = lazy(() => import('./pages/Search'));
-const _Materials = lazy(() => import('./pages/Materials'));
-const _Facts = lazy(() => import('./pages/Facts'));
 const Lessons = lazy(() => import('./pages/Lessons'));
 const Reasons = lazy(() => import('./pages/Reasons'));
 const Interviews = lazy(() => import('./pages/Interviews'));
@@ -25,7 +23,6 @@ const SurreyElectionTracker = lazy(() => import('./pages/SurreyElectionTracker')
 const SurreyElectionSimulator = lazy(() => import('./pages/SurreyElectionSimulator'));
 const SurreyHub = lazy(() => import('./pages/SurreyHub'));
 const SurreyLGRHub = lazy(() => import('./pages/SurreyLGRHub'));
-const _Article = lazy(() => import('./pages/Article'));
 const Insights = lazy(() => import('./pages/Insights'));
 const Reports = lazy(() => import('./pages/insights/Reports'));
 const Subscribe = lazy(() => import('./pages/Subscribe'));
@@ -224,14 +221,8 @@ function PageWrapper({ children }: { children: (onNavigate: (page: string, data?
 }
 
 function AppContent() {
-  const location = useLocation();
   const navigate = useNavigate();
   const handleNavigate = (page: string) => navigate(`/${page}`);
-  const _getCurrentPage = () => {
-    const path = location.pathname.split('/')[1] || 'home';
-    return path;
-  };
-
   return (
     <div
       className="min-h-screen bg-academic-cream flex flex-col"

@@ -13,11 +13,6 @@ export function useScrollDepthTracking() {
     if (typeof window === 'undefined') return;
 
     const milestones = [25, 50, 75, 100];
-    const _observerOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: milestones.map(m => m / 100),
-    };
 
     // Create a sentinel element at the bottom of the page to detect scroll depth
     const sentinel = document.createElement('div');

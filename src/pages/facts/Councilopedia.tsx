@@ -3,10 +3,20 @@ import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import FAQSection from '../../components/FAQSection';
 import ServiceCard from '../../components/ServiceCard';
-import { ArrowLeft, GraduationCap } from 'lucide-react';
+import { ArrowLeft, GraduationCap, type LucideIcon } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-const serviceCards = [
+interface ServiceCardConfig {
+  id: string;
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  color: string;
+  route?: string;
+  disabled?: boolean;
+}
+
+const serviceCards: ServiceCardConfig[] = [
   {
     id: 'beginners-guide',
     title: 'A beginners guide',
