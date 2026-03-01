@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { LucideIcon } from 'lucide-react';
 import {
   Lightbulb,
   MessageCircle,
@@ -19,7 +20,7 @@ export interface ProcessStepData {
   shortLabel: string;
   duration: string | null;
   color: string;
-  icon: React.ComponentType<{ className?: string; size?: number; 'aria-hidden'?: boolean }>;
+  icon: LucideIcon;
   body: string;
   summary: string;
   keyOutput: string;

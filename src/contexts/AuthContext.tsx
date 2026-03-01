@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState, ReactNode } from 'react';
-import type { User, Session } from '@supabase/supabase-js';
+import type { User, Session, AuthError } from '@supabase/supabase-js';
 import { hasValidSupabase } from '../lib/supabaseEnv';
 
 interface AuthContextType {
@@ -7,7 +7,7 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
-  signOut: () => Promise<void>;
+  signOut: () => Promise<{ error: AuthError | null }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -19,7 +19,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const authRef = useRef<{
     getSession: () => Promise<{ data: { session: Session | null } }>;
     signInWithPassword: (opts: { email: string; password: string }) => Promise<{ error: Error | null }>;
-    signOut: () => Promise<void>;
+    signOut: () => Promise<{ error: AuthError | null }>;
     onAuthStateChange: (cb: (_e: string, s: Session | null) => void) => { data: { subscription: { unsubscribe: () => void } } };
   } | null>(null);
   const unsubRef = useRef<(() => void) | null>(null);
@@ -72,7 +72,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = async () => {
     const auth = authRef.current;
-    if (auth) await auth.signOut();
+    if (auth) return await auth.signOut();
+    return { error: null };
   };
 
   const value = {

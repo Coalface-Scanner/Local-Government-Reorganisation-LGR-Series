@@ -42,12 +42,12 @@ export function isPrerendering(): boolean {
  *   );
  */
 export async function withTimeout<T>(
-  promise: Promise<T>,
+  promise: PromiseLike<T>,
   ms: number,
   fallback: T
 ): Promise<T> {
   return Promise.race([
-    promise,
+    Promise.resolve(promise),
     new Promise<T>((resolve) => setTimeout(() => resolve(fallback), ms)),
   ]);
 }
@@ -63,7 +63,7 @@ export async function withTimeout<T>(
  *   );
  */
 export async function prerenderSafe<T>(
-  promise: Promise<T>,
+  promise: PromiseLike<T>,
   fallback: T
 ): Promise<T> {
   const timeout = isPrerendering() ? 2000 : 30000;

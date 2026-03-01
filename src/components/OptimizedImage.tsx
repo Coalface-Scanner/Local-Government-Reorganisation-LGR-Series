@@ -93,7 +93,7 @@ export default function OptimizedImage({
         src={src}
         alt={effectiveAlt}
         loading={priority || variant === 'hero' ? 'eager' : loading}
-        fetchpriority={priority || variant === 'hero' ? 'high' : 'auto'}
+        fetchPriority={priority || variant === 'hero' ? 'high' : 'auto'}
         decoding={priority || variant === 'hero' ? 'sync' : 'async'}
         onLoad={handleLoad}
         onError={handleError}

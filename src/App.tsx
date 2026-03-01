@@ -130,7 +130,7 @@ function PageLoader() {
             alt="LGR Initiative Logo" 
             className="h-24 w-auto object-contain drop-shadow-sm"
             loading="eager"
-            fetchpriority="high"
+            fetchPriority="high"
             decoding="sync"
           />
         </div>

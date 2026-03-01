@@ -788,7 +788,7 @@ export default function Home({ onNavigate }: HomeProps) {
                 alt="First 100 Days Podcast"
                 className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-[1.02]"
                 loading="eager"
-                fetchpriority="high"
+                fetchPriority="high"
                 decoding="async"
                 onError={(e) => {
                   // Fallback if image fails to load

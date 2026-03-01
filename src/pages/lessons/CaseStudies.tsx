@@ -118,7 +118,7 @@ export default function LessonsCaseStudies() {
                   type="button"
                   onClick={() => setExpandedId(expanded ? null : study.id)}
                   className="w-full p-6 md:p-8 text-left flex items-center justify-between gap-4 hover:bg-academic-neutral-50/50 transition-colors"
-                  aria-expanded={String(expanded)}
+                  aria-expanded={expanded}
                 >
                   <div>
                     <h4 className="text-academic-xl font-display font-bold text-academic-charcoal">{study.title}</h4>
