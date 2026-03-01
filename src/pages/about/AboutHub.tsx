@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { User, MessageSquare, Info, Users, Mail, Hand, BookOpen, HelpCircle } from 'lucide-react';
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import FAQSection from '../../components/FAQSection';
@@ -32,6 +33,7 @@ export default function AboutHub(_props: AboutHubProps) {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="about" />
       <MetaTags
         title="About the LGR Initiative - Research Programme Overview"
         description="Learn about the LGR Initiative research programme examining local government reorganisation and its implications for planning, governance, and development delivery."

@@ -1,4 +1,5 @@
 import TopicHub from '../../components/TopicHub';
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 
 interface DemocraticLegitimacyProps {
@@ -8,6 +9,7 @@ interface DemocraticLegitimacyProps {
 export default function DemocraticLegitimacy({ onNavigate }: DemocraticLegitimacyProps) {
   return (
     <>
+      <SEOHead page="topicsDemocraticLegitimacy" />
       <MetaTags
         title="Democratic Legitimacy - Thought Leadership Hub"
         description="Local Government Reorganisation changes more than administrative boundaries. It alters who is represented, how visible decision makers are, and how much confidence communities place in the outcomes councils deliver."

@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Map, Layers, Hand, Scale, Vote, LayoutGrid, Headphones } from 'lucide-react';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import FAQSection from '../components/FAQSection';
@@ -33,6 +34,7 @@ export default function Discover(_props: DiscoverProps) {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="discover" />
       <MetaTags
         title="Discover - Local Government Reorganisation"
         description="Explore topics, reorganisations, and the podcast to understand the local government reform landscape."

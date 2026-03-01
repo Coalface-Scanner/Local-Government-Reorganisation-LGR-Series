@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useSearchParams, useLocation } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import FAQSection from '../components/FAQSection';
@@ -264,6 +265,7 @@ export default function JourneyMap({ onNavigate: _onNavigate }: JourneyMapProps)
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="roadmap" />
       <MetaTags
         title="LGR Journey 2026: The Journey Map"
         description="Interactive journey map visualisation of Local Government Reorganisation during 2026 and early 2027. Navigate the key milestones, decisions, and transitions."

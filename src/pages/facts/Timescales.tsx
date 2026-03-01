@@ -1,4 +1,5 @@
 import Timeline from '../../components/Timeline';
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import FAQSection from '../../components/FAQSection';
@@ -11,6 +12,7 @@ export default function Timescales() {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="factsTimescales" />
       <MetaTags
         title="Timescales - Facts & Data"
         description="Implementation timeline for local government reorganisation proposals across England, including final proposals, decisions, shadow councils, and go-live dates."

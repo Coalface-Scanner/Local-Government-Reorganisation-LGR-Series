@@ -1,4 +1,5 @@
 import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import FAQSection from '../../components/FAQSection';
@@ -36,6 +37,14 @@ export default function LeadershipBio() {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead
+        page="aboutLeadership"
+        overrides={{
+          title: `${profile.name} | LGR Initiative`,
+          description: `${profile.name} profile for the LGR Initiative, including role, organisational affiliation, and full biography.`,
+          path: `/about/leadership/${slug}`,
+        }}
+      />
       <MetaTags
         title={profile.name}
         description={`${profile.name} profile for the LGR Initiative, including role, organisational affiliation, and full biography.`}

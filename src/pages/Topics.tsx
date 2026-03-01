@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ArrowRight, Building2, Vote, Palette } from 'lucide-react';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 import { supabase } from '../lib/supabase';
+import { prerenderSafe } from '../utils/prerender';
 import FAQSection from '../components/FAQSection';
 import { ContentContainer } from '../components/layout';
 
@@ -69,11 +71,10 @@ export default function Topics({ onNavigate }: TopicsProps) {
         ];
 
         // Fetch all published articles once
-        const { data: allArticles } = await supabase
-          .from('articles')
-          .select('id, title, slug, excerpt, featured_image, published_date, featured, content_type, featured_theme, theme, category')
-          .eq('status', 'published')
-          .order('published_date', { ascending: false });
+        const { data: allArticles } = await prerenderSafe(
+          supabase.from('articles').select('id, title, slug, excerpt, featured_image, published_date, featured, content_type, featured_theme, theme, category').eq('status', 'published').order('published_date', { ascending: false }),
+          { data: [], error: null }
+        );
 
         // Helper function to check if an article matches a theme
         // Returns a score: 2 = exact theme match, 1 = category match, 0 = no match
@@ -161,6 +162,7 @@ export default function Topics({ onNavigate }: TopicsProps) {
 
   return (
     <div className="bg-academic-cream">
+      <SEOHead page="topics" />
       <MetaTags
         title="Topics - Core Themes | LGR Initiative"
         description="Explore our research organised around key themes: Governance and Reform, Democratic Legitimacy, and Statecraft and System Design. Each theme features pillar pieces, essays, briefs, and related analysis."

@@ -1,5 +1,6 @@
 import { useLocation, Link } from 'react-router-dom';
 import FAQSection from '../components/FAQSection';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import PageNavigation from '../components/PageNavigation';
@@ -23,6 +24,7 @@ export default function Surrey({ onNavigate }: SurreyProps) {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="surreyLessons" />
       <MetaTags
         title="Surrey LGR Timetable 2026 - Analysis & Transition Guide"
         description="Detailed analysis of Surrey's local government reorganisation and LGR timetable 2026. Risks, opportunities, and practical guidance for the transition to East and West Surrey unitary authorities. Part of the LGR Initiative."

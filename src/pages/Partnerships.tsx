@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import FAQSection from '../components/FAQSection';
@@ -8,6 +9,7 @@ export default function Partnerships() {
 
   return (
     <div className="bg-academic-cream min-h-screen">
+      <SEOHead page="partnerships" />
       <MetaTags
         title="Partnerships - LGR Initiative"
         description="The LGR Initiative was formed by a partnership between Coalface Engagement Ltd and the Centre for Britain and Europe, University of Surrey, along with others."

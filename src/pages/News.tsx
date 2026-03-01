@@ -1,8 +1,10 @@
 import { useEffect, useState, useMemo } from 'react';
 import { supabase } from '../lib/supabase';
+import { prerenderSafe } from '../utils/prerender';
 import { useLocation, Link } from 'react-router-dom';
 import LastUpdated from '../components/LastUpdated';
 import FAQSection from '../components/FAQSection';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import ErrorDisplay from '../components/ErrorDisplay';
 import PageBanner from '../components/PageBanner';
@@ -47,20 +49,16 @@ export default function News() {
   const fetchNews = async () => {
     try {
       setError(null);
-      let { data, error: fetchError } = await supabase
-        .from('news')
-        .select('*')
-        .eq('status', 'published')
-        .order('display_order', { ascending: true })
-        .order('published_date', { ascending: false });
+      let { data, error: fetchError } = await prerenderSafe(
+        supabase.from('news').select('*').eq('status', 'published').order('display_order', { ascending: true }).order('published_date', { ascending: false }),
+        { data: [], error: null }
+      );
 
       if (fetchError && fetchError.message.toLowerCase().includes('status')) {
-        const fallback = await supabase
-          .from('news')
-          .select('*')
-          .eq('published', true)
-          .order('display_order', { ascending: true })
-          .order('published_date', { ascending: false });
+        const fallback = await prerenderSafe(
+          supabase.from('news').select('*').eq('published', true).order('display_order', { ascending: true }).order('published_date', { ascending: false }),
+          { data: [], error: null }
+        );
         data = fallback.data;
         fetchError = fallback.error;
       }
@@ -100,6 +98,7 @@ export default function News() {
 
   return (
     <div id="main-content" className="min-h-screen bg-academic-cream">
+      <SEOHead page="news" />
       <MetaTags
         title="News & Updates"
         description="Latest news, announcements, and updates from the LGR Insights Series. Stay informed about local government reorganisation developments."

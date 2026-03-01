@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import PageNavigation from '../components/PageNavigation';
 import PageBanner from '../components/PageBanner';
 import FAQSection from '../components/FAQSection';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import InBriefSection from '../components/InBriefSection';
 import { trackDownload } from '../utils/analytics';
@@ -294,6 +295,7 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
 
   return (
     <div className="bg-academic-cream min-h-screen">
+      <SEOHead page="first100Days" />
       <MetaTags
         title="The First 100 Days Playbook for Unitary Transition"
         description="The First 100 Days Playbook is in development: an evidence-based framework for councillors, officers and transition teams for the critical period after vesting day. We are in the evidence-gathering and consultation phase. Full publication Spring. Contribute your experience or register for updates."

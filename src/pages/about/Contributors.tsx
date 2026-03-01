@@ -1,4 +1,5 @@
 import { useLocation } from 'react-router-dom';
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import OptimizedImage from '../../components/OptimizedImage';
@@ -89,6 +90,7 @@ export default function Contributors({ onNavigate: _onNavigate }: ContributorsPr
   
   return (
     <div className="bg-academic-cream min-h-screen">
+      <SEOHead page="aboutContributors" />
       <MetaTags
         title="Contributors - LGR Initiative Authors & Contributors"
         description="Meet the contributors and authors behind the LGR Initiative research programme examining local government reorganisation."

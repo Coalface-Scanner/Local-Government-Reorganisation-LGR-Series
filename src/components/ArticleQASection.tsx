@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { prerenderSafe } from '../utils/prerender';
 import { sanitizeHtmlContent } from '../lib/htmlSanitizer';
 
 interface ArticleQA {
@@ -22,11 +23,10 @@ export default function ArticleQASection({ articleSlug }: ArticleQASectionProps)
 
   useEffect(() => {
     async function fetchQAs() {
-      const { data, error } = await supabase
-        .from('article_qa')
-        .select('*')
-        .eq('article_slug', articleSlug)
-        .order('order_index', { ascending: true });
+      const { data, error } = await prerenderSafe(
+        supabase.from('article_qa').select('*').eq('article_slug', articleSlug).order('order_index', { ascending: true }),
+        { data: [], error: null }
+      );
 
       if (!error && data) {
         setQAs(data);

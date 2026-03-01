@@ -32,10 +32,11 @@ export function useFooterContent(): UseFooterContentResult {
         setLoading(true);
         setError(null);
         const { supabase } = await import('../lib/supabase');
-        const { data, error: fetchError } = await supabase
-          .from('footer_content')
-          .select('*')
-          .order('order_index');
+        const { prerenderSafe } = await import('../utils/prerender');
+        const { data, error: fetchError } = await prerenderSafe(
+          supabase.from('footer_content').select('*').order('order_index'),
+          { data: [], error: null }
+        );
         if (fetchError) throw fetchError;
         setContent(data || []);
       } catch (err) {

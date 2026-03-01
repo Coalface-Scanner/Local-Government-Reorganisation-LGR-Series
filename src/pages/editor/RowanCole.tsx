@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { ArrowLeft, Linkedin, ExternalLink } from 'lucide-react';
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import OptimizedImage from '../../components/OptimizedImage';
@@ -65,6 +66,7 @@ export default function RowanCole({ onNavigate: _onNavigate }: RowanColeProps) {
 
   return (
     <div className="bg-academic-cream min-h-screen">
+      <SEOHead page="rowanCole" />
       <MetaTags
         title="Rowan Cole | Editorial Lead | Local Government Reorganisation Initiative"
         description="Rowan Cole is Editorial Lead of the Local Government Reorganisation Initiative, specialising in Local Government Reorganisation in England, unitary authority governance, Section 114 contexts and planning reform."

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft } from 'lucide-react';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import HubDashboard from '../components/surrey-hub/HubDashboard';
 import HarmonisationJourney from '../components/surrey-hub/HarmonisationJourney';
@@ -43,6 +44,7 @@ export default function SurreyHub({ onNavigate: _onNavigate }: SurreyHubProps) {
 
   return (
     <SurreyHubPasswordProtection>
+      <SEOHead page="surreyHub" />
       <div className="min-h-screen bg-slate-950 text-slate-100 antialiased overflow-x-hidden">
         <MetaTags
           title="Surrey Strategic Intelligence | Command Centre"

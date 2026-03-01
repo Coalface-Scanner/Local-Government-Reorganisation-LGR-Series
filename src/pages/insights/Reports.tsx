@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
+import { prerenderSafe } from '../../utils/prerender';
 import { Calendar, Download, ExternalLink } from 'lucide-react';
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import CollectionPageStructuredData from '../../components/CollectionPageStructuredData';
@@ -47,11 +49,10 @@ export default function Reports({ onNavigate }: ReportsProps) {
 
   const fetchReports = async () => {
     try {
-      const { data, error } = await supabase
-        .from('materials')
-        .select('*')
-        .eq('format', 'Report')
-        .order('published_date', { ascending: false });
+      const { data, error } = await prerenderSafe(
+        supabase.from('materials').select('*').eq('format', 'Report').order('published_date', { ascending: false }),
+        { data: [], error: null }
+      );
 
       if (error) {
         console.error('Error fetching reports:', error);
@@ -85,6 +86,7 @@ export default function Reports({ onNavigate }: ReportsProps) {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+        <SEOHead page="insightsReports" />
         <MetaTags
           title="Reports - LGR Research Reports"
           description="Browse research reports on local government reorganisation, planning, and governance. Comprehensive analysis and findings from the LGR Initiative."

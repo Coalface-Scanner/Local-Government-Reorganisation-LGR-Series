@@ -1,5 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import FAQSection from '../components/FAQSection';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import CollectionPageStructuredData from '../components/CollectionPageStructuredData';
@@ -58,6 +59,7 @@ export default function Lessons({ onNavigate: _onNavigate }: LessonsProps) {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="lessons" />
       <MetaTags
         title="Lessons from Recent Reorganisations"
         description="Critical lessons and case studies from recent local government reorganisations across England. Key insights, case studies from Northamptonshire, Somerset, and Dorset."

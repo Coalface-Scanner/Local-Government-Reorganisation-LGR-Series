@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { BookOpen, Map, Vote } from 'lucide-react';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import LocalPlaceStructuredData from '../components/LocalPlaceStructuredData';
@@ -36,6 +37,7 @@ export default function SurreyLGRHub({ onNavigate: _onNavigate }: SurreyLGRHubPr
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="surrey" />
       <MetaTags
         title="Surrey LGR Hub - Lessons, Area Profile & Election Tools"
         description="Surrey LGR Hub: lessons and warnings, area profile and councils map, and election tracker. Your entry point for Surrey’s local government reorganisation."

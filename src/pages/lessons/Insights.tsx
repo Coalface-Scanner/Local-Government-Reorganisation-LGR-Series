@@ -1,10 +1,12 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import FAQSection from '../../components/FAQSection';
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import RelatedContent from '../../components/RelatedContent';
 import { supabase } from '../../lib/supabase';
+import { prerenderSafe } from '../../utils/prerender';
 import { ArrowLeft, BookOpen, Lightbulb, Target, Users, TrendingUp, Building2, FileText, DollarSign, ArrowRight } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { enhanceContentWithGlossaryLinks } from '../../lib/glossaryLinks';
@@ -78,17 +80,17 @@ export default function LessonsInsights() {
 
   useEffect(() => {
     const fetchLessons = async () => {
-      const { data, error } = await supabase.from('lessons').select('*').order('order_index');
+      const { data, error } = await prerenderSafe(
+        supabase.from('lessons').select('*').order('order_index'),
+        { data: [], error: null }
+      );
       if (!error && data) setLessons(data);
     };
     const fetchRelated = async () => {
-      const { data } = await supabase
-        .from('articles')
-        .select('id, title, slug, excerpt, theme, category')
-        .eq('status', 'published')
-        .or('theme.ilike.%Governance%,theme.ilike.%Planning%,theme.ilike.%Democracy%,category.ilike.%Governance%,category.ilike.%Planning%')
-        .order('published_date', { ascending: false })
-        .limit(8);
+      const { data } = await prerenderSafe(
+        supabase.from('articles').select('id, title, slug, excerpt, theme, category').eq('status', 'published').or('theme.ilike.%Governance%,theme.ilike.%Planning%,theme.ilike.%Democracy%,category.ilike.%Governance%,category.ilike.%Planning%').order('published_date', { ascending: false }).limit(8),
+        { data: [], error: null }
+      );
       if (data) setRelatedArticles(data);
     };
     fetchLessons();
@@ -97,6 +99,7 @@ export default function LessonsInsights() {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="lessonsInsights" />
       <MetaTags
         title="Key Insights - Lessons from Reorganisation"
         description="Evidence-based key insights from recent local government reorganisations. Governance, systems integration, workforce capacity, and financial planning."

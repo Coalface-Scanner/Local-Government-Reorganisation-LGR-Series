@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
+import { prerenderSafe } from '../utils/prerender';
 import { useLocation } from 'react-router-dom';
 import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
@@ -140,24 +141,22 @@ export default function Materials({ onNavigate }: MaterialsProps) {
   const fetchAllMaterials = async () => {
     try {
       // Fetch from materials table
-      const { data: materialsData } = await supabase
-        .from('materials')
-        .select('*')
-        .order('published_date', { ascending: false });
+      const { data: materialsData } = await prerenderSafe(
+        supabase.from('materials').select('*').order('published_date', { ascending: false }),
+        { data: [], error: null }
+      );
 
       // Fetch published articles from articles table
-      const { data: articlesData } = await supabase
-        .from('articles')
-        .select('*')
-        .eq('status', 'published')
-        .order('published_date', { ascending: false });
+      const { data: articlesData } = await prerenderSafe(
+        supabase.from('articles').select('*').eq('status', 'published').order('published_date', { ascending: false }),
+        { data: [], error: null }
+      );
 
       // Fetch published news from news table
-      const { data: newsData } = await supabase
-        .from('news')
-        .select('*')
-        .eq('published', true)
-        .order('published_date', { ascending: false });
+      const { data: newsData } = await prerenderSafe(
+        supabase.from('news').select('*').eq('published', true).order('published_date', { ascending: false }),
+        { data: [], error: null }
+      );
 
       const allMaterials: Material[] = [];
 

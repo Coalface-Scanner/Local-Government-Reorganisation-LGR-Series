@@ -1,12 +1,14 @@
 import { useEffect, useState, useCallback } from 'react';
 import { ArrowRight, FileText, Building2, Vote, Palette, CheckCircle2 } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import OrganizationStructuredData from '../components/OrganizationStructuredData';
 import WebSiteStructuredData from '../components/WebSiteStructuredData';
 import PageBanner from '../components/PageBanner';
 import FAQSection from '../components/FAQSection';
 import { supabase } from '../lib/supabase';
+import { prerenderSafe } from '../utils/prerender';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 import ContentTypeTag from '../components/ContentTypeTag';
 import { parseRSSFeed, extractGuestName, generateIdFromString } from '../lib/rssParser';
@@ -99,26 +101,18 @@ export default function Home({ onNavigate }: HomeProps) {
       
       try {
         // Fetch featured site material (featured_site takes priority over featured)
-        const { data: featuredData, error: featuredError } = await supabase
-          .from('articles')
-          .select('id, title, slug, excerpt, featured_image, published_date, featured, content_type, featured_site')
-          .eq('status', 'published')
-          .eq('featured_site', true)
-          .order('published_date', { ascending: false })
-          .limit(1)
-          .maybeSingle();
+        const { data: featuredData, error: featuredError } = await prerenderSafe(
+          supabase.from('articles').select('id, title, slug, excerpt, featured_image, published_date, featured, content_type, featured_site').eq('status', 'published').eq('featured_site', true).order('published_date', { ascending: false }).limit(1).maybeSingle(),
+          { data: null, error: null }
+        );
 
         // Fallback to legacy featured if no featured_site exists
         let finalFeaturedData = featuredData;
         if (!featuredData) {
-          const { data: legacyFeatured } = await supabase
-            .from('articles')
-            .select('id, title, slug, excerpt, featured_image, published_date, featured, content_type, featured_site')
-            .eq('status', 'published')
-            .eq('featured', true)
-            .order('published_date', { ascending: false })
-            .limit(1)
-            .maybeSingle();
+          const { data: legacyFeatured } = await prerenderSafe(
+            supabase.from('articles').select('id, title, slug, excerpt, featured_image, published_date, featured, content_type, featured_site').eq('status', 'published').eq('featured', true).order('published_date', { ascending: false }).limit(1).maybeSingle(),
+            { data: null, error: null }
+          );
           finalFeaturedData = legacyFeatured;
         }
 
@@ -127,12 +121,10 @@ export default function Home({ onNavigate }: HomeProps) {
         }
 
         // Fetch recent articles (excluding featured one)
-        const { data: recentData, error: recentError } = await supabase
-          .from('articles')
-          .select('id, title, slug, excerpt, featured_image, published_date, featured, content_type, featured_site, theme, category')
-          .eq('status', 'published')
-          .order('published_date', { ascending: false })
-          .limit(6);
+        const { data: recentData, error: recentError } = await prerenderSafe(
+          supabase.from('articles').select('id, title, slug, excerpt, featured_image, published_date, featured, content_type, featured_site, theme, category').eq('status', 'published').order('published_date', { ascending: false }).limit(6),
+          { data: [], error: null }
+        );
 
         // Handle data and error independently - use data if available even if error exists
         if (recentData && recentData.length > 0) {
@@ -187,11 +179,10 @@ export default function Home({ onNavigate }: HomeProps) {
         ];
 
           // Fetch all published articles once
-        const { data: allArticles } = await supabase
-          .from('articles')
-          .select('id, title, slug, excerpt, featured_image, published_date, featured, content_type, featured_site, featured_theme, theme, category')
-          .eq('status', 'published')
-          .order('published_date', { ascending: false });
+        const { data: allArticles } = await prerenderSafe(
+          supabase.from('articles').select('id, title, slug, excerpt, featured_image, published_date, featured, content_type, featured_site, featured_theme, theme, category').eq('status', 'published').order('published_date', { ascending: false }),
+          { data: [], error: null }
+        );
 
         // Helper function to check if an article matches a theme
         // Returns a score: 2 = exact theme match, 1 = category match, 0 = no match
@@ -282,13 +273,10 @@ export default function Home({ onNavigate }: HomeProps) {
     setLoadingEpisodes(true);
     try {
       // Try database first - get episodes with video URLs
-      const { data: dbInterviews } = await supabase
-        .from('interviews')
-        .select('*')
-        .eq('status', 'published')
-        .not('video_url', 'is', null)
-        .order('order_index')
-        .limit(5);
+      const { data: dbInterviews } = await prerenderSafe(
+        supabase.from('interviews').select('*').eq('status', 'published').not('video_url', 'is', null).order('order_index').limit(5),
+        { data: [], error: null }
+      );
 
       if (dbInterviews && dbInterviews.length > 0) {
         const episodes = dbInterviews.map(interview => ({
@@ -394,6 +382,7 @@ export default function Home({ onNavigate }: HomeProps) {
 
   return (
     <div className="bg-academic-cream">
+      <SEOHead page="home" />
       <MetaTags
         title="Local Government Reorganisation Initiative | Governance & Devolution"
         description="Independent analysis and practical guidance on local government reorganisation, governance reform and devolution, supporting the design of effective new unitary councils."

@@ -1,4 +1,5 @@
 import { ShieldAlert } from 'lucide-react';
+import { SEOHead } from '../../components/SEOHead';
 import { useNavigate } from 'react-router-dom';
 
 interface AdminArticleLoginProps {
@@ -10,6 +11,7 @@ export default function AdminArticleLogin({ onNavigate: _onNavigate }: AdminArti
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100 flex items-center justify-center px-4">
+      <SEOHead page="adminArticlesLogin" />
       <div className="max-w-md w-full">
         <div className="bg-white rounded-lg shadow-lg p-8">
           <div className="flex flex-col items-center mb-6">

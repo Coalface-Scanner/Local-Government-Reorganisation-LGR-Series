@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import { ArrowLeft } from 'lucide-react';
@@ -15,6 +16,7 @@ export default function LessonsBestPractices() {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="lessonsBestPractices" />
       <MetaTags
         title="Best Practices - Lessons from Reorganisation"
         description="Practical guidance drawn from the first wave of Local Government Reorganisation. Curated best practices, checklists and lessons from the LGR Initiative."

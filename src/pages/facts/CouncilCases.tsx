@@ -1,3 +1,4 @@
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import CollectionPageStructuredData from '../../components/CollectionPageStructuredData';
@@ -263,6 +264,7 @@ export default function CouncilCases() {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="factsCouncilCases" />
       <MetaTags
         title="LGR Council Cases - Local Government Reorganisation Case Studies"
         description="Council cases and structures across England: LGR case studies (Dorset, Buckinghamshire, Somerset, North Yorkshire, Cumbria, Surrey) plus county and two-tier areas including Cambridgeshire, Derbyshire, Devon, Essex, Hampshire, Kent, Lancashire, Lincolnshire, and more."

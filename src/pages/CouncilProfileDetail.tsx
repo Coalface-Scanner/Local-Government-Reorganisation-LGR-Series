@@ -1,5 +1,6 @@
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { MapPin, Users, Building2, Home, TrendingUp, AlertCircle, CheckCircle, ArrowLeft, Calendar } from 'lucide-react';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import { getCouncilBySlug, surreyCouncils } from '../data/surreyCouncils';
@@ -65,8 +66,18 @@ export default function CouncilProfileDetail() {
     c => c.futureUnitary === council.futureUnitary && c.id !== council.id
   );
 
+  const metaTitle = `${council.name} Profile - Surrey Council Profiles`;
+  const metaDescription = council.description || `Profile of ${council.name}, a ${council.type.toLowerCase()} council in Surrey.`;
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead
+        page="surreyAreaProfile"
+        overrides={{
+          title: metaTitle.length > 60 ? metaTitle.substring(0, 57) + '...' : metaTitle,
+          description: metaDescription.length > 160 ? metaDescription.substring(0, 157) + '...' : metaDescription,
+          path: `/surrey/area-profile/${slug}`,
+        }}
+      />
       <MetaTags
         title={(() => {
           const title = `${council.name} Profile - Surrey Council Profiles`;

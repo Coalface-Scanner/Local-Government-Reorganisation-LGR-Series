@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { supabase, hasValidSupabase } from '../lib/supabase';
+import { prerenderSafe } from '../utils/prerender';
 import { useLocation } from 'react-router-dom';
 import ErrorDisplay from '../components/ErrorDisplay';
 import { Calendar } from 'lucide-react';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import CollectionPageStructuredData from '../components/CollectionPageStructuredData';
 import PageBanner from '../components/PageBanner';
@@ -51,11 +53,10 @@ export default function Insights({ onNavigate }: InsightsProps) {
         setLoading(false);
         return;
       }
-      const { data, error: fetchError } = await supabase
-        .from('articles')
-        .select('*')
-        .eq('status', 'published')
-        .order('published_date', { ascending: false });
+      const { data, error: fetchError } = await prerenderSafe(
+        supabase.from('articles').select('*').eq('status', 'published').order('published_date', { ascending: false }),
+        { data: [], error: null }
+      );
 
       if (fetchError) {
         throw fetchError;
@@ -110,6 +111,7 @@ export default function Insights({ onNavigate }: InsightsProps) {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="insights" />
       <MetaTags
         title="Insights & Analysis - LGR Expert Articles"
         description="Expert insights on local government reorganisation, planning, and governance. In-depth articles examining council reform, unitary authorities, and devolution."

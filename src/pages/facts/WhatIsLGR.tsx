@@ -1,3 +1,4 @@
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import FAQSection from '../../components/FAQSection';
@@ -32,6 +33,7 @@ export default function WhatIsLGR() {
 
   return (
     <>
+      <SEOHead page="whatIsLgr" />
       <PageBanner
         heroLabel="FACTS & DATA"
         heroTitle="Local Government Reorganisation Explained"

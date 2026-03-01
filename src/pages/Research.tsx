@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Database, Search, GraduationCap, FileBarChart2, Hand } from 'lucide-react';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import FAQSection from '../components/FAQSection';
@@ -28,6 +29,7 @@ export default function Research(_props: ResearchProps) {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="research" />
       <MetaTags
         title="Research - Local Government Reorganisation"
         description="Access evidence, reports, library materials, and lessons that inform high-quality local government reorganisation decisions."

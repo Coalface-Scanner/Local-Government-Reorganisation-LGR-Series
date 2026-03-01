@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
+import { prerenderSafe } from '../utils/prerender';
 
 export default function LastUpdated() {
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchLastUpdated() {
-      const { data, error } = await supabase
-        .from('site_metadata')
-        .select('last_updated')
-        .eq('id', 1)
-        .maybeSingle();
+      const { data, error } = await prerenderSafe(
+        supabase.from('site_metadata').select('last_updated').eq('id', 1).maybeSingle(),
+        { data: null, error: null }
+      );
 
       if (data && !error) {
         const date = new Date(data.last_updated);

@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
+import { prerenderSafe } from '../utils/prerender';
 import { ArrowRight } from 'lucide-react';
 
 interface RelatedArticle {
@@ -35,14 +36,10 @@ export default function RelatedArticles({
 
       // First, try to get articles from the same theme
       if (currentTheme) {
-        const { data: themeData, error: themeError } = await supabase
-          .from('articles')
-          .select('id, title, slug, excerpt, featured_image, published_date')
-          .eq('status', 'published')
-          .neq('slug', currentSlug)
-          .eq('theme', currentTheme)
-          .order('published_date', { ascending: false })
-          .limit(3);
+        const { data: themeData, error: themeError } = await prerenderSafe(
+          supabase.from('articles').select('id, title, slug, excerpt, featured_image, published_date').eq('status', 'published').neq('slug', currentSlug).eq('theme', currentTheme).order('published_date', { ascending: false }).limit(3),
+          { data: [], error: null }
+        );
 
         if (!themeError && themeData && themeData.length > 0) {
           data = themeData;
@@ -53,14 +50,10 @@ export default function RelatedArticles({
 
       // If no theme matches or no theme provided, try category
       if ((!data || data.length === 0) && currentCategory) {
-        const { data: categoryData, error: categoryError } = await supabase
-          .from('articles')
-          .select('id, title, slug, excerpt, featured_image, published_date')
-          .eq('status', 'published')
-          .neq('slug', currentSlug)
-          .eq('category', currentCategory)
-          .order('published_date', { ascending: false })
-          .limit(3);
+        const { data: categoryData, error: categoryError } = await prerenderSafe(
+          supabase.from('articles').select('id, title, slug, excerpt, featured_image, published_date').eq('status', 'published').neq('slug', currentSlug).eq('category', currentCategory).order('published_date', { ascending: false }).limit(3),
+          { data: [], error: null }
+        );
 
         if (!categoryError && categoryData && categoryData.length > 0) {
           data = categoryData;
@@ -69,13 +62,10 @@ export default function RelatedArticles({
 
       // Fallback: get most recent articles
       if (!data || data.length === 0) {
-        const { data: recentData, error: recentError } = await supabase
-          .from('articles')
-          .select('id, title, slug, excerpt, featured_image, published_date')
-          .eq('status', 'published')
-          .neq('slug', currentSlug)
-          .order('published_date', { ascending: false })
-          .limit(3);
+        const { data: recentData, error: recentError } = await prerenderSafe(
+          supabase.from('articles').select('id, title, slug, excerpt, featured_image, published_date').eq('status', 'published').neq('slug', currentSlug).order('published_date', { ascending: false }).limit(3),
+          { data: [], error: null }
+        );
 
         if (!recentError && recentData) {
           data = recentData;

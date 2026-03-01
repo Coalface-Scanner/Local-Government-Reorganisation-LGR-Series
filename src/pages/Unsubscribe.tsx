@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import PageBanner from '../components/PageBanner';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import { CheckCircle, XCircle } from 'lucide-react';
 import FAQSection from '../components/FAQSection';
@@ -73,6 +74,7 @@ export default function Unsubscribe() {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="unsubscribe" />
       <MetaTags
         title="Unsubscribe - LGR Insights & Updates"
         description="Unsubscribe from the LGR Initiative mailing list. Enter your email address to stop receiving weekly insights and updates."

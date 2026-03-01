@@ -1,5 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { HelmetProvider } from 'react-helmet-async';
 import App from './App.tsx';
 import './index.css';
 import { AdminAuthProvider } from './contexts/AdminAuthContext';
@@ -28,8 +29,10 @@ if ('serviceWorker' in navigator && import.meta.env.PROD) {
 const rootEl = document.getElementById('root')!;
 createRoot(rootEl).render(
   <StrictMode>
-    <AdminAuthProvider>
-      <App />
-    </AdminAuthProvider>
+    <HelmetProvider>
+      <AdminAuthProvider>
+        <App />
+      </AdminAuthProvider>
+    </HelmetProvider>
   </StrictMode>
 );

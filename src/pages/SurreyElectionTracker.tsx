@@ -1,5 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Sparkles, TrendingUp, BookOpen, ArrowRight, MapPin, ArrowLeft } from 'lucide-react';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import FAQSection from '../components/FAQSection';
@@ -43,6 +44,7 @@ export default function SurreyElectionTracker({ onNavigate: _onNavigate }: Surre
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="surreyElectionTracker" />
       <MetaTags
         title="Surrey Election Tracker - LGR Modeller"
         description="Interactive tools for modelling Surrey's local government reorganisation. View aggregate totals, simulate election outcomes, and explore reference data."

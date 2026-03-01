@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import FAQSection from '../../components/FAQSection';
@@ -75,6 +76,7 @@ export default function QuestionsAndAnswers() {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="questionsAndAnswers" />
       <MetaTags
         title="Questions & Answers - Facts & Data"
         description="Comprehensive FAQ covering all aspects of Local Government Reorganisation (LGR) in England, including timelines, processes, finance, governance, and service impacts."

@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { ArrowLeft, Share2, Lightbulb, Database, MessageSquare } from 'lucide-react';
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import { useAboutPage } from '../../hooks/useAboutPage';
@@ -38,6 +39,7 @@ export default function Contribute({ onNavigate: _onNavigate }: ContributeProps)
 
   return (
     <div className="bg-academic-cream min-h-screen">
+      <SEOHead page="aboutContribute" />
       <MetaTags
         title="How to Contribute - LGR Initiative"
         description="Get involved in the LGR Initiative by sharing your experience, suggesting topics, providing data, or contributing expert commentary."

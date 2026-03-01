@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Chart } from 'chart.js/auto';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import { X, Sparkles, CheckCircle2, BarChart3, Zap, BookOpen, MapPin, Share2, ArrowLeft, Link as LinkIcon } from 'lucide-react';
@@ -636,6 +637,7 @@ export default function SurreyElectionSimulator(_props: SurreyElectionSimulatorP
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="surreyElectionSimulator" />
       <MetaTags
         title="Surrey Election Simulator - LGR Modeller"
         description="Interactive seat planner for Surrey's local government reorganisation. Model election outcomes for East and West Surrey unitary authorities."

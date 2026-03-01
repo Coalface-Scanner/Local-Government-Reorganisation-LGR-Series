@@ -1,5 +1,6 @@
 import { Calendar, BookOpen, Headphones, Route } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import CollectionPageStructuredData from '../components/CollectionPageStructuredData';
 import PageBanner from '../components/PageBanner';
@@ -51,6 +52,7 @@ export default function LGRHub({ onNavigate }: LGRHubProps) {
   
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="lgrHub" />
       <MetaTags
         title="LGR Hub - Local Government Reorganisation Resources"
         description="Your central hub for Local Government Reorganisation (LGR) resources. Access roadmap, tools, podcast, and practical guidance for council reorganisation."

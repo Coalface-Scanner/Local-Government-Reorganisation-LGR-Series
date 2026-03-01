@@ -1,4 +1,5 @@
 import TopicHub from '../../components/TopicHub';
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 
 interface LocalGovernmentProps {
@@ -8,6 +9,7 @@ interface LocalGovernmentProps {
 export default function LocalGovernment({ onNavigate }: LocalGovernmentProps) {
   return (
     <>
+      <SEOHead page="topicsLocalGovernment" />
       <MetaTags
         title="Local Government - Thought Leadership Hub"
         description="Expert analysis on local government reorganisation, council reform, and governance structures. Evidence-led research on how local authorities are reshaping decision-making."

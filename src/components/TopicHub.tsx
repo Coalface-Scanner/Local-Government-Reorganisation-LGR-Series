@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import PageBanner from './PageBanner';
 import { supabase } from '../lib/supabase';
+import { prerenderSafe } from '../utils/prerender';
 import OptimizedImage from './OptimizedImage';
 import FollowTopic from './FollowTopic';
 import FAQSection from './FAQSection';
@@ -97,15 +98,10 @@ export default function TopicHub({
         const allConditions = `${exactThemeConditions},${exactCategoryConditions},${ilikeThemeConditions},${ilikeCategoryConditions}`;
         
         // Try featured articles first - check theme OR category field
-        const { data: featuredData, error: featuredError } = await supabase
-          .from('articles')
-          .select('id, title, slug, excerpt, featured_image, published_date, featured, featured_theme, theme, category')
-          .eq('status', 'published')
-          .eq('featured_theme', true)
-          .or(allConditions)
-          .order('published_date', { ascending: false })
-          .limit(1)
-          .maybeSingle();
+        const { data: featuredData, error: featuredError } = await prerenderSafe(
+          supabase.from('articles').select('id, title, slug, excerpt, featured_image, published_date, featured, featured_theme, theme, category').eq('status', 'published').eq('featured_theme', true).or(allConditions).order('published_date', { ascending: false }).limit(1).maybeSingle(),
+          { data: null, error: null }
+        );
 
         if (featuredError && import.meta.env.DEV) {
           console.error('[TopicHub] Error fetching featured article:', featuredError);
@@ -118,14 +114,10 @@ export default function TopicHub({
           pillarData = featuredData;
         } else {
           // If no featured article, get the most recent one
-          const { data: recentData, error: recentError } = await supabase
-            .from('articles')
-            .select('id, title, slug, excerpt, featured_image, published_date, featured, featured_theme, theme, category')
-            .eq('status', 'published')
-            .or(allConditions)
-            .order('published_date', { ascending: false })
-            .limit(1)
-            .maybeSingle();
+          const { data: recentData, error: recentError } = await prerenderSafe(
+            supabase.from('articles').select('id, title, slug, excerpt, featured_image, published_date, featured, featured_theme, theme, category').eq('status', 'published').or(allConditions).order('published_date', { ascending: false }).limit(1).maybeSingle(),
+            { data: null, error: null }
+          );
           
           if (recentError && import.meta.env.DEV) {
             console.error('[TopicHub] Error fetching recent article:', recentError);
@@ -144,13 +136,10 @@ export default function TopicHub({
         }
 
         // Fetch related articles (excluding pillar if it exists)
-        const { data: articlesData, error: articlesError } = await supabase
-          .from('articles')
-          .select('id, title, slug, excerpt, featured_image, published_date, featured, featured_theme, theme, category')
-          .eq('status', 'published')
-          .or(allConditions)
-          .order('published_date', { ascending: false })
-          .limit(12);
+        const { data: articlesData, error: articlesError } = await prerenderSafe(
+          supabase.from('articles').select('id, title, slug, excerpt, featured_image, published_date, featured, featured_theme, theme, category').eq('status', 'published').or(allConditions).order('published_date', { ascending: false }).limit(12),
+          { data: [], error: null }
+        );
 
         if (articlesError && import.meta.env.DEV) {
           console.error('[TopicHub] Error fetching related articles:', articlesError);

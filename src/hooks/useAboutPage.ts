@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { prerenderSafe } from '../utils/prerender';
 
 interface AboutPage {
   id: string;
@@ -26,11 +27,10 @@ export function useAboutPage(pageSlug: string): UseAboutPageResult {
         setLoading(true);
         setError(null);
         
-        const { data, error: fetchError } = await supabase
-          .from('about_pages')
-          .select('*')
-          .eq('page_slug', pageSlug)
-          .maybeSingle();
+        const { data, error: fetchError } = await prerenderSafe(
+          supabase.from('about_pages').select('*').eq('page_slug', pageSlug).maybeSingle(),
+          { data: null, error: null }
+        );
 
         if (fetchError) {
           throw fetchError;

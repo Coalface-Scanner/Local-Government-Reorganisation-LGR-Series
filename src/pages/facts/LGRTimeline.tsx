@@ -1,3 +1,4 @@
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import Timeline from '../../components/Timeline';
@@ -13,6 +14,7 @@ export default function LGRTimeline() {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="factsLgrTimeline" />
       <MetaTags
         title="LGR Timetable 2026 - Local Government Reorganisation Timeline"
         description="Comprehensive timeline of Local Government Reorganisation (LGR) processes for 2026. Key dates including shadow elections, vesting days, and the LGR timetable 2026 roadmap."

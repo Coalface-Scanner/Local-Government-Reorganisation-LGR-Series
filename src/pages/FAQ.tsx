@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import { faqData, aboutFaqData, getAllFaqItemsForSchema } from '../data/faqData';
@@ -50,6 +51,7 @@ export default function FAQ() {
 
   return (
     <div className="min-h-screen bg-academic-cream" data-faq-page>
+      <SEOHead page="faq" />
       <MetaTags
         title="FAQ - Local Government Reorganisation | LGR Initiative"
         description="Comprehensive FAQ covering all aspects of Local Government Reorganisation (LGR) in England, including timelines, processes, finance, governance, and service impacts."

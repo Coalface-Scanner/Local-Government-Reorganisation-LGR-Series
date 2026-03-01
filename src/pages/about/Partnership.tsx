@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import { useSidebarToc } from '../../contexts/SidebarTocContext';
@@ -45,6 +46,7 @@ export default function Partnership({ onNavigate: _onNavigate }: PartnershipProp
 
   return (
     <>
+      <SEOHead page="aboutPartnership" />
       <PageBanner
         heroLabel="ABOUT"
         heroTitle="Our Partnership"

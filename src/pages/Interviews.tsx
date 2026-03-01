@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import FAQSection from '../components/FAQSection';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import PageNavigation from '../components/PageNavigation';
@@ -9,6 +10,7 @@ import LoadingSkeleton from '../components/LoadingSkeleton';
 import { Mic, Calendar, Users, FileText, Headphones, ExternalLink, Video, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { prerenderSafe } from '../utils/prerender';
 import { parseRSSFeed, extractGuestName, generateIdFromString, type RSSItem } from '../lib/rssParser';
 
 interface InterviewsProps {
@@ -121,11 +123,10 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
    */
   const fetchDatabaseInterviews = useCallback(async (): Promise<Interview[]> => {
     try {
-      const { data, error: fetchError } = await supabase
-        .from('interviews')
-        .select('*')
-        .eq('status', 'published')
-        .order('order_index');
+      const { data, error: fetchError } = await prerenderSafe(
+        supabase.from('interviews').select('*').eq('status', 'published').order('order_index'),
+        { data: [], error: null }
+      );
 
       if (fetchError) {
         throw fetchError;
@@ -196,6 +197,7 @@ export default function Interviews({ onNavigate }: InterviewsProps) {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="podcast" />
       <MetaTags
         title="LGR Governance Interviews - Council Leaders & Practitioners"
         description="In-depth interviews with council leaders, officers, and practitioners on Local Government Reorganisation (LGR) and LGR governance. First-hand accounts and expert perspectives on local government reorganisation reform."

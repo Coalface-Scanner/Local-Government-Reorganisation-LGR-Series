@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { LogIn } from 'lucide-react';
+import { SEOHead } from '../../components/SEOHead';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { isAdminUser } from '../../lib/adminAccess';
@@ -61,6 +62,7 @@ export default function AdminLogin({ onNavigate }: AdminLoginProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center px-4 py-12">
+      <SEOHead page="adminLogin" />
       <div className="max-w-md w-full">
         <div className="bg-white rounded-2xl shadow-xl p-8 border border-slate-200">
           <div className="flex justify-center mb-6">

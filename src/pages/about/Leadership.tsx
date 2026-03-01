@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import CollectionPageStructuredData from '../../components/CollectionPageStructuredData';
 import PageBanner from '../../components/PageBanner';
@@ -39,6 +40,7 @@ export default function Leadership({ onNavigate: _onNavigate }: LeadershipProps)
 
   return (
     <>
+      <SEOHead page="aboutLeadership" />
       <PageBanner
         heroLabel="ABOUT"
         heroTitle="LGR Initiative Leadership"

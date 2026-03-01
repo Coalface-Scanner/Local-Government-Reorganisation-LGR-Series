@@ -1,5 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { supabase } from '../../lib/supabase';
+import { prerenderSafe } from '../../utils/prerender';
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import FAQSection from '../../components/FAQSection';
@@ -69,10 +71,10 @@ export default function KeyFacts() {
 
   useEffect(() => {
     const fetchFacts = async () => {
-      const { data, error } = await supabase
-        .from('facts')
-        .select('*')
-        .order('order_index');
+      const { data, error } = await prerenderSafe(
+        supabase.from('facts').select('*').order('order_index'),
+        { data: [], error: null }
+      );
 
       if (!error && data) {
         const isPlaceholder = (f: Fact) =>
@@ -92,6 +94,7 @@ export default function KeyFacts() {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="factsKeyFacts" />
       <MetaTags
         title="Key Facts - Facts & Data"
         description="Evidence-based analysis of local government reorganisation outcomes, including workforce, financial performance, service delivery, and democratic outcomes."

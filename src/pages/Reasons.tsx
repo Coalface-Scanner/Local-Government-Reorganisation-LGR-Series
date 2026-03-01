@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import PageNavigation from '../components/PageNavigation';
 import PageBanner from '../components/PageBanner';
 import FAQSection from '../components/FAQSection';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 
 interface ReasonsProps {
@@ -28,6 +29,7 @@ export default function Reasons({ onNavigate }: ReasonsProps) {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="reasons" />
       <MetaTags
         title="About the LGR Initiative - Methodology & Purpose"
         description="Learn about the LGR Initiative methodology, editorial approach, and purpose. Discover how we examine local government reorganisation through evidence-based analysis."

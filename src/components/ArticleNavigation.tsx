@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { prerenderSafe } from '../utils/prerender';
 
 interface ArticleNavigationProps {
   currentSlug: string;
@@ -32,24 +33,16 @@ export default function ArticleNavigation({ currentSlug, currentPublishedDate, o
 
     try {
       // Fetch previous article (older)
-      const { data: prevData } = await supabase
-        .from('articles')
-        .select('id, title, slug')
-        .eq('status', 'published')
-        .lt('published_date', currentPublishedDate)
-        .order('published_date', { ascending: false })
-        .limit(1)
-        .maybeSingle();
+      const { data: prevData } = await prerenderSafe(
+        supabase.from('articles').select('id, title, slug').eq('status', 'published').lt('published_date', currentPublishedDate).order('published_date', { ascending: false }).limit(1).maybeSingle(),
+        { data: null, error: null }
+      );
 
       // Fetch next article (newer)
-      const { data: nextData } = await supabase
-        .from('articles')
-        .select('id, title, slug')
-        .eq('status', 'published')
-        .gt('published_date', currentPublishedDate)
-        .order('published_date', { ascending: true })
-        .limit(1)
-        .maybeSingle();
+      const { data: nextData } = await prerenderSafe(
+        supabase.from('articles').select('id, title, slug').eq('status', 'published').gt('published_date', currentPublishedDate).order('published_date', { ascending: true }).limit(1).maybeSingle(),
+        { data: null, error: null }
+      );
 
       if (prevData) {
         setPreviousArticle(prevData);

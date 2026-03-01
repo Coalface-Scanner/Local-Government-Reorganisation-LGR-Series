@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { BookOpen, HelpCircle, MessageCircleQuestion, Clock, Hand, Map } from 'lucide-react';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import FAQSection from '../components/FAQSection';
@@ -28,6 +29,7 @@ export default function Learn(_props: LearnProps) {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="learn" />
       <MetaTags
         title="Learn - Local Government Reorganisation"
         description="Foundational guides to Local Government Reorganisation, including what LGR is, beginner guidance, FAQs, and first-100-days planning."

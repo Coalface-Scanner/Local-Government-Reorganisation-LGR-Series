@@ -1,8 +1,10 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { prerenderSafe } from '../utils/prerender';
 import LastUpdated from '../components/LastUpdated';
 import ShareButtons from '../components/ShareButtons';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import ArticleStructuredData from '../components/ArticleStructuredData';
@@ -98,12 +100,10 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
     
     try {
       const data = await retryWithBackoff(async () => {
-        const { data, error } = await supabase
-          .from('articles')
-          .select('*')
-          .eq('slug', slug)
-          .eq('status', 'published')
-          .maybeSingle();
+        const { data, error } = await prerenderSafe(
+          supabase.from('articles').select('*').eq('slug', slug).eq('status', 'published').maybeSingle(),
+          { data: null, error: null }
+        );
 
         if (error) throw error;
         return data;
@@ -284,6 +284,17 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead
+        page="insights"
+        overrides={{
+          title: `${article.title} | LGR Initiative`,
+          description: article.excerpt || article.title,
+          path: `/insights/${article.slug}`,
+          ogImage: article.featured_image || undefined,
+          datePublished: article.published_date || undefined,
+          dateModified: article.updated_at || undefined,
+        }}
+      />
       <ReadingProgress />
       <MetaTags
         title={getTitle()}

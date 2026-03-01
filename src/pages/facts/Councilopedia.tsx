@@ -1,3 +1,4 @@
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import FAQSection from '../../components/FAQSection';
@@ -22,6 +23,7 @@ export default function Councilopedia() {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="factsCouncilopedia" />
       <MetaTags
         title="Councylopedia - Facts & Data"
         description="Comprehensive guide to local government reorganisation terminology, concepts, and resources."

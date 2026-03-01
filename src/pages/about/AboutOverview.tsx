@@ -1,3 +1,4 @@
+import { SEOHead } from '../../components/SEOHead';
 import About from './About';
 
 interface AboutOverviewProps {
@@ -5,5 +6,10 @@ interface AboutOverviewProps {
 }
 
 export default function AboutOverview({ onNavigate }: AboutOverviewProps) {
-  return <About onNavigate={onNavigate} />;
+  return (
+    <>
+      <SEOHead page="aboutOverview" />
+      <About onNavigate={onNavigate} />
+    </>
+  );
 }

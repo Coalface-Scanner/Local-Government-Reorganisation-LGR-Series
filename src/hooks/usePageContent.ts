@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { prerenderSafe } from '../utils/prerender';
 
 interface PageContentItem {
   id: string;
@@ -29,11 +30,10 @@ export function usePageContent(pageSlug: string): UsePageContentResult {
         setLoading(true);
         setError(null);
         
-        const { data, error: fetchError } = await supabase
-          .from('page_content')
-          .select('*')
-          .eq('page_slug', pageSlug)
-          .order('order_index');
+        const { data, error: fetchError } = await prerenderSafe(
+          supabase.from('page_content').select('*').eq('page_slug', pageSlug).order('order_index'),
+          { data: [], error: null }
+        );
 
         if (fetchError) {
           throw fetchError;

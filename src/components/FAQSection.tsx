@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { prerenderSafe } from '../utils/prerender';
 import { faqFallback } from '../data/faqFallback';
 
 interface FAQ {
@@ -37,11 +38,10 @@ export default function FAQSection({ page, minItems = DEFAULT_MIN_ITEMS, maxItem
 
   useEffect(() => {
     async function fetchFAQs() {
-      const { data, error } = await supabase
-        .from('faqs')
-        .select('*')
-        .eq('page', page)
-        .order('order_index', { ascending: true });
+      const { data, error } = await prerenderSafe(
+        supabase.from('faqs').select('*').eq('page', page).order('order_index', { ascending: true }),
+        { data: [], error: null }
+      );
 
       if (error) {
         console.error('Error fetching FAQs:', error);

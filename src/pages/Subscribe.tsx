@@ -1,4 +1,5 @@
 import SubscriptionForm from '../components/SubscriptionForm';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import { Mail, FileText, Bell, ArrowRight } from 'lucide-react';
@@ -27,6 +28,7 @@ export default function Subscribe({ onNavigate }: SubscribeProps) {
   const cardPlaybookDescription = getSection('card_playbook_description');
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      <SEOHead page="subscribe" />
       <MetaTags
         title="Subscribe - LGR Insights & Updates"
         description="Receive our regular update direct to your inbox. Subscribe to LGR Insights & Updates for updates on local government reorganisation."

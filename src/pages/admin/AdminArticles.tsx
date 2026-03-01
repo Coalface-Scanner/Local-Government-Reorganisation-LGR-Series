@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, Eye, Save, X, LogOut, FileText, MessageSquare, AlertCircle } from 'lucide-react';
+import { SEOHead } from '../../components/SEOHead';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
 import ArticleEditor from '../../components/ArticleEditor';
@@ -359,6 +360,7 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
   if (editingArticle) {
     return (
       <div className="min-h-screen bg-neutral-50">
+        <SEOHead page="adminArticles" />
         <div className="bg-white border-b border-neutral-200 sticky top-0 z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex items-center justify-between">
@@ -954,6 +956,7 @@ export default function AdminArticles({ onNavigate }: AdminArticlesProps) {
 
   return (
     <div className="min-h-screen bg-neutral-50">
+      <SEOHead page="adminArticles" />
       <div className="bg-white border-b border-neutral-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">

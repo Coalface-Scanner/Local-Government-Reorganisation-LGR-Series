@@ -1,3 +1,4 @@
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import FAQSection from '../../components/FAQSection';
@@ -10,6 +11,7 @@ export default function Sources() {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="factsSources" />
       <MetaTags
         title="Sources - Facts & Data"
         description="Evidence from recent reorganisations across England, including council experience and sources from Dorset, Buckinghamshire, Somerset, North Yorkshire, and Cumbria."

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import RelatedContent from '../../components/RelatedContent';
@@ -31,6 +32,7 @@ export default function LessonsCaseStudies() {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="lessonsCaseStudies" />
       <MetaTags
         title="Case Based Insights - Lessons from Reorganisation"
         description="Evidence-based case studies from North and West Northamptonshire, Somerset, and Dorset. What worked, what went wrong, and key lessons from recent local government reorganisations."

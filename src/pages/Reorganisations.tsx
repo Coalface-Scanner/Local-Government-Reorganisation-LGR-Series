@@ -1,6 +1,8 @@
 import { useEffect, useState, useCallback } from 'react';
 import { supabase, hasValidSupabase } from '../lib/supabase';
+import { prerenderSafe } from '../utils/prerender';
 import { useLocation } from 'react-router-dom';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import ErrorDisplay from '../components/ErrorDisplay';
@@ -67,10 +69,10 @@ export default function Reorganisations({ onNavigate: _onNavigate }: Reorganisat
         );
         return;
       }
-      const { data, error: fetchError } = await supabase
-        .from('lgr_reorganisations')
-        .select('*')
-        .order('year', { ascending: false });
+      const { data, error: fetchError } = await prerenderSafe(
+        supabase.from('lgr_reorganisations').select('*').order('year', { ascending: false }),
+        { data: [], error: null }
+      );
 
       if (fetchError) {
         throw fetchError;
@@ -159,6 +161,7 @@ export default function Reorganisations({ onNavigate: _onNavigate }: Reorganisat
 
   return (
     <div id="main-content" className="min-h-screen bg-academic-cream">
+        <SEOHead page="reorganisations" />
         <MetaTags
           title="Local Government Reorganisations Since 2010"
           description="Comprehensive list of all local government reorganisations in England since 2010. Filter by year and type including unitary creations, mergers, boundary changes, and council abolitions."

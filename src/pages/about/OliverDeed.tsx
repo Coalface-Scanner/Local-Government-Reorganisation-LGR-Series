@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import OptimizedImage from '../../components/OptimizedImage';
@@ -58,6 +59,7 @@ export default function OliverDeed() {
 
   return (
     <div className="bg-academic-cream min-h-screen">
+      <SEOHead page="oliverDeed" />
       <MetaTags
         title="Oliver Deed | Managing Director ECF | Local Government Reorganisation Initiative"
         description="Oliver Deed is Managing Director and Co Founder of ECF and contributor to the Local Government Reorganisation Initiative, specialising in strategic communications, political engagement and infrastructure consultation."

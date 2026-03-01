@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { MapPin, Users, Building2, ArrowRight } from 'lucide-react';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import { surreyCouncils } from '../data/surreyCouncils';
@@ -29,6 +30,7 @@ export default function CouncilProfiles() {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="surreyAreaProfile" />
       <MetaTags
         title="Surrey Council Profiles"
         description="Profiles of all 12 Surrey councils: 11 boroughs and districts plus Surrey County Council. Key statistics, demographics, and future unitary arrangements."

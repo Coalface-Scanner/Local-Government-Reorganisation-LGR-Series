@@ -1,5 +1,6 @@
 import { FileText, BookOpen, MapPin } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import CollectionPageStructuredData from '../components/CollectionPageStructuredData';
 import PageBanner from '../components/PageBanner';
@@ -42,6 +43,7 @@ export default function FactsAndData({ onNavigate: _onNavigate }: FactsAndDataPr
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="factsAndData" />
       <MetaTags
         title="Facts & Data - Local Government Reorganisation Evidence"
         description="Comprehensive facts, data, and evidence about Local Government Reorganisation. Access key facts, materials, datasets, and council profiles."

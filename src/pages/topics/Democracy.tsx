@@ -1,4 +1,5 @@
 import TopicHub from '../../components/TopicHub';
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 
 interface DemocracyProps {
@@ -8,6 +9,7 @@ interface DemocracyProps {
 export default function Democracy({ onNavigate }: DemocracyProps) {
   return (
     <>
+      <SEOHead page="topicsDemocracy" />
       <MetaTags
         title="Democracy - Thought Leadership Hub"
         description="Research on democratic legitimacy, representation, and accountability in local government. Examining how reorganisation affects community voice and political participation."

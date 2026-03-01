@@ -1,3 +1,4 @@
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import FAQSection from '../../components/FAQSection';
@@ -10,6 +11,7 @@ export default function FurtherReading() {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="factsFurtherReading" />
       <MetaTags
         title="Further Reading - Facts & Data"
         description="Additional resources, reports, and publications on local government reorganisation, unitary authorities, and local government reform."

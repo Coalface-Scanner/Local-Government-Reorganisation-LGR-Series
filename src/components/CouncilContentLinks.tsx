@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FileText, BookOpen, List, ArrowRight } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { prerenderSafe } from '../utils/prerender';
 
 interface CouncilContentLinksProps {
   councilName: string;
@@ -28,12 +29,10 @@ export default function CouncilContentLinks({ councilName, maxItems = 6 }: Counc
 
       try {
         // Search for articles mentioning this council
-        const { data: articles } = await supabase
-          .from('articles')
-          .select('id, title, slug, excerpt, geography, region')
-          .eq('status', 'published')
-          .or(`geography.ilike.%${councilName}%,region.ilike.%${councilName}%,title.ilike.%${councilName}%,body.ilike.%${councilName}%`)
-          .limit(3);
+        const { data: articles } = await prerenderSafe(
+          supabase.from('articles').select('id, title, slug, excerpt, geography, region').eq('status', 'published').or(`geography.ilike.%${councilName}%,region.ilike.%${councilName}%,title.ilike.%${councilName}%,body.ilike.%${councilName}%`).limit(3),
+          { data: [], error: null }
+        );
 
         if (articles) {
           articles.forEach(article => {
@@ -48,11 +47,10 @@ export default function CouncilContentLinks({ councilName, maxItems = 6 }: Counc
         }
 
         // Search for materials mentioning this council
-        const { data: materials } = await supabase
-          .from('materials')
-          .select('id, title, slug, description, geography')
-          .or(`geography.ilike.%${councilName}%,title.ilike.%${councilName}%,description.ilike.%${councilName}%,content.ilike.%${councilName}%`)
-          .limit(2);
+        const { data: materials } = await prerenderSafe(
+          supabase.from('materials').select('id, title, slug, description, geography').or(`geography.ilike.%${councilName}%,title.ilike.%${councilName}%,description.ilike.%${councilName}%,content.ilike.%${councilName}%`).limit(2),
+          { data: [], error: null }
+        );
 
         if (materials) {
           materials.forEach(material => {
@@ -67,11 +65,10 @@ export default function CouncilContentLinks({ councilName, maxItems = 6 }: Counc
         }
 
         // Search for facts mentioning this council (in content)
-        const { data: facts } = await supabase
-          .from('facts')
-          .select('id, title, content')
-          .ilike('content', `%${councilName}%`)
-          .limit(2);
+        const { data: facts } = await prerenderSafe(
+          supabase.from('facts').select('id, title, content').ilike('content', `%${councilName}%`).limit(2),
+          { data: [], error: null }
+        );
 
         if (facts) {
           facts.forEach(fact => {

@@ -1,3 +1,4 @@
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import FAQSection from '../../components/FAQSection';
@@ -10,6 +11,7 @@ export default function Methodology() {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="factsMethodology" />
       <MetaTags
         title="Methodology - Facts & Data"
         description="How the Local Government Reorganisation Series analysis has been developed, including evidence base, approach, and limitations."

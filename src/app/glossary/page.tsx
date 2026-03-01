@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getAllTerms, getTermsByLetter, searchTerms } from '../../lib/glossaryData';
 import GlossaryClient from '../../components/glossary/GlossaryClient';
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import DefinedTermSetSchema from '../../components/glossary/DefinedTermSetSchema';
@@ -39,6 +40,7 @@ export default function GlossaryPage() {
 
   return (
     <>
+      <SEOHead page="glossary" />
       <MetaTags {...metadata} />
       <DefinedTermSetSchema terms={allTerms} />
       <div className="min-h-screen bg-academic-cream">

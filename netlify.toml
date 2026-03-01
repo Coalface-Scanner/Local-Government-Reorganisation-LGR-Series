@@ -1,46 +1,48 @@
-# Netlify Configuration
-# This file defines build settings and deployment configuration
-# Note: Redirects are handled by public/_redirects
-# Note: Headers are handled by public/_headers
-# These files take precedence if they exist in the build output
+# netlify.toml
+# ============================================================
+# Merged with SEO kit. Your public/_redirects file will still work.
+# ============================================================
 
 [build]
-  # Build command to run
   command = "npm run build"
-  
-  # Directory containing the built files to publish
   publish = "dist"
-  
-  # Environment variables should be set in Netlify Dashboard:
-  # Site Settings > Environment variables
-  # Required variables:
-  #   - VITE_SUPABASE_URL
-  #   - VITE_SUPABASE_ANON_KEY
-  # Optional variables:
-  #   - VITE_SITE_PASSWORD
-  #   - VITE_ADMIN_PASSWORD
 
-# Build settings per branch/context (optional)
-# Uncomment and customize if you need different Node versions per environment
-# [context.production]
-#   command = "npm run build"
-# 
-# [context.deploy-preview]
-#   command = "npm run build"
-# 
-# [context.branch-deploy]
-#   command = "npm run build"
+# ── HEADERS ────────────────────────────────────────────────
 
-# Edge Functions configuration
-# Edge functions in netlify/edge-functions/ are automatically discovered
-# The function rss-proxy.ts will be available at /rss-proxy
+# Security baseline
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
 
-# Plugin configuration (optional - if you're using Netlify plugins)
-# Examples:
-# [[plugins]]
-#   package = "@netlify/plugin-sitemap"
-#
-# [[plugins]]
-#   package = "@netlify/plugin-submit-sitemap"
-#   [plugins.inputs]
-#     sitemap_url = "https://localgovernmentreorganisation.co.uk/sitemap.xml"
+# Block admin pages from indexing via HTTP header
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+# Cache Vite's hashed assets aggressively
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# HTML must revalidate so crawlers get latest pre-rendered version
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Sitemap: short cache
+[[headers]]
+  for = "/sitemap.xml"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+    Content-Type = "application/xml"
+
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"

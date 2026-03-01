@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { ArrowRight, Calendar, Vote, BookOpen, Quote, Headphones, Hand, Map } from 'lucide-react';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import ThemeChip from '../components/ThemeChip';
@@ -30,6 +31,7 @@ export default function Tools(_props: ToolsProps) {
 
   return (
     <div className="min-h-screen bg-academic-cream">
+      <SEOHead page="tools" />
       <MetaTags
         title="Tools and Practical Resources - LGR Initiative"
         description="Practical tools and resources for Local Government Reorganisation including the LGR Timetable & Governance Roadmap, Election & Representation Models, First 100 Days Playbook, Lessons Library, and Podcast."

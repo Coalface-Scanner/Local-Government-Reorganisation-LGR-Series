@@ -1,4 +1,5 @@
 import TopicHub from '../../components/TopicHub';
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 
 interface StatecraftAndSystemDesignProps {
@@ -8,6 +9,7 @@ interface StatecraftAndSystemDesignProps {
 export default function StatecraftAndSystemDesign({ onNavigate }: StatecraftAndSystemDesignProps) {
   return (
     <>
+      <SEOHead page="topicsStatecraft" />
       <MetaTags
         title="Statecraft and System Design - Thought Leadership Hub"
         description="Formal structures alone do not determine whether a council functions well. Outcomes are shaped by judgment, sequencing and how political authority is exercised in practice."

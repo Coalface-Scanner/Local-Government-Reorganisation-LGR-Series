@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
 import PageBanner from '../../components/PageBanner';
 import OptimizedImage from '../../components/OptimizedImage';
@@ -58,6 +59,7 @@ export default function CharlieMoir() {
 
   return (
     <div className="bg-academic-cream min-h-screen">
+      <SEOHead page="charlieMoir" />
       <MetaTags
         title="Charlie Moir | Digital Participation Adviser | Local Government Reorganisation Initiative"
         description="Charlie Moir contributes digital engagement and resident insight expertise to the Local Government Reorganisation Initiative, specialising in data led participation and community insight in local government reform."

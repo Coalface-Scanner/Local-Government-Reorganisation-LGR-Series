@@ -1,6 +1,7 @@
 import { Mail, Send, MessageSquare, FileText, ArrowRight, Phone, Twitter } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import ContactForm from '../components/ContactForm';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import { usePageContent } from '../hooks/usePageContent';
@@ -28,6 +29,7 @@ export default function Contact({ onNavigate }: ContactProps) {
   const cardSubscribeLink = getSection('card_subscribe_link');
   return (
     <div className="bg-academic-cream min-h-screen">
+      <SEOHead page="contact" />
       <MetaTags
         title="Contact - Editorial Team & Inquiries"
         description="Get in touch with the LGR Initiative editorial team. For editorial inquiries, research questions, contributions, or newsletter subscriptions."

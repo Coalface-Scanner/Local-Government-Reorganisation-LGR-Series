@@ -3,6 +3,7 @@
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { getGlossaryTerm, generateMetadata } from '../../../lib/glossaryData';
 import GlossaryTermClient from '../../../components/glossary/GlossaryTermClient';
+import { SEOHead } from '../../../components/SEOHead';
 import MetaTags from '../../../components/MetaTags';
 import PageBanner from '../../../components/PageBanner';
 import DefinedTermSchema from '../../../components/glossary/DefinedTermSchema';
@@ -45,6 +46,14 @@ export default function GlossaryTermPage() {
 
   return (
     <>
+      <SEOHead
+        page="glossary"
+        overrides={{
+          title: `What is ${term.term}? | LGR Initiative`,
+          description: metadata.description,
+          path: `/glossary/${slug}`,
+        }}
+      />
       <MetaTags 
         title={`What is ${term.term}?`}
         description={metadata.description}

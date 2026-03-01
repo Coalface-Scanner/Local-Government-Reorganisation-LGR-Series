@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { LogOut, Home, FileText, List, BookOpen, MessageSquare, Video, Layout, Bell, HelpCircle, Newspaper, Edit3, Menu, X, Settings, Globe, Tag, Archive } from 'lucide-react';
+import { SEOHead } from '../../components/SEOHead';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import MaterialsEditor from './MaterialsEditor';
@@ -176,6 +177,7 @@ export default function AdminDashboard({ onNavigate }: AdminDashboardProps) {
 
   return (
     <div className="min-h-screen bg-slate-50">
+      <SEOHead page="adminDashboard" />
       {/* Mobile menu button */}
       <div className="lg:hidden bg-slate-900 text-white p-4 flex items-center justify-between sticky top-0 z-40">
         <h1 className="text-lg font-bold">CMS Admin</h1>

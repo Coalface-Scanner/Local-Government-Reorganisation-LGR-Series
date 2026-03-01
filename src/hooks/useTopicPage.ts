@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { prerenderSafe } from '../utils/prerender';
 
 interface TopicPage {
   id: string;
@@ -28,11 +29,10 @@ export function useTopicPage(themeSlug: string): UseTopicPageResult {
         setLoading(true);
         setError(null);
         
-        const { data, error: fetchError } = await supabase
-          .from('topic_pages')
-          .select('*')
-          .eq('theme_slug', themeSlug)
-          .maybeSingle();
+        const { data, error: fetchError } = await prerenderSafe(
+          supabase.from('topic_pages').select('*').eq('theme_slug', themeSlug).maybeSingle(),
+          { data: null, error: null }
+        );
 
         if (fetchError) {
           throw fetchError;

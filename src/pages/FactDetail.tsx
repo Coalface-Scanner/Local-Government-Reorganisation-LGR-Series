@@ -1,6 +1,8 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { prerenderSafe } from '../utils/prerender';
+import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
 import ArticleStructuredData from '../components/ArticleStructuredData';
@@ -50,10 +52,10 @@ export default function FactDetail() {
   const fetchFact = useCallback(async () => {
     setLoading(true);
     // Generate slug from title for matching
-    const { data: facts, error } = await supabase
-      .from('facts')
-      .select('*')
-      .order('order_index');
+    const { data: facts, error } = await prerenderSafe(
+      supabase.from('facts').select('*').order('order_index'),
+      { data: [], error: null }
+    );
 
     if (error) {
       setNotFound(true);
@@ -172,8 +174,17 @@ export default function FactDetail() {
     return fullTitle.length > maxTitleLength ? fullTitle.substring(0, maxTitleLength - 3) + '...' : fullTitle;
   };
 
+  const factSlug = slug || (fact ? generateSlug(fact.title) : '');
   return (
     <>
+      <SEOHead
+        page="factsKeyFacts"
+        overrides={{
+          title: `${fact.title} | LGR Initiative`,
+          description: fact.content?.replace(/<[^>]*>/g, '').substring(0, 160) || fact.title,
+          path: `/facts/${factSlug}`,
+        }}
+      />
       <PageBanner
         heroLabel={fact.category ? fact.category.toUpperCase() : 'FACTS & FIGURES'}
         heroTitle={fact.title}
