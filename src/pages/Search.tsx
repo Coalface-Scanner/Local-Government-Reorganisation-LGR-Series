@@ -133,7 +133,7 @@ export default function Search({ onNavigate }: SearchProps) {
     const shouldSearchType = (type: string) => filters.type === 'all' || filters.type === type;
 
     const trimmed = searchQuery.trim();
-    const sanitizedQuery = trimmed.replace(/[%_\\]/g, '\\$&');
+    const _sanitizedQuery = trimmed.replace(/[%_\\]/g, '\\$&');
     // For multi-word: build OR of each word so we match docs containing any word, then rank by match count
     const searchWords = trimmed ? trimmed.split(/\s+/).filter(Boolean).map((w) => w.replace(/[%_\\]/g, '\\$&')) : [];
 

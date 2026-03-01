@@ -22,7 +22,7 @@
 export function isPrerendering(): boolean {
   return (
     typeof window !== "undefined" &&
-    // @ts-ignore - set by prerender plugin
+    // @ts-expect-error - set by prerender plugin
     (window.__PRERENDER_INJECTED !== undefined ||
       navigator.userAgent.includes("HeadlessChrome"))
   );
