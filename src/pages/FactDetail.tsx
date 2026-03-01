@@ -54,7 +54,7 @@ export default function FactDetail() {
     // Generate slug from title for matching
     const { data: facts, error } = await prerenderSafe(
       supabase.from('facts').select('*').order('order_index'),
-      { data: [], error: null }
+      { data: [], error: null } as any
     );
 
     if (error) {

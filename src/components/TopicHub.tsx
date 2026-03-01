@@ -100,7 +100,7 @@ export default function TopicHub({
         // Try featured articles first - check theme OR category field
         const { data: featuredData, error: featuredError } = await prerenderSafe(
           supabase.from('articles').select('id, title, slug, excerpt, featured_image, published_date, featured, featured_theme, theme, category').eq('status', 'published').eq('featured_theme', true).or(allConditions).order('published_date', { ascending: false }).limit(1).maybeSingle(),
-          { data: null, error: null }
+          { data: null, error: null } as any
         );
 
         if (featuredError && import.meta.env.DEV) {
@@ -116,7 +116,7 @@ export default function TopicHub({
           // If no featured article, get the most recent one
           const { data: recentData, error: recentError } = await prerenderSafe(
             supabase.from('articles').select('id, title, slug, excerpt, featured_image, published_date, featured, featured_theme, theme, category').eq('status', 'published').or(allConditions).order('published_date', { ascending: false }).limit(1).maybeSingle(),
-            { data: null, error: null }
+            { data: null, error: null } as any
           );
           
           if (recentError && import.meta.env.DEV) {
@@ -138,7 +138,7 @@ export default function TopicHub({
         // Fetch related articles (excluding pillar if it exists)
         const { data: articlesData, error: articlesError } = await prerenderSafe(
           supabase.from('articles').select('id, title, slug, excerpt, featured_image, published_date, featured, featured_theme, theme, category').eq('status', 'published').or(allConditions).order('published_date', { ascending: false }).limit(12),
-          { data: [], error: null }
+          { data: [], error: null } as any
         );
 
         if (articlesError && import.meta.env.DEV) {

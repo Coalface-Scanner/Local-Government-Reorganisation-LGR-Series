@@ -73,7 +73,7 @@ export default function KeyFacts() {
     const fetchFacts = async () => {
       const { data, error } = await prerenderSafe(
         supabase.from('facts').select('*').order('order_index'),
-        { data: [], error: null }
+        { data: [], error: null } as any
       );
 
       if (!error && data) {

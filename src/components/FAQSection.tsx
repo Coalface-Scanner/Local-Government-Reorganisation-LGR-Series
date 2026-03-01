@@ -40,7 +40,7 @@ export default function FAQSection({ page, minItems = DEFAULT_MIN_ITEMS, maxItem
     async function fetchFAQs() {
       const { data, error } = await prerenderSafe(
         supabase.from('faqs').select('*').eq('page', page).order('order_index', { ascending: true }),
-        { data: [], error: null }
+        { data: [], error: null } as any
       );
 
       if (error) {

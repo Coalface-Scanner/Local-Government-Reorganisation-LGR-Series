@@ -9,7 +9,7 @@ export default function LastUpdated() {
     async function fetchLastUpdated() {
       const { data, error } = await prerenderSafe(
         supabase.from('site_metadata').select('last_updated').eq('id', 1).maybeSingle(),
-        { data: null, error: null }
+        { data: null, error: null } as any
       );
 
       if (data && !error) {

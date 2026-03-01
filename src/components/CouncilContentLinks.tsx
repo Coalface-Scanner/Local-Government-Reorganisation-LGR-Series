@@ -31,7 +31,7 @@ export default function CouncilContentLinks({ councilName, maxItems = 6 }: Counc
         // Search for articles mentioning this council
         const { data: articles } = await prerenderSafe(
           supabase.from('articles').select('id, title, slug, excerpt, geography, region').eq('status', 'published').or(`geography.ilike.%${councilName}%,region.ilike.%${councilName}%,title.ilike.%${councilName}%,body.ilike.%${councilName}%`).limit(3),
-          { data: [], error: null }
+          { data: [], error: null } as any
         );
 
         if (articles) {
@@ -49,7 +49,7 @@ export default function CouncilContentLinks({ councilName, maxItems = 6 }: Counc
         // Search for materials mentioning this council
         const { data: materials } = await prerenderSafe(
           supabase.from('materials').select('id, title, slug, description, geography').or(`geography.ilike.%${councilName}%,title.ilike.%${councilName}%,description.ilike.%${councilName}%,content.ilike.%${councilName}%`).limit(2),
-          { data: [], error: null }
+          { data: [], error: null } as any
         );
 
         if (materials) {
@@ -67,7 +67,7 @@ export default function CouncilContentLinks({ councilName, maxItems = 6 }: Counc
         // Search for facts mentioning this council (in content)
         const { data: facts } = await prerenderSafe(
           supabase.from('facts').select('id, title, content').ilike('content', `%${councilName}%`).limit(2),
-          { data: [], error: null }
+          { data: [], error: null } as any
         );
 
         if (facts) {

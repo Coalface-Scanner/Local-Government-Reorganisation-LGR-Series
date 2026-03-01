@@ -55,7 +55,7 @@ export default function Insights({ onNavigate }: InsightsProps) {
       }
       const { data, error: fetchError } = await prerenderSafe(
         supabase.from('articles').select('*').eq('status', 'published').order('published_date', { ascending: false }),
-        { data: [], error: null }
+        { data: [], error: null } as any
       );
 
       if (fetchError) {

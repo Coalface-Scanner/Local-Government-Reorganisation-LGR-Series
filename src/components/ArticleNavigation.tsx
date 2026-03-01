@@ -35,13 +35,13 @@ export default function ArticleNavigation({ currentSlug, currentPublishedDate, o
       // Fetch previous article (older)
       const { data: prevData } = await prerenderSafe(
         supabase.from('articles').select('id, title, slug').eq('status', 'published').lt('published_date', currentPublishedDate).order('published_date', { ascending: false }).limit(1).maybeSingle(),
-        { data: null, error: null }
+        { data: null, error: null } as any
       );
 
       // Fetch next article (newer)
       const { data: nextData } = await prerenderSafe(
         supabase.from('articles').select('id, title, slug').eq('status', 'published').gt('published_date', currentPublishedDate).order('published_date', { ascending: true }).limit(1).maybeSingle(),
-        { data: null, error: null }
+        { data: null, error: null } as any
       );
 
       if (prevData) {

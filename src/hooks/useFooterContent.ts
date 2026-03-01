@@ -35,7 +35,7 @@ export function useFooterContent(): UseFooterContentResult {
         const { prerenderSafe } = await import('../utils/prerender');
         const { data, error: fetchError } = await prerenderSafe(
           supabase.from('footer_content').select('*').order('order_index'),
-          { data: [], error: null }
+          { data: [], error: null } as any
         );
         if (fetchError) throw fetchError;
         setContent(data || []);

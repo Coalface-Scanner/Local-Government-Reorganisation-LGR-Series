@@ -71,7 +71,7 @@ export default function Reorganisations({ onNavigate: _onNavigate }: Reorganisat
       }
       const { data, error: fetchError } = await prerenderSafe(
         supabase.from('lgr_reorganisations').select('*').order('year', { ascending: false }),
-        { data: [], error: null }
+        { data: [], error: null } as any
       );
 
       if (fetchError) {

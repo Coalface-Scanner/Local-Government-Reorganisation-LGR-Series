@@ -51,7 +51,7 @@ export default function Reports({ onNavigate }: ReportsProps) {
     try {
       const { data, error } = await prerenderSafe(
         supabase.from('materials').select('*').eq('format', 'Report').order('published_date', { ascending: false }),
-        { data: [], error: null }
+        { data: [], error: null } as any
       );
 
       if (error) {

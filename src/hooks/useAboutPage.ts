@@ -29,7 +29,7 @@ export function useAboutPage(pageSlug: string): UseAboutPageResult {
         
         const { data, error: fetchError } = await prerenderSafe(
           supabase.from('about_pages').select('*').eq('page_slug', pageSlug).maybeSingle(),
-          { data: null, error: null }
+          { data: null, error: null } as any
         );
 
         if (fetchError) {

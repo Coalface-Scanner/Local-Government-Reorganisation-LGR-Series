@@ -31,7 +31,7 @@ export function useTopicPage(themeSlug: string): UseTopicPageResult {
         
         const { data, error: fetchError } = await prerenderSafe(
           supabase.from('topic_pages').select('*').eq('theme_slug', themeSlug).maybeSingle(),
-          { data: null, error: null }
+          { data: null, error: null } as any
         );
 
         if (fetchError) {

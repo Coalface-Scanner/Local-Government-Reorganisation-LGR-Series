@@ -73,7 +73,7 @@ export default function Topics({ onNavigate }: TopicsProps) {
         // Fetch all published articles once
         const { data: allArticles } = await prerenderSafe(
           supabase.from('articles').select('id, title, slug, excerpt, featured_image, published_date, featured, content_type, featured_theme, theme, category').eq('status', 'published').order('published_date', { ascending: false }),
-          { data: [], error: null }
+          { data: [], error: null } as any
         );
 
         // Helper function to check if an article matches a theme

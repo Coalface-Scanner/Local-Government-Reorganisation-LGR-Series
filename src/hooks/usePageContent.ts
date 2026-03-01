@@ -32,7 +32,7 @@ export function usePageContent(pageSlug: string): UsePageContentResult {
         
         const { data, error: fetchError } = await prerenderSafe(
           supabase.from('page_content').select('*').eq('page_slug', pageSlug).order('order_index'),
-          { data: [], error: null }
+          { data: [], error: null } as any
         );
 
         if (fetchError) {

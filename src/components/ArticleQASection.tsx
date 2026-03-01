@@ -25,7 +25,7 @@ export default function ArticleQASection({ articleSlug }: ArticleQASectionProps)
     async function fetchQAs() {
       const { data, error } = await prerenderSafe(
         supabase.from('article_qa').select('*').eq('article_slug', articleSlug).order('order_index', { ascending: true }),
-        { data: [], error: null }
+        { data: [], error: null } as any
       );
 
       if (!error && data) {
