@@ -3,6 +3,7 @@ import { useEffect, useState, lazy, Suspense } from 'react';
 import Footer from './components/Footer';
 import StayInformedBanner from './components/StayInformedBanner';
 import CookieBanner from './components/CookieBanner';
+import SurreySurveyPopup from './components/SurreySurveyPopup';
 import ErrorBoundary from './components/ErrorBoundary';
 import BackToTop from './components/BackToTop';
 import KeyboardShortcuts from './components/KeyboardShortcuts';
@@ -343,6 +344,7 @@ function AppContent() {
       <StayInformedBanner />
       <Footer onNavigate={handleNavigate} />
       <CookieBanner />
+      <SurreySurveyPopup />
       <BackToTop />
       <ScrollToTop />
     </div>

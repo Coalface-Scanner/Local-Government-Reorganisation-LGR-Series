@@ -143,8 +143,20 @@ export default function Navigation({ onNavigate: _onNavigate, currentPage: _curr
       >
         Skip to main content
       </a>
-      <div ref={topBannerRef} className="border-b border-teal-900 bg-teal-800 py-0.5" style={{ paddingLeft: 0, paddingRight: 0, margin: 0 }}>
-        <div className="layout-container relative" style={{ paddingTop: 0, paddingBottom: 0 }}>
+      <div ref={topBannerRef} className="border-b border-teal-900 bg-teal-800" style={{ paddingLeft: 0, paddingRight: 0, margin: 0 }}>
+        {/* Surrey Residents LGR Survey promotional banner */}
+        <a
+          href="https://lgri.commonplace.is/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-full bg-teal-700/80 hover:bg-teal-600/90 transition-colors py-1.5 px-4 text-center"
+          aria-label="Take the Surrey Residents LGR Survey"
+        >
+          <span className="text-white text-[0.625rem] sm:text-[0.6875rem] font-display font-bold tracking-wider">
+            Have your say: Surrey Residents LGR Survey →
+          </span>
+        </a>
+        <div className="layout-container relative py-0.5" style={{ paddingTop: 0, paddingBottom: 0 }}>
           <div className="flex justify-between items-center text-[0.625rem] md:text-[0.6875rem] tracking-wider text-white/95 font-display font-medium" style={{ lineHeight: '1.1', margin: 0, padding: 0 }}>
             <div className="hidden md:block" style={{ lineHeight: '1.1', margin: 0, padding: 0 }}>EST. 2025 | Formerly the LGR Series</div>
             <div className="md:hidden text-[0.5rem]" style={{ lineHeight: '1.1', margin: 0, padding: 0 }}>EST. 2025 | Formerly the LGR Series</div>
