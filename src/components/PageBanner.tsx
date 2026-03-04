@@ -2,7 +2,7 @@ import { useState, useRef, useLayoutEffect } from 'react';
 import type { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, ClipboardList } from 'lucide-react';
 import { getStandardPrimaryNavItems, getSecondaryNavItemsForPrimaryNav } from '../utils/pageNavigation';
 import { getBreadcrumbItems } from '../utils/breadcrumbRoutes';
 import Breadcrumbs from './Breadcrumbs';
@@ -40,6 +40,15 @@ interface PageBannerProps {
   breadcrumbCurrentLabel?: string;
   /** On hub pages: show a small inline link instead of the full breadcrumb strip */
   breadcrumbVariant?: 'full' | 'inline';
+}
+
+/** Survey closes end of 15 March (year from current date). */
+function getSurveyDaysLeft(): number | null {
+  const now = new Date();
+  const closeDate = new Date(now.getFullYear(), 2, 15, 23, 59, 59, 999); // end of 15 March
+  if (now > closeDate) return null; // survey closed
+  const msLeft = closeDate.getTime() - now.getTime();
+  return Math.ceil(msLeft / (24 * 60 * 60 * 1000));
 }
 
 /** Background image path for each hub hero (picture behind the banner). */
@@ -368,10 +377,10 @@ export default function PageBanner({
           document.body
         )}
 
-      {/* Hero Banner - z-0 so secondary nav pop-out (z-[100]/z-[110]) stays on top */}
+      {/* Hero Banner - z-0 so secondary nav pop-out (z-[100]/z-[110]) stays on top. Home: content + Surrey banner, no stretch so no gap. */}
       <div 
         className={`relative z-0 overflow-hidden ${
-          isHomepage ? 'min-h-[180px] sm:min-h-[200px] md:min-h-[220px] lg:min-h-[240px]' 
+          isHomepage ? 'min-h-[480px] flex flex-col' 
           : heroVariant && HUB_HERO_BACKGROUNDS[heroVariant] ? 'min-h-[200px] sm:min-h-[240px] md:min-h-[280px] lg:min-h-[320px]' 
           : ''
         }`}
@@ -419,7 +428,7 @@ export default function PageBanner({
         />
         
         <div className={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${
-          isHomepage ? 'py-8 sm:py-10 md:py-12 lg:py-14' 
+          isHomepage ? 'pt-8 sm:pt-10 md:pt-12 lg:pt-14 pb-6 sm:pb-8' 
           : heroVariant && HUB_HERO_BACKGROUNDS[heroVariant] ? 'py-8 sm:py-10 md:py-12 lg:py-14' 
           : 'py-3 sm:py-4 md:py-5 lg:py-6'
         }`}>
@@ -453,7 +462,7 @@ export default function PageBanner({
                     THE ROAD TO LGR
                   </Link>
                 </div>
-                <p className="mt-10 text-white/95 text-[0.7rem] sm:text-[0.75rem] leading-relaxed font-display max-w-[72%]">
+                <p className="mt-6 mb-0 text-white/95 text-[0.7rem] sm:text-[0.75rem] leading-relaxed font-display max-w-[72%]">
                   The LGR Initiative was formed by a partnership between Coalface Engagement Ltd and the Centre for Britain and Europe, University of Surrey, along with others. To learn more{' '}
                   <Link to="/about/partnership" className="text-teal-200 hover:text-white underline transition-colors">
                     read about our partnership
@@ -518,6 +527,27 @@ export default function PageBanner({
             )}
           </div>
         </div>
+        {/* Surrey Residents LGR Survey banner – pinned to bottom of hero (home page only). Closes end of 15 March. */}
+        {isHomepage && (() => {
+          const daysLeft = getSurveyDaysLeft();
+          return (
+            <a
+              href="https://lgri.commonplace.is/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="survey-banner-glow flex-shrink-0 relative z-10 flex items-center justify-center gap-2 sm:gap-4 w-full bg-gradient-to-r from-sky-700 via-corporate-blue-700 to-sky-800 hover:from-sky-600 hover:via-corporate-blue-600 hover:to-sky-700 transition-colors py-3 sm:py-4 px-4 text-center text-white font-display font-bold text-sm sm:text-base tracking-wider border-t border-sky-500/50"
+              aria-label="Take the Surrey Residents LGR Survey"
+            >
+              <ClipboardList size={18} className="flex-shrink-0 text-white" aria-hidden />
+              <span>Have your say: Surrey Residents LGR Survey →</span>
+              {daysLeft !== null && (
+                <span className="flex-shrink-0 font-display font-bold text-white/95 text-xs sm:text-sm">
+                  {daysLeft === 0 ? 'Last day' : `Only ${daysLeft} day${daysLeft === 1 ? '' : 's'} left`}
+                </span>
+              )}
+            </a>
+          );
+        })()}
       </div>
 
       {/* Breadcrumb: full strip or minimal inline (hub pages) */}

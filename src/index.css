@@ -727,6 +727,19 @@
   animation: fade-in 0.3s ease-out;
 }
 
+@keyframes survey-banner-glow {
+  0%, 100% {
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08), 0 0 20px rgba(56, 189, 248, 0.25), 0 0 40px rgba(56, 189, 248, 0.1);
+  }
+  50% {
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08), 0 0 28px rgba(56, 189, 248, 0.35), 0 0 56px rgba(56, 189, 248, 0.15);
+  }
+}
+
+.survey-banner-glow {
+  animation: survey-banner-glow 4s ease-in-out infinite;
+}
+
 /* Print styles */
 @media print {
   @page {
