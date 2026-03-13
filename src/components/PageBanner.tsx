@@ -42,10 +42,10 @@ interface PageBannerProps {
   breadcrumbVariant?: 'full' | 'inline';
 }
 
-/** Survey closes end of 15 March (year from current date). */
+/** Survey closes end of 22 March (year from current date). */
 function getSurveyDaysLeft(): number | null {
   const now = new Date();
-  const closeDate = new Date(now.getFullYear(), 2, 15, 23, 59, 59, 999); // end of 15 March
+  const closeDate = new Date(now.getFullYear(), 2, 22, 23, 59, 59, 999); // end of 22 March
   if (now > closeDate) return null; // survey closed
   const msLeft = closeDate.getTime() - now.getTime();
   return Math.ceil(msLeft / (24 * 60 * 60 * 1000));
@@ -461,6 +461,14 @@ export default function PageBanner({
                   >
                     THE ROAD TO LGR
                   </Link>
+                  <a
+                    href="https://lgri.commonplace.is/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-5 py-3 sm:px-6 sm:py-3.5 bg-amber-500 text-slate-900 hover:bg-amber-400 font-display font-bold text-sm sm:text-base uppercase tracking-wider rounded-lg transition-all shadow-lg hover:shadow-xl border-2 border-amber-600 hover:border-amber-500"
+                  >
+                    Surrey LGR Survey
+                  </a>
                 </div>
                 <p className="mt-6 mb-0 text-white/95 text-[0.7rem] sm:text-[0.75rem] leading-relaxed font-display max-w-[72%]">
                   The LGR Initiative was formed by a partnership between Coalface Engagement Ltd and the Centre for Britain and Europe, University of Surrey, along with others. To learn more{' '}
@@ -527,7 +535,7 @@ export default function PageBanner({
             )}
           </div>
         </div>
-        {/* Surrey Residents LGR Survey banner – pinned to bottom of hero (home page only). Closes end of 15 March. */}
+        {/* Surrey Residents LGR Survey banner – pinned to bottom of hero (home page only). Closes end of 22 March. */}
         {isHomepage && (() => {
           const daysLeft = getSurveyDaysLeft();
           return (
@@ -535,14 +543,14 @@ export default function PageBanner({
               href="https://lgri.commonplace.is/"
               target="_blank"
               rel="noopener noreferrer"
-              className="survey-banner-glow flex-shrink-0 relative z-10 flex items-center justify-center gap-2 sm:gap-4 w-full bg-gradient-to-r from-sky-700 via-corporate-blue-700 to-sky-800 hover:from-sky-600 hover:via-corporate-blue-600 hover:to-sky-700 transition-colors py-3 sm:py-4 px-4 text-center text-white font-display font-bold text-sm sm:text-base tracking-wider border-t border-sky-500/50"
+              className="survey-banner-glow flex-shrink-0 relative z-10 flex items-center justify-center gap-2 sm:gap-4 w-full bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:via-yellow-300 hover:to-amber-400 transition-colors py-3 sm:py-4 px-4 text-center text-slate-900 font-display font-bold text-sm sm:text-base tracking-wider border-t border-amber-600/50"
               aria-label="Take the Surrey Residents LGR Survey"
             >
-              <ClipboardList size={18} className="flex-shrink-0 text-white" aria-hidden />
+              <ClipboardList size={18} className="flex-shrink-0 text-slate-900" aria-hidden />
               <span>Have your say: Surrey Residents LGR Survey →</span>
               {daysLeft !== null && (
-                <span className="flex-shrink-0 font-display font-bold text-white/95 text-xs sm:text-sm">
-                  {daysLeft === 0 ? 'Last day' : `Only ${daysLeft} day${daysLeft === 1 ? '' : 's'} left`}
+                <span className="flex-shrink-0 font-display font-bold text-slate-900 text-xs sm:text-sm">
+                  {daysLeft === 0 ? 'Extended deadline, last day to vote' : `Extended deadline, ${daysLeft} day${daysLeft === 1 ? '' : 's'} left to vote`}
                 </span>
               )}
             </a>
