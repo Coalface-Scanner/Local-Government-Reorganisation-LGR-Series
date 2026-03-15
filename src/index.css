@@ -845,6 +845,7 @@
   pointer-events: none;
   overflow: hidden;
   min-height: 100%;
+  opacity: 0.35;
 }
 
 .roadmap-map-bg__svg {
@@ -914,6 +915,27 @@
 
 .milestone-card-expanded {
   padding: 20px 20px 0;
+}
+
+/* Wave-specific card accents */
+.milestone-card--wave-1 {
+  border-left: 8px solid #0f766e;
+  background: linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%);
+}
+
+.milestone-card--wave-2 {
+  border-left: 6px solid #0284c7;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+}
+
+.milestone-card--pipeline {
+  border-left: 4px solid #94a3b8;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.milestone-card--all-waves {
+  border-left: 8px solid;
+  border-image: linear-gradient(to bottom, #0f766e 33%, #0284c7 33%, #0284c7 66%, #94a3b8 66%) 1;
 }
 
 /* Programme sequencing intro – left of road at top, ensure fully visible */
@@ -1093,25 +1115,7 @@
   height: 56px;
 }
 
-/* Roadmap legend - fixed in corner */
-.roadmap-legend__swatch {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 2px;
-}
-
-.roadmap-legend__swatch--surrey {
-  background: #374151;
-}
-
-.roadmap-legend__swatch--dpp {
-  background: #6b7280;
-}
-
-.roadmap-legend__swatch--other {
-  background: #9ca3af;
-}
+/* Roadmap legend - fixed in corner (swatches now inline in component) */
 
 /* Political Weather Report - compact when in sidebar */
 .grid .political-weather-report {

@@ -16,6 +16,7 @@ import {
   UKJunctionSign,
   BentRoad,
   PoliticalWeatherReport,
+  RoadmapLegend,
 } from '../components/roadmap';
 import type { RoadmapFilters } from '../components/roadmap';
 import {
@@ -313,12 +314,8 @@ export default function JourneyMap({ onNavigate: _onNavigate }: JourneyMapProps)
 
       <div className="flex flex-col lg:flex-row">
         <main className="relative flex-1 min-w-0 max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 w-full roadmap-content roadmap-main roadmap-with-scale">
-          <div className="opacity-40 pointer-events-none">
-            <MapBackground />
-          </div>
-          <div className="opacity-50 pointer-events-none">
-            <BentRoad />
-          </div>
+          <MapBackground />
+          <BentRoad />
 
           {/* Timeline scale - left side, above intro so signs stay visible */}
           <div className="roadmap-timeline-scale absolute left-2 top-0 bottom-0 z-20 hidden md:flex flex-col justify-between py-20 text-[10px] font-display font-semibold text-academic-neutral-500">
@@ -533,6 +530,8 @@ export default function JourneyMap({ onNavigate: _onNavigate }: JourneyMapProps)
           </div>
         </div>
       )}
+
+      <RoadmapLegend />
 
       <FAQSection page="roadmap" />
 
