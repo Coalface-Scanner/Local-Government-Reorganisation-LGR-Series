@@ -12,6 +12,38 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
 
   return (
     <footer className="bg-academic-charcoal/95 text-academic-neutral-300 mt-16">
+      {/* Organization structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "Coalface Engagement Ltd",
+            alternateName: "COALFACE®",
+            url: "https://coalfaceengagement.co.uk",
+            logo: "https://localgovernmentreorganisation.co.uk/logo.png",
+            description: "Communications and stakeholder engagement consultancy specialising in planning, local government strategy and political communications.",
+            address: {
+              "@type": "PostalAddress",
+              streetAddress: "Prebend House, 72 London Road",
+              addressLocality: "Leicester",
+              postalCode: "LE2 0QR",
+              addressCountry: "GB"
+            },
+            sameAs: [
+              "https://x.com/LGRInitiative",
+              "https://www.linkedin.com/showcase/local-government-reorganisation",
+              "https://find-and-update.company-information.service.gov.uk/company/11741464"
+            ],
+            contactPoint: {
+              "@type": "ContactPoint",
+              email: "office@lgr-initiative.co.uk",
+              contactType: "general enquiries"
+            }
+          })
+        }}
+      />
       <div className="layout-container">
         {/* Main Footer Content */}
         <div className="py-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-8">
@@ -144,7 +176,17 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
             <h3 className="text-white font-display font-semibold text-sm mb-3">Published by:</h3>
             <div className="text-sm text-academic-neutral-200 space-y-2 font-serif">
               <p className="whitespace-nowrap">Coalface Engagement Ltd</p>
-              <p className="text-academic-xs text-academic-neutral-300">(11741464)</p>
+              <p className="text-academic-xs text-academic-neutral-300">
+                <a
+                  href="https://find-and-update.company-information.service.gov.uk/company/11741464"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-teal-400 transition-colors"
+                  aria-label="View Coalface Engagement Ltd on Companies House"
+                >
+                  (11741464)
+                </a>
+              </p>
               <p>Prebend House, 72 London Road</p>
               <p>Leicester, LE2 0QR</p>
               <div className="pt-2 space-y-1">
@@ -160,7 +202,7 @@ export default function Footer({ onNavigate: _onNavigate }: FooterProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="min-w-[44px] min-h-[44px] w-10 h-10 flex items-center justify-center text-academic-neutral-200 hover:text-teal-400 transition-colors"
-                  aria-label="Follow on Twitter"
+                  aria-label="Follow on X (formerly Twitter)"
                 >
                   <Twitter size={18} aria-hidden="true" />
                 </a>

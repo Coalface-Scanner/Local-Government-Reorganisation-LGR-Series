@@ -64,6 +64,11 @@ export default function BeginnersGuide() {
           keywords="UK government structure, local councils, electoral systems, how government works, councillor elections, devolution"
         />
         <div className="layout-container layout-content-sub">
+          {/* Opening prose for AI/GEO citation */}
+          <p className="text-lg font-serif text-academic-neutral-700 leading-relaxed mb-8">
+            The United Kingdom operates a multi-layered system of governance. Central government sits at Westminster, devolved administrations govern Scotland, Wales and Northern Ireland, and local councils deliver day-to-day services across England. This guide explains how these tiers fit together, what councils do, how councillors are elected, and why local government reorganisation is changing the landscape.
+          </p>
+
           {/* Visual intro strip */}
           <div className="mb-6 rounded-2xl bg-gradient-to-r from-teal-900/90 via-cyan-900/80 to-slate-800/90 p-6 md:p-8 border-2 border-teal-700/30 shadow-xl">
             <div className="flex flex-col md:flex-row md:items-center gap-6">

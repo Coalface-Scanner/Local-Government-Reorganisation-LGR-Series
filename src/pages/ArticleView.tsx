@@ -288,8 +288,8 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
       <SEOHead
         page="insights"
         overrides={{
-          title: `${article.title} | LGR Initiative`,
-          description: article.excerpt || article.title,
+          title: `${getTitle()} | LGR Initiative`,
+          description: getDescription(),
           path: `/insights/${article.slug}`,
           ogImage: article.featured_image || undefined,
           datePublished: article.published_date || undefined,

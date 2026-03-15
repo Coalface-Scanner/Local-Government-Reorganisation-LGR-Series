@@ -49,8 +49,8 @@ export default function MetaTags({
   keywords,
   ogType = 'website',
   ogImage = '/LGRI-Open-Graph.png',
-  ogImageWidth = 600,
-  ogImageHeight = 350,
+  ogImageWidth = 1200,
+  ogImageHeight = 630,
   ogImageAlt = 'Local Government Reorganisation Initiative',
   ogTitle,
   ogDescription,
@@ -108,6 +108,7 @@ export default function MetaTags({
       { property: 'og:image:width', content: toMetaContent(ogImageWidth) },
       { property: 'og:image:height', content: toMetaContent(ogImageHeight) },
       { property: 'og:image:alt', content: toMetaContent(ogImageAlt) },
+      { property: 'og:image:type', content: 'image/png' },
       { property: 'og:site_name', content: 'LGR Initiative' },
       { property: 'og:locale', content: 'en_GB' },
       { name: 'twitter:card', content: 'summary_large_image' },
@@ -115,9 +116,7 @@ export default function MetaTags({
       { name: 'twitter:description', content: toMetaContent(finalOgDescription) },
       { name: 'twitter:image', content: toMetaContent(fullOgImage) },
       { name: 'geo.region', content: 'GB' },
-      { name: 'geo.placename', content: 'United Kingdom' },
-      { name: 'geo.position', content: '51.5074;-0.1278' },
-      { name: 'ICBM', content: '51.5074, -0.1278' },
+      { name: 'geo.placename', content: 'England' },
     ];
 
     const normalizedKeywords = toMetaContent(keywords);

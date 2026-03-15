@@ -54,8 +54,13 @@ export function SEOHead({ page, overrides }: SEOHeadProps) {
       <meta property="og:image" content={ogImage} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
+      <meta property="og:image:type" content="image/png" />
       <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:locale" content={DEFAULT_LOCALE} />
+
+      {/* Hreflang — single English (GB) locale */}
+      <link rel="alternate" hrefLang="en-GB" href={canonicalUrl} />
+      <link rel="alternate" hrefLang="x-default" href={canonicalUrl} />
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
@@ -91,9 +96,8 @@ function buildJsonLd(seo: PageSEO, url: string, image: string) {
     url: SITE_URL,
     logo: `${SITE_URL}/logo.png`,
     sameAs: [
-      // Add your social profile URLs here:
-      // "https://www.linkedin.com/company/coalface-engagement",
-      // "https://twitter.com/...",
+      "https://x.com/LGRInitiative",
+      "https://www.linkedin.com/showcase/local-government-reorganisation",
     ],
     member: [
       {

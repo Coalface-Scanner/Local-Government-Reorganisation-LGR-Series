@@ -29,7 +29,7 @@ export interface PageSEO {
 export const SITE_URL = "https://localgovernmentreorganisation.co.uk";
 export const SITE_NAME = "LGR Initiative";
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-default.png`;
-export const TWITTER_HANDLE = ""; // e.g. "@CoalfaceLGR"
+export const TWITTER_HANDLE = "@LGRInitiative";
 export const DEFAULT_LOCALE = "en_GB";
 
 // ============================================================
@@ -192,8 +192,8 @@ export const pages: Record<string, PageSEO> = {
     title: "FAQ | Local Government Reorganisation Initiative",
     description: "Frequently asked questions about the LGR Initiative, our research, and local government reorganisation in England.",
     path: "/faq",
-    schemaType: "FAQPage",
-    sitemapPriority: 0.6,
+    schemaType: "WebPage",
+    sitemapPriority: 0.3,
     changefreq: "monthly",
   },
   first100Days: {
@@ -478,7 +478,7 @@ export const pages: Record<string, PageSEO> = {
     title: "Rowan Cole | Local Government Reorganisation — LGR Initiative Lead",
     description: "Rowan Cole is the co-lead of the LGR Initiative, former Surrey Councillor and founder of Coalface Engagement, specialising in local government reorganisation and governance.",
     path: "/rowan-cole-local-government-reorganisation",
-    schemaType: "Article",
+    schemaType: "WebPage",
     sitemapPriority: 0.5,
     changefreq: "yearly",
   },
@@ -486,7 +486,7 @@ export const pages: Record<string, PageSEO> = {
     title: "Professor Amelia Hadfield | Governance Reform — LGR Initiative",
     description: "Professor Amelia Hadfield is co-lead of the LGR Initiative and Director of the Centre for Britain and Europe at the University of Surrey.",
     path: "/professor-amelia-hadfield-governance-reform",
-    schemaType: "Article",
+    schemaType: "WebPage",
     sitemapPriority: 0.5,
     changefreq: "yearly",
   },
@@ -494,7 +494,7 @@ export const pages: Record<string, PageSEO> = {
     title: "Oliver Deed | Strategic Communications & Local Government",
     description: "Oliver Deed contributes strategic communications expertise to the LGR Initiative's work on local government reorganisation.",
     path: "/oliver-deed-strategic-communications-local-government",
-    schemaType: "Article",
+    schemaType: "WebPage",
     sitemapPriority: 0.4,
     changefreq: "yearly",
   },
@@ -502,7 +502,7 @@ export const pages: Record<string, PageSEO> = {
     title: "Matthew Masters | Local Government Leadership",
     description: "Matthew Masters brings local government leadership experience to the LGR Initiative.",
     path: "/matthew-masters-local-government-leadership",
-    schemaType: "Article",
+    schemaType: "WebPage",
     sitemapPriority: 0.4,
     changefreq: "yearly",
   },
@@ -510,7 +510,7 @@ export const pages: Record<string, PageSEO> = {
     title: "Charlie Moir | Digital Engagement & Local Government",
     description: "Charlie Moir leads digital engagement for the LGR Initiative's work on local government reorganisation.",
     path: "/charlie-moir-digital-engagement-local-government",
-    schemaType: "Article",
+    schemaType: "WebPage",
     sitemapPriority: 0.4,
     changefreq: "yearly",
   },

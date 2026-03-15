@@ -368,6 +368,11 @@ export default function Home({ onNavigate }: HomeProps) {
       />
 
       <div className="layout-container layout-content-hub">
+        {/* Opening statement for AI/GEO citation */}
+        <p className="text-academic-lg font-serif text-academic-neutral-700 leading-relaxed mb-12 max-w-4xl">
+          The Local Government Reorganisation Initiative is an independent research programme providing analysis, data and practical guidance on the restructuring of local government in England. Published by Coalface Engagement in partnership with the University of Surrey's Centre for Britain and Europe, the Initiative covers governance reform, democratic accountability, devolution and the transition from two-tier councils to new unitary authorities.
+        </p>
+
         {/* Article Grid Section */}
         {recentArticles.length > 0 && (
           <section className="mb-16">

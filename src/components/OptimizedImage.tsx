@@ -33,8 +33,14 @@ export default function OptimizedImage({
   objectPosition
 }: OptimizedImageProps) {
   const effectiveAlt = decorative ? '' : alt;
+  const decorativeProps = decorative ? { role: 'presentation' as const } : {};
   const [imageError, setImageError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Generate WebP source path for local images (not external URLs)
+  const webpSrc = src && !src.startsWith('http') && /\.(png|jpe?g)$/i.test(src)
+    ? src.replace(/\.(png|jpe?g)$/i, '.webp')
+    : null;
 
   const handleLoad = () => {
     setIsLoading(false);
@@ -89,28 +95,34 @@ export default function OptimizedImage({
       {variant === 'hero' && (
         <div className="academic-hero-overlay" />
       )}
-      <img
-        src={src}
-        alt={effectiveAlt}
-        loading={priority || variant === 'hero' ? 'eager' : loading}
-        fetchPriority={priority || variant === 'hero' ? 'high' : 'auto'}
-        decoding={priority || variant === 'hero' ? 'sync' : 'async'}
-        onLoad={handleLoad}
-        onError={handleError}
-        className={`${imageClasses} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
-        style={variant === 'thumbnail' ? {
-          objectFit: 'cover',
-          objectPosition: objectPosition ?? 'center',
-          width: '100%',
-          height: '100%',
-          minWidth: '100%',
-          minHeight: '100%',
-          display: 'block'
-        } : undefined}
-        sizes={sizes}
-        width={width}
-        height={height}
-      />
+      <picture>
+        {webpSrc && (
+          <source srcSet={webpSrc} type="image/webp" sizes={sizes} />
+        )}
+        <img
+          src={src}
+          alt={effectiveAlt}
+          {...decorativeProps}
+          loading={priority || variant === 'hero' ? 'eager' : loading}
+          fetchPriority={priority || variant === 'hero' ? 'high' : 'auto'}
+          decoding={priority || variant === 'hero' ? 'sync' : 'async'}
+          onLoad={handleLoad}
+          onError={handleError}
+          className={`${imageClasses} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
+          style={variant === 'thumbnail' ? {
+            objectFit: 'cover',
+            objectPosition: objectPosition ?? 'center',
+            width: '100%',
+            height: '100%',
+            minWidth: '100%',
+            minHeight: '100%',
+            display: 'block'
+          } : undefined}
+          sizes={sizes}
+          width={width}
+          height={height}
+        />
+      </picture>
     </div>
   );
 

@@ -13,6 +13,7 @@ export default function NotFound() {
       <MetaTags
         title="404 - Boundary Change in Progress | LGR"
         description="The page you're looking for has been abolished following a structural review."
+        noindex={true}
       />
       
       <div 

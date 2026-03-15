@@ -67,6 +67,15 @@ export default function WhatIsLGR() {
           slug="what-is-lgr"
         />
 
+        {/* Opening prose for AI/GEO citation */}
+        <section className="py-8" style={{ backgroundColor: 'var(--lgr-section-neutral)' }}>
+          <div className="layout-container layout-content-sub max-w-4xl">
+            <p className="text-lg font-serif text-academic-neutral-700 leading-relaxed">
+              Local Government Reorganisation (LGR) is the process of replacing England's two-tier council system — where county and district councils share responsibilities — with single-tier unitary authorities. The current wave, announced by the UK Government in 2024, will affect 21 county council areas and is expected to create around 55 new unitary councils by 2028. LGR changes how council tax is set, who delivers local services, and how residents are democratically represented.
+            </p>
+          </div>
+        </section>
+
         <WhatIsLGRAnchorBar />
 
         <WhyThisMattersNow />

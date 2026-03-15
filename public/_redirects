@@ -15,5 +15,8 @@
 /about/contribute    /about/contributors/contribute  301
 /about/partnership   /partnerships        301
 
+# FAQ deduplication — canonical Q&A page
+/faq                 /questions-and-answers           301
+
 # SPA fallback – all remaining routes serve index.html for client-side routing
 /* /index.html 200
