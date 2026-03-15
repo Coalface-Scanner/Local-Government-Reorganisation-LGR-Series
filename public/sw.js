@@ -1,9 +1,12 @@
-// Service Worker for LGR Series
-// Provides offline support and caching
+// Service Worker for LGR Initiative
+// Provides offline support with bounded caching and LRU eviction
 
-const CACHE_NAME = 'lgr-series-v2';
-const STATIC_CACHE_NAME = 'lgr-static-v2';
-const DYNAMIC_CACHE_NAME = 'lgr-dynamic-v2';
+const CACHE_VERSION = 'v3';
+const STATIC_CACHE_NAME = `lgr-static-${CACHE_VERSION}`;
+const DYNAMIC_CACHE_NAME = `lgr-dynamic-${CACHE_VERSION}`;
+
+// Maximum entries in the dynamic cache (LRU eviction beyond this)
+const MAX_DYNAMIC_CACHE_ENTRIES = 50;
 
 // Assets to cache on install
 const STATIC_ASSETS = [
@@ -38,6 +41,19 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
+// LRU eviction: trim cache to MAX_DYNAMIC_CACHE_ENTRIES
+async function trimCache(cacheName, maxEntries) {
+  const cache = await caches.open(cacheName);
+  const keys = await cache.keys();
+  if (keys.length > maxEntries) {
+    // Delete oldest entries (FIFO approximation of LRU)
+    const deleteCount = keys.length - maxEntries;
+    for (let i = 0; i < deleteCount; i++) {
+      await cache.delete(keys[i]);
+    }
+  }
+}
+
 // Fetch event - network first, fallback to cache
 self.addEventListener('fetch', (event) => {
   const { request } = event;
@@ -58,16 +74,26 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Skip analytics and third-party scripts
+  if (url.hostname.includes('googletagmanager.com') || url.hostname.includes('google-analytics.com')) {
+    return;
+  }
+
+  // Skip large media files from dynamic caching (over-aggressive caching)
+  const isLargeMedia = /\.(mp4|webm|ogg|mp3|wav|pdf|zip|tar|gz|docx)$/i.test(url.pathname);
+
   event.respondWith(
     fetch(request)
       .then((response) => {
         // Clone the response
         const responseToCache = response.clone();
 
-        // Cache successful responses
-        if (response.status === 200) {
+        // Cache successful responses (except large media)
+        if (response.status === 200 && !isLargeMedia) {
           caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
             cache.put(request, responseToCache);
+            // Trim cache after adding new entry
+            trimCache(DYNAMIC_CACHE_NAME, MAX_DYNAMIC_CACHE_ENTRIES);
           });
         }
 
@@ -85,8 +111,8 @@ self.addEventListener('fetch', (event) => {
             return caches.match('/index.html');
           }
 
-          // Return a basic offline page
-          return new Response('Offline - Please check your connection', {
+          // Return a basic offline response
+          return new Response('Offline — Please check your connection', {
             status: 503,
             headers: { 'Content-Type': 'text/plain' },
           });

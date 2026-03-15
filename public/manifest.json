@@ -10,9 +10,33 @@
   "icons": [
     {
       "src": "/lgr.png",
-      "sizes": "192x192",
+      "sizes": "120x120",
       "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "/lgr.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/lgr.png",
+      "sizes": "167x167",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/lgr.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/lgr.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "/lgr_banner.png",

@@ -1,36 +1,14 @@
 <!--
-  INDEX.HTML ADDITIONS
+  INDEX.HTML ADDITIONS (SEO Kit)
   ====================
-  Add these tags inside the <head> of your existing index.html.
-  These serve as FALLBACK meta tags for any page that hasn't
-  been pre-rendered. React Helmet will override them at runtime,
-  and the prerender plugin will bake in the correct values at
-  build time for pre-rendered pages.
+  NOTE: These tags are now integrated directly into index.html (consolidated March 2026).
+  This file is kept for reference only. Do NOT add these to index.html again.
 
-  Place them BEFORE the closing </head> tag.
--->
+  All meta tags have been consolidated into a single set to avoid duplicate tag issues.
+  The SEOHead React component overrides these at runtime for each page.
+  The vite-plugin-prerender-k bakes correct values at build time.
 
-<!-- Fallback SEO meta (overridden per-page by SEOHead component) -->
-<meta name="description" content="Independent research and practical guidance on Local Government Reorganisation (LGR). Toolkits, analysis and the 100 Days Playbook for councillors and officers navigating England's shift to unitary authorities." />
-<meta name="robots" content="index, follow" />
-<link rel="canonical" href="https://localgovernmentreorganisation.co.uk/" />
+  OG image standardised to 1200x630 (LGRI-Open-Graph.png).
 
-<!-- Open Graph fallback -->
-<meta property="og:type" content="website" />
-<meta property="og:title" content="Local Government Reorganisation | LGR Initiative" />
-<meta property="og:description" content="Independent research and practical guidance on LGR for councillors and officers." />
-<meta property="og:url" content="https://localgovernmentreorganisation.co.uk/" />
-<meta property="og:image" content="https://localgovernmentreorganisation.co.uk/og-default.png" />
-<meta property="og:site_name" content="LGR Initiative" />
-<meta property="og:locale" content="en_GB" />
-
-<!-- Twitter fallback -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Local Government Reorganisation | LGR Initiative" />
-<meta name="twitter:description" content="Independent research and practical guidance on LGR for councillors and officers." />
-<meta name="twitter:image" content="https://localgovernmentreorganisation.co.uk/og-default.png" />
-
-<!--
-  ALSO ADD (if not already present):
-  <html lang="en-GB">   ← on your <html> tag
+  Last updated: 2026-03-15
 -->

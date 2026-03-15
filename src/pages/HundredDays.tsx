@@ -7,6 +7,8 @@ import PageBanner from '../components/PageBanner';
 import FAQSection from '../components/FAQSection';
 import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
+import HowToStructuredData from '../components/HowToStructuredData';
+import SpeakableStructuredData from '../components/SpeakableStructuredData';
 import InBriefSection from '../components/InBriefSection';
 import { trackDownload } from '../utils/analytics';
 
@@ -300,6 +302,25 @@ export default function HundredDays({ onNavigate }: HundredDaysProps) {
         title="The First 100 Days Playbook for Unitary Transition"
         description="The First 100 Days Playbook is in development: an evidence-based framework for councillors, officers and transition teams for the critical period after vesting day. We are in the evidence-gathering and consultation phase. Full publication Spring. Contribute your experience or register for updates."
         keywords="first 100 days playbook, unitary transition, LGR playbook, vesting day, reorganisation governance, planning integration, Section 114, reorganisation evidence, contribute playbook, LGR Initiative"
+      />
+      <HowToStructuredData
+        name="The First 100 Days: A Playbook for Unitary Transition"
+        description="An evidence-based framework for councillors, officers and transition teams covering the critical first 100 days after vesting day in a new unitary authority."
+        totalTime="P100D"
+        steps={[
+          { name: "Establish governance foundations", text: "Set up shadow authority governance structures, committee frameworks and decision-making protocols before vesting day.", url: "/first-100-days#governance" },
+          { name: "Secure service continuity", text: "Map all existing services across merging councils, identify critical dependencies, and establish continuity plans to prevent disruption on day one.", url: "/first-100-days#services" },
+          { name: "Integrate planning functions", text: "Harmonise local plans, development management processes and planning policy across predecessor councils.", url: "/first-100-days#planning" },
+          { name: "Manage workforce transition", text: "Implement TUPE transfers, map roles across the new structure, and establish workforce communication channels.", url: "/first-100-days#workforce" },
+          { name: "Engage residents and stakeholders", text: "Launch a proactive communications programme explaining changes, new contact points and how services will be accessed.", url: "/first-100-days#engagement" },
+          { name: "Align financial systems", text: "Consolidate budgets, harmonise council tax, integrate financial reporting systems and address any Section 114 risks.", url: "/first-100-days#finance" },
+          { name: "Establish political culture", text: "Build cross-party working relationships, set the tone for member-officer dynamics and create a shared vision for the new authority.", url: "/first-100-days#culture" },
+        ]}
+      />
+      <SpeakableStructuredData
+        name="The First 100 Days: A Playbook for Unitary Transition"
+        url="/first-100-days"
+        speakableSelectors={['h1', '.in-brief-content', 'article h2']}
       />
       <PageBanner
         heroLabel="RESEARCH SERIES"

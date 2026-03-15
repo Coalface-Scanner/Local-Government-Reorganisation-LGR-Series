@@ -1,6 +1,8 @@
 import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import { SEOHead } from '../../components/SEOHead';
 import MetaTags from '../../components/MetaTags';
+import PersonStructuredData from '../../components/PersonStructuredData';
+import SpeakableStructuredData from '../../components/SpeakableStructuredData';
 import PageBanner from '../../components/PageBanner';
 import FAQSection from '../../components/FAQSection';
 import { getLeadershipProfile } from '../../data/leadershipProfiles';
@@ -26,15 +28,6 @@ export default function LeadershipBio() {
     );
   }
 
-  const schemaPerson = {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: profile.name,
-    jobTitle: profile.title,
-    worksFor: { '@type': 'Organization', name: profile.organisation },
-    description: profile.bio_sections?.biography ?? '',
-  };
-
   return (
     <div className="min-h-screen bg-academic-cream">
       <SEOHead
@@ -50,9 +43,19 @@ export default function LeadershipBio() {
         description={`${profile.name} profile for the LGR Initiative, including role, organisational affiliation, and full biography.`}
         keywords={`${profile.name}, LGR Initiative, ${profile.organisation}, leadership, local government reorganisation`}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaPerson) }}
+      <PersonStructuredData
+        name={profile.name}
+        jobTitle={profile.title}
+        description={profile.bio_sections?.biography ?? ''}
+        url={`/about/leadership/${slug}`}
+        imageUrl={profile.headshot}
+        worksFor={{ name: profile.organisation }}
+        knowsAbout={profile.bio_sections?.areas_of_focus ?? ['local government reorganisation', 'governance reform', 'council restructuring']}
+      />
+      <SpeakableStructuredData
+        name={`${profile.name} — ${profile.title}`}
+        url={`/about/leadership/${slug}`}
+        speakableSelectors={['h1', 'h2', '.academic-prose p']}
       />
       <PageBanner
         heroLabel="ABOUT"

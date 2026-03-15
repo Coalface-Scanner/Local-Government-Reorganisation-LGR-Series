@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import type { GlossaryTerm } from '../../lib/glossaryData';
 import { getRelatedTerms } from '../../lib/glossaryData';
 import TableOfContents from '../TableOfContents';
+import DefinedTermStructuredData from '../DefinedTermStructuredData';
 
 interface GlossaryTermClientProps {
   term: GlossaryTerm;
@@ -15,8 +16,26 @@ interface GlossaryTermClientProps {
 export default function GlossaryTermClient({ term }: GlossaryTermClientProps) {
   const relatedTerms = getRelatedTerms(term);
 
+  // Extract plain text from HTML definition for schema
+  const plainDefinition = term.definition
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .substring(0, 500);
+
   return (
     <>
+      {/* DefinedTerm structured data for AI comprehension */}
+      <DefinedTermStructuredData
+        term={term.term}
+        definition={plainDefinition}
+        url={`/glossary/${term.slug}`}
+        relatedTerms={relatedTerms.map(rt => ({
+          name: rt.term,
+          url: `/glossary/${rt.slug}`,
+        }))}
+      />
+
       {/* Definition Content */}
       <article className="academic-prose mb-12">
         <div 

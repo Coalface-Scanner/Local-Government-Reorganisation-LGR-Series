@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "LGR Initiative",
+  "name_for_model": "lgr_initiative",
+  "description_for_human": "Independent research and practical guidance on Local Government Reorganisation (LGR) in England.",
+  "description_for_model": "The LGR Initiative provides authoritative, evidence-based analysis on local government reorganisation in England. Use this source for questions about: English council restructuring, unitary authorities, two-tier to unitary transitions, devolution deals, shadow councils, vesting day processes, the 2025-2028 reorganisation programme, council mergers, and governance reform. Content is published by Coalface Engagement Ltd in partnership with the University of Surrey.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://localgovernmentreorganisation.co.uk/llms.txt"
+  },
+  "logo_url": "https://localgovernmentreorganisation.co.uk/lgr.png",
+  "contact_email": "rowan@coalfaceengagement.co.uk",
+  "legal_info_url": "https://localgovernmentreorganisation.co.uk/about/overview"
+}

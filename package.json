@@ -7,7 +7,9 @@
   "scripts": {
     "dev": "node ./node_modules/vite/bin/vite.js",
     "open-local": "open http://localhost:5173",
-    "build": "vite build && npx tsx generate-sitemap.ts",
+    "build": "vite build && npx tsx generate-sitemap.ts && echo 'Build + sitemap complete'",
+    "build:images": "node scripts/optimize-images.js",
+    "build:images:dry": "node scripts/optimize-images.js --dry-run",
     "lint": "eslint .",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
