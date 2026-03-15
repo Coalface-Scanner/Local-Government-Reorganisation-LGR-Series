@@ -20,6 +20,7 @@ import { enhanceContentWithGlossaryLinks } from '../lib/glossaryLinks';
 import { sanitizeHtmlContent } from '../lib/htmlSanitizer';
 import { useScrollDepthTracking } from '../hooks/useScrollDepthTracking';
 import { useTimeOnPageTracking } from '../hooks/useTimeOnPageTracking';
+import NewsletterFooter from '../components/NewsletterFooter';
 
 interface Material {
   id: string;
@@ -493,6 +494,7 @@ export default function Article({ slug, onNavigate }: ArticleProps) {
         <div className="mt-8">
           <LastUpdated />
         </div>
+        <NewsletterFooter />
       </div>
     </div>
   );

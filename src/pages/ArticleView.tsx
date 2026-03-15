@@ -18,6 +18,7 @@ import RelatedContent from '../components/RelatedContent';
 import SeeAlsoSection from '../components/SeeAlsoSection';
 import ReadingProgress from '../components/ReadingProgress';
 import ErrorDisplay from '../components/ErrorDisplay';
+import NewsletterFooter from '../components/NewsletterFooter';
 import Standfirst from '../components/Standfirst';
 import AuthorBio from '../components/AuthorBio';
 import PrintButton from '../components/PrintButton';
@@ -463,6 +464,10 @@ export default function ArticleView({ slug, onNavigate }: ArticleViewProps) {
               maxItems={6}
             />
         </div>
+      </div>
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <NewsletterFooter />
       </div>
 
       <ArticleQASection articleSlug={article.slug} />
