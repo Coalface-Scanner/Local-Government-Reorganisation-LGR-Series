@@ -183,9 +183,9 @@ export default function Insights({ onNavigate }: InsightsProps) {
                       )}
                     </div>
                   )}
-                  <div className="p-8">
+                  <div className="p-6 sm:p-8">
                     <div className="flex items-start gap-2 mb-3">
-                      <h2 className="text-academic-base font-display font-bold text-academic-charcoal group-hover:text-teal-500 transition-colors line-clamp-3 flex-1">
+                      <h2 className="text-academic-lg font-display font-bold text-academic-charcoal group-hover:text-teal-500 transition-colors line-clamp-3 flex-1">
                         {article.title}
                       </h2>
                       {article.featured && !article.featured_image && (
@@ -200,7 +200,7 @@ export default function Insights({ onNavigate }: InsightsProps) {
                       )}
                     </div>
                     {article.excerpt && (
-                      <p className="text-academic-base text-academic-neutral-700 mb-5 line-clamp-3 font-serif leading-relaxed">{article.excerpt}</p>
+                      <p className="text-academic-base text-academic-neutral-700 mb-5 line-clamp-4 font-serif leading-relaxed">{article.excerpt}</p>
                     )}
                     <div className="flex flex-wrap items-center gap-4 text-academic-sm text-academic-neutral-600 font-serif">
                       {article.published_date && (

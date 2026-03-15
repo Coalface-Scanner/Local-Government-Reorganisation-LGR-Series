@@ -161,7 +161,11 @@ export default function KeyFacts() {
                 const Icon = categoryIcons[fact.category || 'Overview'] || AlertCircle;
                 const gradientClass = categoryColors[fact.category || 'Overview'] || 'from-slate-500 to-slate-700';
                 const slug = generateSlug(fact.title);
-                const excerpt = fact.content.replace(/<[^>]*>/g, '').substring(0, 150) + '...';
+                const excerpt = fact.content
+                  .replace(/<[^>]*>/g, '')
+                  .replace(/__([\w\s,.;:'\-–—()£$€%&/]+?)__/g, '$1')
+                  .replace(/\*\*([\w\s,.;:'\-–—()£$€%&/]+?)\*\*/g, '$1')
+                  .substring(0, 150) + '...';
 
                 return (
                   <div

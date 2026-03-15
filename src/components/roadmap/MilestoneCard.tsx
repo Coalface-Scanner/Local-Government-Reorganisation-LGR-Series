@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ChevronDown, ChevronRight, Bookmark, BookmarkCheck, RotateCcw, Share2 } from 'lucide-react';
+import { ChevronDown, ChevronRight, Bookmark, BookmarkCheck, RotateCcw, Share2, AlertTriangle } from 'lucide-react';
 import type { RoadmapMilestone, AudienceId, AppliesTo, MilestoneStatus } from '../../data/roadmapMilestones';
 import { AUDIENCE_LABELS } from '../../data/roadmapMilestones';
 
@@ -9,11 +9,17 @@ const APPLIES_TO_LABELS: Record<AppliesTo, string> = {
   other: 'Other',
 };
 
-const STATUS_LABELS: Record<MilestoneStatus, string> = {
-  confirmed: 'Confirmed',
-  'in-design': 'In design',
-  conditional: 'Conditional',
-  complete: 'Complete',
+const APPLIES_TO_COLORS: Record<AppliesTo, string> = {
+  surrey: 'bg-teal-100 text-teal-800 border-teal-300',
+  dpp: 'bg-sky-100 text-sky-800 border-sky-300',
+  other: 'bg-slate-100 text-slate-700 border-slate-300',
+};
+
+const STATUS_CONFIG: Record<MilestoneStatus, { label: string; classes: string }> = {
+  confirmed: { label: 'Confirmed', classes: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
+  'in-design': { label: 'In design', classes: 'bg-blue-50 text-blue-700 border-blue-200' },
+  conditional: { label: 'Conditional', classes: 'bg-amber-50 text-amber-700 border-amber-200' },
+  complete: { label: 'Complete', classes: 'bg-emerald-100 text-emerald-800 border-emerald-300' },
 };
 
 interface MilestoneCardProps {
@@ -57,6 +63,9 @@ export default function MilestoneCard({
     navigator.clipboard.writeText(url);
   };
 
+  // Only show active applicability tags (not inactive/greyed-out ones)
+  const activeTags = milestone.appliesTo?.filter(Boolean) ?? [];
+
   return (
     <div
       className={`${side === 'left' ? 'left-card md:text-right' : 'right-card'} relative`}
@@ -76,26 +85,11 @@ export default function MilestoneCard({
           isExpanded ? 'milestone-card-expanded' : 'milestone-card-compact'
         } ${isHighlighted ? 'ring-2 ring-teal-400' : ''}`}
       >
-        {/* Hover wave progress indicator */}
-        {milestone.appliesTo && (milestone.appliesTo.length === 1 && milestone.appliesTo[0] === 'surrey' || milestone.appliesTo.includes('dpp')) && (
-          <div
-            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-[10px] font-display font-semibold px-2 py-1 rounded bg-white/90 shadow border border-academic-neutral-200 pointer-events-none z-10"
-            aria-hidden
-          >
-            {milestone.appliesTo.length === 1 && milestone.appliesTo[0] === 'surrey'
-              ? 'Wave 1 – Active'
-              : 'Wave 2 – Pending'}
-          </div>
-        )}
-        <div
-          className={`flex items-stretch gap-0 ${isExpanded ? '' : '-m-2'}`}
-        >
+        <div className="flex items-stretch gap-0">
           <button
             type="button"
             onClick={onToggleExpand}
-            className={`flex-1 min-w-0 text-left bg-transparent border-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-inset rounded-l-xl ${
-              isExpanded ? 'p-4 rounded-tl-xl' : 'p-4 -my-2 -ml-2'
-            }`}
+            className="flex-1 min-w-0 text-left bg-transparent border-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-inset rounded-l-xl p-4"
             aria-expanded={isExpanded ? 'true' : 'false'}
             aria-label={isExpanded
               ? `${milestone.title}. Click to collapse.`
@@ -104,49 +98,42 @@ export default function MilestoneCard({
           >
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1 min-w-0">
-                {/* Applicability tags */}
-                {(milestone.appliesTo?.length ?? 0) > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-2">
-                    {(['surrey', 'dpp', 'other'] as AppliesTo[]).map((area) => {
-                      const active = milestone.appliesTo?.includes(area);
-                      return (
-                        <span
-                          key={area}
-                          className={`text-xs font-display font-semibold px-3 py-1 rounded whitespace-nowrap ${
-                            active
-                              ? 'bg-teal-100 text-teal-800 border border-teal-300'
-                              : 'bg-transparent text-academic-neutral-400 border border-academic-neutral-300'
-                          }`}
-                        >
-                          {APPLIES_TO_LABELS[area]}
-                        </span>
-                      );
-                    })}
-                  </div>
-                )}
-                {milestone.status && (
-                  <span className="inline-block text-[10px] font-display font-medium text-academic-neutral-600 bg-academic-neutral-100 px-2 py-0.5 rounded mb-2">
-                    {STATUS_LABELS[milestone.status]}
-                  </span>
-                )}
-                <h3 className="text-academic-xl font-display font-bold text-academic-charcoal group-hover:text-teal-700">
+                {/* Compact metadata row: active tags + status on one line */}
+                <div className="flex flex-wrap items-center gap-1.5 mb-2">
+                  {activeTags.map((area) => (
+                    <span
+                      key={area}
+                      className={`text-[10px] font-display font-semibold px-2 py-0.5 rounded border whitespace-nowrap ${APPLIES_TO_COLORS[area]}`}
+                    >
+                      {APPLIES_TO_LABELS[area]}
+                    </span>
+                  ))}
+                  {milestone.status && (
+                    <span className={`text-[10px] font-display font-medium px-2 py-0.5 rounded border whitespace-nowrap ${STATUS_CONFIG[milestone.status].classes}`}>
+                      {STATUS_CONFIG[milestone.status].label}
+                    </span>
+                  )}
+                </div>
+                <h3 className="text-academic-lg sm:text-academic-xl font-display font-bold text-academic-charcoal group-hover:text-teal-700 leading-snug">
                   {milestone.title}
                 </h3>
-                <p className="text-academic-sm font-display font-semibold text-academic-neutral-600 mt-0.5">
+                <p className="text-academic-sm font-display font-semibold text-academic-neutral-600 mt-1">
                   {milestone.dateLabel}
                 </p>
-                {!isExpanded && (
-                  <span className="text-teal-600 flex items-center mt-2 text-xs font-display font-semibold" aria-hidden="true">
-                    View details
-                    <ChevronRight size={16} className="ml-0.5" aria-hidden="true" />
-                  </span>
+                {/* Surface risk note hint in compact view */}
+                {!isExpanded && milestone.riskNote && (
+                  <div className="flex items-center gap-1.5 mt-2 text-amber-700">
+                    <AlertTriangle size={13} aria-hidden="true" />
+                    <span className="text-[11px] font-display font-medium line-clamp-1">{milestone.riskNote}</span>
+                  </div>
                 )}
-                {isExpanded && (
-                  <span className="text-teal-600 flex items-center mt-2 text-xs font-display font-semibold" aria-hidden="true">
-                    Click to collapse
-                    <ChevronDown size={16} className="ml-0.5" aria-hidden="true" />
-                  </span>
-                )}
+                <span className={`text-teal-600 inline-flex items-center mt-2 text-xs font-display font-semibold`} aria-hidden="true">
+                  {isExpanded ? 'Collapse' : 'View details'}
+                  {isExpanded
+                    ? <ChevronDown size={16} className="ml-0.5" aria-hidden="true" />
+                    : <ChevronRight size={16} className="ml-0.5" aria-hidden="true" />
+                  }
+                </span>
               </div>
             </div>
           </button>
@@ -156,9 +143,7 @@ export default function MilestoneCard({
               e.stopPropagation();
               onToggleSave();
             }}
-            className={`p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-academic-neutral-500 hover:text-teal-600 hover:bg-teal-50 shrink-0 self-center ${
-              isExpanded ? '' : 'rounded-l-none'
-            }`}
+            className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-academic-neutral-500 hover:text-teal-600 hover:bg-teal-50 shrink-0 self-center"
             aria-label={isSaved ? 'Remove from reading list' : 'Add to reading list'}
           >
             {isSaved ? (
@@ -170,7 +155,7 @@ export default function MilestoneCard({
         </div>
 
         {isExpanded && (
-          <div className="px-4 pb-4 pt-0 border-t border-academic-neutral-200 mt-2">
+          <div className="px-4 pb-4 pt-3 border-t border-academic-neutral-200">
             <p className="text-academic-base text-academic-neutral-700 font-serif leading-relaxed mb-4">
               {milestone.summary}
             </p>
@@ -178,6 +163,12 @@ export default function MilestoneCard({
               <p className="text-academic-sm text-academic-neutral-600 font-serif mb-4">
                 <strong>Who it affects:</strong> {milestone.whoItAffects}
               </p>
+            )}
+            {milestone.riskNote && (
+              <div className="mb-4 flex items-start gap-2 bg-amber-50 text-amber-800 text-sm px-3 py-2 rounded-lg border border-amber-200">
+                <AlertTriangle size={16} className="shrink-0 mt-0.5" aria-hidden="true" />
+                <span className="font-serif">{milestone.riskNote}</span>
+              </div>
             )}
             <h4 className="text-academic-sm font-display font-bold text-academic-charcoal uppercase mb-2">
               Why it matters
@@ -199,82 +190,58 @@ export default function MilestoneCard({
                 </ul>
               </>
             ) : null}
-            {milestone.riskNote && (
-              <div className="mb-4 bg-amber-50 text-amber-800 text-xs px-3 py-1.5 rounded inline-block border border-amber-200">
-                <strong>{milestone.riskNote}</strong>
-              </div>
-            )}
             <h4 className="text-academic-sm font-display font-bold text-academic-charcoal uppercase mb-2">
               Go deeper
             </h4>
-            <ul className="space-y-3 mb-4">
+            <div className="flex flex-wrap gap-2 mb-4">
               {milestone.links.articles[0] && (
-                <li>
-                  <Link
-                    to={`/insights/${milestone.links.articles[0]}`}
-                    className="text-base font-semibold text-teal-800 hover:text-teal-700 underline underline-offset-3"
-                  >
-                    Article
-                  </Link>
-                </li>
-              )}
-              <li>
                 <Link
-                  to={milestone.links.facts[0] || '/facts/lgr-timeline'}
-                  className="text-base font-semibold text-teal-800 hover:text-teal-700 underline underline-offset-3"
+                  to={`/insights/${milestone.links.articles[0]}`}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-display font-medium bg-teal-50 text-teal-800 hover:bg-teal-100 border border-teal-200 transition-colors"
                 >
-                  Facts & timeline
+                  Article
                 </Link>
-              </li>
-              {milestone.links.glossary[0] ? (
-                <li>
-                  <Link
-                    to={`/glossary/${milestone.links.glossary[0]}`}
-                    className="text-base font-semibold text-teal-800 hover:text-teal-700 underline underline-offset-3"
-                  >
-                    Glossary
-                  </Link>
-                </li>
-              ) : (
-                <li>
-                  <Link
-                    to="/first-100-days"
-                    className="text-base font-semibold text-teal-800 hover:text-teal-700 underline underline-offset-3"
-                  >
-                    First 100 Days toolkit
-                  </Link>
-                </li>
               )}
-            </ul>
-            {(milestone.links.place?.length || milestone.links.tools?.length) ? (
-              <>
-                <h4 className="text-academic-sm font-display font-bold text-academic-charcoal uppercase mb-2">
-                  Related
-                </h4>
-                <ul className="space-y-3 mb-4">
-                  {milestone.links.place?.map((p) => (
-                    <li key={p}>
-                      <Link
-                        to={p}
-                        className="text-base font-semibold text-teal-800 hover:text-teal-700 underline underline-offset-3"
-                      >
-                        {p === '/surrey' ? 'Surrey hub' : p.replace('/', '')}
-                      </Link>
-                    </li>
-                  ))}
-                  {milestone.links.tools?.slice(0, 2).map((t) => (
-                    <li key={t}>
-                      <Link
-                        to={t}
-                        className="text-base font-semibold text-teal-800 hover:text-teal-700 underline underline-offset-3"
-                      >
-                        {t === '/first-100-days' ? 'First 100 Days' : 'Tools'}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            ) : null}
+              <Link
+                to={milestone.links.facts[0] || '/facts/lgr-timeline'}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-display font-medium bg-teal-50 text-teal-800 hover:bg-teal-100 border border-teal-200 transition-colors"
+              >
+                Facts & timeline
+              </Link>
+              {milestone.links.glossary[0] ? (
+                <Link
+                  to={`/glossary/${milestone.links.glossary[0]}`}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-display font-medium bg-teal-50 text-teal-800 hover:bg-teal-100 border border-teal-200 transition-colors"
+                >
+                  Glossary
+                </Link>
+              ) : (
+                <Link
+                  to="/first-100-days"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-display font-medium bg-teal-50 text-teal-800 hover:bg-teal-100 border border-teal-200 transition-colors"
+                >
+                  First 100 Days
+                </Link>
+              )}
+              {milestone.links.place?.map((p) => (
+                <Link
+                  key={p}
+                  to={p}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-display font-medium bg-academic-neutral-100 text-academic-charcoal hover:bg-teal-50 hover:text-teal-800 border border-academic-neutral-200 transition-colors"
+                >
+                  {p === '/surrey' ? 'Surrey hub' : p.replace('/', '')}
+                </Link>
+              ))}
+              {milestone.links.tools?.slice(0, 2).map((t) => (
+                <Link
+                  key={t}
+                  to={t}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-display font-medium bg-academic-neutral-100 text-academic-charcoal hover:bg-teal-50 hover:text-teal-800 border border-academic-neutral-200 transition-colors"
+                >
+                  {t === '/first-100-days' ? 'First 100 Days' : 'Tools'}
+                </Link>
+              ))}
+            </div>
             <div className="flex flex-wrap gap-2 pt-2 border-t border-academic-neutral-200">
               <button
                 type="button"
@@ -285,7 +252,7 @@ export default function MilestoneCard({
                 className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-display font-medium bg-academic-neutral-100 text-academic-charcoal hover:bg-teal-100 hover:text-teal-800"
               >
                 <Share2 size={16} aria-hidden="true" />
-                Share this milestone
+                Share
               </button>
             </div>
           </div>

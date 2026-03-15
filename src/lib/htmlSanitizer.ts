@@ -32,6 +32,27 @@ function isSafeUrl(url: unknown): boolean {
   }
 }
 
+/**
+ * Convert common markdown formatting artefacts to HTML.
+ * CMS editors sometimes introduce markdown bold/italic syntax
+ * (__text__, **text**, _text_, *text*) instead of proper HTML tags.
+ */
+function convertMarkdownArtefacts(html: string): string {
+  // Only process text outside HTML tags
+  return html.replace(/(>|^)([^<]+)(<|$)/g, (_match, before: string, text: string, after: string) => {
+    let processed = text;
+    // __bold__ → <strong>bold</strong>
+    processed = processed.replace(/__([\w\s,.;:'\-–—()£$€%&/]+?)__/g, '<strong>$1</strong>');
+    // **bold** → <strong>bold</strong>
+    processed = processed.replace(/\*\*([\w\s,.;:'\-–—()£$€%&/]+?)\*\*/g, '<strong>$1</strong>');
+    // _italic_ → <em>italic</em> (not mid-word)
+    processed = processed.replace(/(?<!\w)_([\w\s,.;:'\-–—()£$€%&/]+?)_(?!\w)/g, '<em>$1</em>');
+    // *italic* → <em>italic</em> (not mid-word)
+    processed = processed.replace(/(?<!\w)\*([\w\s,.;:'\-–—()£$€%&/]+?)\*(?!\w)/g, '<em>$1</em>');
+    return `${before}${processed}${after}`;
+  });
+}
+
 function stripDangerousTextHtml(html: string): string {
   return html
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
@@ -130,7 +151,8 @@ function toSafeString(value: unknown): string {
 export function sanitizeHtmlContent(html: unknown): string {
   const raw = toSafeString(html);
   if (!raw) return '';
-  const stripped = stripDangerousTextHtml(raw);
+  const withMarkdownConverted = convertMarkdownArtefacts(raw);
+  const stripped = stripDangerousTextHtml(withMarkdownConverted);
 
   if (typeof window === 'undefined' || typeof DOMParser === 'undefined') {
     return stripped;

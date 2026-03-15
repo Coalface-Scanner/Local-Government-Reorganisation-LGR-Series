@@ -389,20 +389,14 @@ export default function Home({ onNavigate }: HomeProps) {
                   to={`/insights/${article.slug}`}
                   className="group academic-card overflow-hidden transition-all duration-300 hover:shadow-lg"
                 >
-                  <div className="flex gap-4">
-                    {/* Image */}
-                    <div className="flex-shrink-0 w-32 h-32 sm:w-40 sm:h-40 bg-academic-neutral-200 overflow-hidden rounded relative">
+                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-5">
+                    {/* Image — full-width on mobile, fixed on tablet+ */}
+                    <div className="flex-shrink-0 w-full sm:w-44 md:w-48 aspect-[16/9] sm:aspect-square bg-academic-neutral-200 overflow-hidden rounded relative">
                       {article.featured_image ? (
                         <img
                           src={article.featured_image}
                           alt={article.title}
                           className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
-                          style={{ 
-                            objectFit: 'cover',
-                            width: '100%',
-                            height: '100%',
-                            display: 'block'
-                          }}
                           loading="lazy"
                         />
                       ) : (
@@ -411,9 +405,9 @@ export default function Home({ onNavigate }: HomeProps) {
                         </div>
                       )}
                     </div>
-                    
+
                     {/* Content */}
-                    <div className="flex-1 flex flex-col py-2">
+                    <div className="flex-1 flex flex-col py-1 sm:py-3">
                       <div className="flex items-center gap-2 mb-2">
                         {article.content_type && (
                           <ContentTypeTag contentType={article.content_type} />
@@ -424,11 +418,11 @@ export default function Home({ onNavigate }: HomeProps) {
                           </span>
                         )}
                       </div>
-                      <h3 className="text-academic-lg sm:text-academic-xl font-display font-bold text-academic-charcoal group-hover:text-teal-700 transition-colors line-clamp-3 mb-2">
+                      <h3 className="text-academic-xl font-display font-bold text-academic-charcoal group-hover:text-teal-700 transition-colors line-clamp-3 mb-2">
                         {article.title}
                       </h3>
                       {article.excerpt && (
-                        <p className="text-academic-sm text-academic-neutral-600 font-serif line-clamp-2">
+                        <p className="text-academic-sm text-academic-neutral-600 font-serif line-clamp-3">
                           {article.excerpt}
                         </p>
                       )}

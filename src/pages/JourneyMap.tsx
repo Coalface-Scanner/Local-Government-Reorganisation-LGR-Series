@@ -312,9 +312,13 @@ export default function JourneyMap({ onNavigate: _onNavigate }: JourneyMapProps)
       </div>
 
       <div className="flex flex-col lg:flex-row">
-        <main className="relative flex-1 min-w-0 max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full roadmap-content roadmap-main roadmap-with-scale">
-          <MapBackground />
-          <BentRoad />
+        <main className="relative flex-1 min-w-0 max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 w-full roadmap-content roadmap-main roadmap-with-scale">
+          <div className="opacity-40 pointer-events-none">
+            <MapBackground />
+          </div>
+          <div className="opacity-50 pointer-events-none">
+            <BentRoad />
+          </div>
 
           {/* Timeline scale - left side, above intro so signs stay visible */}
           <div className="roadmap-timeline-scale absolute left-2 top-0 bottom-0 z-20 hidden md:flex flex-col justify-between py-20 text-[10px] font-display font-semibold text-academic-neutral-500">
@@ -385,7 +389,7 @@ export default function JourneyMap({ onNavigate: _onNavigate }: JourneyMapProps)
               <div
                 key={zone.id}
                 id={zone.id}
-                className={`relative z-10 py-12 scroll-mt-24 ${isFutureZone ? 'opacity-90' : ''}`}
+                className={`relative z-10 py-8 sm:py-12 scroll-mt-24 ${isFutureZone ? 'opacity-90' : ''}`}
                 ref={(el) => {
                   zoneRefs.current[zone.id] = el;
                 }}
@@ -436,7 +440,7 @@ export default function JourneyMap({ onNavigate: _onNavigate }: JourneyMapProps)
                   return (
                     <div
                       key={milestone.id}
-                      className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center mb-12 md:mb-16"
+                      className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 items-start mb-8 md:mb-12"
                       ref={(el) => {
                         milestoneRefs.current[milestone.id] = el;
                       }}
