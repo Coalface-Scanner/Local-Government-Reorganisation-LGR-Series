@@ -6,8 +6,8 @@
 
 import { useState, useEffect } from 'react';
 
-const ROAD_CENTER_X = 90;
-const RAIL_X = 185;
+const ROAD_CENTER_X = 80;
+const RAIL_X = 165;
 const ROAD_PATH = `M ${ROAD_CENTER_X} 0 L ${ROAD_CENTER_X} 2400`;
 
 const COLOURS = [
@@ -80,8 +80,8 @@ function TrainIcon() {
 }
 
 const STATIC_POINTS = [
-  [90, 200], [90, 500], [90, 800], [90, 1100], [90, 1400], [90, 1700], [90, 2100],
-  [90, 400], [90, 950], [90, 1500],
+  [80, 200], [80, 500], [80, 800], [80, 1100], [80, 1400], [80, 1700], [80, 2100],
+  [80, 400], [80, 950], [80, 1500],
 ];
 
 /** Y positions for the repeating Surrey Express signposts along the rail */
@@ -101,7 +101,7 @@ export default function BentRoad() {
     <div className="bent-road" aria-hidden="true">
       <svg
         className="bent-road__svg"
-        viewBox="0 0 260 2400"
+        viewBox="0 0 280 2400"
         preserveAspectRatio="xMidYMin slice"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -197,14 +197,14 @@ export default function BentRoad() {
         {/* SURREY EXPRESS signposts — larger, more frequent, with arrows */}
         {SIGN_POSITIONS.map((y) => (
           <g key={y}>
-            {/* Sign background */}
-            <rect x={RAIL_X - 38} y={y - 14} width={76} height={24} rx="3" fill="#0f766e" stroke="white" strokeWidth="2" />
+            {/* Sign background — generous padding */}
+            <rect x={RAIL_X - 44} y={y - 16} width={88} height={28} rx="3" fill="#0f766e" stroke="white" strokeWidth="2.5" />
             {/* Top line: SURREY EXPRESS */}
-            <text x={RAIL_X} y={y - 1} fontSize="8" fontWeight="800" fill="white" fontFamily="system-ui,sans-serif" textAnchor="middle" letterSpacing="0.8">
+            <text x={RAIL_X} y={y - 2} fontSize="9" fontWeight="800" fill="white" fontFamily="system-ui,sans-serif" textAnchor="middle" letterSpacing="1">
               SURREY EXPRESS
             </text>
             {/* Bottom line: FAST TRACK */}
-            <text x={RAIL_X} y={y + 8} fontSize="5" fontWeight="700" fill="#5eead4" fontFamily="system-ui,sans-serif" textAnchor="middle" letterSpacing="1.5">
+            <text x={RAIL_X} y={y + 9} fontSize="6" fontWeight="700" fill="#5eead4" fontFamily="system-ui,sans-serif" textAnchor="middle" letterSpacing="2">
               FAST TRACK ▸
             </text>
           </g>
