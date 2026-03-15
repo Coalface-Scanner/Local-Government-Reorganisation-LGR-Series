@@ -1,13 +1,13 @@
 /**
- * Straight road with consistent width, high-speed rail to the left.
+ * Straight road with consistent width, high-speed rail to the right.
+ * The Surrey Express rail is visually prominent to communicate Surrey's fast-track status.
  * Vehicles and train animate along their paths.
  */
 
 import { useState, useEffect } from 'react';
 
-/* Straight road for consistent width; rail to the right so both stay visible when scaled */
-const ROAD_CENTER_X = 100;
-const RAIL_X = 170;
+const ROAD_CENTER_X = 90;
+const RAIL_X = 185;
 const ROAD_PATH = `M ${ROAD_CENTER_X} 0 L ${ROAD_CENTER_X} 2400`;
 
 const COLOURS = [
@@ -34,10 +34,6 @@ const VEHICLES: VehicleDef[] = [
   { type: 'truck', direction: 'up', duration: 7.2, begin: -6.2, color: COLOURS[7] },
   { type: 'car', direction: 'down', duration: 6.2, begin: -2.1, color: COLOURS[8] },
   { type: 'car', direction: 'up', duration: 6.8, begin: -4.8, color: COLOURS[9] },
-  { type: 'car', direction: 'down', duration: 5.4, begin: -1.5, color: COLOURS[10] },
-  { type: 'truck', direction: 'up', duration: 7.8, begin: -5.2, color: COLOURS[11] },
-  { type: 'car', direction: 'down', duration: 6.4, begin: -3.9, color: COLOURS[12] },
-  { type: 'car', direction: 'up', duration: 5.9, begin: -0.3, color: COLOURS[0] },
 ];
 
 function CarIcon({ color }: { color: string }) {
@@ -65,29 +61,31 @@ function TruckIcon({ color }: { color: string }) {
   );
 }
 
-/** Sleek high-speed train with prominent Surrey Express branding - width ~40, center at 20 */
+/** Sleek high-speed train with prominent Surrey Express branding */
 function TrainIcon() {
   return (
-    <g transform="translate(-20,-5)" filter="url(#vehicle-shadow)">
+    <g transform="translate(-24,-7)" filter="url(#vehicle-shadow)">
       {/* Streamlined nose + body */}
-      <path d="M 0 6 L 4 6 L 8 4 L 8 2 L 26 2 L 26 10 L 8 10 L 8 8 Z" fill="#0f766e" stroke="#0d5c54" strokeWidth="0.4" />
-      <rect x="26" y="3" width="14" height="7" rx="0.5" fill="#0f766e" stroke="#0d5c54" strokeWidth="0.3" />
-      <circle cx="8" cy="9" r="0.7" fill="#475569" />
-      <circle cx="18" cy="9" r="0.7" fill="#475569" />
-      <circle cx="32" cy="9" r="0.7" fill="#475569" />
-      <circle cx="38" cy="9" r="0.7" fill="#475569" />
+      <path d="M 0 8 L 5 8 L 10 5 L 10 3 L 32 3 L 32 13 L 10 13 L 10 11 Z" fill="#0f766e" stroke="#0d5c54" strokeWidth="0.5" />
+      <rect x="32" y="4" width="16" height="9" rx="0.5" fill="#0f766e" stroke="#0d5c54" strokeWidth="0.4" />
+      <circle cx="10" cy="12" r="1" fill="#475569" />
+      <circle cx="22" cy="12" r="1" fill="#475569" />
+      <circle cx="36" cy="12" r="1" fill="#475569" />
+      <circle cx="44" cy="12" r="1" fill="#475569" />
       {/* Prominent SURREY EXPRESS label on train */}
-      <rect x="4" y="4.5" width="22" height="3.5" rx="0.4" fill="#0d5c54" />
-      <text x="15" y="6.7" fontSize="2.8" fontWeight="800" fill="white" fontFamily="system-ui,sans-serif" textAnchor="middle" letterSpacing="0.5">SURREY EXPRESS</text>
+      <rect x="5" y="5.5" width="27" height="5" rx="0.5" fill="#0d5c54" />
+      <text x="18.5" y="9.2" fontSize="3.6" fontWeight="800" fill="white" fontFamily="system-ui,sans-serif" textAnchor="middle" letterSpacing="0.6">SURREY EXPRESS</text>
     </g>
   );
 }
 
 const STATIC_POINTS = [
-  [100, 200], [100, 500], [100, 800], [100, 1100], [100, 1400], [100, 1700], [100, 2100],
-  [100, 400], [100, 950], [100, 1500], [100, 2050],
-  [100, 600], [100, 1250], [100, 1850],
+  [90, 200], [90, 500], [90, 800], [90, 1100], [90, 1400], [90, 1700], [90, 2100],
+  [90, 400], [90, 950], [90, 1500],
 ];
+
+/** Y positions for the repeating Surrey Express signposts along the rail */
+const SIGN_POSITIONS = [60, 350, 650, 950, 1250, 1550, 1850, 2150];
 
 export default function BentRoad() {
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -103,7 +101,7 @@ export default function BentRoad() {
     <div className="bent-road" aria-hidden="true">
       <svg
         className="bent-road__svg"
-        viewBox="0 0 240 2400"
+        viewBox="0 0 260 2400"
         preserveAspectRatio="xMidYMin slice"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -121,14 +119,21 @@ export default function BentRoad() {
           <filter id="vehicle-shadow" x="-50%" y="-50%" width="200%" height="200%">
             <feDropShadow dx="0" dy="1" stdDeviation="1" floodColor="#000" floodOpacity="0.4" />
           </filter>
+          {/* Glow effect for the fast-track rail */}
+          <filter id="rail-glow" x="-100%" y="-5%" width="300%" height="110%">
+            <feGaussianBlur stdDeviation="6" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
           <path id="bent-road-motion-path" d={ROAD_PATH} fill="none" stroke="none" />
           <path id="rail-path" d={`M ${RAIL_X} 0 L ${RAIL_X} 2400`} fill="none" stroke="none" />
         </defs>
-        {/* Static labels at top */}
-        <text x={ROAD_CENTER_X} y={70} fontSize="7" fontWeight="bold" fill="#1f2937" fontFamily="system-ui,sans-serif" textAnchor="middle">Typical devolution program</text>
-        {/* Prominent SURREY EXPRESS sign above rail */}
-        <rect x={RAIL_X - 32} y={20} width={64} height={22} rx="3" fill="#0f766e" stroke="white" strokeWidth="2" />
-        <text x={RAIL_X} y={35} fontSize="8" fontWeight="800" fill="white" fontFamily="system-ui,sans-serif" textAnchor="middle" letterSpacing="1">SURREY EXPRESS</text>
+
+        {/* ── REGULAR ROAD (left side) ── */}
+        {/* Road label */}
+        <text x={ROAD_CENTER_X} y={30} fontSize="8" fontWeight="bold" fill="#475569" fontFamily="system-ui,sans-serif" textAnchor="middle" opacity="0.7">Standard programme</text>
 
         {/* Three lanes: Surrey (dark grey), DPP (mid grey), Other (light grey) */}
         <rect x={ROAD_CENTER_X - 48} y={0} width={32} height={2400} fill="#374151" filter="url(#bent-road-shadow)" />
@@ -137,9 +142,10 @@ export default function BentRoad() {
         {/* Lane dividers */}
         <line x1={ROAD_CENTER_X - 16} y1={0} x2={ROAD_CENTER_X - 16} y2={2400} stroke="rgba(255,255,255,0.4)" strokeWidth="0.5" />
         <line x1={ROAD_CENTER_X + 16} y1={0} x2={ROAD_CENTER_X + 16} y2={2400} stroke="rgba(255,255,255,0.4)" strokeWidth="0.5" />
-        {/* Centre line */}
+        {/* Centre dashed line */}
         <path d={ROAD_PATH} fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2" strokeDasharray="12 12" strokeLinecap="round" />
-        {/* Cars and trucks animating along path */}
+
+        {/* Cars and trucks on the road */}
         {VEHICLES.map((v, i) => (
           <g
             key={i}
@@ -159,33 +165,56 @@ export default function BentRoad() {
           </g>
         ))}
 
-        {/* Surrey Express high-speed rail + signposts along the line */}
-        {[400, 1000, 1600, 2200].map((y) => (
+        {/* ── SURREY EXPRESS FAST-TRACK RAIL (right side) ── */}
+
+        {/* Teal glow strip behind the rail */}
+        <rect x={RAIL_X - 16} y={0} width={32} height={2400} fill="#0f766e" opacity="0.12" filter="url(#rail-glow)" />
+
+        {/* Rail bed (wider, more visible) */}
+        <rect x={RAIL_X - 10} y={0} width={20} height={2400} fill="#0f766e" opacity="0.15" rx="2" />
+
+        {/* Twin rail lines — thick and visible */}
+        <path
+          d={`M ${RAIL_X - 5} 0 L ${RAIL_X - 5} 2400`}
+          fill="none"
+          stroke="#0f766e"
+          strokeWidth="5"
+          strokeLinecap="round"
+        />
+        <path
+          d={`M ${RAIL_X + 5} 0 L ${RAIL_X + 5} 2400`}
+          fill="none"
+          stroke="#0f766e"
+          strokeWidth="5"
+          strokeLinecap="round"
+        />
+
+        {/* Cross-ties (sleepers) every 30 units */}
+        {Array.from({ length: 80 }, (_, i) => i * 30).map((y) => (
+          <line key={y} x1={RAIL_X - 8} y1={y} x2={RAIL_X + 8} y2={y} stroke="#0d5c54" strokeWidth="2.5" opacity="0.6" />
+        ))}
+
+        {/* SURREY EXPRESS signposts — larger, more frequent, with arrows */}
+        {SIGN_POSITIONS.map((y) => (
           <g key={y}>
-            <rect x={RAIL_X - 28} y={y - 12} width={56} height={18} rx="2" fill="#0f766e" stroke="white" strokeWidth="1.5" />
-            <text x={RAIL_X} y={y} fontSize="6" fontWeight="800" fill="white" fontFamily="system-ui,sans-serif" textAnchor="middle" letterSpacing="0.5">SURREY EXPRESS</text>
+            {/* Sign background */}
+            <rect x={RAIL_X - 38} y={y - 14} width={76} height={24} rx="3" fill="#0f766e" stroke="white" strokeWidth="2" />
+            {/* Top line: SURREY EXPRESS */}
+            <text x={RAIL_X} y={y - 1} fontSize="8" fontWeight="800" fill="white" fontFamily="system-ui,sans-serif" textAnchor="middle" letterSpacing="0.8">
+              SURREY EXPRESS
+            </text>
+            {/* Bottom line: FAST TRACK */}
+            <text x={RAIL_X} y={y + 8} fontSize="5" fontWeight="700" fill="#5eead4" fontFamily="system-ui,sans-serif" textAnchor="middle" letterSpacing="1.5">
+              FAST TRACK ▸
+            </text>
           </g>
         ))}
-        <path
-          d={`M ${RAIL_X - 4} 0 L ${RAIL_X - 4} 2400`}
-          fill="none"
-          stroke="#0f766e"
-          strokeWidth="3"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d={`M ${RAIL_X + 4} 0 L ${RAIL_X + 4} 2400`}
-          fill="none"
-          stroke="#0f766e"
-          strokeWidth="3"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+
+        {/* Animated train — larger scale */}
         {!reducedMotion && (
-          <g className="road-vehicle-svg" transform="scale(2)">
+          <g className="road-vehicle-svg" transform="scale(2.5)">
             <animateMotion
-              dur="12s"
+              dur="10s"
               repeatCount="indefinite"
               rotate="auto"
               begin="0s"
@@ -196,7 +225,7 @@ export default function BentRoad() {
           </g>
         )}
         {reducedMotion && (
-          <g transform={`translate(${RAIL_X}, 1200) scale(2)`}>
+          <g transform={`translate(${RAIL_X}, 1200) scale(2.5)`}>
             <TrainIcon />
           </g>
         )}

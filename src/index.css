@@ -865,15 +865,15 @@
   font-weight: 800;
 }
 
-/* Bent road (straight motorway) + rail – behind cards so they stay visible */
+/* Bent road (straight motorway) + Surrey Express rail – behind cards so they stay visible */
 .bent-road {
   position: absolute;
   left: 50%;
   top: 0;
   bottom: 0;
-  width: 260px;
-  max-width: 30vw;
-  transform: translateX(-50%);
+  width: 360px;
+  max-width: 42vw;
+  transform: translateX(-45%);
   z-index: 1;
   pointer-events: none;
   overflow: visible;
