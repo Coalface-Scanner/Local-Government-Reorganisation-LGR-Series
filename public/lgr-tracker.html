@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>England LGR Status Tracker | LGR Initiative</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --coal: #141413;
+      --offwhite: #f4f2ed;
+      --midgrey: #9e9c96;
+      --lightgrey: #e4e2db;
+      --border: #d6d3ca;
+      --font-display: 'DM Serif Display', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+    }
+
+    html, body { height: 100%; overflow: hidden; }
+    body { font-family: var(--font-body); background: var(--offwhite); color: var(--coal); display: flex; flex-direction: column; }
+
+    /* HEADER */
+    header {
+      background: var(--coal); color: #fff; padding: 0 24px; height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0; z-index: 1000;
+    }
+    .header-brand { display: flex; align-items: baseline; gap: 12px; }
+    .header-brand .wordmark { font-family: var(--font-display); font-size: 17px; color: #fff; }
+    .header-brand .divider { width: 1px; height: 16px; background: rgba(255,255,255,0.2); align-self: center; }
+    .header-brand .subtitle { font-size: 13px; font-weight: 400; color: rgba(255,255,255,0.55); letter-spacing: 0.04em; text-transform: uppercase; }
+    .header-meta { font-size: 11.5px; color: rgba(255,255,255,0.35); letter-spacing: 0.03em; }
+
+    /* LAYOUT */
+    .app-body { display: flex; flex: 1; min-height: 0; position: relative; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 290px; flex-shrink: 0; background: #fff;
+      border-right: 1px solid var(--border); display: flex; flex-direction: column;
+      overflow: hidden; z-index: 500;
+    }
+    .sidebar-inner { flex: 1; overflow-y: auto; padding: 18px 16px; }
+    .sidebar-inner::-webkit-scrollbar { width: 3px; }
+    .sidebar-inner::-webkit-scrollbar-thumb { background: var(--lightgrey); border-radius: 2px; }
+
+    .sidebar-section { margin-bottom: 22px; }
+    .sidebar-section-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--midgrey); margin-bottom: 9px;
+    }
+
+    /* Search */
+    .search-wrap { position: relative; margin-bottom: 14px; }
+    .search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--midgrey); pointer-events: none; }
+    #search-input {
+      width: 100%; padding: 8px 10px 8px 32px; border: 1px solid var(--border);
+      border-radius: 4px; font-family: var(--font-body); font-size: 13px;
+      color: var(--coal); background: var(--offwhite); outline: none; transition: border-color 0.15s;
+    }
+    #search-input::placeholder { color: var(--midgrey); }
+    #search-input:focus { border-color: var(--coal); background: #fff; }
+
+    .area-count {
+      font-size: 12px; color: var(--midgrey); margin-bottom: 16px;
+      padding-bottom: 14px; border-bottom: 1px solid var(--lightgrey);
+    }
+    .area-count strong { color: var(--coal); font-weight: 600; }
+
+    /* Filter rows */
+    .filter-row {
+      display: flex; align-items: center; gap: 8px; padding: 5px 0;
+      cursor: pointer; user-select: none;
+    }
+    .filter-checkbox {
+      width: 14px; height: 14px; border: 1.5px solid var(--border); border-radius: 3px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.12s;
+    }
+    .filter-row.active .filter-checkbox { background: var(--coal); border-color: var(--coal); }
+    .filter-row.active .filter-checkbox::after {
+      content: ''; width: 7px; height: 7px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1.5 5l2.5 2.5 4.5-4.5' stroke='white' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-size: contain; background-repeat: no-repeat;
+    }
+    .status-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .filter-label { font-size: 12.5px; color: #444; flex: 1; }
+    .filter-count {
+      font-size: 11px; color: var(--midgrey); font-weight: 600;
+      background: var(--offwhite); padding: 1px 6px; border-radius: 10px;
+    }
+
+    .clear-filters {
+      font-size: 11.5px; color: var(--midgrey); cursor: pointer; text-decoration: underline;
+      text-decoration-color: transparent; transition: all 0.12s;
+      background: none; border: none; font-family: var(--font-body); padding: 0; margin-top: 4px;
+    }
+    .clear-filters:hover { color: var(--coal); text-decoration-color: var(--coal); }
+
+    .sidebar-footer {
+      padding: 11px 16px; border-top: 1px solid var(--lightgrey);
+      background: var(--offwhite); font-size: 10.5px; color: var(--midgrey); line-height: 1.5;
+    }
+    .sidebar-footer a { color: var(--midgrey); }
+
+    /* MAP */
+    #map { flex: 1; min-height: 0; z-index: 1; }
+    .leaflet-container { font-family: var(--font-body); }
+
+    /* Tooltip */
+    .leaflet-tooltip {
+      background: var(--coal) !important; color: #fff !important; border: none !important;
+      border-radius: 3px !important; font-family: var(--font-body) !important;
+      font-size: 12px !important; font-weight: 500 !important; padding: 5px 9px !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25) !important; white-space: nowrap !important;
+    }
+    .leaflet-tooltip::before { display: none !important; }
+
+    /* DETAIL PANEL */
+    .detail-panel {
+      position: absolute; right: 0; top: 0; bottom: 0; width: 320px;
+      background: #fff; border-left: 1px solid var(--border); z-index: 800;
+      display: flex; flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      box-shadow: -4px 0 20px rgba(0,0,0,0.08);
+    }
+    .detail-panel.open { transform: translateX(0); }
+
+    .detail-header { padding: 18px 18px 14px; border-bottom: 1px solid var(--lightgrey); position: relative; }
+    .detail-close {
+      position: absolute; top: 14px; right: 14px; width: 26px; height: 26px;
+      border: 1px solid var(--border); border-radius: 4px; background: var(--offwhite);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: all 0.12s; color: var(--midgrey);
+    }
+    .detail-close:hover { background: var(--lightgrey); color: var(--coal); }
+
+    .detail-status-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 10.5px; font-weight: 700; letter-spacing: 0.07em;
+      text-transform: uppercase; padding: 3px 8px; border-radius: 3px; margin-bottom: 9px;
+    }
+    .detail-name {
+      font-family: var(--font-display); font-size: 22px; line-height: 1.2;
+      color: var(--coal); margin-bottom: 3px; padding-right: 32px;
+    }
+    .detail-meta { font-size: 12px; color: var(--midgrey); }
+
+    .detail-body { flex: 1; overflow-y: auto; padding: 18px; }
+    .detail-body::-webkit-scrollbar { width: 3px; }
+    .detail-body::-webkit-scrollbar-thumb { background: var(--lightgrey); border-radius: 2px; }
+
+    .detail-field { margin-bottom: 16px; }
+    .detail-field-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--midgrey); margin-bottom: 5px;
+    }
+    .detail-field-value { font-size: 13px; line-height: 1.55; color: #2a2927; }
+
+    .detail-note {
+      background: var(--offwhite); border-left: 3px solid var(--lightgrey);
+      padding: 9px 12px; font-size: 12px; line-height: 1.6; color: #555;
+      border-radius: 0 3px 3px 0;
+    }
+
+    .detail-timeline {
+      margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--lightgrey);
+    }
+    .timeline-item {
+      display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start;
+    }
+    .timeline-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px;
+    }
+    .timeline-dot.done { opacity: 1; }
+    .timeline-dot.pending { opacity: 0.3; }
+    .timeline-label { font-size: 12px; line-height: 1.4; }
+    .timeline-label .tl-date { color: var(--midgrey); font-size: 11px; display: block; }
+
+    /* LEGEND */
+    .map-legend {
+      position: absolute; bottom: 36px; left: 306px; z-index: 400;
+      background: rgba(255,255,255,0.95); border: 1px solid var(--border);
+      border-radius: 5px; padding: 11px 13px; backdrop-filter: blur(4px);
+      transition: left 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      pointer-events: none;
+    }
+    .map-legend.panel-open { left: 16px; }
+    .legend-title { font-size: 9.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--midgrey); margin-bottom: 7px; }
+    .legend-item { display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: #333; margin-bottom: 5px; }
+    .legend-item:last-child { margin-bottom: 0; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+    /* DISCLAIMER */
+    .disclaimer-bar {
+      position: absolute; bottom: 0; left: 290px; right: 0; z-index: 400;
+      background: rgba(20,20,19,0.8); color: rgba(255,255,255,0.55);
+      font-size: 10.5px; padding: 5px 16px; text-align: center;
+      backdrop-filter: blur(4px); letter-spacing: 0.02em;
+    }
+
+    .no-results { display: none; text-align: center; padding: 20px 12px; color: var(--midgrey); font-size: 12.5px; }
+
+    /* DPP badge */
+    .dpp-tag {
+      display: inline-block; font-size: 9.5px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; background: #1e6091; color: #fff;
+      padding: 2px 6px; border-radius: 2px; margin-left: 4px; vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-brand">
+    <span class="wordmark">LGR Initiative</span>
+    <div class="divider"></div>
+    <span class="subtitle">England LGR Status Tracker</span>
+  </div>
+  <div class="header-meta">Updated March 2026</div>
+</header>
+
+<div class="app-body">
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <div class="search-wrap">
+        <svg width="14" height="14" viewBox="0 0 15 15" fill="none">
+          <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.4"/>
+          <line x1="9.8" y1="9.8" x2="13.5" y2="13.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+        <input type="text" id="search-input" placeholder="Search area…" autocomplete="off">
+      </div>
+
+      <div class="area-count" id="area-count">
+        Showing <strong id="count-shown">0</strong> of <strong id="count-total">0</strong> areas
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Status</div>
+        <div id="status-filters"></div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Track</div>
+        <div id="track-filters"></div>
+      </div>
+
+      <div class="no-results" id="no-results">No areas match your filters.</div>
+      <button class="clear-filters" id="clear-filters">Clear all filters</button>
+    </div>
+    <div class="sidebar-footer">
+      Indicative data, March 2026. Verify against current MHCLG guidance before citing.<br>
+      <a href="https://localgovernmentreorganisation.co.uk">localgovernmentreorganisation.co.uk</a>
+    </div>
+  </aside>
+
+  <div id="map"></div>
+
+  <div class="map-legend" id="map-legend">
+    <div class="legend-title">Status</div>
+    <div id="legend-items"></div>
+  </div>
+
+  <div class="detail-panel" id="detail-panel">
+    <div class="detail-header">
+      <button class="detail-close" id="detail-close" aria-label="Close">
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+          <line x1="1" y1="1" x2="11" y2="11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="11" y1="1" x2="1" y2="11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="detail-status-badge" id="dp-badge"></div>
+      <div class="detail-name" id="dp-name"></div>
+      <div class="detail-meta" id="dp-meta"></div>
+    </div>
+    <div class="detail-body" id="dp-body"></div>
+  </div>
+
+  <div class="disclaimer-bar">
+    ⚠ Indicative data only — verify against MHCLG guidance and council announcements before citing.
+  </div>
+</div>
+
+<script>
+// ─── STATUS CONFIG ────────────────────────────────────────────────────────────
+const STATUS_CONFIG = {
+  'live':                 { label: 'Live Unitary',             color: '#2d6a4f', order: 1 },
+  'decision-made':        { label: 'Decision Made',            color: '#1e6091', order: 2 },
+  'consultation-closed':  { label: 'Consultation Closed',      color: '#5b7fa6', order: 3 },
+  'under-consultation':   { label: 'Under Consultation',       color: '#c96d3f', order: 4 },
+  'announced':            { label: 'Proposals Submitted',      color: '#8d99ae', order: 5 },
+};
+
+// ─── TRACK CONFIG ────────────────────────────────────────────────────────────
+const TRACK_CONFIG = {
+  'existing':     { label: 'Existing Unitary' },
+  'accelerated':  { label: 'Accelerated (Surrey)' },
+  'dpp':          { label: 'Devolution Priority Programme' },
+  'standard':     { label: 'Standard Tranche' },
+};
+
+// ─── AREA DATA ───────────────────────────────────────────────────────────────
+const AREAS = [
+
+  // ── LIVE UNITARIES (2019–2023) ──────────────────────────────────────────
+  {
+    id: 'dorset', name: 'Dorset', track: 'existing', status: 'live',
+    lat: 50.75, lng: -2.44, established: 'April 2019',
+    predecessor: 'Christchurch, East Dorset, North Dorset, Purbeck, West Dorset, Weymouth & Portland; Dorset CC',
+    notes: 'Created alongside Bournemouth, Christchurch and Poole as two separate unitary authorities.',
+    timeline: [
+      { label: 'Invitation issued', date: '2018', done: true },
+      { label: 'Order made', date: '2018', done: true },
+      { label: 'Vesting day', date: '1 April 2019', done: true },
+    ]
+  },
+  {
+    id: 'buckinghamshire', name: 'Buckinghamshire', track: 'existing', status: 'live',
+    lat: 51.82, lng: -0.81, established: 'April 2020',
+    predecessor: 'Aylesbury Vale, Chiltern, South Bucks, Wycombe; Buckinghamshire CC',
+    notes: 'Standalone process prior to the current LGR wave. Processed under the previous government.',
+    timeline: [
+      { label: 'Invitation issued', date: '2018', done: true },
+      { label: 'Order made', date: '2019', done: true },
+      { label: 'Vesting day', date: '1 April 2020', done: true },
+    ]
+  },
+  {
+    id: 'north-northamptonshire', name: 'North Northamptonshire', track: 'existing', status: 'live',
+    lat: 52.48, lng: -0.65, established: 'April 2021',
+    predecessor: 'Corby, East Northamptonshire, Kettering, Wellingborough',
+    notes: 'Created following the financial failure and Exceptional Financial Support for Northamptonshire County Council.',
+    timeline: [
+      { label: 'Order made', date: '2020', done: true },
+      { label: 'Vesting day', date: '1 April 2021', done: true },
+    ]
+  },
+  {
+    id: 'west-northamptonshire', name: 'West Northamptonshire', track: 'existing', status: 'live',
+    lat: 52.22, lng: -1.05, established: 'April 2021',
+    predecessor: 'Daventry, Northampton, South Northamptonshire',
+    notes: 'Created alongside North Northamptonshire following Northamptonshire CC\'s financial failure.',
+    timeline: [
+      { label: 'Order made', date: '2020', done: true },
+      { label: 'Vesting day', date: '1 April 2021', done: true },
+    ]
+  },
+  {
+    id: 'somerset', name: 'Somerset', track: 'existing', status: 'live',
+    lat: 51.10, lng: -2.90, established: 'April 2023',
+    predecessor: 'Mendip, Sedgemoor, Somerset West and Taunton, South Somerset; Somerset CC',
+    notes: 'The first council-initiated voluntary merger of county and districts in modern English local government history.',
+    timeline: [
+      { label: 'Invitation issued', date: '2021', done: true },
+      { label: 'Order made', date: '2022', done: true },
+      { label: 'Vesting day', date: '1 April 2023', done: true },
+    ]
+  },
+  {
+    id: 'north-yorkshire', name: 'North Yorkshire', track: 'existing', status: 'live',
+    lat: 54.15, lng: -1.55, established: 'April 2023',
+    predecessor: 'Craven, Hambleton, Harrogate, Richmondshire, Ryedale, Scarborough, Selby; North Yorkshire CC',
+    notes: 'England\'s largest unitary authority by area at approximately 3,400 sq miles.',
+    timeline: [
+      { label: 'Invitation issued', date: '2021', done: true },
+      { label: 'Order made', date: '2022', done: true },
+      { label: 'Vesting day', date: '1 April 2023', done: true },
+    ]
+  },
+  {
+    id: 'cumberland', name: 'Cumberland', track: 'existing', status: 'live',
+    lat: 54.65, lng: -3.00, established: 'April 2023',
+    predecessor: 'Allerdale, Carlisle, Copeland (and part of Eden)',
+    notes: 'Created alongside Westmorland and Furness. Shadow elections held May 2022.',
+    timeline: [
+      { label: 'Order made', date: '2022', done: true },
+      { label: 'Shadow elections', date: 'May 2022', done: true },
+      { label: 'Vesting day', date: '1 April 2023', done: true },
+    ]
+  },
+  {
+    id: 'westmorland', name: 'Westmorland and Furness', track: 'existing', status: 'live',
+    lat: 54.30, lng: -2.70, established: 'April 2023',
+    predecessor: 'Barrow-in-Furness, South Lakeland, Eden (part)',
+    notes: 'Created alongside Cumberland. Shadow elections held May 2022.',
+    timeline: [
+      { label: 'Order made', date: '2022', done: true },
+      { label: 'Shadow elections', date: 'May 2022', done: true },
+      { label: 'Vesting day', date: '1 April 2023', done: true },
+    ]
+  },
+
+  // ── SURREY — ACCELERATED ─────────────────────────────────────────────────
+  {
+    id: 'surrey', name: 'Surrey', track: 'accelerated', status: 'decision-made',
+    lat: 51.27, lng: -0.40,
+    predecessor: '11 district/borough councils + Surrey County Council',
+    outcome: 'Two unitaries: East Surrey Council and West Surrey Council',
+    notes: 'Government decided in October 2025. Surrey (Structural Changes) Order 2026 signed. The only area to receive an accelerated timetable, described by government as critical to unlocking devolution and addressing the area\'s financial position.',
+    timeline: [
+      { label: 'Invitation issued', date: '5 Feb 2025', done: true },
+      { label: 'Proposals submitted', date: '6 May 2025', done: true },
+      { label: 'Decision made (2 unitaries)', date: 'October 2025', done: true },
+      { label: 'SCO signed', date: 'Early 2026', done: true },
+      { label: 'Shadow elections', date: 'May 2026', done: false },
+      { label: 'Vesting day', date: '1 April 2027', done: false },
+    ]
+  },
+
+  // ── DPP AREAS — CONSULTATION CLOSED ──────────────────────────────────────
+  {
+    id: 'greater-essex', name: 'Greater Essex', track: 'dpp', status: 'consultation-closed',
+    lat: 51.77, lng: 0.55,
+    predecessor: '12 district/borough councils + Essex CC + Southend-on-Sea + Thurrock',
+    notes: 'Devolution Priority Programme area. Public consultation on LGR proposals ran November 2025–January 2026. Decision expected ahead of May 2026. New councils to go live April 2028 alongside mayoral devolution.',
+    timeline: [
+      { label: 'Invitation issued', date: '5 Feb 2025', done: true },
+      { label: 'Proposals submitted', date: '28 Nov 2025', done: true },
+      { label: 'Consultation closed', date: 'Jan 2026', done: true },
+      { label: 'Decision expected', date: 'Spring 2026', done: false },
+      { label: 'Shadow elections', date: 'May 2027', done: false },
+      { label: 'Vesting day', date: '1 April 2028', done: false },
+    ]
+  },
+  {
+    id: 'hampshire-solent', name: 'Hampshire & the Solent', track: 'dpp', status: 'consultation-closed',
+    lat: 51.05, lng: -1.20,
+    predecessor: '11 district/borough councils + Hampshire CC + Southampton + Portsmouth',
+    notes: 'Devolution Priority Programme area. Public consultation on LGR proposals ran November 2025–January 2026. Southampton and Portsmouth are existing unitary authorities and are part of the combined footprint. Decision expected ahead of May 2026.',
+    timeline: [
+      { label: 'Invitation issued', date: '5 Feb 2025', done: true },
+      { label: 'Proposals submitted', date: '28 Nov 2025', done: true },
+      { label: 'Consultation closed', date: 'Jan 2026', done: true },
+      { label: 'Decision expected', date: 'Spring 2026', done: false },
+      { label: 'Shadow elections', date: 'May 2027', done: false },
+      { label: 'Vesting day', date: '1 April 2028', done: false },
+    ]
+  },
+  {
+    id: 'norfolk-suffolk', name: 'Norfolk & Suffolk', track: 'dpp', status: 'consultation-closed',
+    lat: 52.45, lng: 1.05,
+    predecessor: '7 district councils + Norfolk CC + 7 district councils + Suffolk CC',
+    notes: 'Devolution Priority Programme area covering two counties. Public consultation ran November 2025–January 2026. Decision expected ahead of May 2026. Combined mayoral devolution to proceed alongside unitarisation.',
+    timeline: [
+      { label: 'Invitation issued', date: '5 Feb 2025', done: true },
+      { label: 'Proposals submitted', date: '28 Nov 2025', done: true },
+      { label: 'Consultation closed', date: 'Jan 2026', done: true },
+      { label: 'Decision expected', date: 'Spring 2026', done: false },
+      { label: 'Shadow elections', date: 'May 2027', done: false },
+      { label: 'Vesting day', date: '1 April 2028', done: false },
+    ]
+  },
+  {
+    id: 'sussex-brighton', name: 'Sussex & Brighton', track: 'dpp', status: 'consultation-closed',
+    lat: 50.93, lng: -0.20,
+    predecessor: '5 district/borough councils + East Sussex CC + 7 district/borough councils + West Sussex CC + Brighton & Hove',
+    notes: 'Devolution Priority Programme area covering East Sussex, West Sussex and Brighton & Hove. Public consultation ran November 2025–January 2026. Decision expected ahead of May 2026.',
+    timeline: [
+      { label: 'Invitation issued', date: '5 Feb 2025', done: true },
+      { label: 'Proposals submitted', date: '28 Nov 2025', done: true },
+      { label: 'Consultation closed', date: 'Jan 2026', done: true },
+      { label: 'Decision expected', date: 'Spring 2026', done: false },
+      { label: 'Shadow elections', date: 'May 2027', done: false },
+      { label: 'Vesting day', date: '1 April 2028', done: false },
+    ]
+  },
+
+  // ── STANDARD TRANCHE — UNDER CONSULTATION (5 Feb – 26 Mar 2026) ──────────
+  {
+    id: 'cambridgeshire', name: 'Cambridgeshire & Peterborough', track: 'standard', status: 'under-consultation',
+    lat: 52.30, lng: 0.10,
+    predecessor: '5 district councils + Cambridgeshire CC + Peterborough (existing unitary)',
+    notes: 'Proposals submitted November 2025. Public consultation 5 February – 26 March 2026. Peterborough is an existing unitary authority and is included in the combined invitation area.',
+    timeline: [
+      { label: 'Proposals submitted', date: '28 Nov 2025', done: true },
+      { label: 'Consultation opened', date: '5 Feb 2026', done: true },
+      { label: 'Consultation closes', date: '26 Mar 2026', done: false },
+      { label: 'Decision expected', date: 'Summer 2026', done: false },
+      { label: 'Shadow elections', date: 'May 2027', done: false },
+      { label: 'Vesting day', date: '1 April 2028', done: false },
+    ]
+  },
+  {
+    id: 'derbyshire', name: 'Derbyshire & Derby', track: 'standard', status: 'under-consultation',
+    lat: 53.05, lng: -1.50,
+    predecessor: '8 district/borough councils + Derbyshire CC + Derby City (existing unitary)',
+    notes: 'Proposals submitted November 2025. Consultation open February–March 2026. Derby City is an existing unitary authority within the invitation area.',
+    timeline: [
+      { label: 'Proposals submitted', date: '28 Nov 2025', done: true },
+      { label: 'Consultation opened', date: '5 Feb 2026', done: true },
+      { label: 'Consultation closes', date: '26 Mar 2026', done: false },
+      { label: 'Decision expected', date: 'Summer 2026', done: false },
+      { label: 'Shadow elections', date: 'May 2027', done: false },
+      { label: 'Vesting day', date: '1 April 2028', done: false },
+    ]
+  },
+  {
+    id: 'devon', name: 'Devon, Plymouth & Torbay', track: 'standard', status: 'under-consultation',
+    lat: 50.65, lng: -3.75,
+    predecessor: '8 district councils + Devon CC + Plymouth (existing unitary) + Torbay (existing unitary)',
+    notes: 'Proposals submitted November 2025. Consultation open February–March 2026. Plymouth and Torbay are existing unitary authorities within the invitation area. Significant debate over whether to expand urban boundaries.',
+    timeline: [
+      { label: 'Proposals submitted', date: '28 Nov 2025', done: true },
+      { label: 'Consultation opened', date: '5 Feb 2026', done: true },
+      { label: 'Consultation closes', date: '26 Mar 2026', done: false },
+      { label: 'Decision expected', date: 'Summer 2026', done: false },
+      { label: 'Shadow elections', date: 'May 2027', done: false },
+      { label: 'Vesting day', date: '1 April 2028', done: false },
+    ]
+  },
+  {
+    id: 'gloucestershire', name: 'Gloucestershire', track: 'standard', status: 'under-consultation',
+    lat: 51.86, lng: -2.10,
+    predecessor: '6 district councils + Gloucestershire CC',
+    notes: 'Proposals submitted November 2025. Consultation open February–March 2026.',
+    timeline: [
+      { label: 'Proposals submitted', date: '28 Nov 2025', done: true },
+      { label: 'Consultation opened', date: '5 Feb 2026', done: true },
+      { label: 'Consultation closes', date: '26 Mar 2026', done: false },
+      { label: 'Decision expected', date: 'Summer 2026', done: false },
+      { label: 'Shadow elections', date: 'May 2027', done: false },
+      { label: 'Vesting day', date: '1 April 2028', done: false },
+    ]
+  },
+  {
+    id: 'hertfordshire', name: 'Hertfordshire', track: 'standard', status: 'under-consultation',
+    lat: 51.81, lng: -0.22,
+    predecessor: '10 district/borough councils + Hertfordshire CC',
+    notes: 'Three competing proposals submitted November 2025 — including options for 2, 3 and 4 unitary authorities. Consultation 5 February – 26 March 2026.',
+    timeline: [
+      { label: 'Proposals submitted', date: '28 Nov 2025', done: true },
+      { label: 'Consultation opened', date: '5 Feb 2026', done: true },
+      { label: 'Consultation closes', date: '26 Mar 2026', done: false },
+      { label: 'Decision expected', date: 'Summer 2026', done: false },
+      { label: 'Shadow elections', date: 'May 2027', done: false },
+      { label: 'Vesting day', date: '1 April 2028', done: false },
+    ]
+  },
+  {
+    id: 'kent', name: 'Kent & Medway', track: 'standard', status: 'under-consultation',
+    lat: 51.25, lng: 0.65,
+    predecessor: '12 district/borough councils + Kent CC + Medway (existing unitary)',
+    notes: 'Proposals submitted November 2025. Medway is an existing unitary authority included in the invitation area. Consultation open February–March 2026.',
+    timeline: [
+      { label: 'Proposals submitted', date: '28 Nov 2025', done: true },
+      { label: 'Consultation opened', date: '5 Feb 2026', done: true },
+      { label: 'Consultation closes', date: '26 Mar 2026', done: false },
+      { label: 'Decision expected', date: 'Summer 2026', done: false },
+      { label: 'Shadow elections', date: 'May 2027', done: false },
+      { label: 'Vesting day', date: '1 April 2028', done: false },
+    ]
+  },
+  {
+    id: 'lancashire', name: 'Lancashire, Blackburn & Blackpool', track: 'standard', status: 'under-consultation',
+    lat: 53.80, lng: -2.50,
+    predecessor: '12 district/borough councils + Lancashire CC + Blackburn with Darwen (existing unitary) + Blackpool (existing unitary)',
+    notes: 'Proposals submitted November 2025. Blackburn with Darwen and Blackpool are existing unitary authorities included in the invitation area. Consultation open February–March 2026.',
+    timeline: [
+      { label: 'Proposals submitted', date: '28 Nov 2025', done: true },
+      { label: 'Consultation opened', date: '5 Feb 2026', done: true },
+      { label: 'Consultation closes', date: '26 Mar 2026', done: false },
+      { label: 'Decision expected', date: 'Summer 2026', done: false },
+      { label: 'Shadow elections', date: 'May 2027', done: false },
+      { label: 'Vesting day', date: '1 April 2028', done: false },
+    ]
+  },
+  {
+    id: 'leicestershire', name: 'Leicestershire & Rutland', track: 'standard', status: 'under-consultation',
+    lat: 52.65, lng: -1.10,
+    predecessor: '7 district/borough councils + Leicestershire CC + Rutland (existing unitary) + Leicester City (existing unitary)',
+    notes: 'Proposals submitted November 2025. Leicester City and Rutland are existing unitary authorities within the invitation area. Consultation open February–March 2026.',
+    timeline: [
+      { label: 'Proposals submitted', date: '28 Nov 2025', done: true },
+      { label: 'Consultation opened', date: '5 Feb 2026', done: true },
+      { label: 'Consultation closes', date: '26 Mar 2026', done: false },
+      { label: 'Decision expected', date: 'Summer 2026', done: false },
+      { label: 'Shadow elections', date: 'May 2027', done: false },
+      { label: 'Vesting day', date: '1 April 2028', done: false },
+    ]
+  },
+  {
+    id: 'lincolnshire', name: 'Greater Lincolnshire', track: 'standard', status: 'under-consultation',
+    lat: 53.10, lng: -0.30,
+    predecessor: '7 district councils + Lincolnshire CC + North Lincolnshire (existing unitary) + North East Lincolnshire (existing unitary)',
+    notes: 'Proposals submitted November 2025. North Lincolnshire and North East Lincolnshire are existing unitary authorities (administratively in Yorkshire & Humber) included in the invitation. Consultation open February–March 2026.',
+    timeline: [
+      { label: 'Proposals submitted', date: '28 Nov 2025', done: true },
+      { label: 'Consultation opened', date: '5 Feb 2026', done: true },
+      { label: 'Consultation closes', date: '26 Mar 2026', done: false },
+      { label: 'Decision expected', date: 'Summer 2026', done: false },
+      { label: 'Shadow elections', date: 'May 2027', done: false },
+      { label: 'Vesting day', date: '1 April 2028', done: false },
+    ]
+  },
+  {
+    id: 'nottinghamshire', name: 'Nottinghamshire & Nottingham', track: 'standard', status: 'under-consultation',
+    lat: 53.00, lng: -1.05,
+    predecessor: '7 district/borough councils + Nottinghamshire CC + Nottingham City (existing unitary)',
+    notes: 'Proposals submitted November 2025. Nottingham City Council leader has argued for a boundary review and expansion of the city area. Consultation open February–March 2026.',
+    timeline: [
+      { label: 'Proposals submitted', date: '28 Nov 2025', done: true },
+      { label: 'Consultation opened', date: '5 Feb 2026', done: true },
+      { label: 'Consultation closes', date: '26 Mar 2026', done: false },
+      { label: 'Decision expected', date: 'Summer 2026', done: false },
+      { label: 'Shadow elections', date: 'May 2027', done: false },
+      { label: 'Vesting day', date: '1 April 2028', done: false },
+    ]
+  },
+  {
+    id: 'oxfordshire', name: 'Oxfordshire', track: 'standard', status: 'under-consultation',
+    lat: 51.75, lng: -1.25,
+    predecessor: '5 district councils + Oxfordshire CC',
+    notes: 'Proposals submitted November 2025. Consultation open February–March 2026.',
+    timeline: [
+      { label: 'Proposals submitted', date: '28 Nov 2025', done: true },
+      { label: 'Consultation opened', date: '5 Feb 2026', done: true },
+      { label: 'Consultation closes', date: '26 Mar 2026', done: false },
+      { label: 'Decision expected', date: 'Summer 2026', done: false },
+      { label: 'Shadow elections', date: 'May 2027', done: false },
+      { label: 'Vesting day', date: '1 April 2028', done: false },
+    ]
+  },
+  {
+    id: 'staffordshire', name: 'Staffordshire & Stoke-on-Trent', track: 'standard', status: 'under-consultation',
+    lat: 52.80, lng: -2.00,
+    predecessor: '8 district/borough councils + Staffordshire CC + Stoke-on-Trent (existing unitary)',
+    notes: 'Proposals submitted November 2025. Five competing options submitted including Stoke-on-Trent. Stoke-on-Trent is an existing unitary authority within the invitation area. Consultation open February–March 2026.',
+    timeline: [
+      { label: 'Proposals submitted', date: '28 Nov 2025', done: true },
+      { label: 'Consultation opened', date: '5 Feb 2026', done: true },
+      { label: 'Consultation closes', date: '26 Mar 2026', done: false },
+      { label: 'Decision expected', date: 'Summer 2026', done: false },
+      { label: 'Shadow elections', date: 'May 2027', done: false },
+      { label: 'Vesting day', date: '1 April 2028', done: false },
+    ]
+  },
+  {
+    id: 'warwickshire', name: 'Warwickshire', track: 'standard', status: 'under-consultation',
+    lat: 52.35, lng: -1.55,
+    predecessor: '5 district/borough councils + Warwickshire CC',
+    notes: 'Proposals submitted November 2025. Consultation open February–March 2026.',
+    timeline: [
+      { label: 'Proposals submitted', date: '28 Nov 2025', done: true },
+      { label: 'Consultation opened', date: '5 Feb 2026', done: true },
+      { label: 'Consultation closes', date: '26 Mar 2026', done: false },
+      { label: 'Decision expected', date: 'Summer 2026', done: false },
+      { label: 'Shadow elections', date: 'May 2027', done: false },
+      { label: 'Vesting day', date: '1 April 2028', done: false },
+    ]
+  },
+  {
+    id: 'worcestershire', name: 'Worcestershire', track: 'standard', status: 'under-consultation',
+    lat: 52.20, lng: -2.10,
+    predecessor: '6 district/borough councils + Worcestershire CC',
+    notes: 'Proposals submitted November 2025. Consultation open February–March 2026.',
+    timeline: [
+      { label: 'Proposals submitted', date: '28 Nov 2025', done: true },
+      { label: 'Consultation opened', date: '5 Feb 2026', done: true },
+      { label: 'Consultation closes', date: '26 Mar 2026', done: false },
+      { label: 'Decision expected', date: 'Summer 2026', done: false },
+      { label: 'Shadow elections', date: 'May 2027', done: false },
+      { label: 'Vesting day', date: '1 April 2028', done: false },
+    ]
+  },
+];
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+const state = {
+  searchTerm: '',
+  activeStatuses: new Set(Object.keys(STATUS_CONFIG)),
+  activeTracks: new Set(Object.keys(TRACK_CONFIG)),
+  selectedArea: null,
+};
+
+// ─── MAP ─────────────────────────────────────────────────────────────────────
+const map = L.map('map', { center: [52.5, -1.5], zoom: 7, zoomControl: false });
+L.control.zoom({ position: 'bottomright' }).addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  subdomains: 'abcd', maxZoom: 19,
+}).addTo(map);
+
+// ─── MARKERS ─────────────────────────────────────────────────────────────────
+const markers = {};
+
+function createMarker(area) {
+  const cfg = STATUS_CONFIG[area.status];
+  const marker = L.circleMarker([area.lat, area.lng], {
+    radius: 9, fillColor: cfg.color, color: '#fff', weight: 2, opacity: 1, fillOpacity: 0.88,
+  });
+  marker.bindTooltip(area.name, { permanent: false, direction: 'top', offset: [0, -8] });
+  marker.on('click', () => openDetailPanel(area));
+  marker.on('mouseover', function() { this.setStyle({ radius: 11, fillOpacity: 1 }); });
+  marker.on('mouseout', function() { this.setStyle({ radius: 9, fillOpacity: 0.88 }); });
+  return marker;
+}
+
+AREAS.forEach(area => {
+  markers[area.id] = createMarker(area);
+  markers[area.id].addTo(map);
+});
+
+// ─── FILTERS ─────────────────────────────────────────────────────────────────
+function getFilteredAreas() {
+  return AREAS.filter(a => {
+    const matchSearch = !state.searchTerm ||
+      a.name.toLowerCase().includes(state.searchTerm.toLowerCase());
+    return matchSearch && state.activeStatuses.has(a.status) && state.activeTracks.has(a.track);
+  });
+}
+
+function renderFilters() {
+  const statusCounts = {};
+  Object.keys(STATUS_CONFIG).forEach(s => statusCounts[s] = 0);
+  AREAS.forEach(a => statusCounts[a.status]++);
+
+  const statusEl = document.getElementById('status-filters');
+  statusEl.innerHTML = '';
+  Object.entries(STATUS_CONFIG).sort((a,b) => a[1].order - b[1].order).forEach(([key, cfg]) => {
+    const row = document.createElement('div');
+    row.className = 'filter-row' + (state.activeStatuses.has(key) ? ' active' : '');
+    row.innerHTML = `
+      <div class="filter-checkbox"></div>
+      <div class="status-dot" style="background:${cfg.color}"></div>
+      <span class="filter-label">${cfg.label}</span>
+      <span class="filter-count">${statusCounts[key]}</span>
+    `;
+    row.addEventListener('click', () => {
+      if (state.activeStatuses.has(key)) { if (state.activeStatuses.size > 1) state.activeStatuses.delete(key); }
+      else state.activeStatuses.add(key);
+      updateView();
+    });
+    statusEl.appendChild(row);
+  });
+
+  const trackCounts = {};
+  Object.keys(TRACK_CONFIG).forEach(t => trackCounts[t] = 0);
+  AREAS.forEach(a => trackCounts[a.track]++);
+
+  const trackEl = document.getElementById('track-filters');
+  trackEl.innerHTML = '';
+  Object.entries(TRACK_CONFIG).forEach(([key, cfg]) => {
+    const row = document.createElement('div');
+    row.className = 'filter-row' + (state.activeTracks.has(key) ? ' active' : '');
+    row.innerHTML = `
+      <div class="filter-checkbox"></div>
+      <span class="filter-label">${cfg.label}</span>
+      <span class="filter-count">${trackCounts[key]}</span>
+    `;
+    row.addEventListener('click', () => {
+      if (state.activeTracks.has(key)) { if (state.activeTracks.size > 1) state.activeTracks.delete(key); }
+      else state.activeTracks.add(key);
+      updateView();
+    });
+    trackEl.appendChild(row);
+  });
+
+  // Legend
+  const legendEl = document.getElementById('legend-items');
+  legendEl.innerHTML = '';
+  Object.entries(STATUS_CONFIG).sort((a,b) => a[1].order - b[1].order).forEach(([key, cfg]) => {
+    legendEl.innerHTML += `
+      <div class="legend-item">
+        <div class="legend-dot" style="background:${cfg.color}"></div>
+        <span>${cfg.label}</span>
+      </div>`;
+  });
+}
+
+function updateView() {
+  const filtered = getFilteredAreas();
+  const filteredIds = new Set(filtered.map(a => a.id));
+  AREAS.forEach(area => {
+    const m = markers[area.id];
+    if (filteredIds.has(area.id)) { if (!map.hasLayer(m)) m.addTo(map); }
+    else { if (map.hasLayer(m)) map.removeLayer(m); }
+  });
+  document.getElementById('count-shown').textContent = filtered.length;
+  document.getElementById('count-total').textContent = AREAS.length;
+  document.getElementById('no-results').style.display = filtered.length === 0 ? 'block' : 'none';
+  renderFilters();
+}
+
+// ─── DETAIL PANEL ─────────────────────────────────────────────────────────────
+function openDetailPanel(area) {
+  const cfg = STATUS_CONFIG[area.status];
+  const trackCfg = TRACK_CONFIG[area.track];
+  state.selectedArea = area.id;
+
+  const badge = document.getElementById('dp-badge');
+  badge.innerHTML = `<div style="width:7px;height:7px;border-radius:50%;background:${cfg.color}"></div> ${cfg.label}`;
+  badge.style.background = cfg.color + '1a';
+  badge.style.color = cfg.color;
+
+  document.getElementById('dp-name').textContent = area.name;
+
+  const isDPP = area.track === 'dpp';
+  document.getElementById('dp-meta').innerHTML =
+    `${trackCfg.label}${isDPP ? ' <span class="dpp-tag">DPP</span>' : ''}`;
+
+  let html = '';
+
+  if (area.established) {
+    html += `<div class="detail-field"><div class="detail-field-label">Established</div><div class="detail-field-value">${area.established}</div></div>`;
+  }
+  if (area.outcome) {
+    html += `<div class="detail-field"><div class="detail-field-label">Outcome</div><div class="detail-field-value">${area.outcome}</div></div>`;
+  }
+
+  html += `<div class="detail-field"><div class="detail-field-label">Predecessor Councils</div><div class="detail-field-value">${area.predecessor}</div></div>`;
+  html += `<div class="detail-field"><div class="detail-field-label">Context</div><div class="detail-note">${area.notes}</div></div>`;
+
+  if (area.timeline) {
+    html += `<div class="detail-field detail-timeline"><div class="detail-field-label">Timeline</div>`;
+    area.timeline.forEach(t => {
+      html += `
+        <div class="timeline-item">
+          <div class="timeline-dot ${t.done ? 'done' : 'pending'}" style="background:${cfg.color}"></div>
+          <div class="timeline-label">
+            ${t.label}
+            <span class="tl-date">${t.date}</span>
+          </div>
+        </div>`;
+    });
+    html += `</div>`;
+  }
+
+  html += `<div class="detail-field" style="margin-top:16px;padding-top:14px;border-top:1px solid var(--lightgrey)">
+    <div class="detail-note" style="border-left-color:#bbb;font-size:11px;color:#999;">
+      Status indicative as of March 2026. Verify against MHCLG guidance before citing.
+    </div>
+  </div>`;
+
+  document.getElementById('dp-body').innerHTML = html;
+  document.getElementById('detail-panel').classList.add('open');
+  document.getElementById('map-legend').classList.add('panel-open');
+  map.panTo([area.lat, area.lng], { animate: true, duration: 0.4 });
+}
+
+document.getElementById('detail-close').addEventListener('click', () => {
+  document.getElementById('detail-panel').classList.remove('open');
+  document.getElementById('map-legend').classList.remove('panel-open');
+  state.selectedArea = null;
+});
+
+document.getElementById('search-input').addEventListener('input', e => {
+  state.searchTerm = e.target.value;
+  updateView();
+});
+
+document.getElementById('clear-filters').addEventListener('click', () => {
+  state.searchTerm = '';
+  state.activeStatuses = new Set(Object.keys(STATUS_CONFIG));
+  state.activeTracks = new Set(Object.keys(TRACK_CONFIG));
+  document.getElementById('search-input').value = '';
+  updateView();
+});
+
+// ─── INIT ──────────────────────────────────────────────────────────────────
+document.getElementById('count-total').textContent = AREAS.length;
+updateView();
+</script>
+</body>
+</html>
