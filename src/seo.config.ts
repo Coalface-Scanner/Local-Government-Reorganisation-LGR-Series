@@ -72,6 +72,14 @@ export const pages: Record<string, PageSEO> = {
     sitemapPriority: 0.8,
     changefreq: "weekly",
   },
+  researchWhitePaper: {
+    title: "White Paper: Governance, Legitimacy and the First 100 Days | LGR Initiative",
+    description: "The LGR Initiative White Paper — original survey data, practitioner evidence and policy recommendations on governance design for England's new unitary authorities.",
+    path: "/research/white-paper",
+    schemaType: "Article",
+    sitemapPriority: 0.8,
+    changefreq: "monthly",
+  },
   library: {
     title: "Library | LGR Initiative — Search Reports, Data & Resources",
     description: "Search the LGR Initiative library for reports, analysis, data and resources on local government reorganisation across England.",
@@ -413,6 +421,14 @@ export const pages: Record<string, PageSEO> = {
     schemaType: "WebPage",
     sitemapPriority: 0.7,
     changefreq: "weekly",
+  },
+  surreySurveyResults: {
+    title: "Surrey Resident Survey — Headline Results | LGR Initiative",
+    description: "Headline findings from the LGR Initiative's survey of 1,047 Surrey residents on awareness, trust, and attitudes towards local government reorganisation.",
+    path: "/surrey/survey-results",
+    schemaType: "Article",
+    sitemapPriority: 0.8,
+    changefreq: "monthly",
   },
 
   // ── ABOUT ───────────────────────────────────────────────

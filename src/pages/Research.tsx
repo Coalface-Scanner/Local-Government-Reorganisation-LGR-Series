@@ -18,6 +18,7 @@ const featuredPathway = [
 ];
 
 const subPageCards = [
+  { title: 'White Paper', path: '/research/white-paper', description: 'Governance, legitimacy and the first 100 days — original survey data and policy recommendations.', icon: FileBarChart2 },
   { title: 'Facts & data', path: '/facts-and-data', description: 'Research overview: verified facts, datasets and sources.', icon: Database },
   { title: 'Library', path: '/library', description: 'Search and browse the LGR library of reports and materials.', icon: Search },
   { title: 'Lessons', path: '/lessons', description: 'Case-grounded insights and lessons from prior reorganisations.', icon: GraduationCap },

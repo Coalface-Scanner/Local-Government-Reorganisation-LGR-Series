@@ -186,30 +186,6 @@ export default function Surrey({ onNavigate }: SurreyProps) {
               </p>
 
               <div className="grid gap-6">
-                <button
-                  onClick={() => onNavigate('article', 'andrew-kelly-democracy-lgr')}
-                  className="group bg-gradient-to-r from-slate-50 to-white rounded-xl p-6 border-2 border-slate-200 hover:border-cyan-400 transition-all text-left"
-                >
-                  <div className="flex gap-6">
-                    <img
-                      src="/akelly_infographic_article_democratic.jpg"
-                      alt="Bigger Councils, Weaker Voice?"
-                      className="w-32 h-32 object-cover rounded-lg flex-shrink-0"
-                    />
-                    <div className="flex-1">
-                      <h4 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-cyan-600 transition-colors">
-                        Bigger Councils, Weaker Voice? Andrew Kelly on Democracy and LGR
-                      </h4>
-                      <p className="text-sm text-slate-600 mb-3">
-                        Former Elmbridge councillor Andrew Kelly examines how larger councils and reduced representation impact democratic engagement and local voice.
-                      </p>
-                      <div className="flex items-center gap-2 text-xs text-cyan-600 font-semibold">
-                        <span>READ INTERVIEW</span>
-                        <span>→</span>
-                      </div>
-                    </div>
-                  </div>
-                </button>
               </div>
             </div>
 

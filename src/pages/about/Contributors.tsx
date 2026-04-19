@@ -43,14 +43,7 @@ const CONTRIBUTORS_DATA: Contributor[] = [
     imageAlt: 'Cllr Paul Follows',
     imageObjectPosition: '50% 25%',
   },
-  {
-    name: 'Andrew Kelly',
-    surname: 'Kelly',
-    role: 'Former Elmbridge Councillor and Cabinet Member',
-    bio: 'Examines how larger councils and reduced representation impact democratic engagement and local voice in reorganised authorities.',
-    imageSrc: '/Contributors/Headshots/andrew-kelly.jpg',
-    imageAlt: 'Andrew Kelly',
-  },
+
   {
     name: 'Robert Moran',
     surname: 'Moran',

@@ -3,7 +3,7 @@ import { useEffect, useState, lazy, Suspense } from 'react';
 import Footer from './components/Footer';
 import StayInformedBanner from './components/StayInformedBanner';
 import CookieBanner from './components/CookieBanner';
-import SurreySurveyPopup from './components/SurreySurveyPopup';
+
 import ErrorBoundary from './components/ErrorBoundary';
 import BackToTop from './components/BackToTop';
 import KeyboardShortcuts from './components/KeyboardShortcuts';
@@ -24,6 +24,8 @@ const SurreyElectionTracker = lazy(() => import('./pages/SurreyElectionTracker')
 const SurreyElectionSimulator = lazy(() => import('./pages/SurreyElectionSimulator'));
 const SurreyHub = lazy(() => import('./pages/SurreyHub'));
 const SurreyLGRHub = lazy(() => import('./pages/SurreyLGRHub'));
+const SurveyResults = lazy(() => import('./pages/SurveyResults'));
+const WhitePaper = lazy(() => import('./pages/WhitePaper'));
 const Insights = lazy(() => import('./pages/Insights'));
 const Reports = lazy(() => import('./pages/insights/Reports'));
 const Subscribe = lazy(() => import('./pages/Subscribe'));
@@ -240,6 +242,7 @@ function AppContent() {
                 <Route path="/learn" element={<PageWrapper>{(_nav) => <Learn onNavigate={_nav} />}</PageWrapper>} />
             <Route path="/discover" element={<PageWrapper>{(_nav) => <Discover onNavigate={_nav} />}</PageWrapper>} />
             <Route path="/research" element={<PageWrapper>{(_nav) => <Research onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/research/white-paper" element={<PageWrapper>{(_nav) => <WhitePaper onNavigate={_nav} />}</PageWrapper>} />
             {/* Legacy URL redirects – old paths auto-redirect to new canonical URLs */}
             <Route path="/article/:slug" element={<RedirectArticleToInsights />} />
             <Route path="/facts" element={<Navigate to="/facts/key-facts" replace />} />
@@ -311,6 +314,7 @@ function AppContent() {
             <Route path="/surrey/election-tracker" element={<PageWrapper>{(_nav) => <SurreyElectionTracker onNavigate={_nav} />}</PageWrapper>} />
             <Route path="/surrey/election-tracker/simulator" element={<PageWrapper>{(_nav) => <SurreyElectionSimulator onNavigate={_nav} />}</PageWrapper>} />
             <Route path="/surrey/hub" element={<PageWrapper>{(_nav) => <SurreyHub onNavigate={_nav} />}</PageWrapper>} />
+            <Route path="/surrey/survey-results" element={<PageWrapper>{(_nav) => <SurveyResults onNavigate={_nav} />}</PageWrapper>} />
             <Route path="/surrey" element={<PageWrapper>{(_nav) => <SurreyLGRHub onNavigate={_nav} />}</PageWrapper>} />
             <Route path="/contact" element={<PageWrapper>{(_nav) => <Contact onNavigate={_nav} />}</PageWrapper>} />
             <Route path="/councils" element={<Navigate to="/surrey/area-profile" replace />} />
@@ -344,7 +348,6 @@ function AppContent() {
       <StayInformedBanner />
       <Footer onNavigate={handleNavigate} />
       <CookieBanner />
-      <SurreySurveyPopup />
       <BackToTop />
       <ScrollToTop />
     </div>

@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { BookOpen, Map, Vote } from 'lucide-react';
+import { BookOpen, Map, Vote, BarChart3 } from 'lucide-react';
 import { SEOHead } from '../components/SEOHead';
 import MetaTags from '../components/MetaTags';
 import PageBanner from '../components/PageBanner';
@@ -12,6 +12,12 @@ interface SurreyLGRHubProps {
 }
 
 const hubCards = [
+  {
+    title: 'Survey — Headline Results',
+    path: '/surrey/survey-results',
+    description: '1,047 residents surveyed. Headline findings on awareness, trust, and attitudes towards reorganisation.',
+    icon: BarChart3,
+  },
   {
     title: 'Lessons',
     path: '/surrey/lessons',

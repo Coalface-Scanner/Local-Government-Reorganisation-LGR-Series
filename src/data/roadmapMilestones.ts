@@ -450,7 +450,6 @@ export const ROADMAP_MILESTONES: RoadmapMilestone[] = [
     links: {
       articles: [
         'lgr-our-councils-our-say',
-        'andrew-kelly-democratic-deficit',
         'lgr-backdoor-centralisation-or-needed-reform',
       ],
       facts: ['/facts/lgr-timeline', '/facts/key-facts'],
